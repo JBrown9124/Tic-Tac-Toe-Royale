@@ -12,7 +12,7 @@ interface Props {
   afterColor?: { r: number; g: number; b: number; a: number };
   width?: string;
 }
-const SpaceHover = ({
+const TileHover = ({
   x = 0,
   y = 0,
   rotation = 0,
@@ -40,7 +40,7 @@ const SpaceHover = ({
          
          scale(1)`,
     background: isBooped
-      ? `rgba(${beforeColor.r}, ${beforeColor.g}, ${beforeColor.b}, ${beforeColor.a-.15})`
+      ? `rgba(${beforeColor.r}, ${beforeColor.g}, ${beforeColor.b}, ${beforeColor.a-.1})`
       : `rgba(${beforeColor.r}, ${beforeColor.g}, ${beforeColor.b}, ${
           beforeColor.a
         })`,
@@ -64,4 +64,4 @@ const SpaceHover = ({
   );
 };
 
-export default SpaceHover;
+export default TileHover;
