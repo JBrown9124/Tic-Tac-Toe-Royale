@@ -1,4 +1,11 @@
+import socket from "../socket";
 
+const sendMove = () =>{
+  socket.emit("new-move", )
+}
+const sendGameStatus = () =>{
+  socket.emit("game-status", )
+}
 
 const determineWinner = (rowIdx: number, tileIdx: number, cacheBoard:number[][], boardSize:number) => {
     cacheBoard[rowIdx][tileIdx] = 1;
@@ -88,6 +95,7 @@ const determineWinner = (rowIdx: number, tileIdx: number, cacheBoard:number[][],
         }
       }
     };
+   
     checkHorizontal();
     checkDiagonal();
     checkVertical();

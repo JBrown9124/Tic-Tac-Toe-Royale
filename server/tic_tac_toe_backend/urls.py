@@ -15,7 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from tic_tac_toe_backend.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/lobby', Lobby.as_view()),
 ]

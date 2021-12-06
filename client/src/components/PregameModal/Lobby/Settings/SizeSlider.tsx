@@ -36,22 +36,29 @@ export default function SizeSlider({ changeSize }: SizeSliderProps) {
   };
 
   return (
-    <Box sx={{ width: 250 }}>
-      <Typography id="input-slider" gutterBottom>
-        Size
-      </Typography>
-      <Grid container spacing={2} alignItems="center">
-        <Grid item xs>
+    // <Box sx={{ width: 250 }}>
+    //   <Typography id="input-slider" gutterBottom>
+    //     Size
+    //   </Typography>
+      <Grid container direction="column" spacing={2} >
+        <Grid item >
+          <Typography  >
+            Select Board Size
+          </Typography >
+        </Grid>
+        <Grid container item spacing={2}>
+        <Grid item xs={10}  >
           <Slider
+         
             max={20}
-            step={3}
+            step={1}
             min={3}
             value={typeof size === "number" ? size : 0}
             onChange={handleSizeChange}
             aria-labelledby="input-slider"
           />
         </Grid>
-        <Grid item>
+        <Grid item xs={2}>
           <Input
             value={size}
             size="small"
@@ -66,7 +73,8 @@ export default function SizeSlider({ changeSize }: SizeSliderProps) {
             }}
           />
         </Grid>
+        </Grid>
       </Grid>
-    </Box>
+    // </Box>
   );
 }

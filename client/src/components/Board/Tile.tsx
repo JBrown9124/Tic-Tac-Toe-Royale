@@ -4,9 +4,10 @@ import TileHover from "../../animators/SpaceHover";
 import { useState, useEffect } from "react";
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
+import {RgbaColor} from "react-colorful";
 interface TileProps {
   chosenPiece: JSX.Element
-  boardColor: { r: number; g: number; b: number; a: number };
+  boardColor: RgbaColor;
   value:number|JSX.Element
   updateBoardCache:()=>void;
   

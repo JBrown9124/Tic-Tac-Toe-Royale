@@ -4,18 +4,22 @@ import Grid from "@mui/material/Grid";
 import Board from "./components/Board/Board";
 import "./App.css";
 import { useState } from "react";
-import Settings from "./components/Settings/Settings";
+import PregameModal from "./components/PregameModal/PregameModal";
+import { RgbaColor } from "react-colorful";
+import ClearIcon from "@mui/icons-material/Clear";
 function App() {
   const size = 20;
-  const [pieceChoice, setPieceChoice] = useState();
+  const [pieceChoice, setPieceChoice] = useState<JSX.Element>(<ClearIcon sx={{height:"40px",width:"40px"}}/>);
   const [boardColor, setBoardColor] = useState({ r: 50, g: 100, b: 150, a: 1 });
   const [boardSize, setBoardSize] = useState<number | number[]>(3);
   const handleSetSettings = (
     sizeValue: number | number[],
-    colorValue: { r: number; g: number; b: number; a: number }
+    colorValue: RgbaColor,
+    pieceValue: JSX.Element
   ) => {
     setBoardSize(sizeValue);
     setBoardColor(colorValue);
+    setPieceChoice(pieceValue);
   };
   return (
     <>
@@ -28,17 +32,19 @@ function App() {
           overflow: "auto",
         }}
       >
-        <Grid container   direction="column" justifyContent="center">
-          <Grid item >
-            <Board boardColor={boardColor} boardSize={boardSize} />
-          </Grid>
-          <Grid item sx={{margin:"auto"}} >
-            <Settings
-              setSettings={(settingsSize, settingsColor) =>
-                handleSetSettings(settingsSize, settingsColor)
-              }
+        <Grid container direction="column" justifyContent="center">
+          <Grid item>
+            <Board
+              boardColor={boardColor}
+              boardSize={boardSize}
+              pieceChoice={pieceChoice}
             />
           </Grid>
+          <PregameModal
+            sendBoardSettings={(size, color, piece) =>
+              handleSetSettings(size, color, piece)
+            }
+          />
         </Grid>
       </Grid>
     </>

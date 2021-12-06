@@ -1,5 +1,6 @@
 import { animated, useSpring } from "react-spring";
 import React from "react";
+import {RgbaColor} from "react-colorful";
 interface Props {
   x?: number | string;
   y?: number | string;
@@ -8,8 +9,8 @@ interface Props {
   children: React.ReactNode;
   fromY?: number;
   fromX?: number;
-  beforeColor: { r: number; g: number; b: number; a: number };
-  afterColor?: { r: number; g: number; b: number; a: number };
+  beforeColor: RgbaColor;
+  afterColor?: RgbaColor;
   width?: string;
 }
 const TileHover = ({
