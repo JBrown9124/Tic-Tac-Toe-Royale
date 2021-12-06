@@ -5,42 +5,53 @@ import { RgbaColorPicker, RgbaColor } from "react-colorful";
 import Settings from "./Lobby/Settings/Settings";
 import React, { useState, useEffect } from "react";
 import Welcome from "./Welcome";
-import creatRoom from "../../creators/createRoom"
+import creatRoom from "../../creators/createRoom";
 import Lobby from "./Lobby/Lobby";
+import Join from "./Join";
+
 import createRoom from "../../creators/createRoom";
 interface PregameModalProps {
   sendBoardSettings: (
     size: number | number[],
     color: RgbaColor,
-    piece: JSX.Element,
-    
+    piece: JSX.Element
   ) => void;
-  setName:(name:string)=>void
+  setName: (name: string) => void;
+  setLobbyId: (lobbyId: number) => void;
 }
-export default function PregameModal({ sendBoardSettings,setName }: PregameModalProps) {
+export default function PregameModal({
+  sendBoardSettings,
+  setName,
+  setLobbyId,
+}: PregameModalProps) {
   const [open, setOpen] = useState(true);
   const [command, setCommand] = useState("open");
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleSubmit = (
     size: number | number[],
     color: RgbaColor,
-    piece: JSX.Element, 
-   
+    piece: JSX.Element
   ) => {
     //   setSettings(size, color);
     handleClose();
     sendBoardSettings(size, color, piece);
   };
-  const handleStart = (name:string) =>{
+  const handleStartButtonSelect= (name: string) => {
     setCommand("start");
-    setName(name)
-  }
-  useEffect(()=>{
-    if (command==="start"){
-      createRoom()
+    setName(name);
+  };
+  const handleJoinButtonSelect = (name: string) => {
+    setCommand("join");
+    setName(name);
+  };
+ 
+  useEffect(() => {
+    if (command === "start") {
+      createRoom();
     }
-  },[command])
+  }, [command]);
   return (
     <>
       <Modal
@@ -64,7 +75,13 @@ export default function PregameModal({ sendBoardSettings,setName }: PregameModal
           }}
         >
           {command === "open" && (
-            <Welcome startGame={(props) => handleStart(props)} />
+            <Welcome
+              joinGame={(name) => handleJoinButtonSelect(name)}
+              startGame={(name) => handleStartButtonSelect(name)}
+            />
+          )}
+          {command === "join" && (
+            <Join handleJoinSubmit={(lobbyId) => setLobbyId(lobbyId)} />
           )}
           {command === "start" && (
             <Lobby

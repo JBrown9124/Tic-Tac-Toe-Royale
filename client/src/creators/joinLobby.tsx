@@ -1,0 +1,20 @@
+import socket from "../socket";
+import axios from "axios";
+interface Body{
+    lobbyId:number, playerName:string
+}
+const saveLobby = async (body:Body) => {
+  const { data } = await axios.put("http://127.0.0.1:8000/api/lobby", body);
+  return data;
+};
+const sendLobbyInfo = (data: any) => {
+  socket.emit("new-lobby", {
+    lobby_id: data.lobby_id,
+  });
+};
+const joinLobby = async (body:Body) => {
+  const data = await saveLobby(body);
+  sendLobbyInfo(data);
+};
+
+export default joinLobby;

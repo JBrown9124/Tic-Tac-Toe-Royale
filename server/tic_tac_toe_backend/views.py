@@ -31,9 +31,11 @@ class Lobby(APIView):
         """takes name of requester and lobbyId. find lobby, update lobby with new player,
         return new lobby state to client"""
         body = request.data
-        player_name = body.get("name")
-        player = Player(name=player_name).to_dict()
+        player_name = body.get("playerName")
         lobby_id = body.get("lobbyId")
+        
+        player = Player(name=player_name).to_dict()
+        
         lobby=lobbys
         lobby = lobbys[lobby_id]
         lobby["players"].append(player)
