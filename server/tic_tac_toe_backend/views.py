@@ -16,9 +16,9 @@ class Lobby(APIView):
     def post(self, request: Request):
         """takes name of requester. creates lobby"""
         body = request.data
-        player_name = body.get("name")
+        player_name = body.get("playerName")
         player = Player(name=player_name).to_dict()
-        lobby_id = randrange(10)
+        lobby_id = randrange(999)
         lobby = LobbyModel(lobby_id=lobby_id)
        
         lobby.players.append(player)

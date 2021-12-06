@@ -16,13 +16,15 @@ interface PregameModalProps {
     color: RgbaColor,
     piece: JSX.Element
   ) => void;
-  setName: (name: string) => void;
+  setPlayerName: (name: string) => void;
   setLobbyId: (lobbyId: number) => void;
+  playerName:string
 }
 export default function PregameModal({
   sendBoardSettings,
-  setName,
+  setPlayerName,
   setLobbyId,
+  playerName
 }: PregameModalProps) {
   const [open, setOpen] = useState(true);
   const [command, setCommand] = useState("open");
@@ -39,17 +41,18 @@ export default function PregameModal({
     sendBoardSettings(size, color, piece);
   };
   const handleStartButtonSelect= (name: string) => {
-    setCommand("start");
-    setName(name);
+    setCommand("create");
+    setPlayerName(name);
   };
   const handleJoinButtonSelect = (name: string) => {
     setCommand("join");
-    setName(name);
+    setPlayerName(name);
   };
  
   useEffect(() => {
-    if (command === "start") {
-      createRoom();
+    if (command === "create") {
+      const reqBody={playerName:playerName}
+      createRoom(reqBody);
     }
   }, [command]);
   return (
@@ -77,13 +80,13 @@ export default function PregameModal({
           {command === "open" && (
             <Welcome
               joinGame={(name) => handleJoinButtonSelect(name)}
-              startGame={(name) => handleStartButtonSelect(name)}
+              createGame={(name) => handleStartButtonSelect(name)}
             />
           )}
           {command === "join" && (
             <Join handleJoinSubmit={(lobbyId) => setLobbyId(lobbyId)} />
           )}
-          {command === "start" && (
+          {command === "create" && (
             <Lobby
               setSettings={(color, size, piece) =>
                 handleSubmit(color, size, piece)

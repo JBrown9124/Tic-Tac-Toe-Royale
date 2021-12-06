@@ -16,10 +16,10 @@ def connect(sid, environ):
     sio.emit("my_response", {"data": "Connected", "count": 0}, room=sid)
 
 
-@sio.on("new-lobby")
-def create_lobby(sid, lobby_id):
+@sio.on("player-join-lobby")
+def create_lobby(sid, lobby):
 
-    sio.emit("new-lobby", lobby_id, skip_sid=sid)
+    sio.emit("player-join-lobby", lobby['lobby'], skip_sid=sid)
 
 
 @sio.on("user-joined")

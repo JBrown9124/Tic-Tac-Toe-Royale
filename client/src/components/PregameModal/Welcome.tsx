@@ -5,10 +5,10 @@ import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import { ChangeEventHandler } from "react";
 interface OpenPageProps {
-  startGame: (name: string) => void;
+  createGame: (name: string) => void;
   joinGame: (name: string) => void;
 }
-export default function Welcome({ startGame, joinGame }: OpenPageProps) {
+export default function Welcome({ createGame, joinGame }: OpenPageProps) {
   const [name, setName] = useState("Tic Tac Toe Master");
   return (
     <>
@@ -32,7 +32,7 @@ export default function Welcome({ startGame, joinGame }: OpenPageProps) {
         </Grid>
         <Grid container item direction="column" sx={{}} justifyContent="center">
           <Grid item xs={12}>
-            <Button onClick={() => startGame(name)}>Start a game</Button>
+            <Button onClick={() => createGame(name)}>Start a game</Button>
           </Grid>
           <Grid item xs={12}>
             <Button onClick={() => joinGame(name)}>Join a game</Button>
