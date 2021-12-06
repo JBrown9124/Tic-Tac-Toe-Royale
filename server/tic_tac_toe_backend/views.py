@@ -17,11 +17,11 @@ class Lobby(APIView):
         """takes name of requester. creates lobby"""
         body = request.data
         player_name = body.get("name")
-        player1 = Player(name=player_name).to_dict()
+        player = Player(name=player_name).to_dict()
         lobby_id = randrange(10)
         lobby = LobbyModel(lobby_id=lobby_id)
        
-        lobby.players.append(player1)
+        lobby.players.append(player)
         lobby_dict = lobby.to_dict()
         lobbys.update(lobby_dict)
         print(lobbys)
@@ -31,10 +31,11 @@ class Lobby(APIView):
         """takes name of requester and lobbyId. find lobby, update lobby with new player,
         return new lobby state to client"""
         body = request.data
-        player2_name = body.get("name")
-        player2 = Player(name=player2_name)
+        player_name = body.get("name")
+        player = Player(name=player_name).to_dict()
         lobby_id = body.get("lobbyId")
+        lobby=lobbys
         lobby = lobbys[lobby_id]
-        lobby["players"].append(player2)
-        lobby_response = LobbyResponseModel(lobby=lobby)
+        lobby["players"].append(player)
+        lobby_response = LobbyResponseModel(lobby=lobby).to_dict()
         return JsonResponse({"lobby": lobby_response})

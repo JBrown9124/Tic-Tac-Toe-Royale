@@ -12,10 +12,12 @@ interface PregameModalProps {
   sendBoardSettings: (
     size: number | number[],
     color: RgbaColor,
-    piece: JSX.Element
+    piece: JSX.Element,
+    
   ) => void;
+  setName:(name:string)=>void
 }
-export default function PregameModal({ sendBoardSettings }: PregameModalProps) {
+export default function PregameModal({ sendBoardSettings,setName }: PregameModalProps) {
   const [open, setOpen] = useState(true);
   const [command, setCommand] = useState("open");
   const handleOpen = () => setOpen(true);
@@ -23,12 +25,17 @@ export default function PregameModal({ sendBoardSettings }: PregameModalProps) {
   const handleSubmit = (
     size: number | number[],
     color: RgbaColor,
-    piece: JSX.Element
+    piece: JSX.Element, 
+   
   ) => {
     //   setSettings(size, color);
     handleClose();
     sendBoardSettings(size, color, piece);
   };
+  const handleStart = (name:string) =>{
+    setCommand("start");
+    setName(name)
+  }
   useEffect(()=>{
     if (command==="start"){
       createRoom()
@@ -57,7 +64,7 @@ export default function PregameModal({ sendBoardSettings }: PregameModalProps) {
           }}
         >
           {command === "open" && (
-            <Welcome startGame={() => setCommand("start")} />
+            <Welcome startGame={(props) => handleStart(props)} />
           )}
           {command === "start" && (
             <Lobby

@@ -12,14 +12,18 @@ function App() {
   const [pieceChoice, setPieceChoice] = useState<JSX.Element>(<ClearIcon sx={{height:"40px",width:"40px"}}/>);
   const [boardColor, setBoardColor] = useState({ r: 50, g: 100, b: 150, a: 1 });
   const [boardSize, setBoardSize] = useState<number | number[]>(3);
+  const [playerName, setPlayerName] = useState("Tic Tac Toe Master")
   const handleSetSettings = (
     sizeValue: number | number[],
     colorValue: RgbaColor,
     pieceValue: JSX.Element
+   
   ) => {
     setBoardSize(sizeValue);
     setBoardColor(colorValue);
     setPieceChoice(pieceValue);
+    
+
   };
   return (
     <>
@@ -41,7 +45,8 @@ function App() {
             />
           </Grid>
           <PregameModal
-            sendBoardSettings={(size, color, piece) =>
+          setName={(props)=>setPlayerName(props)}
+            sendBoardSettings={(size, color, piece,) =>
               handleSetSettings(size, color, piece)
             }
           />
