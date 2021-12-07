@@ -6,31 +6,33 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import StarIcon from "@mui/icons-material/Star";
-export default function PlayerList() {
+import { Player } from "../../../Models/Player";
+interface PlayerListProps {
+  players: Player[];
+}
+export default function PlayerList({ players }: PlayerListProps) {
   return (
     <>
-      <Grid container direction="column">
-      <Grid item>
-        <Typography> Players </Typography>
-      </Grid>
+      <Grid
+        container
+        textAlign="center"
+        justifyContent="center"
+     
+        sx={{ border: "solid 1px black" , }}
+      >
         <Grid item>
-          <List
-            sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
-            aria-label="contacts"
-          >
-            <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  <StarIcon />
-                </ListItemIcon>
-                <ListItemText primary="Chelsea Otakan" />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemText inset primary="Eric Hoffman" />
-              </ListItemButton>
-            </ListItem>
+          <Typography> Players </Typography>
+        </Grid>
+        <Grid item>
+          <List sx={{ bgcolor: "background.paper" }} aria-label="players">
+            {players?.map((player) => (
+              <ListItem>
+                <ListItemText
+                  sx={{ textAlign: "center" }}
+                  primary={player.name}
+                />
+              </ListItem>
+            ))}
           </List>
         </Grid>
       </Grid>

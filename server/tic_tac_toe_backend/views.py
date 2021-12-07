@@ -24,8 +24,8 @@ class Lobby(APIView):
         lobby.players.append(player)
         lobby_dict = lobby.to_dict()
         lobbys.update(lobby_dict)
-        print(lobbys)
-        return JsonResponse({"lobby_id": lobby_id})
+        print(lobby)
+        return JsonResponse({"lobbyId": lobby_id})
 
     def put(self, request: Request):
         """takes name of requester and lobbyId. find lobby, update lobby with new player,
@@ -40,4 +40,5 @@ class Lobby(APIView):
         lobby = lobbys[lobby_id]
         lobby["players"].append(player)
         lobby_response = LobbyResponseModel(lobby=lobby).to_dict()
+        lobby_response['lobbyId'] = lobby_id
         return JsonResponse({"lobby": lobby_response})

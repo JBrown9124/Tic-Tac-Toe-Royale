@@ -6,29 +6,35 @@ import Settings from "./Lobby/Settings/Settings";
 import React, { useState, useEffect } from "react";
 import Welcome from "./Welcome";
 import creatRoom from "../../creators/createRoom";
-import Lobby from "./Lobby/Lobby";
+import { useCookies } from 'react-cookie';
+import Lobby from "./Lobby/HostLobby";
 import Join from "./Join";
-
+import GuestLobby from "./Lobby/GuestLobby";
+import { Player } from "../../Models/Player";
 import createRoom from "../../creators/createRoom";
+import joinLobby from "../../creators/joinLobby";
+interface LobbyProps {
+  lobbyId: number;
+  players: Player[];
+}
 interface PregameModalProps {
   sendBoardSettings: (
     size: number | number[],
     color: RgbaColor,
     piece: JSX.Element
   ) => void;
-  setPlayerName: (name: string) => void;
-  setLobbyId: (lobbyId: number) => void;
-  playerName:string
+
+  lobby: LobbyProps;
 }
 export default function PregameModal({
   sendBoardSettings,
-  setPlayerName,
-  setLobbyId,
-  playerName
+  lobby,
 }: PregameModalProps) {
   const [open, setOpen] = useState(true);
   const [command, setCommand] = useState("open");
-
+  const [playerName, setPlayerName] = useState("Tic Tac Toe Master");
+  const [lobbyIdItem, setLobbyIdItem] = useState(0)
+  const [sessionCookies, setSessionCookie, removeSessionCookies] = useCookies()
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleSubmit = (
@@ -40,7 +46,7 @@ export default function PregameModal({
     handleClose();
     sendBoardSettings(size, color, piece);
   };
-  const handleStartButtonSelect= (name: string) => {
+  const handleStartButtonSelect = (name: string) => {
     setCommand("create");
     setPlayerName(name);
   };
@@ -48,21 +54,42 @@ export default function PregameModal({
     setCommand("join");
     setPlayerName(name);
   };
- 
+  const handleJoinSubmit = (lobbyId: number) => {
+    setCommand("guest");
+    setLobbyIdItem(lobbyId);
+  };
+
   useEffect(() => {
     if (command === "create") {
-      const reqBody={playerName:playerName}
-      createRoom(reqBody);
+      const startLobby = async () => {
+        const reqBody = { playerName: playerName };
+        const lobbyInfo = await createRoom(reqBody);
+      
+        console.log(lobbyInfo, "startLobby");
+      };
+      startLobby();
+    }
+    if (command === "guest") {
+      const findLobby = async () => {
+        const reqBody = { lobbyId: lobbyIdItem, playerName: playerName };
+        const lobbyInfo= await joinLobby(reqBody);
+        setSessionCookie(
+          "session",
+          { lobby:{...lobbyInfo} },
+          { path: "/" }
+        );
+      };
+      findLobby();
     }
   }, [command]);
   return (
     <>
       <Modal
-        disableEscapeKeyDown
-        disableAutoFocus
+      
         open={open}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+      
       >
         <Grid
           sx={{
@@ -70,12 +97,16 @@ export default function PregameModal({
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-
+            overflow:"auto",
+            width:800,
+         
             bgcolor: "background.paper",
             border: "2px solid #000",
             boxShadow: 24,
             p: 4,
           }}
+          
+         
         >
           {command === "open" && (
             <Welcome
@@ -84,10 +115,12 @@ export default function PregameModal({
             />
           )}
           {command === "join" && (
-            <Join handleJoinSubmit={(lobbyId) => setLobbyId(lobbyId)} />
+            <Join handleJoinSubmit={(lobbyId) => handleJoinSubmit(lobbyId)} />
           )}
+          {command === "guest" && <GuestLobby players={sessionCookies?.session?.lobby?.players} />}
           {command === "create" && (
             <Lobby
+              players={sessionCookies?.session?.lobby?.players}
               setSettings={(color, size, piece) =>
                 handleSubmit(color, size, piece)
               }

@@ -5,7 +5,7 @@ export default function Store(
   lobby: Object | null
 ) {
   const [sessionCookies, setSessionCookie] = useCookies(["session"]);
-
+ 
   useEffect(() => {
     if (boardSettings) {
       setSessionCookie("session", {boardSettings:boardSettings}, { path: "/" });

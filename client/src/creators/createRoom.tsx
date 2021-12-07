@@ -15,6 +15,7 @@ const sendRoom = (data: any) => {
 const createRoom = async (body:PlayerNameProps) => {
   const data = await saveRoom(body);
   sendRoom(data);
+  return await data
 };
 
 export default createRoom;

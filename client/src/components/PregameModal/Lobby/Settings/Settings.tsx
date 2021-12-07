@@ -15,7 +15,7 @@ interface SettingsProps {
 }
 export default function Settings({ setSize, setColor, color, setPiece, piece }: SettingsProps) {
   return (
-    <Grid container  spacing={5} direction="column">
+    <Grid container  spacing={3} direction="column">
       <Grid item>
         <SizeSlider changeSize={(props) => setSize(props)} />
       </Grid>

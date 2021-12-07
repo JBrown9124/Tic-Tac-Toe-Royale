@@ -6,7 +6,7 @@ import socketio
 
 
 basedir = os.path.dirname(os.path.realpath(__file__))
-sio = socketio.Server(async_mode=async_mode, logger=True, engineio_logger=True, cors_allowed_origins="http://localhost:8000/" )
+sio = socketio.Server(async_mode=async_mode, logger=True, engineio_logger=True, cors_allowed_origins="*" )
 
 thread = None
 
