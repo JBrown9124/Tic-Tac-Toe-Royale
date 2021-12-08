@@ -21,7 +21,7 @@ const joinLobby = async (body: Body) => {
     console.log(data, "joinLobbyData");
     return await data.lobby;
   } catch (e) {
-    console.log(e);
+    return await "Lobby does not exist.";
   }
 };
 

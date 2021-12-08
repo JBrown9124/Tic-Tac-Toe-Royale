@@ -9,11 +9,11 @@ import PieceSelector from "./PieceSelector";
 interface SettingsProps {
   setSize: (size: number | number[]) => void;
   setColor: (color: RgbaColor) => void;
-  setPiece: (piece: JSX.Element) => void;
+ 
   color: RgbaColor;
-  piece: JSX.Element;
+  
 }
-export default function Settings({ setSize, setColor, color, setPiece, piece }: SettingsProps) {
+export default function Settings({ setSize, setColor, color, }: SettingsProps) {
   return (
     <Grid container  spacing={3} direction="column">
       <Grid item>
@@ -23,7 +23,7 @@ export default function Settings({ setSize, setColor, color, setPiece, piece }: 
         <ColorSelector setColor={(props) => setColor(props)} color={color} />
       </Grid>
       <Grid item>
-      <PieceSelector piece={piece} setPiece={(props) => setPiece(props)}/>
+      <PieceSelector />
       </Grid>
     </Grid>
   );

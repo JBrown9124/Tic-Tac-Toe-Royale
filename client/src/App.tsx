@@ -21,25 +21,29 @@ interface LobbyProps {
   players: Player[];
 }
 function App() {
+  const [sessionCookies, setSessionCookie, removeSessionCookie] = useCookies();
   socket.on("connect", () => {
     console.log("connected to server");
     socket.on("player-join-lobby", (receivedLobby) => {
       // if (receivedLobby.lobbyId === sessionCookies.session?.lobby?.lobbyId) {
-        setSessionCookie(
-          "session",
-          { lobby: receivedLobby },
-          { path: "/" }
-        );
+
+      setSessionCookie("lobby", receivedLobby, { path: "/" });
       // }
     });
-    socket.on("add-user-lobby", (id) => {});
-    socket.on("game-status", (data) => {});
+    socket.on("player-leave-lobby", (receivedLobby) => {
+      setSessionCookie("lobby", receivedLobby, { path: "/" });
+    });
+    socket.on("player-ready", (receivedLobby) => {
+      setSessionCookie("lobby", receivedLobby, { path: "/" });
+    });
     socket.on("new-move", (data) => {});
   });
+  // removeSessionCookie("command");
+  // removeSessionCookie("lobby");
   const [pieceChoice, setPieceChoice] = useState<JSX.Element>(
     <ClearIcon sx={{ height: "40px", width: "40px" }} />
   );
-  const [sessionCookies, setSessionCookie] = useCookies();
+
   // const [boardColor, setBoardColor] = useState({ r: 50, g: 100, b: 150, a: 1 });
   // const [boardSize, setBoardSize] = useState<number | number[]>(3);
   // const [boardSettings, setBoardSettings] = useState<BoardSettingsProps>({
@@ -54,11 +58,10 @@ function App() {
   // Store(boardSettings, lobby);
   const handleSetSettings = (
     sizeValue: number | number[],
-    colorValue: RgbaColor,
-    pieceValue: JSX.Element
+    colorValue: RgbaColor
   ) => {
     setSessionCookie(
-      "session",
+      "board",
       { boardSettings: { boardColor: colorValue, boardSize: sizeValue } },
       { path: "/" }
     );
@@ -78,16 +81,14 @@ function App() {
         <Grid container direction="column" justifyContent="center">
           <Grid item>
             <Board
-              boardColor={sessionCookies?.boardSettings?.boardColor}
-              boardSize={sessionCookies?.boardSettings?.boardSize}
+              boardColor={sessionCookies?.board?.boardSettings?.boardColor}
+              boardSize={sessionCookies?.board?.boardSettings?.boardSize}
               pieceChoice={pieceChoice}
             />
           </Grid>
           <PregameModal
             lobby={sessionCookies.lobby}
-            sendBoardSettings={(size, color, piece) =>
-              handleSetSettings(size, color, piece)
-            }
+            sendBoardSettings={(size, color) => handleSetSettings(size, color)}
           />
         </Grid>
       </Grid>

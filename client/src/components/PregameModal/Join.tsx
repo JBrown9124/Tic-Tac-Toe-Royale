@@ -7,14 +7,27 @@ import axios from "axios";
 import React from "react";
 interface JoinProps {
   handleJoinSubmit: (lobbyId: number) => void;
+  handleJoinBack: () => void;
+  isLobbyFound: boolean;
 }
-export default function Join({ handleJoinSubmit }: JoinProps) {
+export default function Join({
+  handleJoinSubmit,
+  isLobbyFound,
+  handleJoinBack,
+}: JoinProps) {
   const [lobbyId, setLobbyId] = useState(0);
   return (
     <>
-      <Grid container direction="column" justifyContent="center">
+      <Grid
+        container
+        direction="column"
+        textAlign="center"
+        justifyContent="center"
+      >
         <Grid item>
           <TextField
+            error={isLobbyFound === false}
+            helperText={isLobbyFound === false && "Lobby is not found"}
             type="number"
             label="Lobby Code"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -22,7 +35,9 @@ export default function Join({ handleJoinSubmit }: JoinProps) {
             }
           />
         </Grid>
+
         <Grid item textAlign="center">
+          <Button onClick={() => handleJoinBack()}>Back</Button>
           <Button onClick={() => handleJoinSubmit(lobbyId)}>Find</Button>
         </Grid>
       </Grid>

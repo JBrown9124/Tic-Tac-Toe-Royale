@@ -17,22 +17,22 @@ def connect(sid, environ):
 
 
 @sio.on("player-join-lobby")
-def create_lobby(sid, lobby):
+def player_joined(sid, lobby):
 
     sio.emit("player-join-lobby", lobby['lobby'], skip_sid=sid)
 
 
-@sio.on("user-joined")
-def user_joined(sid, user_id):
+@sio.on("player-leave-lobby")
+def player_left(sid, lobby):
 
-    sio.emit("add-user-lobby", user_id, skip_sid=sid)
+    sio.emit("player-leave-lobby", lobby['lobby'], skip_sid=sid)
 
 
-@sio.on("new-move")
-def new_move(sid, move):
+@sio.on("player-ready")
+def player_ready(sid, lobby):
     sio.emit(
-        "new-move",
-        {"row": move["row"], "tile": move["tile"]},
+        "player-ready",
+        lobby['data']['lobby'],
         skip_sid=sid,
     )
 

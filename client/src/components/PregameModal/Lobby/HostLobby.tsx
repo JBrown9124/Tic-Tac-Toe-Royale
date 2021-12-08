@@ -11,18 +11,17 @@ interface PlayerListProps {
   setSettings: (
     size: number | number[],
     color: RgbaColor,
-    piece: JSX.Element
+ 
   ) => void;
   players: Player[];
+  handleLeave:()=>void;
 }
-export default function PlayersList({ setSettings, players }: PlayerListProps) {
+export default function PlayersList({ setSettings, players, handleLeave }: PlayerListProps) {
   const [color, setColor] = useState({ r: 50, g: 100, b: 150, a: 1 });
   const [size, setSize] = useState<number | number[]>(3);
-  const [piece, setPiece] = useState<JSX.Element>(
-    <ClearIcon sx={{ height: "40px", width: "40px" }} />
-  );
-  const handleSubmit = () => {
-    setSettings(size, color, piece);
+ 
+  const handleStart = () => {
+    setSettings(size, color);
   };
 
   return (
@@ -32,26 +31,35 @@ export default function PlayersList({ setSettings, players }: PlayerListProps) {
           <Typography variant="h2">Lobby</Typography>
         </Grid>
       </Grid>
-      <Grid container justifyContent="center" sx={{ textAlign: "center" }} spacing={6}>
-        <Grid item  xs={12} lg={6}>
+      <Grid
+        container
+        justifyContent="center"
+        sx={{ textAlign: "center" }}
+        spacing={6}
+      >
+        <Grid item xs={12} lg={6}>
           <Settings
-            piece={piece}
+      
             color={color}
             setSize={(props) => setSize(props)}
             setColor={(props) => setColor(props)}
-            setPiece={(props) => setPiece(props)}
+            
           />
         </Grid>
-        <Grid item  xs={12} lg={6}>
+        <Grid item xs={12} lg={6}>
           <PlayerList players={players} />
         </Grid>
       </Grid>
 
       <Grid container justifyContent="center">
         <Grid item>
-        <Button sx={{ background: "purple" }} onClick={handleSubmit}>
-          Submit
-        </Button>
+        <Button sx={{ background: "purple" }} onClick={handleLeave}>
+            Leave
+          </Button>
+          <Button sx={{ background: "purple" }} onClick={handleStart}>
+            Start
+          </Button>
+      
         </Grid>
       </Grid>
     </>

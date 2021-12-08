@@ -1,30 +1,18 @@
 import { useState } from "react";
-import ClearIcon from "@mui/icons-material/Clear";
-import StarIcon from "@mui/icons-material/Star";
-import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
-import PetsIcon from "@mui/icons-material/Pets";
-import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import ChildCareIcon from "@mui/icons-material/ChildCare";
+
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import Typography from "@mui/material/Typography";
+import { useCookies } from "react-cookie";
 import Grid from "@mui/material/Grid";
-const pieces = [
-  <ClearIcon sx={{height:"40px",width:"40px"}}/>,
-  <StarIcon sx={{height:"40px",width:"40px"}} />,
-  <CircleOutlinedIcon sx={{height:"40px",width:"40px"}}/>,
-  <PetsIcon sx={{height:"40px",width:"40px"}}/>,
-  <FitnessCenterIcon sx={{height:"40px",width:"40px"}}/>,
-  <FavoriteBorderIcon sx={{height:"40px",width:"40px"}} />,
-  <ChildCareIcon sx={{height:"40px",width:"40px"}} />,
-];
-interface PieceSelectorProps{
-setPiece:(piece:JSX.Element)=>void;
-piece:JSX.Element;
-}
-export default function PieceSelector({setPiece, piece}:PieceSelectorProps) {
+import pieces from "../../../../storage/pieces"
 
+// interface PieceSelectorProps{
+// setPiece:(piece:JSX.Element)=>void;
+// piece:JSX.Element;
+// }
+export default function PieceSelector() {
+  const [sessionCookies, setSessionCookie] = useCookies();
 
   return (
     <>
@@ -33,7 +21,13 @@ export default function PieceSelector({setPiece, piece}:PieceSelectorProps) {
           <Grid item>
             <Typography>Select your Piece</Typography>
           </Grid>
-          <Grid item>{piece}</Grid>
+          <Grid item>
+            {pieces.map((piece) => {
+              if (piece.name === sessionCookies?.piece) {
+                return piece.value;
+              }
+            })}
+          </Grid>
         </Grid>
         <Grid item>
           <List
@@ -46,10 +40,12 @@ export default function PieceSelector({setPiece, piece}:PieceSelectorProps) {
           >
             {pieces.map((piece) => (
               <ListItemButton
-                onClick={() => setPiece(piece)}
+                onClick={() =>
+                  setSessionCookie("piece", piece.name, { path: "/" })
+                }
                 sx={{ justifyContent: "center" }}
               >
-                {piece}
+                {piece.value}
               </ListItemButton>
             ))}
           </List>

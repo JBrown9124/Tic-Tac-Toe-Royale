@@ -7,7 +7,7 @@ class LobbyResponseModel(object):
 
     def to_dict(self):
         return {
-            "board_color": self.lobby["board_color"],
-            "board_size": self.lobby["board_size"],
+           
+            "board": self.lobby["board"],
             "players":self.lobby["players"]
         }

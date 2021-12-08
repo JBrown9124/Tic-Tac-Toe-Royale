@@ -15,7 +15,7 @@ from dotenv import dotenv_values
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-env_vars = dotenv_values(".env")
+env_vars = dotenv_values("C:\\Users\\Jonathan\\Documents\\My_Workspaces\\tic_tac_toe_online\\server\\.env")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
