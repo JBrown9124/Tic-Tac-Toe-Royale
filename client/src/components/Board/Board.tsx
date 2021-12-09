@@ -51,21 +51,7 @@ export default function Board({ newMove }: BoardProps) {
 
   // });
   // removeSessionCookies("boardMoves")
-  const updateBoard = (rowIdx: number, tileIdx: number, tile: number) => {
-    determineWinner(
-      rowIdx,
-      tileIdx,
-      board,
-
-      sessionCookies?.lobby?.board?.size,
-      playerNumber,
-      setSessionCookies,
-      sessionCookies
-    );
-    
-    return board[rowIdx][tileIdx] = tile;
-
-  };
+ 
 
   useEffect(() => {
     if (sessionCookies.command === "begin") {
@@ -88,9 +74,6 @@ export default function Board({ newMove }: BoardProps) {
       sessionCookies?.lobby?.players.forEach((player: any) => {
         pieces.forEach((piece) => {
           if (piece.name === player.piece) {
-            if (player.playerNumber === playerNumber) {
-              setPiece(piece.value);
-            }
             piecesValues.push({
               playerNumber: player.playerNumber,
               piece: piece.value,
@@ -101,12 +84,17 @@ export default function Board({ newMove }: BoardProps) {
 
       setPlayerPieces(piecesValues);
     };
+    pieces.map((piece) => {
+      if (piece.name === sessionCookies.piece) {
+        setPiece(piece.value);
+      }
+    });
     getPlayerPieces();
   }, [sessionCookies?.command]);
   useEffect(() => {
     if (newMove.playerNumber !== 0) {
       let boardCopy = board;
-      boardCopy[newMove.rowIdx][newMove.tileIdx] = newMove.playerNumber;
+      board[newMove.rowIdx][newMove.tileIdx] = newMove.playerNumber;
       setBoard([...boardCopy]);
       console.log(boardCopy, "boardcoppy");
     }
@@ -121,7 +109,16 @@ export default function Board({ newMove }: BoardProps) {
               playerNumber={playerNumber}
               playerPieces={playerPieces}
               key={tileIdx}
-              updateBoardCache={() => updateBoard(rowIdx, tileIdx, tile)}
+              updateBoardCache={() =>  determineWinner(
+                rowIdx,
+                tileIdx,
+                cacheBoard,
+          
+                sessionCookies?.lobby?.board?.size,
+                playerNumber,
+                setSessionCookies,
+                sessionCookies
+              )}
               value={tile}
               newMove={newMove}
               chosenPiece={piece}

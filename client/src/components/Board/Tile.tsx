@@ -39,9 +39,7 @@ export const Tile = ({
 
   
   };
-  // useEffect(() => {
-  //   setTile({ value: value });
-  // }, [value, newMove, tile.value, ]);
+  
   
   return (
     <>
@@ -61,11 +59,11 @@ export const Tile = ({
         >
           <Grid item sx={{}}>
           {typeof tile.value === "number"?" ":chosenPiece}
-            {/* {tile.value||value === 0 ? "" : playerPieces?.map((playerPiece)=>{
+            {tile.value||value === 0 ? "" : playerPieces?.map((playerPiece)=>{
               if (playerPiece.playerNumber === value){
                 return playerPiece.piece
               }
-            })} */}
+            })}
           </Grid>
         </Grid>
       </TileHover>
