@@ -1,26 +1,24 @@
-import * as React from "react";
+import { useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Slider from "@mui/material/Slider";
 import MuiInput from "@mui/material/Input";
+import { useCookies } from "react-cookie";
 
-interface SizeSliderProps {
-  changeSize: (size: number | number[]) => void;
-}
+
 const Input = styled(MuiInput)`
   width: 42px;
 `;
 
-export default function SizeSlider({ changeSize }: SizeSliderProps) {
-  const [size, setSize] = React.useState<
-    number | string | Array<number | string>
-  >(3);
+export default function SizeSlider() {
+  const [size, setSize] = useState<number | string | Array<number | string>>(3);
+  const [sessionCookies, setSessionCookies] = useCookies();
 
   const handleSizeChange = (event: Event, value: number | number[]) => {
     setSize(value);
-    changeSize(value);
+    
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,22 +32,21 @@ export default function SizeSlider({ changeSize }: SizeSliderProps) {
       setSize(20);
     }
   };
-
+  useEffect(() => {
+    setSessionCookies("board", {...sessionCookies?.board, size:size},{path:"/"})
+  }, [size]);
   return (
     // <Box sx={{ width: 250 }}>
     //   <Typography id="input-slider" gutterBottom>
     //     Size
     //   </Typography>
-      <Grid container direction="column" spacing={2} >
-        <Grid item >
-          <Typography  >
-            Select Board Size
-          </Typography >
-        </Grid>
-        <Grid container item spacing={2}>
-        <Grid item xs={10}  >
+    <Grid container direction="column" spacing={2}>
+      <Grid item>
+        <Typography>Select Board Size</Typography>
+      </Grid>
+      <Grid container item spacing={2}>
+        <Grid item xs={10}>
           <Slider
-         
             max={20}
             step={1}
             min={3}
@@ -73,8 +70,8 @@ export default function SizeSlider({ changeSize }: SizeSliderProps) {
             }}
           />
         </Grid>
-        </Grid>
       </Grid>
+    </Grid>
     // </Box>
   );
 }

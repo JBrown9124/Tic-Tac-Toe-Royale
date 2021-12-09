@@ -4,21 +4,45 @@ import TileHover from "../../animators/SpaceHover";
 import { useState, useEffect } from "react";
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
-import {RgbaColor} from "react-colorful";
+import { RgbaColor } from "react-colorful";
+import { useCookies } from "react-cookie";
+import pieces from "../../storage/pieces";
+import {PlayerPieces} from "../../Models/PlayerPieces"
 interface TileProps {
-  chosenPiece: JSX.Element
+  chosenPiece: JSX.Element | undefined;
   boardColor: RgbaColor;
-  value:number|JSX.Element
-  updateBoardCache:()=>void;
-  
+  newMove: any;
+  value: number | JSX.Element;
+  playerPieces: PlayerPieces[]|undefined
+  playerNumber:number
+  updateBoardCache: () => void;
 }
-export const Tile = ({boardColor, chosenPiece, value, updateBoardCache}:TileProps) => {
-  const [tile, setTile] = useState<{value:String|JSX.Element|number}>({ value: value});
-  const handleClick=()=>{
-    setTile({ value: chosenPiece });
+export const Tile = ({
+  boardColor,
+  chosenPiece,
+  value,
+  updateBoardCache,
+  newMove,
+  playerPieces,
+  playerNumber
+}: TileProps) => {
+  const [tile, setTile] = useState<{
+    value: String | JSX.Element | number | undefined;
+  }>({ value: value });
+  const [sessionCookies, setSessionCookies] = useCookies();
+  
+ 
+  const handleClick = () => {
+    setTile({ value:  chosenPiece});
+    console.log(chosenPiece,"chosenPiece")
     updateBoardCache();
-    console.log(tile);
-  }
+
+  
+  };
+  // useEffect(() => {
+  //   setTile({ value: value });
+  // }, [value, newMove, tile.value, ]);
+  
   return (
     <>
       <TileHover beforeColor={boardColor}>
@@ -35,8 +59,13 @@ export const Tile = ({boardColor, chosenPiece, value, updateBoardCache}:TileProp
             border: "solid black 1px",
           }}
         >
-          <Grid item sx={{}} >
-            {typeof tile.value === "number"?" ":chosenPiece}
+          <Grid item sx={{}}>
+          {typeof tile.value === "number"?" ":chosenPiece}
+            {/* {tile.value||value === 0 ? "" : playerPieces?.map((playerPiece)=>{
+              if (playerPiece.playerNumber === value){
+                return playerPiece.piece
+              }
+            })} */}
           </Grid>
         </Grid>
       </TileHover>

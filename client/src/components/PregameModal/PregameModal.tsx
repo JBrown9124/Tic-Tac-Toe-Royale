@@ -8,28 +8,26 @@ import Welcome from "./Welcome";
 import CircularProgress from "@mui/material/CircularProgress";
 
 import { useCookies } from "react-cookie";
-import Lobby from "./Lobby/HostLobby";
+import HostLobby from "./Lobby/HostLobby";
 import Join from "./Join";
 import GuestLobby from "./Lobby/GuestLobby";
 import { Player } from "../../Models/Player";
 import createLobby from "../../creators/createLobby";
 import joinLobby from "../../creators/joinLobby";
 import leaveLobby from "../../creators/leaveLobby";
+import startGame from "../../creators/startGame";
 interface LobbyProps {
   lobbyId: number;
   players: Player[];
 }
 interface PregameModalProps {
-  sendBoardSettings: (size: number | number[], color: RgbaColor) => void;
+ 
 
-  lobby: LobbyProps;
+  
 }
-export default function PregameModal({
-  sendBoardSettings,
-  lobby,
-}: PregameModalProps) {
+export default function PregameModal() {
   const [open, setOpen] = useState(true);
-  const [isLobbyFound, setIsLobbyFound] = useState<boolean>(false);
+  const [isLobbyFound, setIsLobbyFound] = useState<boolean>(true);
   const [playerName, setPlayerName] = useState("Tic Tac Toe Master");
   const [lobbyIdItem, setLobbyIdItem] = useState(0);
   const [sessionCookies, setSessionCookie, removeSessionCookies] = useCookies();
@@ -39,26 +37,30 @@ export default function PregameModal({
   const handleSubmit = (size: number | number[], color: RgbaColor) => {
     //   setSettings(size, color);
     handleClose();
-    sendBoardSettings(size, color);
+   
   };
-  const handleStartButtonSelect = (name: string) => {
+  const handleCreateGameSelect = (name: string) => {
     setSessionCookie("command", "create", { path: "/" });
     setSessionCookie("name", name, { path: "/" });
   };
-  const handleJoinButtonSelect = (name: string) => {
+  const handleJoinSelect = (name: string) => {
     setSessionCookie("command", "join", { path: "/" });
     setSessionCookie("name", name, { path: "/" });
   };
-  const handleJoinSubmit = (lobbyId: number) => {
+  const handleFindSubmit = (lobbyId: number) => {
     setSessionCookie("command", "guest", { path: "/" });
-    setLobbyIdItem(lobbyId);
+    setLobbyIdItem(lobbyId)
+    
   };
-  const handleJoinBack = () => {
+  const handleJoinBackSelect = () => {
     removeSessionCookies("command");
   };
-  const handleLeave = () => {
+  const handleLeaveSelect = () => {
     setSessionCookie("command", "leave", { path: "/" });
   };
+  const handleStartGameSelect = () => {
+    setSessionCookie("command", "start", { path: "/" });
+  }
   useEffect(() => {
     if (
       sessionCookies?.command === "create" &&
@@ -108,6 +110,20 @@ export default function PregameModal({
       removeSessionCookies("lobby");
       removeSessionCookies("piece");
     }
+    if (sessionCookies?.command === "start") {
+      const initiateGame = async () => {
+        console.log(sessionCookies?.lobby?.lobbyId, "leavingLobbyId");
+        const reqBody = {
+          lobbyId: sessionCookies?.lobby?.lobbyId,
+          board: sessionCookies?.board,
+          piece: sessionCookies?.piece
+        };
+        const lobbyInfo = await startGame(reqBody);
+        setSessionCookie("lobby", lobbyInfo, { path: "/" });
+        setSessionCookie("command", "begin", { path: "/" });
+      }
+    initiateGame();
+    }
   }, [sessionCookies?.command]);
   return (
     <>
@@ -133,52 +149,34 @@ export default function PregameModal({
         >
           {sessionCookies?.command === undefined && (
             <Welcome
-              joinGame={(name) => handleJoinButtonSelect(name)}
-              createGame={(name) => handleStartButtonSelect(name)}
+              joinGame={(name) => handleJoinSelect(name)}
+              createGame={(name) => handleCreateGameSelect(name)}
             />
           )}
           {sessionCookies?.command === "join" && (
             <Join
-              handleJoinBack={() => handleJoinBack()}
-              handleJoinSubmit={(lobbyId) => handleJoinSubmit(lobbyId)}
+              handleJoinBack={() => handleJoinBackSelect()}
+              handleJoinSubmit={(lobbyId) => handleFindSubmit(lobbyId)}
               isLobbyFound={isLobbyFound}
             />
           )}
           {sessionCookies?.command === "guest" && isLobbyFound && (
             <GuestLobby
-              handleLeave={() => handleLeave()}
-              players={sessionCookies?.lobby?.players}
+              handleLeave={() => handleLeaveSelect()}
+           
             />
           )}
-          {/* // ) : (
-          //   sessionCookies?.command === "guest" &&
-          //   isLobbyFound !== true && (
-          //     <Grid
-          //       container
-          //       direction="row"
-          //       sx={{
-          //         justifyContent: "center",
-          //         textAlign: "center",
-          //         margin: "auto",
-          //       }}
-          //     >
-          //       <Grid item>
-          //         <CircularProgress />
-          //       </Grid>
-          //     </Grid>
-          //   )
-          // )} */}
+         
           {sessionCookies?.command === "create" && (
-            <Lobby
-              handleLeave={() => handleLeave()}
-              players={sessionCookies?.lobby?.players}
-              setSettings={(color, size) => handleSubmit(color, size)}
+            <HostLobby
+              handleLeave={() => handleLeaveSelect()}
+              
             />
           )}
           {sessionCookies?.command === "leave" && (
             <Welcome
-              joinGame={(name) => handleJoinButtonSelect(name)}
-              createGame={(name) => handleStartButtonSelect(name)}
+              joinGame={(name) => handleJoinSelect(name)}
+              createGame={(name) => handleCreateGameSelect(name)}
             />
           )}
         </Grid>

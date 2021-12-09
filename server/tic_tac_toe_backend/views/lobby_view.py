@@ -17,15 +17,15 @@ class Lobby(APIView):
         """takes name of requester. creates lobby"""
         body = request.data
         player_name = body.get("playerName")
-        player = Player(name=player_name, is_host=True).to_dict()
+        player = Player(name=player_name, is_host=True, player_number=1).to_dict()
         lobby_id = randrange(999)
         lobby = LobbyModel(lobby_id=lobby_id)
 
         lobby.players.append(player)
         lobby_dict = lobby.to_dict()
         lobbys.update(lobby_dict)
-        lobby_response = LobbyResponseModel(lobby=lobby_dict[lobby_id]).to_dict()
-        lobby_response["lobbyId"] = lobby_id
+        lobby_response = LobbyResponseModel(lobby=lobby_dict[lobby_id], lobby_id=lobby_id).to_dict()
+       
         print(lobby)
         return JsonResponse({"lobby": lobby_response})
 
@@ -41,9 +41,9 @@ class Lobby(APIView):
             lobby = lobbys[lobby_id]
         except:
             return HttpResponse("Lobby does not exist", status=404)
-        player = Player(name=player_name, player_number=len(lobby["players"])).to_dict()
+        player = Player(name=player_name, player_number=len(lobby["players"])+1).to_dict()
         lobby["players"].append(player)
-        lobby_response = LobbyResponseModel(lobby=lobby).to_dict()
+        lobby_response = LobbyResponseModel(lobby=lobby, lobby_id=lobby_id).to_dict()
         lobby_response["lobbyId"] = lobby_id
         return JsonResponse({"lobby": lobby_response})
 
@@ -63,6 +63,6 @@ class Lobby(APIView):
                 else:
                     lobby_players_copy.remove(player)
                     lobbys[lobby_id]["players"] = lobby_players_copy
-                    lobby_response = LobbyResponseModel(lobby=lobbys[lobby_id]).to_dict()
-                    lobby_response["lobbyId"] = lobby_id
+                    lobby_response = LobbyResponseModel(lobby=lobbys[lobby_id], lobby_id=lobby_id).to_dict()
+                
                     return JsonResponse({"lobby": lobby_response})

@@ -8,10 +8,10 @@ import ListItemText from "@mui/material/ListItemText";
 import StarIcon from "@mui/icons-material/Star";
 import { Player } from "../../../Models/Player";
 import pieces from "../../../storage/pieces";
-interface PlayerListProps {
-  players: Player[];
-}
-export default function PlayerList({ players }: PlayerListProps) {
+import {useCookies} from "react-cookie"
+
+export default function PlayerList() {
+  const [sessionCookies, setSessionCookies] = useCookies()
   return (
     <>
       <Grid
@@ -26,16 +26,15 @@ export default function PlayerList({ players }: PlayerListProps) {
         </Grid>
         <Grid item>
           <List sx={{ bgcolor: "background.paper" }} aria-label="players">
-            {players?.map((player) => (
+            {sessionCookies?.lobby?.players?.map((player:Player) => (
               <ListItem>
                 {player.isReady && <ListItemText primary={"READY"} />}
                 {player.isHost && <ListItemText primary={"HOST"} />}
                 {pieces.map((piece) => {
-                  if (piece.name === player.piece) {
+                  if (piece.name === player.piece)
                     return <ListItemText primary={piece.value} />;
-                  }
                 })}
-               
+
                 <ListItemText
                   sx={{ textAlign: "center" }}
                   primary={player.name}

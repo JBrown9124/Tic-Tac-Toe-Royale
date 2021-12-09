@@ -20,8 +20,14 @@ interface LobbyProps {
   lobbyId: number;
   players: Player[];
 }
+interface NewMove{
+  playerNumber: number;
+  rowIdx: number;
+  tileIdx: number;
+}
 function App() {
   const [sessionCookies, setSessionCookie, removeSessionCookie] = useCookies();
+  const [newMove, setNewMove] = useState<NewMove>({playerNumber: 0, rowIdx: 0, tileIdx: 0});
   socket.on("connect", () => {
     console.log("connected to server");
     socket.on("player-join-lobby", (receivedLobby) => {
@@ -36,36 +42,32 @@ function App() {
     socket.on("player-ready", (receivedLobby) => {
       setSessionCookie("lobby", receivedLobby, { path: "/" });
     });
-    socket.on("new-move", (data) => {});
+    socket.on("start-game", (receivedLobby) => {
+      setSessionCookie("lobby", receivedLobby, { path: "/" });
+      setSessionCookie("command", "begin", { path: "/" });
+    });
+    socket.on("new-move", (newMove) => {
+      // if (receivedLobby.lobbyId === sessionCookies.session?.lobby?.lobbyId) {
+        
+        let newMoveRowIdx = newMove.newMove.rowIdx;
+        let newMoveTileIdx = newMove.newMove.tileIdx;
+        let newMovePlayerNumber = newMove.newMove.playerNumber;
+      
+        // sessionCookies.board[newMoveRowIdx][newMoveTileIdx] = newMovePlayerNumber;
+        setNewMove(newMove.newMove)
+        
+      
+        // board[newMove.newMove.rowIdx][newMove.newMove.tileIdx]=newMove.newMove.playerNumber;
+        // setBoard([...board]);
+        
+      // }
+    });
+    
   });
+  
   // removeSessionCookie("command");
   // removeSessionCookie("lobby");
-  const [pieceChoice, setPieceChoice] = useState<JSX.Element>(
-    <ClearIcon sx={{ height: "40px", width: "40px" }} />
-  );
-
-  // const [boardColor, setBoardColor] = useState({ r: 50, g: 100, b: 150, a: 1 });
-  // const [boardSize, setBoardSize] = useState<number | number[]>(3);
-  // const [boardSettings, setBoardSettings] = useState<BoardSettingsProps>({
-  //   boardColor: { r: 50, g: 100, b: 150, a: 1 },
-  //   boardSize: 3,
-  // });
-  // const [lobby, setLobby] = useState<LobbyProps>({
-  //   lobbyId: 0,
-  //   players: [{ name: "", piece: "" }],
-  // });
-
-  // Store(boardSettings, lobby);
-  const handleSetSettings = (
-    sizeValue: number | number[],
-    colorValue: RgbaColor
-  ) => {
-    setSessionCookie(
-      "board",
-      { boardSettings: { boardColor: colorValue, boardSize: sizeValue } },
-      { path: "/" }
-    );
-  };
+  // removeSessionCookie("board");
 
   return (
     <>
@@ -79,17 +81,13 @@ function App() {
         }}
       >
         <Grid container direction="column" justifyContent="center">
-          <Grid item>
-            <Board
-              boardColor={sessionCookies?.board?.boardSettings?.boardColor}
-              boardSize={sessionCookies?.board?.boardSettings?.boardSize}
-              pieceChoice={pieceChoice}
-            />
-          </Grid>
-          <PregameModal
-            lobby={sessionCookies.lobby}
-            sendBoardSettings={(size, color) => handleSetSettings(size, color)}
-          />
+          {sessionCookies.command === "begin" ? (
+            <Grid item>
+              <Board newMove={newMove}/>
+            </Grid>
+          ) : (
+            <PregameModal />
+          )}
         </Grid>
       </Grid>
     </>

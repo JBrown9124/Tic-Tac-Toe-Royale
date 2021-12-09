@@ -2,12 +2,9 @@ from typing import *
 
 
 class LobbyResponseModel(object):
-    def __init__(self, lobby):
+    def __init__(self, lobby, lobby_id):
         self.lobby = lobby
+        self.lobby_id = lobby_id
 
     def to_dict(self):
-        return {
-           
-            "board": self.lobby["board"],
-            "players":self.lobby["players"]
-        }
+        return {"board": self.lobby["board"], "players": self.lobby["players"], "lobbyId": self.lobby_id}

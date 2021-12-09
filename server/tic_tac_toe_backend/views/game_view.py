@@ -10,11 +10,29 @@ from django.utils import timezone
 from ..Models.lobby import LobbyModel
 from ..ResponseModels.response_lobby import LobbyResponseModel
 from ..Models.player import Player
-
+from ..Models.board import BoardModel
 # Create your views here.
 class Game(APIView):
     def post(self, request: Request):
-        """takes board settings. returns lobby with updated board settings."""
+        """takes board settings and lobbyId. updates lobby with new board settings. returns lobby with updated board settings."""
+        body = request.data 
+        lobby_id = body.get("lobbyId")
+        board = body.get("board")
+        host_piece = body.get("piece")
+        board_model = BoardModel(size=board["size"], color=board["color"]).to_dict()
+        lobby_copy = lobbys[lobby_id]
+        lobby_copy["board"] = board_model
+        lobby_players_copy = lobby_copy["players"]
+      
+        for player in lobby_players_copy:
+            if player["isHost"]:
+                player["piece"] = host_piece
+                player['isReady']=True
+                lobbys[lobby_id]["players"] = lobby_players_copy
+                lobbys[lobby_id]= lobby_copy
+                lobby_response = LobbyResponseModel(lobby=lobby_copy, lobby_id=lobby_id).to_dict()
+                return JsonResponse({"lobby":lobby_response})
+        
     def put(self, request: Request):
         """takes guests player settings when they hit ready button and lobbyId, changes ready status to true"""
         body = request.data
@@ -29,7 +47,8 @@ class Game(APIView):
                 player["piece"] = player_piece
                 player['isReady']=True
                 lobbys[lobby_id]["players"] = lobby_players_copy
-                lobby_response = LobbyResponseModel(lobby=lobbys[lobby_id]).to_dict()
+                lobby_response = LobbyResponseModel(lobby=lobbys[lobby_id], lobby_id=lobby_id).to_dict()
+               
                 return JsonResponse({"lobby":lobby_response})
                 
             

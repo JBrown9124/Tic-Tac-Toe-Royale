@@ -1,14 +1,10 @@
 import socket from "../socket";
-
-const sendMove = () =>{
-  socket.emit("new-move", )
-}
-const sendGameStatus = () =>{
-  socket.emit("game-status", )
-}
-
-const determineWinner = (rowIdx: number, tileIdx: number, cacheBoard:number[][], boardSize:number) => {
-    cacheBoard[rowIdx][tileIdx] = 1;
+import newMove from "./newMove"
+const determineWinner = (rowIdx: number, tileIdx: number, cacheBoard:number[][], boardSize:number, playerNumber:number, setSessionCookies:Function, sessionCookies:any) => {
+  let boardMove = {playerNumber:playerNumber, rowIdx:rowIdx, tileIdx:tileIdx}  
+  cacheBoard[rowIdx][tileIdx] = playerNumber;
+  const reqBody={lobbyId:sessionCookies?.lobby?.lobbyId, newMove:boardMove}  
+  newMove(reqBody);
     const checkVertical = () => {
       if (rowIdx + 1 <= boardSize - 1 && rowIdx - 1 >= 0) {
         if (
@@ -99,5 +95,9 @@ const determineWinner = (rowIdx: number, tileIdx: number, cacheBoard:number[][],
     checkHorizontal();
     checkDiagonal();
     checkVertical();
+    // if (sessionCookies?.boardMoves !==undefined){
+    //   setSessionCookies("boardMoves",[...sessionCookies.boardMoves, boardMove], {path:"/"})}
+    // else{ setSessionCookies("boardMoves",[], {path:"/"})}
+    
   };
 export default determineWinner

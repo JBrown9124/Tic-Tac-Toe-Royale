@@ -8,10 +8,10 @@ import { useCookies } from "react-cookie";
 import playerReady from "../../../creators/playerReady";
 
 interface GuestLobbyProps {
-  players: Player[];
+ 
   handleLeave: () => void;
 }
-export default function GuestLobby({ players, handleLeave }: GuestLobbyProps) {
+export default function GuestLobby({ handleLeave }: GuestLobbyProps) {
   const [sessionCookies, setSessionCookies] = useCookies();
   const handleReady = async () => {
     const reqBody = {
@@ -27,7 +27,7 @@ export default function GuestLobby({ players, handleLeave }: GuestLobbyProps) {
           <Typography>Wait for host to start game...</Typography>
         </Grid>
         <Grid item>
-          <PlayerList players={players} />
+          <PlayerList />
         </Grid>
         <Grid item>
           <PieceSelector />

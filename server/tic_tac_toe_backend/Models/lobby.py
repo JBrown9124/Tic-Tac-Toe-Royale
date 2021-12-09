@@ -12,6 +12,7 @@ class LobbyModel(object):
             self.lobby_id: {
                 "board": self.board,
                 "players": self.players,
+                
             }
         }
 

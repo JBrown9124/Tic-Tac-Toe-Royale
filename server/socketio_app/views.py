@@ -35,12 +35,18 @@ def player_ready(sid, lobby):
         lobby['data']['lobby'],
         skip_sid=sid,
     )
-
-
-@sio.on("game-status")
-def game_status(sid, status):
+@sio.on("start-game")
+def player_ready(sid, lobby):
     sio.emit(
-        "game-status",
-        {"status": status["status"]},
+        "start-game",
+        lobby['lobby'],
+        skip_sid=sid,
+    )
+
+@sio.on("new-move")
+def game_status(sid, newMove):
+    sio.emit(
+        "new-move",
+        {"newMove": newMove["newMove"]},
         skip_sid=sid,
     )

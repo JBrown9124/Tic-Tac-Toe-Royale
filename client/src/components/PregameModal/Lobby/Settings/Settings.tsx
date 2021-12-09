@@ -17,10 +17,10 @@ export default function Settings({ setSize, setColor, color, }: SettingsProps) {
   return (
     <Grid container  spacing={3} direction="column">
       <Grid item>
-        <SizeSlider changeSize={(props) => setSize(props)} />
+        <SizeSlider  />
       </Grid>
       <Grid item>
-        <ColorSelector setColor={(props) => setColor(props)} color={color} />
+        <ColorSelector  />
       </Grid>
       <Grid item>
       <PieceSelector />
