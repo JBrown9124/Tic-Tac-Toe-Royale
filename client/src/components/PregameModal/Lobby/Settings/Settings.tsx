@@ -6,6 +6,7 @@ import ColorSelector from "./ColorSelector";
 import SizeSlider from "./SizeSlider";
 import React, { useState, useEffect } from "react";
 import PieceSelector from "./PieceSelector";
+import WinBy from "./WinBy"
 interface SettingsProps {
   setSize: (size: number | number[]) => void;
   setColor: (color: RgbaColor) => void;
@@ -15,9 +16,12 @@ interface SettingsProps {
 }
 export default function Settings({ setSize, setColor, color, }: SettingsProps) {
   return (
-    <Grid container  spacing={3} direction="column">
+    <Grid container  spacing={2} direction="column">
       <Grid item>
         <SizeSlider  />
+      </Grid>
+      <Grid item>
+        <WinBy  />
       </Grid>
       <Grid item>
         <ColorSelector  />

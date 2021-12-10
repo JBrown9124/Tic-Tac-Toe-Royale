@@ -7,7 +7,6 @@ import Slider from "@mui/material/Slider";
 import MuiInput from "@mui/material/Input";
 import { useCookies } from "react-cookie";
 
-
 const Input = styled(MuiInput)`
   width: 42px;
 `;
@@ -18,7 +17,6 @@ export default function SizeSlider() {
 
   const handleSizeChange = (event: Event, value: number | number[]) => {
     setSize(value);
-    
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,7 +31,11 @@ export default function SizeSlider() {
     }
   };
   useEffect(() => {
-    setSessionCookies("board", {...sessionCookies?.board, size:size},{path:"/"})
+    setSessionCookies(
+      "board",
+      { ...sessionCookies?.board, size: size },
+      { path: "/" }
+    );
   }, [size]);
   return (
     // <Box sx={{ width: 250 }}>
@@ -45,7 +47,7 @@ export default function SizeSlider() {
         <Typography>Select Board Size</Typography>
       </Grid>
       <Grid container item spacing={2}>
-        <Grid item xs={10}>
+        <Grid item xs={12}md={10}>
           <Slider
             max={20}
             step={1}
@@ -55,7 +57,7 @@ export default function SizeSlider() {
             aria-labelledby="input-slider"
           />
         </Grid>
-        <Grid item xs={2}>
+        <Grid item  xs={12} md={2}>
           <Input
             value={size}
             size="small"

@@ -119,7 +119,8 @@ export default function PregameModal() {
           piece: sessionCookies?.piece
         };
         const lobbyInfo = await startGame(reqBody);
-        setSessionCookie("lobby", lobbyInfo, { path: "/" });
+        setSessionCookie("lobby", lobbyInfo?.lobby, { path: "/" });
+        setSessionCookie("gameStatus", lobbyInfo?.gameStatus, { path: "/" });
         setSessionCookie("command", "begin", { path: "/" });
       }
     initiateGame();
@@ -131,6 +132,7 @@ export default function PregameModal() {
         open={open}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        sx={{overflow:"auto"}}
       >
         <Grid
           sx={{

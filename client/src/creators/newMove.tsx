@@ -1,9 +1,10 @@
 import socket from "../socket";
 import axios from "axios";
 interface BodyProps {
-  newMove:{rowIdx:number, tileIdx:number, playerNumber:number},
-  lobbyId:number
-  
+ 
+  newMove:{rowIdx:number, tileIdx:number, won:boolean, playerNumber:number},
+  lobbyId:number,
+
 }
 const saveNewMove = async (body: BodyProps) => {
   console.log(body, "newMoveBody");

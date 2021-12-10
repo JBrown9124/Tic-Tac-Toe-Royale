@@ -27,25 +27,21 @@ export default function HostLobby({
 
   return (
     <>
-      <Grid container sx={{ textAlign: "center" }} justifyContent="center">
-        <Grid item>
-          <Typography variant="h2">Lobby</Typography>
-        </Grid>
-      </Grid>
+      
       <Grid
         container
-        justifyContent="center"
-        sx={{ textAlign: "center" }}
+     
+        sx={{ textAlign: "center", }}
         spacing={6}
       >
-        <Grid item xs={12} lg={6}>
+        <Grid item xs={12} sm={6}>
           <Settings
             color={color}
             setSize={(props) => setSize(props)}
             setColor={(props) => setColor(props)}
           />
         </Grid>
-        <Grid item xs={12} lg={6}>
+        <Grid item xs={12} sm={6}>
           <PlayerList  />
         </Grid>
       </Grid>

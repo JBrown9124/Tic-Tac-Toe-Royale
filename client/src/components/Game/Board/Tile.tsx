@@ -1,13 +1,13 @@
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import TileHover from "../../animators/SpaceHover";
+import TileHover from "../../../animators/SpaceHover";
 import { useState, useEffect } from "react";
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import { RgbaColor } from "react-colorful";
 import { useCookies } from "react-cookie";
-import pieces from "../../storage/pieces";
-import {PlayerPieces} from "../../Models/PlayerPieces"
+import pieces from "../../../storage/pieces";
+import {PlayerPieces} from "../../../Models/PlayerPieces"
 interface TileProps {
   chosenPiece: JSX.Element | undefined;
   boardColor: RgbaColor;
@@ -16,6 +16,7 @@ interface TileProps {
   playerPieces: PlayerPieces[]|undefined
   playerNumber:number
   updateBoardCache: () => void;
+  
 }
 export const Tile = ({
   boardColor,
@@ -24,6 +25,7 @@ export const Tile = ({
   updateBoardCache,
   newMove,
   playerPieces,
+
   playerNumber
 }: TileProps) => {
   const [tile, setTile] = useState<{
@@ -33,9 +35,10 @@ export const Tile = ({
   
  
   const handleClick = () => {
+    if (value ===0 ){
     setTile({ value:  chosenPiece});
     console.log(chosenPiece,"chosenPiece")
-    updateBoardCache();
+    updateBoardCache();}
 
   
   };
@@ -46,7 +49,7 @@ export const Tile = ({
       <TileHover beforeColor={boardColor}>
         <Grid
           //  onClick={() => selectTile(rowIdx, tileIdx)}
-          onClick={handleClick}
+          onClick={()=>sessionCookies.gameStatus.whoTurn===playerNumber && sessionCookies.gameStatus.whoWon === null ?handleClick():""}
           item
           container
           direction="column"

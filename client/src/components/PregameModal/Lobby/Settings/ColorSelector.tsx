@@ -19,11 +19,11 @@ export default function ColorSelecter() {
   }, [color]);
   return (
     <>
-      <Grid container direction="column" spacing={2}>
+      <Grid container direction="column" justifyContent="center" spacing={2} textAlign="center">
         <Grid item>
           <Typography>Select Board Color</Typography>
         </Grid>
-        <Grid item>
+        <Grid item sx={{justifyContent: "center", textAlign:"center", margin:"auto"}}>
           <RgbaColorPicker color={color} onChange={setColor} />
         </Grid>
       </Grid>

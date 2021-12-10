@@ -1,18 +1,18 @@
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import TileHover from "../../animators/SpaceHover";
+import TileHover from "../../../animators/SpaceHover";
 import { Tile } from "./Tile";
 import { useState, useEffect, useMemo } from "react";
-import determineWinner from "../../creators/determineWinner";
-import createBoard from "../../creators/createBoard";
+import determineWinner from "../../../creators/determineWinner";
+import createBoard from "../../../creators/createBoard";
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import { useCookies } from "react-cookie";
 import { RgbaColor } from "react-colorful";
-import { Player } from "../../Models/Player";
-import pieces from "../../storage/pieces";
-import socket from "../../socket";
-import { PlayerPieces } from "../../Models/PlayerPieces";
+import { Player } from "../../../Models/Player";
+import pieces from "../../../storage/pieces";
+import socket from "../../../socket";
+import { PlayerPieces } from "../../../Models/PlayerPieces";
 interface NewMove {
   playerNumber: number;
   rowIdx: number;
@@ -20,15 +20,16 @@ interface NewMove {
 }
 interface BoardProps {
   newMove: NewMove;
+  playerNumber: number;
 }
 
-export default function Board({ newMove }: BoardProps) {
+export default function Board({ newMove, playerNumber }: BoardProps) {
   const [board, setBoard] = useState<number[][]>([[]]);
   const [cacheBoard, setCacheBoard] = useState<number[][]>([[]]);
   const [sessionCookies, setSessionCookies, removeSessionCookies] =
     useCookies();
   const [piece, setPiece] = useState<JSX.Element>();
-  const [playerNumber, setPlayerNumber] = useState<number>(0);
+
   const [playerPieces, setPlayerPieces] = useState<PlayerPieces[]>();
 
   // socket.on("connect", () => {
@@ -51,7 +52,6 @@ export default function Board({ newMove }: BoardProps) {
 
   // });
   // removeSessionCookies("boardMoves")
- 
 
   useEffect(() => {
     if (sessionCookies.command === "begin") {
@@ -64,14 +64,10 @@ export default function Board({ newMove }: BoardProps) {
       );
     }
 
-    sessionCookies?.lobby?.players.map((player: Player) => {
-      if (player.name === sessionCookies?.name) {
-        return setPlayerNumber(player.playerNumber);
-      }
-    });
+    
     const getPlayerPieces = () => {
       let piecesValues: PlayerPieces[] = [];
-      sessionCookies?.lobby?.players.forEach((player: any) => {
+      sessionCookies?.lobby?.players.forEach((player: Player) => {
         pieces.forEach((piece) => {
           if (piece.name === player.piece) {
             piecesValues.push({
@@ -94,7 +90,7 @@ export default function Board({ newMove }: BoardProps) {
   useEffect(() => {
     if (newMove.playerNumber !== 0) {
       let boardCopy = board;
-      board[newMove.rowIdx][newMove.tileIdx] = newMove.playerNumber;
+      boardCopy[newMove.rowIdx][newMove.tileIdx] = newMove.playerNumber;
       setBoard([...boardCopy]);
       console.log(boardCopy, "boardcoppy");
     }
@@ -108,17 +104,19 @@ export default function Board({ newMove }: BoardProps) {
             <Tile
               playerNumber={playerNumber}
               playerPieces={playerPieces}
-              key={tileIdx}
-              updateBoardCache={() =>  determineWinner(
-                rowIdx,
-                tileIdx,
-                cacheBoard,
-          
-                sessionCookies?.lobby?.board?.size,
-                playerNumber,
-                setSessionCookies,
-                sessionCookies
-              )}
+              key={rowIdx + tileIdx}
+              updateBoardCache={() => sessionCookies.gameStatus.whoTurn === playerNumber?
+                determineWinner(
+                  rowIdx,
+                  tileIdx,
+                  cacheBoard,
+
+                  sessionCookies?.lobby?.board?.size,
+                  playerNumber,
+                  setSessionCookies,
+                  sessionCookies
+                ):""
+              }
               value={tile}
               newMove={newMove}
               chosenPiece={piece}
