@@ -14,7 +14,7 @@ function Game({ newMove }: GameProps) {
 
   useEffect(() => {
     if (sessionCookies?.command === "begin") {
-      sessionCookies?.lobby?.players.map((player: Player) => {
+      sessionCookies?.lobby?.players?.map((player: Player) => {
         if (player.name === sessionCookies?.name) {
           return setPlayerNumber(player.playerNumber);
         }
@@ -27,7 +27,7 @@ function Game({ newMove }: GameProps) {
         <Grid item>
           <Typography variant="h2" sx={{ textAlign: "center" }}>
            
-            {sessionCookies.lobby.players.map((player: Player) => {
+            {sessionCookies?.lobby?.players?.map((player: Player) => {
               if (sessionCookies.gameStatus.whoWon) {
                 if (player.playerNumber === sessionCookies.gameStatus.whoWon) {
                   return `${player.name} Wins!`;

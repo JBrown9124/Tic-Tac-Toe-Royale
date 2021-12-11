@@ -30,6 +30,7 @@ export default function SizeSlider() {
       setSize(20);
     }
   };
+ 
   useEffect(() => {
     setSessionCookies(
       "board",

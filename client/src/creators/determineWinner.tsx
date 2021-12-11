@@ -28,40 +28,57 @@ const determineWinner = (
   // };
   const checkHorizontal = () => {
     let start = boardSize - 1 - tileIdx < tileIdx ? boardSize - 1 : 0;
-
+    let range = start === 0 ? boardSize - 1 : 0;
     let concurrentValue = 0;
     if (start === 0) {
-      let range =
-        Math.abs(sessionCookies?.lobby?.board?.winBy - tileIdx) +
-        sessionCookies?.lobby?.board?.winBy / 2;
       for (let i = start; i <= range; i++) {
-        console.log(board[rowIdx][i], "horziontalStart0");
-        if (playerNumber !== board[rowIdx][i]) {
-          concurrentValue = 0;
-          continue;
+        console.log(board[rowIdx][i], "horziontal");
+        let isEverythingAfterMove = false;
+        let everythingAfterMove = 0;
+        if (isEverythingAfterMove) {
+          everythingAfterMove += 1;
         }
+        if (everythingAfterMove <= sessionCookies?.lobby?.board?.winBy) {
+          if (board[rowIdx][i] === board[rowIdx][tileIdx]) {
+            isEverythingAfterMove = true;
+            everythingAfterMove += 1;
+          }
 
-        concurrentValue += 1;
-        if (concurrentValue === sessionCookies?.lobby?.board?.winBy) {
-          return true;
+          if (playerNumber !== board[rowIdx][i]) {
+            concurrentValue = 0;
+            continue;
+          }
+
+          concurrentValue += 1;
+          if (concurrentValue === sessionCookies?.lobby?.board?.winBy) {
+            return true;
+          }
         }
       }
       return false;
     } else {
-      let range = Math.abs(
-        Math.abs(sessionCookies?.lobby?.board?.winBy - rowIdx) -
-          sessionCookies?.lobby?.board?.winBy / 2
-      );
       for (let i = start; i >= range; i--) {
-        console.log(board[rowIdx][i], "horziontalStartNot0");
-        if (playerNumber !== board[rowIdx][i]) {
-          concurrentValue = 0;
-          continue;
+        console.log(board[rowIdx][i], "horziontal");
+        let isEverythingAfterMove = false;
+        let everythingAfterMove = 0;
+        if (isEverythingAfterMove) {
+          everythingAfterMove += 1;
         }
+        if (everythingAfterMove <= sessionCookies?.lobby?.board?.winBy) {
+          if (board[rowIdx][i] === board[rowIdx][tileIdx]) {
+            isEverythingAfterMove = true;
+            everythingAfterMove += 1;
+          }
 
-        concurrentValue += 1;
-        if (concurrentValue === sessionCookies?.lobby?.board?.winBy) {
-          return true;
+          if (playerNumber !== board[rowIdx][i]) {
+            concurrentValue = 0;
+            continue;
+          }
+
+          concurrentValue += 1;
+          if (concurrentValue === sessionCookies?.lobby?.board?.winBy) {
+            return true;
+          }
         }
       }
       return false;
@@ -69,47 +86,175 @@ const determineWinner = (
   };
   const checkVertical = () => {
     let start = boardSize - 1 - rowIdx < rowIdx ? boardSize - 1 : 0;
-
+    let range = start === 0 ? boardSize - 1 : 0;
     let concurrentValue = 0;
     if (start === 0) {
-      let range =
-        Math.abs(sessionCookies?.lobby?.board?.winBy - rowIdx) +
-        sessionCookies?.lobby?.board?.winBy / 2;
       for (let i = start; i <= range; i++) {
-        console.log(board[i][tileIdx], "checkVertical");
-        if (playerNumber !== board[i][tileIdx]) {
-          concurrentValue = 0;
-          continue;
+        console.log(board[i][tileIdx], "vertical");
+        let isEverythingAfterMove = false;
+        let everythingAfterMove = 0;
+        if (isEverythingAfterMove) {
+          everythingAfterMove += 1;
         }
+        if (everythingAfterMove <= sessionCookies?.lobby?.board?.winBy) {
+          if (board[i][tileIdx] === board[rowIdx][tileIdx]) {
+            isEverythingAfterMove = true;
+            everythingAfterMove += 1;
+          }
 
-        concurrentValue += 1;
-        if (concurrentValue === sessionCookies?.lobby?.board?.winBy) {
-          return true;
+          if (playerNumber !== board[i][tileIdx]) {
+            concurrentValue = 0;
+            continue;
+          }
+
+          concurrentValue += 1;
+          if (concurrentValue === sessionCookies?.lobby?.board?.winBy) {
+            return true;
+          }
         }
       }
       return false;
     } else {
-      let range = Math.abs(
-        Math.abs(sessionCookies?.lobby?.board?.winBy - rowIdx) -
-          sessionCookies?.lobby?.board?.winBy / 2
-      );
       for (let i = start; i >= range; i--) {
-        if (playerNumber !== board[i][tileIdx]) {
-          concurrentValue = 0;
-          continue;
+        console.log(board[i][tileIdx], "vertical");
+        let isEverythingAfterMove = false;
+        let everythingAfterMove = 0;
+        if (isEverythingAfterMove) {
+          everythingAfterMove += 1;
         }
+        if (everythingAfterMove <= sessionCookies?.lobby?.board?.winBy) {
+          if (board[i][tileIdx] === board[rowIdx][tileIdx]) {
+            isEverythingAfterMove = true;
+            everythingAfterMove += 1;
+          }
 
-        concurrentValue += 1;
-        if (concurrentValue === sessionCookies?.lobby?.board?.winBy) {
-          return true;
+          if (playerNumber !== board[i][tileIdx]) {
+            concurrentValue = 0;
+            continue;
+          }
+
+          concurrentValue += 1;
+          if (concurrentValue === sessionCookies?.lobby?.board?.winBy) {
+            return true;
+          }
         }
       }
       return false;
     }
   };
   const checkDiagonal = () => {
-   return false
+    let left = [rowIdx, tileIdx];
+    let right = [rowIdx, tileIdx];
+    let leftWinBy = 0;
+    let rightWinBy = 0;
+    while (
+      (left[0] > 0 &&
+        left[1] > 0 &&
+        left[0] < boardSize - 1 &&
+        left[1] < boardSize - 1 &&
+        leftWinBy <= sessionCookies?.lobby?.board?.winBy) ||
+      (right[0] > 0 &&
+        right[1] > 0 &&
+        right[0] < boardSize - 1 &&
+        right[1] < boardSize - 1 &&
+        rightWinBy <= sessionCookies?.lobby?.board?.winBy)
+    ) {
+      if (
+        left[0] > 0 &&
+        left[1] > 0 &&
+        left[0] < boardSize - 1 &&
+        left[1] < boardSize - 1 &&
+        leftWinBy <= sessionCookies?.lobby?.board?.winBy
+      ) {
+        left[0] += 1;
+        left[1] -= 1;
+        leftWinBy += 1;
+      }
+      if (
+        right[0] > 0 &&
+        right[1] > 0 &&
+        right[0] < boardSize - 1 &&
+        right[1] < boardSize - 1 &&
+        rightWinBy <= sessionCookies?.lobby?.board?.winBy
+      ) {
+        right[0] -= 1;
+        right[1] += 1;
+        rightWinBy += 1;
+      }
+      let j = right[1];
+      let concurrentValue = 0;
+      for (let i = right[0]; i <= left[0]; i++) {
+        console.log(board[i][j], "diagonol");
+        if (playerNumber !== board[i][j]) {
+          concurrentValue = 0;
+          j -= 1;
+          continue;
+        }
+        j -= 1;
+        concurrentValue += 1;
+        if (concurrentValue === sessionCookies?.lobby?.board?.winBy) {
+          return true;
+        }
+      }
+    }
+
+    left = [rowIdx, tileIdx];
+    right = [rowIdx, tileIdx];
+    leftWinBy = 0;
+    rightWinBy = 0;
+
+    while (
+      (left[0] > 0 &&
+        left[1] > 0 &&
+        left[0] < boardSize - 1 &&
+        left[1] < boardSize - 1 &&
+        leftWinBy <= sessionCookies?.lobby?.board?.winBy) ||
+      (right[0] > 0 &&
+        right[1] > 0 &&
+        right[0] < boardSize - 1 &&
+        right[1] < boardSize - 1 &&
+        rightWinBy <= sessionCookies?.lobby?.board?.winBy)
+    ) {
+      if (
+        left[0] > 0 &&
+        left[1] > 0 &&
+        left[0] < boardSize - 1 &&
+        left[1] < boardSize - 1 &&
+        leftWinBy <= sessionCookies?.lobby?.board?.winBy
+      ) {
+        left[0] -= 1;
+        left[1] -= 1;
+        leftWinBy += 1;
+      }
+      if (
+        right[0] > 0 &&
+        right[1] > 0 &&
+        right[0] < boardSize - 1 &&
+        right[1] < boardSize - 1 &&
+        rightWinBy <= sessionCookies?.lobby?.board?.winBy
+      ) {
+        right[0] += 1;
+        right[1] += 1;
+        rightWinBy += 1;
+      }
+      let j = right[1];
+      let concurrentValue = 0;
+      for (let i = right[0]; i >= left[0]; i--) {
+        console.log(board[i][j], "diagonol");
+        if (playerNumber !== board[i][j]) {
+          concurrentValue = 0;
+          j -= 1;
+          continue;
+        }
+        j -= 1;
+        concurrentValue += 1;
+        if (concurrentValue === sessionCookies?.lobby?.board?.winBy) {
+          return true;
+        }
+      }
+    }
   };
+
   // const checkHorizontal = (
   //   checkWinBy: number
   // ): Function | undefined | void | boolean => {
@@ -201,102 +346,6 @@ const determineWinner = (
   //     checkDiagonal (checkWinBy - 1);
   //   }
   // };
-  // const checkVertical = () => {
-  //   if (winBy % 2=== 0){}
-  //   if (rowIdx + 1 <= boardSize - 1 && rowIdx - 1 >= 0) {
-  //     if (
-  //       cacheBoard[rowIdx][tileIdx] === cacheBoard[rowIdx + 1][tileIdx] &&
-  //       cacheBoard[rowIdx][tileIdx] === cacheBoard[rowIdx - 1][tileIdx]
-  //     ) {
-  //       console.log("VerticalWinner");
-  //       won = true;
-  //     }
-  //   }
-  //   if (rowIdx - 2 >= 0) {
-  //     if (
-  //       cacheBoard[rowIdx][tileIdx] === cacheBoard[rowIdx - 1][tileIdx] &&
-  //       cacheBoard[rowIdx][tileIdx] === cacheBoard[rowIdx - 2][tileIdx]
-  //     ) {
-  //       console.log("VerticalWinner");
-  //       won = true;
-  //     }
-  //   }
-  //   if (rowIdx + 2 <= boardSize - 1) {
-  //     if (
-  //       cacheBoard[rowIdx][tileIdx] === cacheBoard[rowIdx + 1][tileIdx] &&
-  //       cacheBoard[rowIdx][tileIdx] === cacheBoard[rowIdx + 2][tileIdx]
-  //     ) {
-  //       console.log("VerticalWinner");
-  //       won = true;
-  //     }
-  //   }
-  // };
-  // const checkHorizontal = () => {
-  //   if (tileIdx + 1 <= boardSize - 1 && tileIdx - 1 >= 0) {
-  //     if (
-  //       cacheBoard[rowIdx][tileIdx] === cacheBoard[rowIdx][tileIdx + 1] &&
-  //       cacheBoard[rowIdx][tileIdx] === cacheBoard[rowIdx][tileIdx - 1]
-  //     ) {
-  //       console.log("HorizontalWinner");
-  //       won = true;
-  //     }
-  //   }
-  //   if (tileIdx - 2 >= 0) {
-  //     if (
-  //       cacheBoard[rowIdx][tileIdx] === cacheBoard[rowIdx][tileIdx - 1] &&
-  //       cacheBoard[rowIdx][tileIdx] === cacheBoard[rowIdx][tileIdx - 2]
-  //     ) {
-  //       console.log("HorizontalWinner");
-  //       won = true;
-  //     }
-  //   }
-  //   if (tileIdx + 2 <= boardSize - 1) {
-  //     if (
-  //       cacheBoard[rowIdx][tileIdx] === cacheBoard[rowIdx][tileIdx + 1] &&
-  //       cacheBoard[rowIdx][tileIdx] === cacheBoard[rowIdx][tileIdx + 2]
-  //     ) {
-  //       console.log("HorizontalWinner");
-  //       won = true;
-  //     }
-  //   }
-  // };
-  // const checkDiagonal = () => {
-  //   if (
-  //     rowIdx + 1 <= boardSize - 1 &&
-  //     rowIdx - 1 >= 0 &&
-  //     tileIdx + 1 <= boardSize - 1 &&
-  //     tileIdx - 1 >= 0
-  //   ) {
-  //     if (
-  //       (cacheBoard[rowIdx][tileIdx] === cacheBoard[rowIdx + 1][tileIdx + 1] &&
-  //         cacheBoard[rowIdx][tileIdx] ===
-  //           cacheBoard[rowIdx - 1][tileIdx - 1]) ||
-  //       (cacheBoard[rowIdx][tileIdx] === cacheBoard[rowIdx + 1][tileIdx - 1] &&
-  //         cacheBoard[rowIdx][tileIdx] === cacheBoard[rowIdx - 1][tileIdx + 1])
-  //     ) {
-  //       console.log("DiagonalWinner");
-  //       won = true;
-  //     }
-  //   }
-  //   if (rowIdx + 2 <= boardSize - 1 && tileIdx - 2 >= 0) {
-  //     if (
-  //       cacheBoard[rowIdx][tileIdx] === cacheBoard[rowIdx + 1][tileIdx - 1] &&
-  //       cacheBoard[rowIdx][tileIdx] === cacheBoard[rowIdx + 2][tileIdx - 2]
-  //     ) {
-  //       console.log("DiagonalWinner");
-  //       won = true;
-  //     }
-  //   }
-  //   if (rowIdx + 2 <= boardSize - 1 && tileIdx + 2 <= boardSize - 1) {
-  //     if (
-  //       cacheBoard[rowIdx][tileIdx] === cacheBoard[rowIdx + 1][tileIdx + 1] &&
-  //       cacheBoard[rowIdx][tileIdx] === cacheBoard[rowIdx + 2][tileIdx + 2]
-  //     ) {
-  //       console.log("DiagonalWinner");
-  //       won = true;
-  //     }
-  //   }
-  // };
 
   // checkHorizontal();
   // checkDiagonal();
@@ -311,7 +360,7 @@ const determineWinner = (
   let boardMove = {
     rowIdx: rowIdx,
     tileIdx: tileIdx,
-    won: checkHorizontal() || checkVertical()||checkDiagonal(),
+    won: checkHorizontal() || checkVertical() || checkDiagonal(),
     playerNumber: playerNumber,
   };
 

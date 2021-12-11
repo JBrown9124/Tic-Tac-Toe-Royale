@@ -2,7 +2,7 @@ import socket from "../socket";
 import axios from "axios";
 interface BodyProps {
  
-  newMove:{rowIdx:number, tileIdx:number, won:boolean, playerNumber:number},
+  newMove:{rowIdx:number, tileIdx:number, won:boolean|undefined, playerNumber:number},
   lobbyId:number,
 
 }

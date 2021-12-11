@@ -27,6 +27,7 @@ export default function WinBy() {
       );
     }
   }, [winBy, sessionCookies?.board?.size]);
+  
   return (
     <>
       <Grid container direction="column">

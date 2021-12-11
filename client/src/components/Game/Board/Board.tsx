@@ -66,7 +66,7 @@ export default function Board({ newMove, playerNumber }: BoardProps) {
 
     const getPlayerPieces = () => {
       let piecesValues: PlayerPieces[] = [];
-      sessionCookies?.lobby?.players.forEach((player: Player) => {
+      sessionCookies?.lobby?.players?.forEach((player: Player) => {
         pieces.forEach((piece) => {
           if (piece.name === player.piece) {
             piecesValues.push({
@@ -105,7 +105,7 @@ export default function Board({ newMove, playerNumber }: BoardProps) {
               playerPieces={playerPieces}
               key={rowIdx + tileIdx}
               updateBoardCache={() =>
-                sessionCookies.gameStatus.whoTurn === playerNumber
+                sessionCookies?.gameStatus?.whoTurn === playerNumber
                   ? determineWinner(
                       rowIdx,
                       tileIdx,
