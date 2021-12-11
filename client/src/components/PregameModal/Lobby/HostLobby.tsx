@@ -7,33 +7,22 @@ import { RgbaColorPicker, RgbaColor } from "react-colorful";
 import ClearIcon from "@mui/icons-material/Clear";
 import Typography from "@mui/material/Typography";
 import { Player } from "../../../Models/Player";
-import {useCookies} from "react-cookie"
+import { useCookies } from "react-cookie";
 interface PlayerListProps {
- 
-  
   handleLeave: () => void;
 }
-export default function HostLobby({
-  
-  handleLeave,
-}: PlayerListProps) {
+export default function HostLobby({ handleLeave }: PlayerListProps) {
   const [color, setColor] = useState({ r: 50, g: 100, b: 150, a: 1 });
   const [size, setSize] = useState<number | number[]>(3);
-  const [sessionCookies, setSessionCookies] = useCookies()
+  const [sessionCookies, setSessionCookies] = useCookies();
 
   const handleStart = () => {
-    setSessionCookies("command", "start", {path:"/"})
+    setSessionCookies("command", "start", { path: "/" });
   };
 
   return (
     <>
-      
-      <Grid
-        container
-     
-        sx={{ textAlign: "center", }}
-        spacing={6}
-      >
+      <Grid container sx={{ textAlign: "center" }} spacing={6}>
         <Grid item xs={12} sm={6}>
           <Settings
             color={color}
@@ -42,7 +31,7 @@ export default function HostLobby({
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <PlayerList  />
+          <PlayerList />
         </Grid>
       </Grid>
 

@@ -21,7 +21,7 @@ export default function PieceSelector() {
           <Typography>Select your Piece</Typography>
         </Grid>
         <Grid container item direction="row">
-          <Grid  xs={12} lg={6} item>
+          <Grid xs={12} sm={6} item>
             <List
               sx={{
                 height: "50px",
@@ -41,7 +41,7 @@ export default function PieceSelector() {
               ))}
             </List>
           </Grid>
-          <Grid item  xs={12} lg={6}>
+          <Grid item xs={12} sm={6}>
             {pieces.map((piece) => {
               if (piece.name === sessionCookies?.piece) {
                 return piece.value;

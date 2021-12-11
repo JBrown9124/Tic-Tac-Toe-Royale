@@ -51,7 +51,7 @@ export default function Board({ newMove, playerNumber }: BoardProps) {
   //   });
 
   // });
-  // removeSessionCookies("boardMoves")
+  // removeSessionCookies("gameStatus")
 
   useEffect(() => {
     if (sessionCookies.command === "begin") {
@@ -64,7 +64,6 @@ export default function Board({ newMove, playerNumber }: BoardProps) {
       );
     }
 
-    
     const getPlayerPieces = () => {
       let piecesValues: PlayerPieces[] = [];
       sessionCookies?.lobby?.players.forEach((player: Player) => {
@@ -105,17 +104,19 @@ export default function Board({ newMove, playerNumber }: BoardProps) {
               playerNumber={playerNumber}
               playerPieces={playerPieces}
               key={rowIdx + tileIdx}
-              updateBoardCache={() => sessionCookies.gameStatus.whoTurn === playerNumber?
-                determineWinner(
-                  rowIdx,
-                  tileIdx,
-                  cacheBoard,
+              updateBoardCache={() =>
+                sessionCookies.gameStatus.whoTurn === playerNumber
+                  ? determineWinner(
+                      rowIdx,
+                      tileIdx,
+                      cacheBoard,
 
-                  sessionCookies?.lobby?.board?.size,
-                  playerNumber,
-                  setSessionCookies,
-                  sessionCookies
-                ):""
+                      sessionCookies?.lobby?.board?.size,
+                      playerNumber,
+                      setSessionCookies,
+                      sessionCookies
+                    )
+                  : ""
               }
               value={tile}
               newMove={newMove}

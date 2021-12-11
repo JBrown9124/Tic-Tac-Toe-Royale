@@ -68,6 +68,7 @@ function App() {
   // removeSessionCookie("lobby");
   // removeSessionCookie("board");
   // removeSessionCookie("gameStatus");
+  // setSessionCookie("gameStatus", {...sessionCookies.gameStatus, whoWon:null}, {path:"/"})
   return (
     <>
       <Grid

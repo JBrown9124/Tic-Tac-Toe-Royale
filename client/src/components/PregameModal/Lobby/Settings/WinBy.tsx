@@ -9,16 +9,16 @@ export default function WinBy() {
   useEffect(() => {
     if (
       winBy >=
-      (sessionCookies.board.size === undefined ? 3 : sessionCookies.board.size)
+      (sessionCookies?.board?.size === undefined ? 3 : sessionCookies?.board?.size)
     ) {
       setSessionCookies(
         "board",
         { ...sessionCookies?.board, winBy: winBy },
         { path: "/" }
       );
-      setWinBy(
-        sessionCookies.board.size === undefined ? 3 : sessionCookies.board.size
-      );
+      // setWinBy(
+      //   sessionCookies?.board?.size === undefined ? 3 : sessionCookies?.board?.size
+      // );
     } else {
       setSessionCookies(
         "board",
@@ -26,7 +26,7 @@ export default function WinBy() {
         { path: "/" }
       );
     }
-  }, [winBy, sessionCookies.board.size]);
+  }, [winBy, sessionCookies?.board?.size]);
   return (
     <>
       <Grid container direction="column">
@@ -36,18 +36,19 @@ export default function WinBy() {
         <Grid item>
           <TextField
             error={
-              winBy >=
-                (sessionCookies.board.size === undefined
+              winBy >
+                (sessionCookies?.board?.size === undefined
                   ? 3
-                  : sessionCookies.board.size) 
+                  : sessionCookies?.board?.size) 
             }
             inputProps={{
+              defaultValue:3,
               step: 1,
               min: 3,
               max:
-                sessionCookies.board.size === undefined
+              sessionCookies?.board?.size === undefined
                   ? 3
-                  : sessionCookies.board.size,
+                  : sessionCookies?.board?.size,
               type: "number",
               "aria-labelledby": "winBy",
             }}

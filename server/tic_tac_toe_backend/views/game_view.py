@@ -21,7 +21,7 @@ class Game(APIView):
         lobby_id = body.get("lobbyId")
         board = body.get("board")
         host_piece = body.get("piece")
-        board_model = BoardModel(size=board["size"], color=board["color"]).to_dict()
+        board_model = BoardModel(size=board["size"], color=board["color"], win_by=board["winBy"]).to_dict()
 
         lobby_copy = lobbys[lobby_id]
         lobby_copy["board"] = board_model
