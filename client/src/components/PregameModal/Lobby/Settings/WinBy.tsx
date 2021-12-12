@@ -7,26 +7,14 @@ export default function WinBy() {
   const [sessionCookies, setSessionCookies] = useCookies();
   const [winBy, setWinBy] = useState(3);
   useEffect(() => {
-    if (
-      winBy >=
-      (sessionCookies?.board?.size === undefined ? 3 : sessionCookies?.board?.size)
-    ) {
+    
       setSessionCookies(
         "board",
         { ...sessionCookies?.board, winBy: winBy },
         { path: "/" }
       );
-      // setWinBy(
-      //   sessionCookies?.board?.size === undefined ? 3 : sessionCookies?.board?.size
-      // );
-    } else {
-      setSessionCookies(
-        "board",
-        { ...sessionCookies?.board, winBy: winBy },
-        { path: "/" }
-      );
-    }
-  }, [winBy, sessionCookies?.board?.size]);
+    
+  }, [winBy]);
   
   return (
     <>

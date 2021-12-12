@@ -74,6 +74,11 @@ export default function PregameModal() {
         console.log(lobbyInfo, "startLobby");
       };
       startLobby();
+      setSessionCookie(
+        "board",
+        { size: 3, winBy: 3, color: { r: 194, g: 42, b: 50, a: 1 } },
+        { path: "/" }
+      );
     }
     if (
       sessionCookies?.command === "guest" &&
@@ -122,6 +127,7 @@ export default function PregameModal() {
         setSessionCookie("lobby", lobbyInfo?.lobby, { path: "/" });
         setSessionCookie("gameStatus", lobbyInfo?.gameStatus, { path: "/" });
         setSessionCookie("command", "begin", { path: "/" });
+       
       }
     initiateGame();
     }

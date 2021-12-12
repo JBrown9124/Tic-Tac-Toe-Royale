@@ -5,6 +5,7 @@ import Board from "./Board/Board";
 import { useCookies } from "react-cookie";
 import { Player } from "../../Models/Player";
 import { useState, useEffect } from "react";
+import StatusBoard from "./StatusBoard/StatusBoard";
 interface GameProps {
   newMove: NewMove;
 }
@@ -23,23 +24,12 @@ function Game({ newMove }: GameProps) {
   }, [sessionCookies?.command]);
   return (
     <>
-      <Grid direction="column">
-        <Grid item>
-          <Typography variant="h2" sx={{ textAlign: "center" }}>
-           
-            {sessionCookies?.lobby?.players?.map((player: Player) => {
-              if (sessionCookies.gameStatus.whoWon) {
-                if (player.playerNumber === sessionCookies.gameStatus.whoWon) {
-                  return `${player.name} Wins!`;
-                }
-              } else if (
-                player.playerNumber === sessionCookies.gameStatus.whoTurn
-              )
-                return `${player.name}'s Turn!`;
-            })}
-          </Typography>
+      <Grid container direction="column">
+        <Grid item xs={6}>
+          <StatusBoard />
         </Grid>
-        <Grid item>
+
+        <Grid container item sx={{justifyContent: "center", margin:"auto"}}>
           <Board newMove={newMove} playerNumber={playerNumber} />
         </Grid>
       </Grid>

@@ -8,7 +8,7 @@ import React, { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
 
 export default function ColorSelecter() {
-  const [color, setColor] = useState<RgbaColor>({r:232, g:255, b:255, a:255});
+  const [color, setColor] = useState<RgbaColor>({ r: 194, g: 42, b: 50, a: 1 });
   const [sessionCookies, setSessionCookies] = useCookies();
  
   useEffect(() => {

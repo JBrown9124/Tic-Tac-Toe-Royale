@@ -76,7 +76,7 @@ function App() {
           position: "fixed",
           width: "100%",
           height: "100%",
-          background: "blue",
+          background: `rgba(${sessionCookies.lobby.board.color.r}, ${sessionCookies.lobby.board.color.g}, ${sessionCookies.lobby.board.color.b}, ${sessionCookies.lobby.board.color.a-.5})`,
           overflow: "auto",
         }}
       >

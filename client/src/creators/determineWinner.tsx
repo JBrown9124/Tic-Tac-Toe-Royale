@@ -11,21 +11,7 @@ const determineWinner = (
 ) => {
   board[rowIdx][tileIdx] = playerNumber;
 
-  // const checkHorizontal = () => {
-  //   let concurrentValue = 0;
-  //   for (let i = boardSize - 1; i >= 0; i--) {
-  //     if (playerNumber !== board[rowIdx][i]) {
-  //       concurrentValue = 0;
-  //       continue;
-  //     }
-
-  //     concurrentValue += 1;
-  //     if (concurrentValue === sessionCookies?.lobby?.board?.winBy) {
-  //       return true;
-  //     }
-  //   }
-  //   return false;
-  // };
+  
   const checkHorizontal = () => {
     let start = boardSize - 1 - tileIdx < tileIdx ? boardSize - 1 : 0;
     let range = start === 0 ? boardSize - 1 : 0;

@@ -12,8 +12,6 @@ interface PlayerListProps {
   handleLeave: () => void;
 }
 export default function HostLobby({ handleLeave }: PlayerListProps) {
-  const [color, setColor] = useState({ r: 50, g: 100, b: 150, a: 1 });
-  const [size, setSize] = useState<number | number[]>(3);
   const [sessionCookies, setSessionCookies] = useCookies();
 
   const handleStart = () => {
@@ -22,27 +20,30 @@ export default function HostLobby({ handleLeave }: PlayerListProps) {
 
   return (
     <>
-      <Grid container sx={{ textAlign: "center" }} spacing={6}>
-        <Grid item xs={12} sm={6}>
-          <Settings
-            color={color}
-            setSize={(props) => setSize(props)}
-            setColor={(props) => setColor(props)}
-          />
+      <Grid container direction="column" spacing={2}>
+        <Grid item container sx={{ textAlign: "center" }} spacing={6}>
+          <Grid item xs={12} sm={6}>
+            <Settings />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <PlayerList />
+          </Grid>
         </Grid>
-        <Grid item xs={12} sm={6}>
-          <PlayerList />
-        </Grid>
-      </Grid>
 
-      <Grid container justifyContent="center">
-        <Grid item>
-          <Button sx={{ background: "purple" }} onClick={handleLeave}>
-            Leave
-          </Button>
-          <Button sx={{ background: "purple" }} onClick={handleStart}>
-            Start
-          </Button>
+        <Grid item container justifyContent="center" spacing={2}>
+          <Grid item>
+            <Button sx={{ background: "purple" }} onClick={handleLeave}>
+              Leave
+            </Button>
+          </Grid>
+          <Grid item>
+            <Typography>{sessionCookies?.lobby?.lobbyId}</Typography>
+          </Grid>
+          <Grid item>
+            <Button sx={{ background: "purple" }} onClick={handleStart}>
+              Start
+            </Button>
+          </Grid>
         </Grid>
       </Grid>
     </>

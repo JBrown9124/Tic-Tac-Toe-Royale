@@ -7,7 +7,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import StarIcon from "@mui/icons-material/Star";
 import { Player } from "../../../Models/Player";
-import pieces from "../../../storage/pieces";
+import pieces from "../../../storage/CreatePiece";
 import {useCookies} from "react-cookie"
 
 export default function PlayerList() {
@@ -30,7 +30,7 @@ export default function PlayerList() {
               <ListItem>
                 {player.isReady && <ListItemText primary={"READY"} />}
                 {player.isHost && <ListItemText primary={"HOST"} />}
-                {pieces.map((piece) => {
+                {pieces(sessionCookies?.lobby?.board?.color).map((piece) => {
                   if (piece.name === player.piece)
                     return <ListItemText primary={piece.value} />;
                 })}
