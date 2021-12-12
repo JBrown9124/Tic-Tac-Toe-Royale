@@ -6,7 +6,7 @@ import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import { RgbaColor } from "react-colorful";
 import { useCookies } from "react-cookie";
-import pieces from "../../../storage/CreatePiece";
+
 import {PlayerPieces} from "../../../Models/PlayerPieces"
 interface TileProps {
   chosenPiece: JSX.Element | undefined;

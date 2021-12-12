@@ -11,7 +11,7 @@ import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import { useCookies } from "react-cookie";
 import { RgbaColor } from "react-colorful";
 import { Player } from "../../../Models/Player";
-import pieces from "../../../storage/CreatePiece";
+import createPiece from "../../../storage/createPiece";
 import socket from "../../../socket";
 import { PlayerPieces } from "../../../Models/PlayerPieces";
 interface NewMove {
@@ -30,7 +30,7 @@ export default function Board({ newMove, playerNumber }: BoardProps) {
   const [sessionCookies, setSessionCookies, removeSessionCookies] =
     useCookies();
   const [piece, setPiece] = useState<JSX.Element>();
-  const [createdPieces,setCreatedPieces] =  useState<any>(pieces(`rgba(${sessionCookies.lobby.board.color.r}, ${sessionCookies.lobby.board.color.g}, ${sessionCookies.lobby.board.color.b}, ${sessionCookies.lobby.board.color.a-.5})`));
+  
   const [playerPieces, setPlayerPieces] = useState<PlayerPieces[]>();
 
   // socket.on("connect", () => {
@@ -56,7 +56,7 @@ export default function Board({ newMove, playerNumber }: BoardProps) {
 
   useEffect(() => {
     if (sessionCookies.command === "begin") {
-    setCreatedPieces(pieces(`rgba(${sessionCookies.lobby.board.color.r}, ${sessionCookies.lobby.board.color.g}, ${sessionCookies.lobby.board.color.b}, ${sessionCookies.lobby.board.color.a-.5})`));
+
       createBoard(
         setCacheBoard,
         setBoard,
@@ -69,7 +69,7 @@ export default function Board({ newMove, playerNumber }: BoardProps) {
     const getPlayerPieces = () => {
       let piecesValues: PlayerPieces[] = [];
       sessionCookies?.lobby?.players?.forEach((player: Player) => {
-        createdPieces.forEach((piece) => {
+        createPiece("white").forEach((piece) => {
           if (piece.name === player.piece) {
             piecesValues.push({
               playerNumber: player.playerNumber,
@@ -81,7 +81,7 @@ export default function Board({ newMove, playerNumber }: BoardProps) {
 
       setPlayerPieces(piecesValues);
     };
-    createdPieces.map((piece) => {
+    createPiece("white").map((piece) => {
       if (piece.name === sessionCookies.piece) {
         setPiece(piece.value);
       }
@@ -90,10 +90,10 @@ export default function Board({ newMove, playerNumber }: BoardProps) {
   }, [sessionCookies?.command]);
   useEffect(() => {
     if (newMove.playerNumber !== 0) {
-      let boardCopy = board;
-      boardCopy[newMove.rowIdx][newMove.tileIdx] = newMove.playerNumber;
+    
+      board[newMove.rowIdx][newMove.tileIdx] = newMove.playerNumber;
      
-      console.log(boardCopy, "boardcoppy");
+     
     }
   }, [newMove]);
 

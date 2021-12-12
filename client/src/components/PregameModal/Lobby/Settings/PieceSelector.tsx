@@ -5,7 +5,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import Typography from "@mui/material/Typography";
 import { useCookies } from "react-cookie";
 import Grid from "@mui/material/Grid";
-import pieces from "../../../../storage/CreatePiece";
+import createPiece from "../../../../storage/createPiece";
 
 // interface PieceSelectorProps{
 // setPiece:(piece:JSX.Element)=>void;
@@ -29,7 +29,7 @@ export default function PieceSelector() {
                 overflow: "auto",
               }}
             >
-              {pieces(sessionCookies?.lobby?.board?.color).map((piece) => (
+              {createPiece("white").map((piece) => (
                 <ListItemButton
                   onClick={() =>
                     setSessionCookie("piece", piece.name, { path: "/" })
@@ -42,7 +42,7 @@ export default function PieceSelector() {
             </List>
           </Grid>
           <Grid item xs={12} sm={6}>
-            {pieces(sessionCookies?.lobby?.board?.color).map((piece) => {
+            {createPiece("white").map((piece) => {
               if (piece.name === sessionCookies?.piece) {
                 return piece.value;
               }

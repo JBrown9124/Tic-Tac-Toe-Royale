@@ -6,11 +6,12 @@ import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ChildCareIcon from "@mui/icons-material/ChildCare";
 import { RgbaColor } from "react-colorful";
-interface CreatePieceProps {
-  color: any;
+interface PieceProps{
+  name:string;
+  value:JSX.Element
 }
-const createPiece = ({ color }: CreatePieceProps) => {
-  console.log(color,"CREATEPIECE COLOR")
+const createPiece = ( color:string ):PieceProps[] => {
+ console.log(color,"CREATEPIECECOLOR")
   const pieces = [
     {
       name: "Clear",
@@ -29,23 +30,23 @@ const createPiece = ({ color }: CreatePieceProps) => {
     },
     {
       name: "Pets",
-      value: <PetsIcon sx={{ height: "40px", width: "40px",  color: color}} />,
+      value: <PetsIcon sx={{ height: "40px", width: "40px",  color: color }} />,
       
     },
     {
       name: "FitnessCenter",
-      value: <FitnessCenterIcon sx={{ height: "40px", width: "40px" , color: color}} />,
+      value: <FitnessCenterIcon sx={{ height: "40px", width: "40px" , color: color }} />,
       
     },
     {
       name: "FavoriteBorder",
-      value: <FavoriteBorderIcon sx={{ height: "40px", width: "40px" , color: color}} />,
+      value: <FavoriteBorderIcon sx={{ height: "40px", width: "40px" , color: color }} />,
      
     },
     {
       name: "ChildCare",
-      value: <ChildCareIcon sx={{ height: "40px", width: "40px" }} />,
-      color: color,
+      value: <ChildCareIcon sx={{ height: "40px", width: "40px" ,color: color}} />,
+     
     },
   ];
   return pieces;

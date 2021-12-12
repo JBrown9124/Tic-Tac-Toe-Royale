@@ -11,124 +11,79 @@ const determineWinner = (
 ) => {
   board[rowIdx][tileIdx] = playerNumber;
 
-  
-  const checkHorizontal = () => {
-    let start = boardSize - 1 - tileIdx < tileIdx ? boardSize - 1 : 0;
-    let range = start === 0 ? boardSize - 1 : 0;
+  const checkHorizontal = (winBy: number) => {
+    let left = tileIdx;
+    let right = tileIdx;
+    let leftWinBy = 0;
+    let rightWinBy = 0;
+
+    while (
+      (left > 0 && leftWinBy <= winBy - 1) ||
+      (right < boardSize - 1 && rightWinBy <= winBy - 1)
+    ) {
+      if (left > 0 && leftWinBy <= winBy) {
+        left -= 1;
+        leftWinBy += 1;
+        console.log(0, "horizontalLeft");
+      }
+      if (right < boardSize - 1 && rightWinBy <= winBy - 1) {
+        right += 1;
+        rightWinBy += 1;
+        console.log(0, "horizontalRight");
+      }
+    }
     let concurrentValue = 0;
-    if (start === 0) {
-      for (let i = start; i <= range; i++) {
-        console.log(board[rowIdx][i], "horziontal");
-        let isEverythingAfterMove = false;
-        let everythingAfterMove = 0;
-        if (isEverythingAfterMove) {
-          everythingAfterMove += 1;
-        }
-        if (everythingAfterMove <= sessionCookies?.lobby?.board?.winBy) {
-          if (board[rowIdx][i] === board[rowIdx][tileIdx]) {
-            isEverythingAfterMove = true;
-            everythingAfterMove += 1;
-          }
+    for (let i = left; i <= right; i++) {
+      console.log(0, "horziontalFor");
 
-          if (playerNumber !== board[rowIdx][i]) {
-            concurrentValue = 0;
-            continue;
-          }
-
-          concurrentValue += 1;
-          if (concurrentValue === sessionCookies?.lobby?.board?.winBy) {
-            return true;
-          }
-        }
+      if (playerNumber !== board[rowIdx][i]) {
+        concurrentValue = 0;
+        continue;
       }
-      return false;
-    } else {
-      for (let i = start; i >= range; i--) {
-        console.log(board[rowIdx][i], "horziontal");
-        let isEverythingAfterMove = false;
-        let everythingAfterMove = 0;
-        if (isEverythingAfterMove) {
-          everythingAfterMove += 1;
-        }
-        if (everythingAfterMove <= sessionCookies?.lobby?.board?.winBy) {
-          if (board[rowIdx][i] === board[rowIdx][tileIdx]) {
-            isEverythingAfterMove = true;
-            everythingAfterMove += 1;
-          }
 
-          if (playerNumber !== board[rowIdx][i]) {
-            concurrentValue = 0;
-            continue;
-          }
-
-          concurrentValue += 1;
-          if (concurrentValue === sessionCookies?.lobby?.board?.winBy) {
-            return true;
-          }
-        }
+      concurrentValue += 1;
+      if (concurrentValue === winBy) {
+        return true;
       }
-      return false;
     }
   };
-  const checkVertical = () => {
-    let start = boardSize - 1 - rowIdx < rowIdx ? boardSize - 1 : 0;
-    let range = start === 0 ? boardSize - 1 : 0;
+  const checkVertical = (winBy: number) => {
+    let topWinBy = 0;
+    let bottomWinBy = 0;
+    let top = rowIdx;
+    let bottom = rowIdx;
+
+    while (
+      (top > 0 && topWinBy <= winBy - 1) ||
+      (bottom < boardSize - 1 && bottomWinBy <= winBy - 1)
+    ) {
+      if (top > 0 && topWinBy <= winBy - 1) {
+        top -= 1;
+        topWinBy += 1;
+        console.log(1, "verticalTop");
+      }
+      if (bottom < boardSize - 1 && bottomWinBy <= winBy - 1) {
+        console.log(1, "verticalBottom");
+        bottom += 1;
+        bottomWinBy += 1;
+      }
+    }
     let concurrentValue = 0;
-    if (start === 0) {
-      for (let i = start; i <= range; i++) {
-        console.log(board[i][tileIdx], "vertical");
-        let isEverythingAfterMove = false;
-        let everythingAfterMove = 0;
-        if (isEverythingAfterMove) {
-          everythingAfterMove += 1;
-        }
-        if (everythingAfterMove <= sessionCookies?.lobby?.board?.winBy) {
-          if (board[i][tileIdx] === board[rowIdx][tileIdx]) {
-            isEverythingAfterMove = true;
-            everythingAfterMove += 1;
-          }
+    for (let i = top; i <= bottom; i++) {
+      console.log(1, "verticalFor");
 
-          if (playerNumber !== board[i][tileIdx]) {
-            concurrentValue = 0;
-            continue;
-          }
-
-          concurrentValue += 1;
-          if (concurrentValue === sessionCookies?.lobby?.board?.winBy) {
-            return true;
-          }
-        }
+      if (playerNumber !== board[i][tileIdx]) {
+        concurrentValue = 0;
+        continue;
       }
-      return false;
-    } else {
-      for (let i = start; i >= range; i--) {
-        console.log(board[i][tileIdx], "vertical");
-        let isEverythingAfterMove = false;
-        let everythingAfterMove = 0;
-        if (isEverythingAfterMove) {
-          everythingAfterMove += 1;
-        }
-        if (everythingAfterMove <= sessionCookies?.lobby?.board?.winBy) {
-          if (board[i][tileIdx] === board[rowIdx][tileIdx]) {
-            isEverythingAfterMove = true;
-            everythingAfterMove += 1;
-          }
 
-          if (playerNumber !== board[i][tileIdx]) {
-            concurrentValue = 0;
-            continue;
-          }
-
-          concurrentValue += 1;
-          if (concurrentValue === sessionCookies?.lobby?.board?.winBy) {
-            return true;
-          }
-        }
+      concurrentValue += 1;
+      if (concurrentValue === winBy) {
+        return true;
       }
-      return false;
     }
   };
-  const checkDiagonal = () => {
+  const checkDiagonal = (winBy: number) => {
     let left = [rowIdx, tileIdx];
     let right = [rowIdx, tileIdx];
     let leftWinBy = 0;
@@ -138,19 +93,19 @@ const determineWinner = (
         left[1] > 0 &&
         left[0] < boardSize - 1 &&
         left[1] < boardSize - 1 &&
-        leftWinBy <= sessionCookies?.lobby?.board?.winBy) ||
+        leftWinBy <= winBy-1) ||
       (right[0] > 0 &&
         right[1] > 0 &&
         right[0] < boardSize - 1 &&
         right[1] < boardSize - 1 &&
-        rightWinBy <= sessionCookies?.lobby?.board?.winBy)
+        rightWinBy <= winBy-1)
     ) {
       if (
         left[0] > 0 &&
         left[1] > 0 &&
         left[0] < boardSize - 1 &&
         left[1] < boardSize - 1 &&
-        leftWinBy <= sessionCookies?.lobby?.board?.winBy
+        leftWinBy <= winBy-1
       ) {
         left[0] += 1;
         left[1] -= 1;
@@ -161,29 +116,28 @@ const determineWinner = (
         right[1] > 0 &&
         right[0] < boardSize - 1 &&
         right[1] < boardSize - 1 &&
-        rightWinBy <= sessionCookies?.lobby?.board?.winBy
+        rightWinBy <= winBy-1
       ) {
         right[0] -= 1;
         right[1] += 1;
         rightWinBy += 1;
       }
-      let j = right[1];
-      let concurrentValue = 0;
-      for (let i = right[0]; i <= left[0]; i++) {
-        console.log(board[i][j], "diagonol");
-        if (playerNumber !== board[i][j]) {
-          concurrentValue = 0;
-          j -= 1;
-          continue;
-        }
+    }
+    let j = right[1];
+    let concurrentValue = 0;
+    for (let i = right[0]; i <= left[0]; i++) {
+      console.log(board[i][j], "diagonol");
+      if (playerNumber !== board[i][j]) {
+        concurrentValue = 0;
         j -= 1;
-        concurrentValue += 1;
-        if (concurrentValue === sessionCookies?.lobby?.board?.winBy) {
-          return true;
-        }
+        continue;
+      }
+      j -= 1;
+      concurrentValue += 1;
+      if (concurrentValue === winBy) {
+        return true;
       }
     }
-
     left = [rowIdx, tileIdx];
     right = [rowIdx, tileIdx];
     leftWinBy = 0;
@@ -194,19 +148,19 @@ const determineWinner = (
         left[1] > 0 &&
         left[0] < boardSize - 1 &&
         left[1] < boardSize - 1 &&
-        leftWinBy <= sessionCookies?.lobby?.board?.winBy) ||
+        leftWinBy <= winBy-1) ||
       (right[0] > 0 &&
         right[1] > 0 &&
         right[0] < boardSize - 1 &&
         right[1] < boardSize - 1 &&
-        rightWinBy <= sessionCookies?.lobby?.board?.winBy)
+        rightWinBy <= winBy-1)
     ) {
       if (
         left[0] > 0 &&
         left[1] > 0 &&
         left[0] < boardSize - 1 &&
         left[1] < boardSize - 1 &&
-        leftWinBy <= sessionCookies?.lobby?.board?.winBy
+        leftWinBy <= winBy-1
       ) {
         left[0] -= 1;
         left[1] -= 1;
@@ -217,26 +171,26 @@ const determineWinner = (
         right[1] > 0 &&
         right[0] < boardSize - 1 &&
         right[1] < boardSize - 1 &&
-        rightWinBy <= sessionCookies?.lobby?.board?.winBy
+        rightWinBy <= winBy-1
       ) {
         right[0] += 1;
         right[1] += 1;
         rightWinBy += 1;
       }
-      let j = right[1];
-      let concurrentValue = 0;
-      for (let i = right[0]; i >= left[0]; i--) {
-        console.log(board[i][j], "diagonol");
-        if (playerNumber !== board[i][j]) {
-          concurrentValue = 0;
-          j -= 1;
-          continue;
-        }
+    }
+    j = right[1];
+    concurrentValue = 0;
+    for (let i = right[0]; i >= left[0]; i--) {
+      console.log(board[i][j], "diagonol");
+      if (playerNumber !== board[i][j]) {
+        concurrentValue = 0;
         j -= 1;
-        concurrentValue += 1;
-        if (concurrentValue === sessionCookies?.lobby?.board?.winBy) {
-          return true;
-        }
+        continue;
+      }
+      j -= 1;
+      concurrentValue += 1;
+      if (concurrentValue === winBy) {
+        return true;
       }
     }
   };
@@ -346,7 +300,10 @@ const determineWinner = (
   let boardMove = {
     rowIdx: rowIdx,
     tileIdx: tileIdx,
-    won: checkHorizontal() || checkVertical() || checkDiagonal(),
+    won:
+      checkHorizontal(sessionCookies?.lobby?.board?.winBy) ||
+      checkVertical(sessionCookies?.lobby?.board?.winBy) ||
+      checkDiagonal(sessionCookies?.lobby?.board?.winBy),
     playerNumber: playerNumber,
   };
 

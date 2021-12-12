@@ -54,7 +54,7 @@ function App() {
 
         // sessionCookies.board[newMoveRowIdx][newMoveTileIdx] = newMovePlayerNumber;
         setNewMove(newMove.newMove)
-        setSessionCookie("gameStatus", {...newMove.gameStatus}, {path:"/"})
+        setSessionCookie("gameStatus", newMove.gameStatus, {path:"/"})
       
         // board[newMove.newMove.rowIdx][newMove.newMove.tileIdx]=newMove.newMove.playerNumber;
         // setBoard([...board]);
@@ -76,7 +76,7 @@ function App() {
           position: "fixed",
           width: "100%",
           height: "100%",
-          background: `rgba(${sessionCookies.lobby.board.color.r}, ${sessionCookies.lobby.board.color.g}, ${sessionCookies.lobby.board.color.b}, ${sessionCookies.lobby.board.color.a-.5})`,
+          background: `rgba(${sessionCookies?.lobby?.board?.color?.r}, ${sessionCookies?.lobby?.board?.color?.g}, ${sessionCookies?.lobby?.board?.color?.b}, ${sessionCookies?.lobby?.board?.color?.a-.5})`,
           overflow: "auto",
         }}
       >
