@@ -1,10 +1,12 @@
 class Player:
-    def __init__(self, name, player_number=1, piece=None, is_host=False, is_ready=False):
+    def __init__(
+        self, name, player_number=1, piece=None, is_host=False, is_ready=False
+    ):
         self.name = name
         self.piece = piece
         self.is_host = is_host
         self.player_number = player_number
-        self.is_ready= is_ready
+        self.is_ready = is_ready
 
     def to_dict(self):
         return {

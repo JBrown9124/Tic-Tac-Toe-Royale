@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import { useState, useEffect } from "react";
 export default function WinBy() {
   const [sessionCookies, setSessionCookies] = useCookies();
-  const [winBy, setWinBy] = useState(3);
+  const [winBy, setWinBy] = useState(2);
   useEffect(() => {
     
       setSessionCookies(
@@ -27,16 +27,16 @@ export default function WinBy() {
             error={
               winBy >
                 (sessionCookies?.board?.size === undefined
-                  ? 3
+                  ? 2
                   : sessionCookies?.board?.size) 
             }
             inputProps={{
-              defaultValue:3,
+              defaultValue:2,
               step: 1,
-              min: 3,
+              min: 2,
               max:
               sessionCookies?.board?.size === undefined
-                  ? 3
+                  ? 2
                   : sessionCookies?.board?.size,
               type: "number",
               "aria-labelledby": "winBy",

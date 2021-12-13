@@ -12,20 +12,21 @@ import joinLobby from "./creators/joinLobby";
 import { useCookies } from "react-cookie";
 import socket from "./socket";
 import { Player } from "./Models/Player";
-import Game from "./components/Game/Game"
-import {NewMove} from "./Models/NewMove"
-interface BoardSettingsProps {
-  boardColor: RgbaColor;
-  boardSize: number[] | number;
-}
-interface LobbyProps {
-  lobbyId: number;
-  players: Player[];
-}
+import Game from "./components/Game/Game";
+import { NewMove } from "./Models/NewMove";
+import {Lobby } from "./Models/Lobby"
+
+
 
 function App() {
   const [sessionCookies, setSessionCookie, removeSessionCookie] = useCookies();
-  const [newMove, setNewMove] = useState<NewMove>({playerNumber: 0, rowIdx: 0, tileIdx: 0});
+  const [newMove, setNewMove] = useState<NewMove>({
+    playerNumber: 0,
+    rowIdx: 0,
+    tileIdx: 0,
+  });
+  const [piece, setPiece] = useState("")
+  const [lobby, setLobby] = useState<Lobby>()
   socket.on("connect", () => {
     console.log("connected to server");
     socket.on("player-join-lobby", (receivedLobby) => {
@@ -46,29 +47,18 @@ function App() {
       setSessionCookie("command", "begin", { path: "/" });
     });
     socket.on("new-move", (newMove) => {
-      // if (receivedLobby.lobbyId === sessionCookies.session?.lobby?.lobbyId) {
-        
-        let newMoveRowIdx = newMove.newMove.rowIdx;
-        let newMoveTileIdx = newMove.newMove.tileIdx;
-        let newMovePlayerNumber = newMove.newMove.playerNumber;
+      setNewMove(newMove.newMove);
+      setSessionCookie("gameStatus", newMove.gameStatus, { path: "/" });
 
-        // sessionCookies.board[newMoveRowIdx][newMoveTileIdx] = newMovePlayerNumber;
-        setNewMove(newMove.newMove)
-        setSessionCookie("gameStatus", newMove.gameStatus, {path:"/"})
-      
-        // board[newMove.newMove.rowIdx][newMove.newMove.tileIdx]=newMove.newMove.playerNumber;
-        // setBoard([...board]);
-        
       // }
     });
-    
   });
-  
+
   // removeSessionCookie("command");
   // removeSessionCookie("lobby");
   // removeSessionCookie("board");
   // removeSessionCookie("gameStatus");
-  // setSessionCookie("gameStatus", {...sessionCookies.gameStatus, whoWon:null}, {path:"/"})
+  // setSessionCookie("gameStatus", {...sessionCookies.gameStatus, whoWon:null,}, {path:"/"})
   return (
     <>
       <Grid
@@ -76,17 +66,21 @@ function App() {
           position: "fixed",
           width: "100%",
           height: "100%",
-          background: `rgba(${sessionCookies?.lobby?.board?.color?.r}, ${sessionCookies?.lobby?.board?.color?.g}, ${sessionCookies?.lobby?.board?.color?.b}, ${sessionCookies?.lobby?.board?.color?.a-.5})`,
+          background: `rgba(${sessionCookies?.lobby?.board?.color?.r}, ${
+            sessionCookies?.lobby?.board?.color?.g
+          }, ${sessionCookies?.lobby?.board?.color?.b}, ${
+            sessionCookies?.lobby?.board?.color?.a - 0.5
+          })`,
           overflow: "auto",
         }}
       >
         <Grid container direction="column" justifyContent="center">
           {sessionCookies.command === "begin" ? (
             <Grid item>
-              <Game newMove={newMove}/>
+              <Game newMove={newMove} />
             </Grid>
           ) : (
-            <PregameModal />
+            <PregameModal playerPiece={piece} setPiece={(props)=>setPiece(props)}/>
           )}
         </Grid>
       </Grid>

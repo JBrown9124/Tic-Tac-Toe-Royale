@@ -12,37 +12,39 @@ from ..ResponseModels.response_lobby import LobbyResponseModel
 from ..Models.board import BoardModel
 from ..Models.player import Player
 from ..ResponseModels.response_board import BoardResponseModel
+
 # Create your views here.
 class Board(APIView):
     def post(self, request: Request):
         pass
-        
+
     def put(self, request: Request):
-       """takes new move coordinates,lobbyId, playerNumber, and gameStatus. updates lobby board, and returns new move coordinates and update game status(whos move it is, who won)"""
-       body = request.data
-       new_move = body.get('newMove')
-       did_win = new_move.get("won")
-       last_turn = new_move.get('playerNumber')
-       lobby_id = body.get('lobbyId')
-       
-       lobby_copy = lobbys[lobby_id] 
-       lobby_players_copy=lobby_copy["players"]
-       
-       next_turn = 1  if last_turn == len(lobby_players_copy) else last_turn + 1
-       
-       lobby_game_status_copy = lobby_copy["gameStatus"]
-       lobby_game_status_copy["whoTurn"] = next_turn
-       lobby_game_status_copy["whoWon"] = last_turn if did_win else None
-       
-       lobby_board_copy = lobby_copy["board"]
-       lobby_board_copy["moves"].append(new_move)
-       
-       lobbys[lobby_id]["board"]=lobby_board_copy
-       lobbys[lobby_id]["gameStatus"] = lobby_game_status_copy
-       
-       board_response = BoardResponseModel(new_move=new_move, game_status=lobby_game_status_copy).to_dict()
-       return JsonResponse(board_response)
-            
+        """takes new move coordinates,lobbyId, playerNumber, and gameStatus. updates lobby board, and returns new move coordinates and update game status(whos move it is, who won)"""
+        body = request.data
+        new_move = body.get("newMove")
+        did_win = new_move.get("won")
+        last_turn = new_move.get("playerNumber")
+        lobby_id = body.get("lobbyId")
+
+        lobby_copy = lobbys[lobby_id]
+        lobby_players_copy = lobby_copy["players"]
+
+        next_turn = 1 if last_turn == len(lobby_players_copy) else last_turn + 1
+
+        lobby_game_status_copy = lobby_copy["gameStatus"]
+        lobby_game_status_copy["whoTurn"] = next_turn
+        lobby_game_status_copy["whoWon"] = last_turn if did_win else None
+
+        lobby_board_copy = lobby_copy["board"]
+        lobby_board_copy["moves"].append(new_move)
+
+        lobbys[lobby_id]["board"] = lobby_board_copy
+        lobbys[lobby_id]["gameStatus"] = lobby_game_status_copy
+
+        board_response = BoardResponseModel(
+            new_move=new_move, game_status=lobby_game_status_copy
+        ).to_dict()
+        return JsonResponse(board_response)
 
     def delete(self, request: Request):
         pass

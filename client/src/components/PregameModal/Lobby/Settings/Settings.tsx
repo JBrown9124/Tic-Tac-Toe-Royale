@@ -8,8 +8,11 @@ import React, { useState, useEffect } from "react";
 import PieceSelector from "./PieceSelector";
 import { useCookies } from "react-cookie";
 import WinBy from "./WinBy";
-
-export default function Settings() {
+interface SettingsProps{
+  setPiece:(piece:string)=>void;
+  playerPiece:string
+}
+export default function Settings({setPiece, playerPiece}:SettingsProps) {
  
  
   return (
@@ -24,7 +27,7 @@ export default function Settings() {
         <ColorSelector />
       </Grid>
       <Grid item>
-        <PieceSelector />
+        <PieceSelector playerPiece={playerPiece} setPiece={(props)=>setPiece(props)} />
       </Grid>
     </Grid>
   );

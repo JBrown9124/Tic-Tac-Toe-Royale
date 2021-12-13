@@ -10,8 +10,11 @@ import { Player } from "../../../Models/Player";
 import { useCookies } from "react-cookie";
 interface PlayerListProps {
   handleLeave: () => void;
+  setPiece: (piece:string) => void;
+  playerPiece:string
+
 }
-export default function HostLobby({ handleLeave }: PlayerListProps) {
+export default function HostLobby({ handleLeave, playerPiece, setPiece }: PlayerListProps) {
   const [sessionCookies, setSessionCookies] = useCookies();
 
   const handleStart = () => {
@@ -23,7 +26,7 @@ export default function HostLobby({ handleLeave }: PlayerListProps) {
       <Grid container direction="column" spacing={2}>
         <Grid item container sx={{ textAlign: "center" }} spacing={6}>
           <Grid item xs={12} sm={6}>
-            <Settings />
+            <Settings playerPiece={playerPiece} setPiece={(props)=>setPiece(props)}/>
           </Grid>
           <Grid item xs={12} sm={6}>
             <PlayerList />

@@ -8,14 +8,15 @@ import { useCookies } from "react-cookie";
 import playerReady from "../../../creators/playerReady";
 
 interface GuestLobbyProps {
- 
+  setPiece:(piece:string)=> void;
+  playerPiece:string;
   handleLeave: () => void;
 }
-export default function GuestLobby({ handleLeave }: GuestLobbyProps) {
+export default function GuestLobby({ handleLeave, playerPiece, setPiece }: GuestLobbyProps) {
   const [sessionCookies, setSessionCookies] = useCookies();
   const handleReady = async () => {
     const reqBody = {
-      player: { name: sessionCookies?.name, piece: sessionCookies?.piece },
+      player: { name: sessionCookies?.name, piece: playerPiece },
       lobbyId: sessionCookies?.lobby?.lobbyId,
     };
     playerReady(reqBody);
@@ -30,7 +31,7 @@ export default function GuestLobby({ handleLeave }: GuestLobbyProps) {
           <PlayerList />
         </Grid>
         <Grid item>
-          <PieceSelector />
+          <PieceSelector playerPiece={playerPiece} setPiece={(props)=>setPiece(props)}/>
         </Grid>
         <Grid item>
           {" "}

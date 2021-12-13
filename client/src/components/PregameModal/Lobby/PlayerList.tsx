@@ -30,7 +30,7 @@ export default function PlayerList() {
               <ListItem>
                 {player.isReady && <ListItemText primary={"READY"} />}
                 {player.isHost && <ListItemText primary={"HOST"} />}
-                {createPiece("white").map((piece) => {
+                {createPiece("black").map((piece) => {
                   if (piece.name === player.piece)
                     return <ListItemText primary={piece.value} />;
                 })}

@@ -21,24 +21,22 @@ interface LobbyProps {
   players: Player[];
 }
 interface PregameModalProps {
- 
-
-  
+  setPiece: (piece: string) => void;
+  playerPiece: string;
 }
-export default function PregameModal() {
+export default function PregameModal({
+  setPiece,
+  playerPiece,
+}: PregameModalProps) {
   const [open, setOpen] = useState(true);
   const [isLobbyFound, setIsLobbyFound] = useState<boolean>(true);
   const [playerName, setPlayerName] = useState("Tic Tac Toe Master");
   const [lobbyIdItem, setLobbyIdItem] = useState(0);
   const [sessionCookies, setSessionCookie, removeSessionCookies] = useCookies();
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  // removeSessionCookies("command");
-  const handleSubmit = (size: number | number[], color: RgbaColor) => {
-    //   setSettings(size, color);
-    handleClose();
-   
-  };
+
   const handleCreateGameSelect = (name: string) => {
     setSessionCookie("command", "create", { path: "/" });
     setSessionCookie("name", name, { path: "/" });
@@ -49,8 +47,7 @@ export default function PregameModal() {
   };
   const handleFindSubmit = (lobbyId: number) => {
     setSessionCookie("command", "guest", { path: "/" });
-    setLobbyIdItem(lobbyId)
-    
+    setLobbyIdItem(lobbyId);
   };
   const handleJoinBackSelect = () => {
     removeSessionCookies("command");
@@ -60,7 +57,7 @@ export default function PregameModal() {
   };
   const handleStartGameSelect = () => {
     setSessionCookie("command", "start", { path: "/" });
-  }
+  };
   useEffect(() => {
     if (
       sessionCookies?.command === "create" &&
@@ -76,7 +73,7 @@ export default function PregameModal() {
       startLobby();
       setSessionCookie(
         "board",
-        { size: 3, winBy: 3, color: { r: 194, g: 42, b: 50, a: 1 } },
+        { size: 3, winBy: 2, color: { r: 194, g: 42, b: 50, a: 1 } },
         { path: "/" }
       );
     }
@@ -121,15 +118,14 @@ export default function PregameModal() {
         const reqBody = {
           lobbyId: sessionCookies?.lobby?.lobbyId,
           board: sessionCookies?.board,
-          piece: sessionCookies?.piece
+          piece: playerPiece,
         };
         const lobbyInfo = await startGame(reqBody);
         setSessionCookie("lobby", lobbyInfo?.lobby, { path: "/" });
         setSessionCookie("gameStatus", lobbyInfo?.gameStatus, { path: "/" });
         setSessionCookie("command", "begin", { path: "/" });
-       
-      }
-    initiateGame();
+      };
+      initiateGame();
     }
   }, [sessionCookies?.command]);
   return (
@@ -138,7 +134,7 @@ export default function PregameModal() {
         open={open}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
-        sx={{overflow:"auto"}}
+        sx={{ overflow: "auto" }}
       >
         <Grid
           sx={{
@@ -170,15 +166,17 @@ export default function PregameModal() {
           )}
           {sessionCookies?.command === "guest" && isLobbyFound && (
             <GuestLobby
+              setPiece={(props) => setPiece(props)}
+              playerPiece={playerPiece}
               handleLeave={() => handleLeaveSelect()}
-           
             />
           )}
-         
+
           {sessionCookies?.command === "create" && (
             <HostLobby
               handleLeave={() => handleLeaveSelect()}
-              
+              setPiece={(props) => setPiece(props)}
+              playerPiece={playerPiece}
             />
           )}
           {sessionCookies?.command === "leave" && (
