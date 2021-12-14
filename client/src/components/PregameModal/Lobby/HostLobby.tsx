@@ -12,9 +12,9 @@ interface PlayerListProps {
   handleLeave: () => void;
   setPiece: (piece:string) => void;
   playerPiece:string
-
+  players:Player[]
 }
-export default function HostLobby({ handleLeave, playerPiece, setPiece }: PlayerListProps) {
+export default function HostLobby({ handleLeave, playerPiece, setPiece, players }: PlayerListProps) {
   const [sessionCookies, setSessionCookies] = useCookies();
 
   const handleStart = () => {
@@ -29,7 +29,7 @@ export default function HostLobby({ handleLeave, playerPiece, setPiece }: Player
             <Settings playerPiece={playerPiece} setPiece={(props)=>setPiece(props)}/>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <PlayerList />
+            <PlayerList players={players} />
           </Grid>
         </Grid>
 

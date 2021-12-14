@@ -9,7 +9,7 @@ import { useCookies } from "react-cookie";
 
 import {PlayerPieces} from "../../../Models/PlayerPieces"
 interface TileProps {
-  chosenPiece: JSX.Element | undefined;
+  chosenPiece: JSX.Element | string|undefined;
   boardColor: RgbaColor;
   newMove: any;
   value: number | JSX.Element;

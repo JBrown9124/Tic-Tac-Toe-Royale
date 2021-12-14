@@ -2,7 +2,7 @@ import socket from "../socket";
 import axios from "axios";
 interface BodyProps {
   board:{color:string, size:number|number[]}
-  lobbyId:number
+  lobbyId:number|undefined
   piece:string
   
 }

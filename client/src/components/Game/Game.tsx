@@ -5,17 +5,19 @@ import Board from "./Board/Board";
 import { useCookies } from "react-cookie";
 import { Player } from "../../Models/Player";
 import { useState, useEffect } from "react";
+import {Lobby} from "../../Models/Lobby";
 import StatusBoard from "./StatusBoard/StatusBoard";
 interface GameProps {
   newMove: NewMove;
+  lobby:Lobby
 }
-function Game({ newMove }: GameProps) {
+function Game({ newMove, lobby}: GameProps) {
   const [sessionCookies, setSessionCookies] = useCookies();
   const [playerNumber, setPlayerNumber] = useState(0);
 
   useEffect(() => {
     if (sessionCookies?.command === "begin") {
-      sessionCookies?.lobby?.players?.map((player: Player) => {
+      lobby?.players?.map((player: Player) => {
         if (player.name === sessionCookies?.name) {
           return setPlayerNumber(player.playerNumber);
         }
@@ -30,7 +32,7 @@ function Game({ newMove }: GameProps) {
         </Grid>
 
         <Grid container item sx={{justifyContent: "center", margin:"auto"}}>
-          <Board newMove={newMove} playerNumber={playerNumber} />
+          <Board lobby={lobby}newMove={newMove} playerNumber={playerNumber} />
         </Grid>
       </Grid>
     </>

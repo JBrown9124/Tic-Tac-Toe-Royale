@@ -9,8 +9,10 @@ import StarIcon from "@mui/icons-material/Star";
 import { Player } from "../../../Models/Player";
 import createPiece from "../../../storage/createPiece";
 import { useCookies } from "react-cookie";
-
-export default function PlayerList() {
+interface PlayerListProps {
+  players: Player[];
+}
+export default function PlayerList({ players }: PlayerListProps) {
   const [sessionCookies, setSessionCookies] = useCookies();
   return (
     <>
@@ -26,14 +28,18 @@ export default function PlayerList() {
         </Grid>
         <Grid item>
           <List sx={{ bgcolor: "background.paper" }} aria-label="players">
-            {sessionCookies?.lobby?.players?.map((player: Player) => (
+            {players?.map((player: Player) => (
               <ListItem>
-                {player.isReady && <ListItemText primary={"READY"} />}
-                {player.isHost && <ListItemText primary={"HOST"} />}
-                {createPiece("black").map((piece) => {
-                  if (piece.name === player.piece)
-                    return <ListItemText primary={piece.value} />;
-                })}
+                {player?.isReady && <ListItemText primary={"READY"} />}
+                {player?.isHost && <ListItemText primary={"HOST"} />}
+                {player?.piece?.length > 15 ? (
+                  <img src={player?.piece} alt={player?.piece} style={{width:"40px", height:"40px"}} />
+                ):(
+                  createPiece("black").map((piece) => {
+                    if (piece?.name === player?.piece)
+                      return <ListItemText primary={piece?.value} />;
+                  })
+                ) }
 
                 <ListItemText
                   sx={{ textAlign: "center" }}

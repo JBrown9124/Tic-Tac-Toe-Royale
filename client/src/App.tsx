@@ -14,9 +14,7 @@ import socket from "./socket";
 import { Player } from "./Models/Player";
 import Game from "./components/Game/Game";
 import { NewMove } from "./Models/NewMove";
-import {Lobby } from "./Models/Lobby"
-
-
+import { Lobby } from "./Models/Lobby";
 
 function App() {
   const [sessionCookies, setSessionCookie, removeSessionCookie] = useCookies();
@@ -25,23 +23,32 @@ function App() {
     rowIdx: 0,
     tileIdx: 0,
   });
-  const [piece, setPiece] = useState("")
-  const [lobby, setLobby] = useState<Lobby>()
+  const [piece, setPiece] = useState("");
+  const [lobby, setLobby] = useState<Lobby>({
+    lobbyId: 0,
+    board: { size: 0, color: { r: 0, g: 0, b: 0, a: 0 }, winBy: 3 },
+    players: [
+      { name: "", piece: "", isHost: false, playerNumber: 0, isReady: false },
+    ],
+  });
   socket.on("connect", () => {
     console.log("connected to server");
     socket.on("player-join-lobby", (receivedLobby) => {
       // if (receivedLobby.lobbyId === sessionCookies.session?.lobby?.lobbyId) {
-
+      setLobby(receivedLobby);
       setSessionCookie("lobby", receivedLobby, { path: "/" });
       // }
     });
     socket.on("player-leave-lobby", (receivedLobby) => {
+      setLobby(receivedLobby);
       setSessionCookie("lobby", receivedLobby, { path: "/" });
     });
     socket.on("player-ready", (receivedLobby) => {
       setSessionCookie("lobby", receivedLobby, { path: "/" });
+      setLobby(receivedLobby);
     });
     socket.on("start-game", (data) => {
+      setLobby(data.lobby);
       setSessionCookie("lobby", data.lobby, { path: "/" });
       setSessionCookie("gameStatus", data.gameStatus, { path: "/" });
       setSessionCookie("command", "begin", { path: "/" });
@@ -77,10 +84,15 @@ function App() {
         <Grid container direction="column" justifyContent="center">
           {sessionCookies.command === "begin" ? (
             <Grid item>
-              <Game newMove={newMove} />
+              <Game newMove={newMove} lobby={lobby} />
             </Grid>
           ) : (
-            <PregameModal playerPiece={piece} setPiece={(props)=>setPiece(props)}/>
+            <PregameModal
+              setLobby={(props) => setLobby(props)}
+              playerPiece={piece}
+              setPiece={(props) => setPiece(props)}
+              lobby={lobby}
+            />
           )}
         </Grid>
       </Grid>

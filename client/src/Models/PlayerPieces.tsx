@@ -1,4 +1,4 @@
 export interface PlayerPieces{
     playerNumber:number,
-    piece:JSX.Element
+    piece:JSX.Element|string
   }

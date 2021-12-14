@@ -13,24 +13,23 @@ import { RgbaColor } from "react-colorful";
 import { Player } from "../../../Models/Player";
 import createPiece from "../../../storage/createPiece";
 import socket from "../../../socket";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import { PlayerPieces } from "../../../Models/PlayerPieces";
-interface NewMove {
-  playerNumber: number;
-  rowIdx: number;
-  tileIdx: number;
-}
+import { Lobby } from "../../../Models/Lobby";
+import { NewMove } from "../../../Models/NewMove";
+
 interface BoardProps {
   newMove: NewMove;
   playerNumber: number;
+  lobby: Lobby;
 }
 
-export default function Board({ newMove, playerNumber }: BoardProps) {
+export default function Board({ newMove, playerNumber, lobby }: BoardProps) {
   const [board, setBoard] = useState<number[][]>([[]]);
   const [cacheBoard, setCacheBoard] = useState<number[][]>([[]]);
   const [sessionCookies, setSessionCookies, removeSessionCookies] =
     useCookies();
-  const [piece, setPiece] = useState<JSX.Element>();
+  const [piece, setPiece] = useState<JSX.Element|string>();
 
   const [playerPieces, setPlayerPieces] = useState<PlayerPieces[]>();
 
@@ -39,7 +38,7 @@ export default function Board({ newMove, playerNumber }: BoardProps) {
       createBoard(
         setCacheBoard,
         setBoard,
-        sessionCookies?.lobby?.board?.size,
+        lobby.board.size,
         setSessionCookies,
         sessionCookies
       );
@@ -47,24 +46,31 @@ export default function Board({ newMove, playerNumber }: BoardProps) {
 
     const getPlayerPieces = () => {
       let piecesValues: PlayerPieces[] = [];
-      sessionCookies?.lobby?.players?.forEach((player: Player) => {
+      lobby?.players?.forEach((player: Player) => {
+        if (player.playerNumber === playerNumber){
+          setPiece(player.piece.length>15? <img src={player.piece} alt={player.piece} style={{ width: "35px", height: "35px", justifyContent: "center", margin:"auto", textAlign:"center"}}/>:player.piece)
+        }
+        else if (player.piece.length>15 &&  player.playerNumber !== playerNumber){
+          piecesValues.push({
+            playerNumber: player.playerNumber,
+            piece: <img src={player.piece} alt={player.piece} style={{ width: "35px", height: "35px", justifyContent: "center", margin:"auto", textAlign:"center" }} />,
+          });
+        }
         createPiece("white").forEach((piece) => {
           if (piece.name === player.piece) {
             piecesValues.push({
               playerNumber: player.playerNumber,
               piece: piece.value,
             });
+          
           }
+          
         });
       });
 
       setPlayerPieces(piecesValues);
     };
-    createPiece("white").map((piece) => {
-      if (piece.name === sessionCookies.piece) {
-        setPiece(piece.value);
-      }
-    });
+    
     getPlayerPieces();
   }, [sessionCookies?.command]);
   useEffect(() => {
@@ -81,7 +87,6 @@ export default function Board({ newMove, playerNumber }: BoardProps) {
             <Tile
               playerNumber={playerNumber}
               playerPieces={playerPieces}
-             
               updateBoardCache={() =>
                 sessionCookies?.gameStatus?.whoTurn === playerNumber
                   ? determineWinner(
@@ -89,7 +94,7 @@ export default function Board({ newMove, playerNumber }: BoardProps) {
                       tileIdx,
                       cacheBoard,
 
-                      sessionCookies?.lobby?.board?.size,
+                     lobby?.board?.size,
                       playerNumber,
                       setSessionCookies,
                       sessionCookies
@@ -99,7 +104,7 @@ export default function Board({ newMove, playerNumber }: BoardProps) {
               value={tile}
               newMove={newMove}
               chosenPiece={piece}
-              boardColor={sessionCookies?.lobby?.board?.color}
+              boardColor={lobby?.board?.color}
             />
           ))}
         </Grid>
