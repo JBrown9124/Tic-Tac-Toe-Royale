@@ -29,7 +29,7 @@ export default function Board({ newMove, playerNumber, lobby }: BoardProps) {
   const [cacheBoard, setCacheBoard] = useState<number[][]>([[]]);
   const [sessionCookies, setSessionCookies, removeSessionCookies] =
     useCookies();
-  const [piece, setPiece] = useState<JSX.Element|string>();
+  const [piece, setPiece] = useState<JSX.Element | string>();
 
   const [playerPieces, setPlayerPieces] = useState<PlayerPieces[]>();
 
@@ -47,13 +47,43 @@ export default function Board({ newMove, playerNumber, lobby }: BoardProps) {
     const getPlayerPieces = () => {
       let piecesValues: PlayerPieces[] = [];
       lobby?.players?.forEach((player: Player) => {
-        if (player.playerNumber === playerNumber){
-          setPiece(player.piece.length>15? <img src={player.piece} alt={player.piece} style={{ width: "35px", height: "35px", justifyContent: "center", margin:"auto", textAlign:"center"}}/>:player.piece)
-        }
-        else if (player.piece.length>15 &&  player.playerNumber !== playerNumber){
+        if (player.playerNumber === playerNumber) {
+          setPiece(
+            player.piece.length > 15 ? (
+              <img
+                src={player.piece}
+                alt={player.piece}
+                style={{
+                  width: "35px",
+                  height: "35px",
+                  justifyContent: "center",
+                  margin: "auto",
+                  textAlign: "center",
+                }}
+              />
+            ) : (
+              player.piece
+            )
+          );
+        } else if (
+          player.piece.length > 15 &&
+          player.playerNumber !== playerNumber
+        ) {
           piecesValues.push({
             playerNumber: player.playerNumber,
-            piece: <img src={player.piece} alt={player.piece} style={{ width: "35px", height: "35px", justifyContent: "center", margin:"auto", textAlign:"center" }} />,
+            piece: (
+              <img
+                src={player.piece}
+                alt={player.piece}
+                style={{
+                  width: "35px",
+                  height: "35px",
+                  justifyContent: "center",
+                  margin: "auto",
+                  textAlign: "center",
+                }}
+              />
+            ),
           });
         }
         createPiece("white").forEach((piece) => {
@@ -62,15 +92,13 @@ export default function Board({ newMove, playerNumber, lobby }: BoardProps) {
               playerNumber: player.playerNumber,
               piece: piece.value,
             });
-          
           }
-          
         });
       });
 
       setPlayerPieces(piecesValues);
     };
-    
+
     getPlayerPieces();
   }, [sessionCookies?.command]);
   useEffect(() => {
@@ -94,7 +122,7 @@ export default function Board({ newMove, playerNumber, lobby }: BoardProps) {
                       tileIdx,
                       cacheBoard,
 
-                     lobby?.board?.size,
+                      lobby?.board?.size,
                       playerNumber,
                       setSessionCookies,
                       sessionCookies
