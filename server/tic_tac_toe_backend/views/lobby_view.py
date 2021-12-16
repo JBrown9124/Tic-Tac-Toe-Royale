@@ -14,12 +14,13 @@ from ..Models.player import Player
 # Create your views here.
 class Lobby(APIView):
     def post(self, request: Request):
-        """takes name of requester. creates lobby"""
+        """takes name of requester and sid of requester. creates lobby"""
         body = request.data
         player_name = body.get("playerName")
+        host_sid = body.get("hostSid")
         player = Player(name=player_name, is_host=True, player_number=1).to_dict()
-        lobby_id = randrange(999)
-        lobby = LobbyModel(lobby_id=lobby_id)
+        lobby_id = randrange(99999)
+        lobby = LobbyModel(lobby_id=lobby_id, host_sid=host_sid)
 
         lobby.players.append(player)
         lobby_dict = lobby.to_dict()
@@ -52,7 +53,7 @@ class Lobby(APIView):
         or if the host left remove all players from lobby."""
         body = request.data
         player_name = body.get("playerName")
-        lobby_id = body.get("lobbyId")
+        lobby_id = int(body.get("lobbyId"))
         lobby_copy = lobbys[lobby_id]
         lobby_players_copy = lobby_copy["players"]
         for player in lobby_players_copy:

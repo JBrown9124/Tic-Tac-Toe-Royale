@@ -1,4 +1,4 @@
-const createBoard = (setCacheBoard:Function, setBoard:Function, boardSize:number, setSessionCookies:Function, sessionCookies:any): void => {
+const createBoard = (setBoard:Function, boardSize:number, moves:Object[]): void => {
     let board: number[][] = [];
     
     for (let i = 0; i < boardSize; i++) {
@@ -9,14 +9,18 @@ const createBoard = (setCacheBoard:Function, setBoard:Function, boardSize:number
       }
       board.push(row);
     }
+ 
+  
+      
+    moves?.map((move:any)=>board[move.rowIdx][move.tileIdx]=move.playerNumber);
     // if (sessionCookies?.boardMoves!==undefined){
     //   sessionCookies?.boardMoves?.map((move:any)=>board[move.rowIdx][move.tileIdx]=move.playerNumber)
     // }
     // let row:  number[] = Array(boardSize).fill(0);
     // let board: number[][] = Array(boardSize).fill(row);
     console.log(board, "BOARD");
-    setCacheBoard(board);
-    setBoard(board);
+
+    return setBoard([...board]);
     
   };
 export default createBoard;

@@ -1,13 +1,16 @@
 import socket from "../socket";
 import newMove from "./newMove";
+import {Lobby} from "../Models/Lobby"
+import {GameStatus} from "../Models/GameStatus"
 const determineWinner = (
   rowIdx: number,
   tileIdx: number,
   board: number[][],
   boardSize: number,
   playerNumber: number,
-  setSessionCookies: Function,
-  sessionCookies: any
+  lobby: Lobby,
+  setGameStatus:Function,
+  gameStatus: GameStatus
 ) => {
   board[rowIdx][tileIdx] = playerNumber;
 
@@ -217,23 +220,23 @@ const determineWinner = (
     rowIdx: rowIdx,
     tileIdx: tileIdx,
     won:
-      checkHorizontal(sessionCookies?.lobby?.board?.winBy) ||
-      checkVertical(sessionCookies?.lobby?.board?.winBy) ||
-      checkDiagonal(sessionCookies?.lobby?.board?.winBy),
+      checkHorizontal(lobby?.board?.winBy) ||
+      checkVertical(lobby?.board?.winBy) ||
+      checkDiagonal(lobby?.board?.winBy),
     playerNumber: playerNumber,
   };
 
   const reqBody = {
-    lobbyId: sessionCookies?.lobby?.lobbyId,
+    lobbyId: lobby?.lobbyId,
     newMove: boardMove,
   };
   newMove(reqBody);
-  setSessionCookies("gameStatus", {
+  setGameStatus( {
     whoWon: boardMove.won && playerNumber,
     whoTurn:
-      sessionCookies.lobby.players.length === playerNumber
+      lobby.players.length === playerNumber
         ? 1
-        : sessionCookies.gameStatus.whoTurn + 1,
+        : gameStatus.whoTurn + 1,
   });
 
   // if (sessionCookies?.boardMoves !==undefined){

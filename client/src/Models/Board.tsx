@@ -3,4 +3,5 @@ export interface Board{
     color:RgbaColor,
     size:number,
     winBy:number,
+    moves:Object[]
 }

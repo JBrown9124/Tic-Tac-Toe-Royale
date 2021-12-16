@@ -16,7 +16,7 @@ import createLobby from "../../creators/createLobby";
 import joinLobby from "../../creators/joinLobby";
 import leaveLobby from "../../creators/leaveLobby";
 import startGame from "../../creators/startGame";
-import {Lobby} from "../../Models/Lobby"
+import { Lobby } from "../../Models/Lobby";
 interface LobbyProps {
   lobbyId: number;
   players: Player[];
@@ -24,14 +24,14 @@ interface LobbyProps {
 interface PregameModalProps {
   setPiece: (piece: string) => void;
   playerPiece: string;
-  lobby:Lobby
-  setLobby:(lobby:Lobby) => void;
+  lobby: Lobby;
+  setLobby: (lobby: Lobby) => void;
 }
 export default function PregameModal({
   setPiece,
   playerPiece,
   lobby,
-  setLobby
+  setLobby,
 }: PregameModalProps) {
   const [open, setOpen] = useState(true);
   const [isLobbyFound, setIsLobbyFound] = useState<boolean>(true);
@@ -64,15 +64,12 @@ export default function PregameModal({
     setSessionCookie("command", "start", { path: "/" });
   };
   useEffect(() => {
-    if (
-      sessionCookies?.command === "create" &&
-      sessionCookies?.lobby === undefined
-    ) {
+    if (sessionCookies?.command === "create") {
       const startLobby = async () => {
         const reqBody = { playerName: sessionCookies?.name };
         const lobbyInfo = await createLobby(reqBody);
-        setSessionCookie("lobby", lobbyInfo, { path: "/" });
-        setLobby(lobbyInfo)
+        setSessionCookie("lobbyId", lobbyInfo.lobbyId, { path: "/" });
+        setLobby(lobbyInfo);
 
         console.log(lobbyInfo, "startLobby");
       };
@@ -83,10 +80,7 @@ export default function PregameModal({
         { path: "/" }
       );
     }
-    if (
-      sessionCookies?.command === "guest" &&
-      sessionCookies?.lobby === undefined
-    ) {
+    if (sessionCookies?.command === "guest") {
       const findLobby = async () => {
         const reqBody = {
           lobbyId: lobbyIdItem,
@@ -100,8 +94,8 @@ export default function PregameModal({
           setIsLobbyFound(false);
         } else {
           setIsLobbyFound(true);
-          setSessionCookie("lobby", lobbyInfo, { path: "/" });
-          setLobby(lobbyInfo)
+          setSessionCookie("lobbyId", lobbyIdItem, { path: "/" });
+          setLobby(lobbyInfo);
         }
       };
       findLobby();
@@ -110,21 +104,18 @@ export default function PregameModal({
       const leavingLobby = async () => {
         console.log(sessionCookies?.lobby?.lobbyId, "leavingLobbyId");
         const reqBody = {
-          lobbyId: lobby?.lobbyId,
+          lobbyId: sessionCookies?.lobbyId,
           playerName: playerName,
+          hostSid:lobby.hostSid
         };
         const lobbyInfo = await leaveLobby(reqBody);
+        removeSessionCookies("lobbyId");
+        removeSessionCookies("command");
+        removeSessionCookies("name");
+
+        removeSessionCookies("piece");
       };
       leavingLobby();
-      removeSessionCookies("lobby");
-      setLobby({
-        lobbyId: 0,
-        board: { size: 0, color: { r: 0, g: 0, b: 0, a: 0 }, winBy: 3 },
-        players: [
-          { name: "", piece: "", isHost: false, playerNumber: 0, isReady: false },
-        ],
-      })
-      removeSessionCookies("piece");
     }
     if (sessionCookies?.command === "start") {
       const initiateGame = async () => {
@@ -135,9 +126,9 @@ export default function PregameModal({
           piece: playerPiece,
         };
         const lobbyInfo = await startGame(reqBody);
-        setLobby(lobbyInfo?.lobby)
-        setSessionCookie("lobby", lobbyInfo?.lobby, { path: "/" });
-        setSessionCookie("gameStatus", lobbyInfo?.gameStatus, { path: "/" });
+
+        setSessionCookie("lobbyId", lobbyInfo?.lobby?.lobbyId, { path: "/" });
+
         setSessionCookie("command", "begin", { path: "/" });
       };
       initiateGame();
@@ -181,7 +172,7 @@ export default function PregameModal({
           )}
           {sessionCookies?.command === "guest" && isLobbyFound && (
             <GuestLobby
-            lobby={lobby}
+              lobby={lobby}
               setPiece={(props) => setPiece(props)}
               playerPiece={playerPiece}
               handleLeave={() => handleLeaveSelect()}
@@ -190,7 +181,7 @@ export default function PregameModal({
 
           {sessionCookies?.command === "create" && (
             <HostLobby
-              players = {lobby?.players}
+              players={lobby?.players}
               handleLeave={() => handleLeaveSelect()}
               setPiece={(props) => setPiece(props)}
               playerPiece={playerPiece}

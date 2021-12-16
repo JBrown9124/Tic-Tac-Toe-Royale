@@ -3,6 +3,7 @@ import axios from "axios";
 interface BodyProps {
   playerName: string;
   lobbyId: number;
+  hostSid:number
 }
 const saveLeaveLobby = async (body: BodyProps) => {
   console.log(body, "saveLeaveLobbyBody");
@@ -11,15 +12,17 @@ const saveLeaveLobby = async (body: BodyProps) => {
   });
   return data;
 };
-const sendLeaveLobby = (data: any) => {
+const sendLeaveLobby = (data: any, body:BodyProps) => {
   socket.emit("player-leave-lobby", {
     lobby: data.lobby,
+
+    hostSid:body.hostSid
   });
 };
 const leaveLobby = async (body: BodyProps) => {
   try {
     const data = await saveLeaveLobby(body);
-    sendLeaveLobby(data);
+    sendLeaveLobby(data, body);
     console.log(data, "leaveLobbyData");
     return await data.lobby;
   } catch (e) {

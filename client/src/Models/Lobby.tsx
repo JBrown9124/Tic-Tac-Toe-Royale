@@ -3,5 +3,6 @@ import {Board} from "./Board";
 export interface Lobby{
     board:Board,
     players:Player[], 
-    lobbyId:number
+    lobbyId:number,
+    hostSid:number,
 }

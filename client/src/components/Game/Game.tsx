@@ -6,12 +6,16 @@ import { useCookies } from "react-cookie";
 import { Player } from "../../Models/Player";
 import { useState, useEffect } from "react";
 import {Lobby} from "../../Models/Lobby";
+import {GameStatus} from "../../Models/GameStatus";
 import StatusBoard from "./StatusBoard/StatusBoard";
 interface GameProps {
   newMove: NewMove;
   lobby:Lobby
+  setLobby:(lobbyInfo:Lobby)=>void;
+  gameStatus:GameStatus;
+  setGameStatus:(status:GameStatus)=>void;
 }
-function Game({ newMove, lobby}: GameProps) {
+function Game({ newMove, lobby, setLobby, gameStatus, setGameStatus}: GameProps) {
   const [sessionCookies, setSessionCookies] = useCookies();
   const [playerNumber, setPlayerNumber] = useState(0);
 
@@ -28,11 +32,11 @@ function Game({ newMove, lobby}: GameProps) {
     <>
       <Grid container direction="column">
         <Grid item xs={6}>
-          <StatusBoard />
+          <StatusBoard gameStatus={gameStatus}players={lobby?.players} />
         </Grid>
 
         <Grid container item sx={{justifyContent: "center", margin:"auto"}}>
-          <Board lobby={lobby}newMove={newMove} playerNumber={playerNumber} />
+          <Board gameStatus={gameStatus} setGameStatus={(props)=>setGameStatus(props)} setLobby={(props)=>setLobby(props)}lobby={lobby}newMove={newMove} playerNumber={playerNumber} />
         </Grid>
       </Grid>
     </>

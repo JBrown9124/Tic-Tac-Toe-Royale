@@ -10,7 +10,7 @@ const saveLobby = async (body: Body) => {
 };
 const sendLobbyInfo = (data: any) => {
   socket.emit("player-join-lobby", {
-    lobby: data.lobby,
+    player: data?.lobby?.players[data?.lobby?.players?.length - 1], lobbyId: data?.lobby?.lobbyId, hostSid:data?.lobby?.hostSid
   });
 };
 const joinLobby = async (body: Body) => {

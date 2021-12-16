@@ -6,7 +6,7 @@ import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import { RgbaColor } from "react-colorful";
 import { useCookies } from "react-cookie";
-
+import {GameStatus} from "../../../Models/GameStatus"
 import {PlayerPieces} from "../../../Models/PlayerPieces"
 interface TileProps {
   chosenPiece: JSX.Element | string|undefined;
@@ -16,6 +16,7 @@ interface TileProps {
   playerPieces: PlayerPieces[]|undefined
   playerNumber:number
   updateBoardCache: () => void;
+  gameStatus: GameStatus
   
 }
 export const Tile = ({
@@ -25,7 +26,7 @@ export const Tile = ({
   updateBoardCache,
   newMove,
   playerPieces,
-
+  gameStatus,
   playerNumber
 }: TileProps) => {
   const [tile, setTile] = useState<{
@@ -49,7 +50,7 @@ export const Tile = ({
       <TileHover beforeColor={boardColor}>
         <Grid
           //  onClick={() => selectTile(rowIdx, tileIdx)}
-          onClick={()=>sessionCookies.gameStatus.whoTurn===playerNumber && sessionCookies.gameStatus.whoWon === null ?handleClick():""}
+          onClick={()=>gameStatus.whoTurn===playerNumber && gameStatus.whoWon === null ?handleClick():""}
           item
           container
           direction="column"
@@ -62,10 +63,12 @@ export const Tile = ({
         >
           <Grid item sx={{}}>
           {typeof tile.value === "number"?" ":chosenPiece}
-            {tile.value||value === 0 ? "" : playerPieces?.map((playerPiece)=>{
+            { playerPieces?.map((playerPiece)=>{
               if (playerPiece.playerNumber === value){
                 return playerPiece.piece
+             
               }
+              else if (value ===playerNumber){return chosenPiece}
             })}
           </Grid>
         </Grid>

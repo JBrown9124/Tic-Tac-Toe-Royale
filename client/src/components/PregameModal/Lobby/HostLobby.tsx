@@ -40,7 +40,7 @@ export default function HostLobby({ handleLeave, playerPiece, setPiece, players 
             </Button>
           </Grid>
           <Grid item>
-            <Typography>{sessionCookies?.lobby?.lobbyId}</Typography>
+            <Typography>{sessionCookies?.lobbyId}</Typography>
           </Grid>
           <Grid item>
             <Button sx={{ background: "purple" }} onClick={handleStart}>

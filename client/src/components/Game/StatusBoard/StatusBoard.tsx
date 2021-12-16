@@ -2,7 +2,12 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { useCookies } from "react-cookie";
 import { Player } from "../../../Models/Player";
-export default function StatusBoard() {
+import {GameStatus} from "../../../Models/GameStatus";
+interface StatusBoardProps{
+  players: Player[];
+  gameStatus: GameStatus;
+}
+export default function StatusBoard({players, gameStatus}:StatusBoardProps) {
   const [sessionCookies, setSessionCookies] = useCookies();
   return (
     <>
@@ -28,13 +33,13 @@ export default function StatusBoard() {
       >
         <Grid item>
           <Typography variant="h6">
-            {sessionCookies?.lobby?.players?.map((player: Player) => {
-              if (sessionCookies.gameStatus.whoWon) {
-                if (player.playerNumber === sessionCookies.gameStatus.whoWon) {
+            {players?.map((player: Player) => {
+              if (gameStatus.whoWon) {
+                if (player.playerNumber === gameStatus.whoWon) {
                   return `${player.name} Wins!`;
                 }
               } else if (
-                player.playerNumber === sessionCookies.gameStatus.whoTurn
+                player.playerNumber === gameStatus.whoTurn
               )
                 return `${player.name}'s Turn` ;
             })}

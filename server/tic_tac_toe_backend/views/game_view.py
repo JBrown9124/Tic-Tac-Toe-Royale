@@ -15,6 +15,16 @@ from ..Models.game_status import GameStatus
 
 # Create your views here.
 class Game(APIView):
+    def get(self, request: Request):
+        """takes lobbyId. gets lobby, game status for guest users when game starts and handles getting game data for refresh of browser"""
+        test_request = request
+        body = request.query_params
+        lobby_id = int(body.get('lobbyId'))
+        lobby = lobbys[lobby_id]
+        lobby_response = LobbyResponseModel(
+                    lobby=lobby, lobby_id=lobby_id
+                ).to_dict()
+        return JsonResponse({"lobby": lobby_response})
     def post(self, request: Request):
         """start game. takes board settings and lobbyId. updates lobby with new board settings. returns lobby with updated board settings."""
         body = request.data
@@ -39,7 +49,7 @@ class Game(APIView):
                 lobby_response = LobbyResponseModel(
                     lobby=lobby_copy, lobby_id=lobby_id
                 ).to_dict()
-                return JsonResponse({"lobby": lobby_response, "gameStatus":game_status_model})
+                return JsonResponse({"lobby": lobby_response})
 
     def put(self, request: Request):
         """takes guests player settings when they hit ready button and lobbyId, changes ready status to true"""

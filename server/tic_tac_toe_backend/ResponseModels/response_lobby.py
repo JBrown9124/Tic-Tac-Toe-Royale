@@ -7,4 +7,4 @@ class LobbyResponseModel(object):
         self.lobby_id = lobby_id
 
     def to_dict(self):
-        return {"board": self.lobby["board"], "players": self.lobby["players"], "lobbyId": self.lobby_id}
+        return {"board": self.lobby["board"], "players": self.lobby["players"], "lobbyId": self.lobby_id, "hostSid":self.lobby["hostSid"],"gameStatus": self.lobby["gameStatus"]}
