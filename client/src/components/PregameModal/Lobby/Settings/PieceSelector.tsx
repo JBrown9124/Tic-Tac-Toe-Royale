@@ -21,7 +21,7 @@ interface PieceSelectorProps{
 export default function PieceSelector({setPiece, playerPiece}:PieceSelectorProps) {
   const [sessionCookies, setSessionCookie] = useCookies();
   // const [image, setPiece] = useState<any>();
-
+  const pieces = createPiece("black")
   const handleImageUpload = (event: any) => {
     getBase64(event[0], (result: string) => {
       setPiece(result);
@@ -53,8 +53,9 @@ export default function PieceSelector({setPiece, playerPiece}:PieceSelectorProps
                 overflow: "auto",
               }}
             >
-              {createPiece("black").map((piece) => (
+              {pieces.map((piece) => (
                 <ListItemButton
+                key={piece.name}
                   onClick={() =>
                     setPiece(piece.name)
                   }
@@ -65,7 +66,7 @@ export default function PieceSelector({setPiece, playerPiece}:PieceSelectorProps
               ))}
             </List>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={6} >
             {playerPiece.length>15 ? (
               <img
                 src={playerPiece}
@@ -73,7 +74,7 @@ export default function PieceSelector({setPiece, playerPiece}:PieceSelectorProps
                 style={{ width: "40px", height: "40px" }}
               />
             ) : (
-              createPiece("black").map((piece) => {
+              pieces.map((piece) => {
                 if (piece.name === playerPiece) {
                   return piece.value;
                 }

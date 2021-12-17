@@ -11,11 +11,11 @@ import StatusBoard from "./StatusBoard/StatusBoard";
 interface GameProps {
   newMove: NewMove;
   lobby:Lobby
-  setLobby:(lobbyInfo:Lobby)=>void;
+
   gameStatus:GameStatus;
   setGameStatus:(status:GameStatus)=>void;
 }
-function Game({ newMove, lobby, setLobby, gameStatus, setGameStatus}: GameProps) {
+function Game({ newMove, lobby, gameStatus, setGameStatus}: GameProps) {
   const [sessionCookies, setSessionCookies] = useCookies();
   const [playerNumber, setPlayerNumber] = useState(0);
 
@@ -36,7 +36,7 @@ function Game({ newMove, lobby, setLobby, gameStatus, setGameStatus}: GameProps)
         </Grid>
 
         <Grid container item sx={{justifyContent: "center", margin:"auto"}}>
-          <Board gameStatus={gameStatus} setGameStatus={(props)=>setGameStatus(props)} setLobby={(props)=>setLobby(props)}lobby={lobby}newMove={newMove} playerNumber={playerNumber} />
+          <Board gameStatus={gameStatus} setGameStatus={(props)=>setGameStatus(props)} lobby={lobby}newMove={newMove} playerNumber={playerNumber} />
         </Grid>
       </Grid>
     </>

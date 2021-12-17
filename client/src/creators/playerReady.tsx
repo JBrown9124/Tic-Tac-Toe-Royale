@@ -1,8 +1,9 @@
-import socket from "../socket";
+import {socket}from "../socket";
 import axios from "axios";
 interface BodyProps {
   player:{name:string, piece:string},
-  lobbyId:number
+  lobbyId:number,
+  hostSid:number
   
 }
 const savePlayerReady = async (body: BodyProps) => {
@@ -12,15 +13,16 @@ const savePlayerReady = async (body: BodyProps) => {
   );
   return data;
 };
-const sendPlayerReady = (data: any) => {
+const sendPlayerReady = (body: BodyProps) => {
+  
   socket.emit("player-ready", {
-    data,
-  });
+    hostSid:body.hostSid},
+  );
 };
 const playerReady = async (body: BodyProps) => {
   try {
     const data = await savePlayerReady(body);
-    sendPlayerReady(data);
+    sendPlayerReady(body);
     console.log(data, "playerReadyData");
     return await data.lobby;
   } catch (e) {

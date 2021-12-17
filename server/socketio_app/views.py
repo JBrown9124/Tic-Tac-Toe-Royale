@@ -1,4 +1,4 @@
-async_mode = "eventlet"
+async_mode = None
 
 import os
 
@@ -6,57 +6,87 @@ import socketio
 
 
 basedir = os.path.dirname(os.path.realpath(__file__))
-sio = socketio.Server(async_mode=async_mode, logger=True, engineio_logger=True, cors_allowed_origins="*" )
+sio = socketio.Server(
+    async_mode=async_mode, logger=True, engineio_logger=True, cors_allowed_origins="*"
+)
 
 thread = None
 rooms = []
 
+
 @sio.event
 def connect(sid, environ):
-    sio.emit("my_response", {"data": "Connected", "count": 0}, room=sid  )
+    print(sio.rooms(sid))
+    for room in rooms:
+        sio.leave_room(sid, room)
+    
+    sio.emit("my_response", {"data": "Connected", "count": 0}, room=sid)
+
 
 @sio.on("new-lobby")
 def new_lobby(sid, lobby):
-  
+    print(sid)
+    sio.enter_room(sid, sid)
+    print(sio.rooms(sid))
     sio.emit("my_response", room=sid, skip_sid=sid)
+
+
 @sio.on("player-join-lobby")
 def player_joined(sid, player):
-    hostSid = player['hostSid']
-    sio.enter_room(hostSid, f'lobby-{hostSid}')
-    sio.emit("player-join-lobby", player['player'], room=player['hostSid'], skip_sid=sid)
+    hostSid = player["hostSid"]
+    rooms = sio.rooms(sid)
+    for room in rooms:
+        sio.leave_room(sid, room)
+    sio.enter_room(sid, hostSid)
+    print(sio.rooms(sid))
+    sio.emit("player-join-lobby", player["player"], room=hostSid, skip_sid=sid)
 
 
 @sio.on("player-leave-lobby")
 def player_left(sid, lobby):
-    print(lobby)
+    print(lobby["playerName"])
+   
+    hostSid = lobby["hostSid"]
+    rooms = sio.rooms(sid)
+    for room in rooms:
+        sio.leave_room(sid, room)
     
-    hostSid=lobby['hostSid']
-    sio.leave_room(hostSid, f'lobby-{hostSid}')
-    if len(lobby['lobby'])==0:
-        sio.close_room(hostSid, f'lobby-{hostSid}')
-    sio.emit("player-leave-lobby", lobby['lobby'],room= hostSid, skip_sid=sid)
+    print(sio.rooms(sid))
+    if sid == hostSid:
+        sio.close_room(hostSid)
+   
+    sio.emit("player-leave-lobby", lobby["playerName"], room=hostSid, skip_sid=sid)
 
 
 @sio.on("player-ready")
-def player_ready(sid, lobby):
+def player_ready(sid, data):
+    print(data,"DATA")
+    host_sid = data["hostSid"]
     sio.emit(
         "player-ready",
-        lobby['data']['lobby'],
+        
+        room=host_sid,
         skip_sid=sid,
     )
+
+
 @sio.on("start-game")
 def start_game(sid, data):
     sio.emit(
         "start-game",
-        {"lobbyId":data['lobbyId']},
+        {"lobbyId": data["lobbyId"]},
+        room=data["hostSid"],
         skip_sid=sid,
     )
 
+
 @sio.on("new-move")
-def game_status(sid, data):
+def game_status(sid, received_data):
+    data = received_data['data']
+    host_sid = received_data['hostSid']
     sio.emit(
         "new-move",
         {"newMove": data["newMove"], "gameStatus": data["gameStatus"]},
+        room=host_sid,
         skip_sid=sid,
     )
-

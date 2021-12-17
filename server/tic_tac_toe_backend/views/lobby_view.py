@@ -35,7 +35,7 @@ class Lobby(APIView):
         return new lobby state to client"""
         body = request.data
         player_name = body.get("playerName")
-        lobby_id = body.get("lobbyId")
+        lobby_id = int(body.get("lobbyId"))
 
        
         try:

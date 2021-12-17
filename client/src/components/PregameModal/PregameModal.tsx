@@ -6,7 +6,7 @@ import Settings from "./Lobby/Settings/Settings";
 import React, { useState, useEffect } from "react";
 import Welcome from "./Welcome";
 import CircularProgress from "@mui/material/CircularProgress";
-
+import {LobbyContext} from "../../storage/lobbyContext"
 import { useCookies } from "react-cookie";
 import HostLobby from "./Lobby/HostLobby";
 import Join from "./Join";
@@ -25,7 +25,7 @@ interface PregameModalProps {
   setPiece: (piece: string) => void;
   playerPiece: string;
   lobby: Lobby;
-  setLobby: (lobby: Lobby) => void;
+  setLobby: (lobbyValue: Lobby) => void;
 }
 export default function PregameModal({
   setPiece,
@@ -35,7 +35,7 @@ export default function PregameModal({
 }: PregameModalProps) {
   const [open, setOpen] = useState(true);
   const [isLobbyFound, setIsLobbyFound] = useState<boolean>(true);
-  const [playerName, setPlayerName] = useState("Tic Tac Toe Master");
+ 
   const [lobbyIdItem, setLobbyIdItem] = useState(0);
   const [sessionCookies, setSessionCookie, removeSessionCookies] = useCookies();
 
@@ -44,15 +44,13 @@ export default function PregameModal({
 
   const handleCreateGameSelect = (name: string) => {
     setSessionCookie("command", "create", { path: "/" });
-    setSessionCookie("name", name, { path: "/" });
   };
   const handleJoinSelect = (name: string) => {
     setSessionCookie("command", "join", { path: "/" });
-    setSessionCookie("name", name, { path: "/" });
   };
   const handleFindSubmit = (lobbyId: number) => {
-    setSessionCookie("command", "guest", { path: "/" });
     setLobbyIdItem(lobbyId);
+    setSessionCookie("command", "guest", { path: "/" });
   };
   const handleJoinBackSelect = () => {
     removeSessionCookies("command");
@@ -64,7 +62,7 @@ export default function PregameModal({
     setSessionCookie("command", "start", { path: "/" });
   };
   useEffect(() => {
-    if (sessionCookies?.command === "create") {
+    if (sessionCookies?.command === "create" && sessionCookies.lobbyId===undefined ) {
       const startLobby = async () => {
         const reqBody = { playerName: sessionCookies?.name };
         const lobbyInfo = await createLobby(reqBody);
@@ -80,7 +78,7 @@ export default function PregameModal({
         { path: "/" }
       );
     }
-    if (sessionCookies?.command === "guest") {
+    if (sessionCookies?.command === "guest" && sessionCookies.lobbyId===undefined ) {
       const findLobby = async () => {
         const reqBody = {
           lobbyId: lobbyIdItem,
@@ -105,17 +103,24 @@ export default function PregameModal({
         console.log(sessionCookies?.lobby?.lobbyId, "leavingLobbyId");
         const reqBody = {
           lobbyId: sessionCookies?.lobbyId,
-          playerName: playerName,
-          hostSid:lobby.hostSid
+          playerName: sessionCookies?.name,
+          hostSid: lobby.hostSid,
         };
         const lobbyInfo = await leaveLobby(reqBody);
-        removeSessionCookies("lobbyId");
-        removeSessionCookies("command");
-        removeSessionCookies("name");
-
-        removeSessionCookies("piece");
       };
       leavingLobby();
+      removeSessionCookies("lobbyId");
+      removeSessionCookies("command");
+      removeSessionCookies("name");
+      setLobby({
+        hostSid:0,
+        lobbyId: 0,
+        board: { size: 0, color: { r: 0, g: 0, b: 0, a: 0 }, winBy: 3, moves: [] },
+        players: [
+         
+        ],
+      })
+      removeSessionCookies("piece");
     }
     if (sessionCookies?.command === "start") {
       const initiateGame = async () => {
@@ -127,9 +132,9 @@ export default function PregameModal({
         };
         const lobbyInfo = await startGame(reqBody);
 
-        setSessionCookie("lobbyId", lobbyInfo?.lobby?.lobbyId, { path: "/" });
+        await setSessionCookie("lobbyId", lobbyInfo?.lobby?.lobbyId, { path: "/" });
 
-        setSessionCookie("command", "begin", { path: "/" });
+        await setSessionCookie("command", "begin", { path: "/" });
       };
       initiateGame();
     }

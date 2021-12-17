@@ -13,7 +13,7 @@ import { useCookies } from "react-cookie";
 import { RgbaColor } from "react-colorful";
 import { Player } from "../../../Models/Player";
 import createPiece from "../../../storage/createPiece";
-import socket from "../../../socket";
+
 import { v4 as uuidv4 } from "uuid";
 import { PlayerPieces } from "../../../Models/PlayerPieces";
 import { Lobby } from "../../../Models/Lobby";
@@ -24,7 +24,7 @@ interface BoardProps {
   newMove: NewMove;
   playerNumber: number;
   lobby: Lobby;
-  setLobby: (lobbyInfo: Lobby) => void;
+  
   setGameStatus: (status: GameStatus) => void;
   gameStatus: GameStatus;
 }
@@ -107,7 +107,7 @@ export default function Board({
     getPlayerPieces();
     createBoard(setBoard, lobby.board.size, lobby.board.moves);
   }
-  }, [ playerNumber, sessionCookies.command]);
+  }, [ lobby.board.size, lobby?.players, playerNumber, sessionCookies.command]);
   
   useEffect(() => {
     if (newMove.playerNumber !== 0) {

@@ -6,18 +6,17 @@ import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import { RgbaColor } from "react-colorful";
 import { useCookies } from "react-cookie";
-import {GameStatus} from "../../../Models/GameStatus"
-import {PlayerPieces} from "../../../Models/PlayerPieces"
+import { GameStatus } from "../../../Models/GameStatus";
+import { PlayerPieces } from "../../../Models/PlayerPieces";
 interface TileProps {
-  chosenPiece: JSX.Element | string|undefined;
+  chosenPiece: JSX.Element | string | undefined;
   boardColor: RgbaColor;
   newMove: any;
   value: number | JSX.Element;
-  playerPieces: PlayerPieces[]|undefined
-  playerNumber:number
+  playerPieces: PlayerPieces[] | undefined;
+  playerNumber: number;
   updateBoardCache: () => void;
-  gameStatus: GameStatus
-  
+  gameStatus: GameStatus;
 }
 export const Tile = ({
   boardColor,
@@ -27,30 +26,31 @@ export const Tile = ({
   newMove,
   playerPieces,
   gameStatus,
-  playerNumber
+  playerNumber,
 }: TileProps) => {
   const [tile, setTile] = useState<{
     value: String | JSX.Element | number | undefined;
   }>({ value: value });
   const [sessionCookies, setSessionCookies] = useCookies();
-  
- 
-  const handleClick = () => {
-    if (value ===0 ){
-    setTile({ value:  chosenPiece});
-    console.log(chosenPiece,"chosenPiece")
-    updateBoardCache();}
 
-  
+  const handleClick = () => {
+    if (value === 0) {
+      setTile({ value: chosenPiece });
+      console.log(chosenPiece, "chosenPiece");
+      updateBoardCache();
+    }
   };
-  
-  
+
   return (
     <>
       <TileHover beforeColor={boardColor}>
         <Grid
           //  onClick={() => selectTile(rowIdx, tileIdx)}
-          onClick={()=>gameStatus.whoTurn===playerNumber && gameStatus.whoWon === null ?handleClick():""}
+          onClick={() =>
+            gameStatus.whoTurn === playerNumber && gameStatus.whoWon === null
+              ? handleClick()
+              : ""
+          }
           item
           container
           direction="column"
@@ -62,13 +62,13 @@ export const Tile = ({
           }}
         >
           <Grid item sx={{}}>
-          {typeof tile.value === "number"?" ":chosenPiece}
-            { playerPieces?.map((playerPiece)=>{
-              if (playerPiece.playerNumber === value){
-                return playerPiece.piece
-             
+         
+            {playerPieces?.map((playerPiece) => {
+              if (playerPiece.playerNumber === value) {
+                return playerPiece.piece;
+              } else if (value === playerNumber) {
+                return chosenPiece;
               }
-              else if (value ===playerNumber){return chosenPiece}
             })}
           </Grid>
         </Grid>

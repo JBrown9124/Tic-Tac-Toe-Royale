@@ -1,4 +1,4 @@
-import socket from "../socket";
+import {socket}from "../socket";
 import axios from "axios";
 interface BodyProps {
   playerName: string;
@@ -13,8 +13,10 @@ const saveLeaveLobby = async (body: BodyProps) => {
   return data;
 };
 const sendLeaveLobby = (data: any, body:BodyProps) => {
+  
   socket.emit("player-leave-lobby", {
     lobby: data.lobby,
+    playerName:body.playerName,
 
     hostSid:body.hostSid
   });

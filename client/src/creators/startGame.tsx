@@ -1,4 +1,4 @@
-import socket from "../socket";
+import {socket} from "../socket";
 import axios from "axios";
 interface BodyProps {
   board:{color:string, size:number|number[]}
@@ -14,7 +14,8 @@ const saveStartGame = async (body: BodyProps) => {
   return data;
 };
 const sendStartGame = (data: any) => {
-  socket.emit("start-game", {lobbyId:data.lobby.lobbyId});
+  
+  socket.emit("start-game", {lobbyId:data.lobby.lobbyId, hostSid:data?.lobby?.hostSid});
 };
 const startGame = async (body: BodyProps) => {
   try {

@@ -1,4 +1,4 @@
-import socket from "../socket";
+
 import newMove from "./newMove";
 import {Lobby} from "../Models/Lobby"
 import {GameStatus} from "../Models/GameStatus"
@@ -229,6 +229,7 @@ const determineWinner = (
   const reqBody = {
     lobbyId: lobby?.lobbyId,
     newMove: boardMove,
+    hostSid: lobby?.hostSid,
   };
   newMove(reqBody);
   setGameStatus( {

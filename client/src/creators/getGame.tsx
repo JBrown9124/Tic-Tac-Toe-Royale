@@ -1,4 +1,4 @@
-import socket from "../socket";
+import {socket} from "../socket";
 import axios, { AxiosResponse } from "axios";
 import { Lobby } from "../Models/Lobby";
 interface BodyProps {

@@ -1,8 +1,8 @@
 import { io } from "socket.io-client";
-import Store from "./store"
+import {createContext} from 'react'
 import {Cookies } from "react-cookie"
-const socket = io('127.0.0.1:8000');
-
+export const socket = io('127.0.0.1:8000');
+export const socketContext = createContext(socket)
 
 // socket.on("connect", () => {
 //   console.log("connected to server");
@@ -16,4 +16,3 @@ const socket = io('127.0.0.1:8000');
 //   socket.on("new-move", (data) => {});
 // });
 
-export default socket;

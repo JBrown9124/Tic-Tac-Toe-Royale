@@ -2,14 +2,17 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import { useState } from "react";
+import { useState, useEffect} from "react";
 import { ChangeEventHandler } from "react";
+import {useCookies} from 'react-cookie'
 interface OpenPageProps {
   createGame: (name: string) => void;
   joinGame: (name: string) => void;
 }
 export default function Welcome({ createGame, joinGame }: OpenPageProps) {
   const [name, setName] = useState("Tic Tac Toe Master");
+  const [sessionCookies, setSessionCookies] = useCookies();
+
   return (
     <>
       <Grid
@@ -23,9 +26,9 @@ export default function Welcome({ createGame, joinGame }: OpenPageProps) {
         </Grid>
         <Grid item>
           <TextField
-            value={name}
+            value={sessionCookies.name}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setName(e.target.value)
+              setSessionCookies("name", e.target.value, {path: "/" })
             }
             label="Name"
           />

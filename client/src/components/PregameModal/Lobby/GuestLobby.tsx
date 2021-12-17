@@ -20,6 +20,7 @@ export default function GuestLobby({ handleLeave, playerPiece, setPiece, lobby }
     const reqBody = {
       player: { name: sessionCookies?.name, piece: playerPiece },
       lobbyId: lobby?.lobbyId,
+      hostSid:lobby?.hostSid
     };
     playerReady(reqBody);
   };

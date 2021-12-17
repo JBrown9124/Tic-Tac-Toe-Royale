@@ -14,6 +14,7 @@ interface PlayerListProps {
 }
 export default function PlayerList({ players }: PlayerListProps) {
   const [sessionCookies, setSessionCookies] = useCookies();
+  const pieces =  createPiece("black")
   return (
     <>
       <Grid
@@ -28,18 +29,28 @@ export default function PlayerList({ players }: PlayerListProps) {
         </Grid>
         <Grid item>
           <List sx={{ bgcolor: "background.paper" }} aria-label="players">
-            {players?.map((player: Player) => (
-              <ListItem>
+            {players?.map((player: Player, idx: number) => (
+              <ListItem key={idx}>
                 {player?.isReady && <ListItemText primary={"READY"} />}
                 {player?.isHost && <ListItemText primary={"HOST"} />}
                 {player?.piece?.length > 15 ? (
-                  <img src={player?.piece} alt={player?.piece} style={{width:"40px", height:"40px"}} />
-                ):(
-                  createPiece("black").map((piece) => {
+                  <img
+                    src={player?.piece}
+                    alt={player?.piece}
+                    style={{ width: "40px", height: "40px" }}
+                  />
+                ) : (
+                  pieces.map((piece) => {
                     if (piece?.name === player?.piece)
-                      return <ListItemText primary={piece?.value} />;
-                  })
-                ) }
+                      return (
+                        <ListItemText
+                          key={piece?.name}
+                          primary={piece?.value}
+                        />
+                      );
+                  }
+                  )
+                )}
 
                 <ListItemText
                   sx={{ textAlign: "center" }}

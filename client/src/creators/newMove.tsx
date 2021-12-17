@@ -1,9 +1,10 @@
-import socket from "../socket";
+import {socket} from "../socket";
 import axios from "axios";
 interface BodyProps {
  
   newMove:{rowIdx:number, tileIdx:number, won:boolean|undefined, playerNumber:number},
   lobbyId:number,
+  hostSid:number,
 
 }
 const saveNewMove = async (body: BodyProps) => {
@@ -13,15 +14,16 @@ const saveNewMove = async (body: BodyProps) => {
   );
   return data;
 };
-const sendNewMove = (data: any) => {
+const sendNewMove = (data: any, body:BodyProps) => {
+  
   socket.emit("new-move", 
-    data,
+    {data:data, hostSid:body.hostSid},
   );
 };
 const newMove = async (body: BodyProps) => {
   try {
     const data = await saveNewMove(body);
-    sendNewMove(data);
+    sendNewMove(data, body);
     console.log(data, "playerReadyData");
     return await data.lobby;
   } catch (e) {
