@@ -11,22 +11,25 @@ import ClearIcon from "@mui/icons-material/Clear";
 import joinLobby from "./creators/joinLobby";
 import { useCookies } from "react-cookie";
 import { socket } from "./socket";
+
 import { Player } from "./Models/Player";
 import getGame from "./creators/getGame";
 import Game from "./components/Game/Game";
 import { NewMove } from "./Models/NewMove";
 import { Lobby } from "./Models/Lobby";
 import { GameStatus } from "./Models/GameStatus";
+import {useSound} from 'use-sound'
 
 function App() {
   const [sessionCookies, setSessionCookie, removeSessionCookie] = useCookies();
+  const [startMusic] = useSound(process.env.PUBLIC_URL + '/assets/sounds/bugablue-656.mp3')
   const [newMove, setNewMove] = useState<NewMove>({
     playerNumber: 0,
     rowIdx: 0,
     tileIdx: 0,
   });
   const [piece, setPiece] = useState("");
-
+  const [play] = useSound("./sounds/likeSpinningPlates.mp3");
   const [gameStatus, setGameStatus] = useState<GameStatus>({
     whoWon: null,
     whoTurn: 0,
@@ -45,9 +48,11 @@ function App() {
   useEffect(() => {
     commandRef.current = sessionCookies.command;
   }, [sessionCookies.command]);
-  const [players, setPlayers] = useState<any>([]);
+
   let lobbyContext = useContext(LobbyContext);
-  socket.on("connect", () => {
+  
+  socket.on("connect", () => {});
+ 
     console.log("connected to server");
     socket.on("player-join-lobby", (newPlayer: any) => {
       console.log(newPlayer, "PLAYERJOINLOBBYSOCKETCLIENT");
@@ -69,10 +74,6 @@ function App() {
         });
         setLobby({ ...lobbyCopy });
       }
-
-      // setLobby(lobby);
-
-      // }
     });
     socket.on("player-leave-lobby", (removedPlayer) => {
       const lobbyCopy = lobbyRef.current;
@@ -95,24 +96,27 @@ function App() {
     });
     socket.on("start-game", (data) => {
       setSessionCookie("command", "begin", { path: "/" });
-      // setSessionCookie("lobby", data.lobby, { path: "/" });
+     
     });
     socket.on("new-move", (newMove) => {
+      console.log(newMove, "SOCKET NEW MOVE")
       setNewMove(newMove.newMove);
-      setGameStatus(newMove.gameStatus);
-
-      // }
+      setGameStatus(newMove.gameStatus);  
     });
-  });
+  
   useEffect(() => {
     if (sessionCookies.command === "begin") {
       const getLobbyInfo = async () => {
         const lobbyInfo = await getGame({ lobbyId: sessionCookies?.lobbyId });
         console.log(lobbyInfo, "STARTGAMEGETGAMESOCKET");
-        await setGameStatus(lobbyInfo.gameStatus);
+        await setGameStatus(lobbyInfo?.gameStatus);
 
         await setLobby(lobbyInfo);
+        socket.emit("rejoin-room-after-refresh", 
+        lobby.hostSid,
+      );
       };
+      startMusic()
       getLobbyInfo();
     }
     if (
@@ -127,6 +131,7 @@ function App() {
         await setLobby(lobbyInfo);
       };
       getLobbyInfo();
+      startMusic()
     }
   }, [sessionCookies?.command]);
 

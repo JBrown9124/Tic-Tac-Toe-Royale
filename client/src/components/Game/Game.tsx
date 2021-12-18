@@ -27,12 +27,12 @@ function Game({ newMove, lobby, gameStatus, setGameStatus}: GameProps) {
         }
       });
     }
-  }, [sessionCookies?.command]);
+  }, [sessionCookies?.command,lobby]);
   return (
     <>
       <Grid container direction="column">
         <Grid item xs={6}>
-          <StatusBoard gameStatus={gameStatus}players={lobby?.players} />
+          <StatusBoard winBy={lobby?.board?.winBy} gameStatus={gameStatus}players={lobby?.players} />
         </Grid>
 
         <Grid container item sx={{justifyContent: "center", margin:"auto"}}>

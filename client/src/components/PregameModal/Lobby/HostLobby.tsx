@@ -8,6 +8,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import Typography from "@mui/material/Typography";
 import { Player } from "../../../Models/Player";
 import { useCookies } from "react-cookie";
+import {useSound} from "use-sound"
 interface PlayerListProps {
   handleLeave: () => void;
   setPiece: (piece:string) => void;
@@ -16,9 +17,10 @@ interface PlayerListProps {
 }
 export default function HostLobby({ handleLeave, playerPiece, setPiece, players }: PlayerListProps) {
   const [sessionCookies, setSessionCookies] = useCookies();
-
+  const [startMusic] = useSound(process.env.PUBLIC_URL + '/assets/sounds/bugablue-656.mp3')
   const handleStart = () => {
     setSessionCookies("command", "start", { path: "/" });
+    startMusic();
   };
 
   return (

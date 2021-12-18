@@ -4,7 +4,9 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { useState, useEffect} from "react";
 import { ChangeEventHandler } from "react";
+
 import {useCookies} from 'react-cookie'
+
 interface OpenPageProps {
   createGame: (name: string) => void;
   joinGame: (name: string) => void;

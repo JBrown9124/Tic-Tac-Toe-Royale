@@ -1,7 +1,7 @@
 import { io } from "socket.io-client";
 import {createContext} from 'react'
 import {Cookies } from "react-cookie"
-export const socket = io('127.0.0.1:8000');
+export const socket = io('127.0.0.1:8000',);
 export const socketContext = createContext(socket)
 
 // socket.on("connect", () => {

@@ -17,6 +17,10 @@ import joinLobby from "../../creators/joinLobby";
 import leaveLobby from "../../creators/leaveLobby";
 import startGame from "../../creators/startGame";
 import { Lobby } from "../../Models/Lobby";
+
+import useSound from "use-sound";
+
+
 interface LobbyProps {
   lobbyId: number;
   players: Player[];
@@ -35,27 +39,31 @@ export default function PregameModal({
 }: PregameModalProps) {
   const [open, setOpen] = useState(true);
   const [isLobbyFound, setIsLobbyFound] = useState<boolean>(true);
- 
+  const [playForward] = useSound(process.env.PUBLIC_URL + '/assets/sounds/snareForwardButton.mp3')
+  const [playBackward] = useSound(process.env.PUBLIC_URL + '/assets/sounds/floorDrumBackButton.mp3')
   const [lobbyIdItem, setLobbyIdItem] = useState(0);
   const [sessionCookies, setSessionCookie, removeSessionCookies] = useCookies();
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
 
   const handleCreateGameSelect = (name: string) => {
+    playForward()
     setSessionCookie("command", "create", { path: "/" });
   };
   const handleJoinSelect = (name: string) => {
+    playForward()
     setSessionCookie("command", "join", { path: "/" });
   };
   const handleFindSubmit = (lobbyId: number) => {
+    playForward()
     setLobbyIdItem(lobbyId);
     setSessionCookie("command", "guest", { path: "/" });
   };
   const handleJoinBackSelect = () => {
+    playBackward()
     removeSessionCookies("command");
   };
   const handleLeaveSelect = () => {
+    playBackward()
     setSessionCookie("command", "leave", { path: "/" });
   };
   const handleStartGameSelect = () => {

@@ -2,13 +2,20 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { useCookies } from "react-cookie";
 import { Player } from "../../../Models/Player";
-import {GameStatus} from "../../../Models/GameStatus";
-interface StatusBoardProps{
+import { GameStatus } from "../../../Models/GameStatus";
+import createPiece from "../../../storage/createPiece";
+interface StatusBoardProps {
   players: Player[];
   gameStatus: GameStatus;
+  winBy: number;
 }
-export default function StatusBoard({players, gameStatus}:StatusBoardProps) {
+export default function StatusBoard({
+  players,
+  gameStatus,
+  winBy,
+}: StatusBoardProps) {
   const [sessionCookies, setSessionCookies] = useCookies();
+  const pieces = createPiece("black");
   return (
     <>
       <Grid
@@ -31,24 +38,31 @@ export default function StatusBoard({players, gameStatus}:StatusBoardProps) {
         direction="column"
         textAlign="center"
       >
-        <Grid item>
-          <Typography variant="h6">
-            {players?.map((player: Player) => {
-              if (gameStatus.whoWon) {
-                if (player.playerNumber === gameStatus.whoWon) {
-                  return `${player.name} Wins!`;
-                }
-              } else if (
-                player.playerNumber === gameStatus.whoTurn
-              )
-                return `${player.name}'s Turn` ;
-            })}
-          </Typography>
+        <Grid container direction="column">
+          <Grid item>
+            <Typography variant="h6">
+              {players?.map((player: Player) => {
+                if (gameStatus.whoWon) {
+                  if (player.playerNumber === gameStatus.whoWon) {
+                    pieces.map((piece) => {if (piece.name === player.piece){
+                      return piece.value}
+                    });
+                  }
+                } else if (player.playerNumber === gameStatus.whoTurn)
+                  return `${player.name}'s Turn`;
+              })}
+            </Typography>
+          </Grid>
+      
         </Grid>
-    
+        <Grid item>
+            
+               
+                  
+          </Grid>
         <Grid item>
           {" "}
-          <Typography>{`Win by ${sessionCookies?.lobby?.board?.winBy}`}</Typography>
+          <Typography>{`Win by ${winBy}`}</Typography>
         </Grid>
       </Grid>
     </>

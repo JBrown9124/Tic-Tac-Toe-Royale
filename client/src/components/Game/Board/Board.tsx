@@ -107,7 +107,7 @@ export default function Board({
     getPlayerPieces();
     createBoard(setBoard, lobby.board.size, lobby.board.moves);
   }
-  }, [ lobby.board.size, lobby?.players, playerNumber, sessionCookies.command]);
+  }, [ playerNumber, lobby]);
   
   useEffect(() => {
     if (newMove.playerNumber !== 0) {
