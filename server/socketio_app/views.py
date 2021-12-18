@@ -17,8 +17,7 @@ rooms = []
 @sio.event
 def connect(sid, environ):
     print(sio.rooms(sid))
-    
-    
+
     sio.emit("my_response", {"data": "Connected", "count": 0}, room=sid)
 
 
@@ -44,26 +43,25 @@ def player_joined(sid, player):
 @sio.on("player-leave-lobby")
 def player_left(sid, lobby):
     print(lobby["playerName"])
-   
+
     hostSid = lobby["hostSid"]
     rooms = sio.rooms(sid)
     for room in rooms:
         sio.leave_room(sid, room)
-    
+
     print(sio.rooms(sid))
     if sid == hostSid:
         sio.close_room(hostSid)
-   
+
     sio.emit("player-leave-lobby", lobby["playerName"], room=hostSid, skip_sid=sid)
 
 
 @sio.on("player-ready")
 def player_ready(sid, data):
-    print(data,"DATA")
+    print(data, "DATA")
     host_sid = data["hostSid"]
     sio.emit(
         "player-ready",
-        
         room=host_sid,
         skip_sid=sid,
     )
@@ -81,10 +79,10 @@ def start_game(sid, data):
 
 @sio.on("new-move")
 def game_status(sid, received_data):
-    data = received_data['data']
-    host_sid = received_data['hostSid']
-    if host_sid not in sio.rooms(sid):
-        sio.enter_room(sid, host_sid)
+    data = received_data["data"]
+    host_sid = received_data["hostSid"]
+
+    sio.enter_room(sid, host_sid)
     sio.emit(
         "new-move",
         {"newMove": data["newMove"], "gameStatus": data["gameStatus"]},
@@ -92,8 +90,10 @@ def game_status(sid, received_data):
         skip_sid=sid,
     )
 
-sio.on("rejoin-room-after-refresh")
+
+@sio.on("rejoin-room-after-refresh")
 def rejoin_room(sid, host_sid):
     print(host_sid)
-    if host_sid not in sio.rooms(sid):
-        sio.enter_room(sid, host_sid)
+
+    sio.enter_room(sid, host_sid)
+    

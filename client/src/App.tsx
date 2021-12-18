@@ -112,10 +112,9 @@ function App() {
         await setGameStatus(lobbyInfo?.gameStatus);
 
         await setLobby(lobbyInfo);
-        socket.emit("rejoin-room-after-refresh", 
-        lobby.hostSid,
-      );
+        
       };
+      
       startMusic()
       getLobbyInfo();
     }

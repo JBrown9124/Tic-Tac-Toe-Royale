@@ -44,22 +44,29 @@ export default function StatusBoard({
               {players?.map((player: Player) => {
                 if (gameStatus.whoWon) {
                   if (player.playerNumber === gameStatus.whoWon) {
-                    pieces.map((piece) => {if (piece.name === player.piece){
-                      return piece.value}
-                    });
+                    return `${player.name} Wins!`;
                   }
                 } else if (player.playerNumber === gameStatus.whoTurn)
                   return `${player.name}'s Turn`;
               })}
             </Typography>
           </Grid>
-      
         </Grid>
         <Grid item>
-            
-               
-                  
-          </Grid>
+          {players.map((player) => {
+            if (gameStatus.whoWon) {
+              if (player.playerNumber === gameStatus.whoWon) {
+                return pieces.map((piece) => {
+                  if (piece.name === player.piece) return piece.value;
+                });
+              }
+            } else if (player.playerNumber === gameStatus.whoTurn) {
+              return pieces.map((piece) => {
+                if (piece.name === player.piece) return piece.value;
+              });
+            }
+          })}
+        </Grid>
         <Grid item>
           {" "}
           <Typography>{`Win by ${winBy}`}</Typography>

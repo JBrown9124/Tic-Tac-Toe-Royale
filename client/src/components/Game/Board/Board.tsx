@@ -24,7 +24,7 @@ interface BoardProps {
   newMove: NewMove;
   playerNumber: number;
   lobby: Lobby;
-  
+
   setGameStatus: (status: GameStatus) => void;
   gameStatus: GameStatus;
 }
@@ -41,37 +41,18 @@ export default function Board({
   const [sessionCookies, setSessionCookies, removeSessionCookies] =
     useCookies();
   const [piece, setPiece] = useState<JSX.Element | string>();
-
   const [playerPieces, setPlayerPieces] = useState<PlayerPieces[]>([]);
 
   useEffect(() => {
     if (sessionCookies.command === "begin") {
-    
-
-    const getPlayerPieces = () => {
-      let piecesValues: PlayerPieces[] = [];
-      lobby?.players?.forEach((player: Player) => {
-        if (player?.piece?.length > 30 && player?.playerNumber === playerNumber) {
-          setPiece(
-            <img
-              src={player?.piece}
-              alt={player?.piece}
-              style={{
-                width: "35px",
-                height: "35px",
-                justifyContent: "center",
-                margin: "auto",
-                textAlign: "center",
-              }}
-            />
-          );
-        } else if (
-          player?.piece?.length > 30 &&
-          player?.playerNumber !== playerNumber
-        ) {
-          piecesValues.push({
-            playerNumber: player?.playerNumber,
-            piece: (
+      const getPlayerPieces = () => {
+        let piecesValues: PlayerPieces[] = [];
+        lobby?.players?.forEach((player: Player) => {
+          if (
+            player?.piece?.length > 30 &&
+            player?.playerNumber === playerNumber
+          ) {
+            setPiece(
               <img
                 src={player?.piece}
                 alt={player?.piece}
@@ -83,32 +64,51 @@ export default function Board({
                   textAlign: "center",
                 }}
               />
-            ),
-          });
-        }
-        createPiece("white").forEach((piece) => {
-          if (
-            piece.name === player?.piece &&
-            player?.playerNumber === playerNumber
+            );
+          } else if (
+            player?.piece?.length > 30 &&
+            player?.playerNumber !== playerNumber
           ) {
-            setPiece(piece.value);
-          } else if (piece.name === player?.piece) {
             piecesValues.push({
               playerNumber: player?.playerNumber,
-              piece: piece.value,
+              piece: (
+                <img
+                  src={player?.piece}
+                  alt={player?.piece}
+                  style={{
+                    width: "35px",
+                    height: "35px",
+                    justifyContent: "center",
+                    margin: "auto",
+                    textAlign: "center",
+                  }}
+                />
+              ),
             });
           }
+          createPiece("white").forEach((piece) => {
+            if (
+              piece.name === player?.piece &&
+              player?.playerNumber === playerNumber
+            ) {
+              setPiece(piece.value);
+            } else if (piece.name === player?.piece) {
+              piecesValues.push({
+                playerNumber: player?.playerNumber,
+                piece: piece.value,
+              });
+            }
+          });
         });
-      });
 
-      setPlayerPieces(piecesValues);
-    };
+        setPlayerPieces(piecesValues);
+      };
 
-    getPlayerPieces();
-    createBoard(setBoard, lobby.board.size, lobby.board.moves);
-  }
-  }, [ playerNumber, lobby]);
-  
+      getPlayerPieces();
+      createBoard(setBoard, lobby.board.size, lobby.board.moves);
+    }
+  }, [playerNumber, lobby]);
+
   useEffect(() => {
     if (newMove.playerNumber !== 0) {
       board[newMove.rowIdx][newMove.tileIdx] = newMove.playerNumber;
