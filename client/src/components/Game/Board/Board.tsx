@@ -19,6 +19,7 @@ import { PlayerPieces } from "../../../Models/PlayerPieces";
 import { Lobby } from "../../../Models/Lobby";
 import { NewMove } from "../../../Models/NewMove";
 import { GameStatus } from "../../../Models/GameStatus";
+import {sizeOfPiece} from '../../../storage/sizeOfPiece'
 
 interface BoardProps {
   newMove: NewMove;
@@ -57,8 +58,8 @@ export default function Board({
                 src={player?.piece}
                 alt={player?.piece}
                 style={{
-                  width: "35px",
-                  height: "35px",
+                  width: sizeOfPiece,
+                  height: sizeOfPiece,
                   justifyContent: "center",
                   margin: "auto",
                   textAlign: "center",
@@ -76,8 +77,8 @@ export default function Board({
                   src={player?.piece}
                   alt={player?.piece}
                   style={{
-                    width: "35px",
-                    height: "35px",
+                    width: sizeOfPiece,
+                    height: sizeOfPiece,
                     justifyContent: "center",
                     margin: "auto",
                     textAlign: "center",
@@ -119,7 +120,8 @@ export default function Board({
     <>
       {board.map((row: number[], rowIdx: number) => (
         <Grid key={rowIdx} justifyContent="center" container>
-          {row.map((tile: number, tileIdx: number) => (
+          {row.map((tile: number, tileIdx: number) => (<>
+            <TileHover beforeColor={lobby?.board?.color} delay={((rowIdx*tileIdx===0?50:rowIdx*tileIdx))*30}>
             <Tile
               gameStatus={gameStatus}
               playerNumber={playerNumber}
@@ -144,6 +146,8 @@ export default function Board({
               chosenPiece={piece}
               boardColor={lobby?.board?.color}
             />
+            </TileHover>
+            </>
           ))}
         </Grid>
       ))}

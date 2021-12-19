@@ -6,6 +6,7 @@ import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ChildCareIcon from "@mui/icons-material/ChildCare";
 import { RgbaColor } from "react-colorful";
+import {sizeOfPiece} from './sizeOfPiece'
 interface PieceProps{
   name:string;
   value:JSX.Element
@@ -15,37 +16,37 @@ const createPiece = ( color:string ):PieceProps[] => {
   const pieces = [
     {
       name: "Clear",
-      value: <ClearIcon sx={{ height: "40px", width: "40px",  color: color }} />,
+      value: <ClearIcon sx={{ height: sizeOfPiece, width: sizeOfPiece,  color: color }} />,
       
     },
     {
       name: "Star",
-      value: <StarIcon sx={{ height: "40px", width: "40px", color: color }} />,
+      value: <StarIcon sx={{ height: sizeOfPiece, width: sizeOfPiece, color: color }} />,
       
     },
     {
       name: "CircleOutlined",
-      value: <CircleOutlinedIcon sx={{ height: "40px", width: "40px",   color: color }} />,
+      value: <CircleOutlinedIcon sx={{ height: sizeOfPiece, width: sizeOfPiece,   color: color }} />,
      
     },
     {
       name: "Pets",
-      value: <PetsIcon sx={{ height: "40px", width: "40px",  color: color }} />,
+      value: <PetsIcon sx={{ height: sizeOfPiece, width: sizeOfPiece,  color: color }} />,
       
     },
     {
       name: "FitnessCenter",
-      value: <FitnessCenterIcon sx={{ height: "40px", width: "40px" , color: color }} />,
+      value: <FitnessCenterIcon sx={{ height: sizeOfPiece, width: sizeOfPiece , color: color }} />,
       
     },
     {
       name: "FavoriteBorder",
-      value: <FavoriteBorderIcon sx={{ height: "40px", width: "40px" , color: color }} />,
+      value: <FavoriteBorderIcon sx={{ height: sizeOfPiece, width: sizeOfPiece , color: color }} />,
      
     },
     {
       name: "ChildCare",
-      value: <ChildCareIcon sx={{ height: "40px", width: "40px" ,color: color}} />,
+      value: <ChildCareIcon sx={{ height: sizeOfPiece, width: sizeOfPiece ,color: color}} />,
      
     },
   ];

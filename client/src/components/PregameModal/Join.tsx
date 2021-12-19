@@ -23,6 +23,7 @@ export default function Join({
         direction="column"
         textAlign="center"
         justifyContent="center"
+        spacing={2}
       >
         <Grid item>
           <TextField
@@ -36,9 +37,11 @@ export default function Join({
           />
         </Grid>
 
-        <Grid item textAlign="center">
-          <Button onClick={() => handleJoinBack()}>Back</Button>
-          <Button onClick={() => handleJoinSubmit(lobbyId)}>Find</Button>
+        <Grid container item textAlign="center" justifyContent="center" spacing={2}>
+          <Grid item>
+          <Button onClick={() => handleJoinBack()}>Back</Button></Grid>
+          <Grid item>
+          <Button onClick={() => handleJoinSubmit(lobbyId)}>Find</Button></Grid>
         </Grid>
       </Grid>
     </>

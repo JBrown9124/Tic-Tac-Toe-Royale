@@ -18,7 +18,7 @@ export default function WinBy() {
   
   return (
     <>
-      <Grid container direction="column">
+      <Grid container direction="column" spacing={1}>
         <Grid item>
           <Typography>Win By</Typography>
         </Grid>

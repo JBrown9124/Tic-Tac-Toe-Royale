@@ -194,6 +194,8 @@ export default function PregameModal({
 
           {sessionCookies?.command === "create" && (
             <HostLobby
+       
+            hostSid={lobby?.hostSid}
               players={lobby?.players}
               handleLeave={() => handleLeaveSelect()}
               setPiece={(props) => setPiece(props)}

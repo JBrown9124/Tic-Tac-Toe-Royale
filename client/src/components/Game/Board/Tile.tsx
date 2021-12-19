@@ -1,7 +1,7 @@
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TileHover from "../../../animators/SpaceHover";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import { RgbaColor } from "react-colorful";
@@ -32,7 +32,8 @@ export const Tile = ({
     value: String | JSX.Element | number | undefined;
   }>({ value: value });
   const [sessionCookies, setSessionCookies] = useCookies();
-
+  const delay = 0;
+  const delayRef = useRef(delay);
   const handleClick = () => {
     if (value === 0) {
       setTile({ value: chosenPiece });
@@ -43,36 +44,33 @@ export const Tile = ({
 
   return (
     <>
-      <TileHover beforeColor={boardColor}>
-        <Grid
-          //  onClick={() => selectTile(rowIdx, tileIdx)}
-          onClick={() =>
-            gameStatus.whoTurn === playerNumber && gameStatus.whoWon === null
-              ? handleClick()
-              : ""
-          }
-          item
-          container
-          direction="column"
-          sx={{
-            width: "40px",
-            height: "40px",
-            cursor: "pointer",
-            border: "solid black 1px",
-          }}
-        >
-          <Grid item sx={{}}>
-         
-            {playerPieces?.map((playerPiece) => {
-              if (playerPiece.playerNumber === value) {
-                return playerPiece.piece;
-              } else if (value === playerNumber) {
-                return chosenPiece;
-              }
-            })}
-          </Grid>
+      <Grid
+        //  onClick={() => selectTile(rowIdx, tileIdx)}
+        onClick={() =>
+          gameStatus.whoTurn === playerNumber && gameStatus.whoWon === null
+            ? handleClick()
+            : ""
+        }
+        item
+        container
+        direction="column"
+        sx={{
+          width: "40px",
+          height: "40px",
+          cursor: "pointer",
+          border: "solid black 1px",
+        }}
+      >
+        <Grid item sx={{}}>
+          {playerPieces?.map((playerPiece) => {
+            if (playerPiece.playerNumber === value) {
+              return playerPiece.piece;
+            } else if (value === playerNumber) {
+              return chosenPiece;
+            }
+          })}
         </Grid>
-      </TileHover>
+      </Grid>
     </>
   );
 };

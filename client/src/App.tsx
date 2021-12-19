@@ -18,11 +18,13 @@ import Game from "./components/Game/Game";
 import { NewMove } from "./Models/NewMove";
 import { Lobby } from "./Models/Lobby";
 import { GameStatus } from "./Models/GameStatus";
-import {useSound} from 'use-sound'
+import { useSound } from "use-sound";
 
 function App() {
   const [sessionCookies, setSessionCookie, removeSessionCookie] = useCookies();
-  const [startMusic] = useSound(process.env.PUBLIC_URL + '/assets/sounds/bugablue-656.mp3')
+  const [startMusic] = useSound(
+    process.env.PUBLIC_URL + "/assets/sounds/bugablue-656.mp3"
+  );
   const [newMove, setNewMove] = useState<NewMove>({
     playerNumber: 0,
     rowIdx: 0,
@@ -40,82 +42,80 @@ function App() {
     board: { size: 0, color: { r: 0, g: 0, b: 0, a: 0 }, winBy: 3, moves: [] },
     players: [],
   });
+  const getCount = 0
   const lobbyRef = useRef(lobby);
-  const commandRef = useRef(sessionCookies.command);
+  const getCountRef = useRef(getCount);
   useEffect(() => {
     lobbyRef.current = lobby;
   }, [lobby]);
   useEffect(() => {
-    commandRef.current = sessionCookies.command;
-  }, [sessionCookies.command]);
+    getCountRef.current = getCount;
+  }, [getCount]);
 
   let lobbyContext = useContext(LobbyContext);
-  
+
   socket.on("connect", () => {});
- 
-    console.log("connected to server");
-    socket.on("player-join-lobby", (newPlayer: any) => {
-      console.log(newPlayer, "PLAYERJOINLOBBYSOCKETCLIENT");
 
-      console.log(lobbyContext, "LOBByContext");
-      console.log(lobby, "LobbySocket");
-      console.log(lobbyRef.current, "LobbyRef");
-      const lobbyCopy = lobbyRef.current;
-      let playerExists = lobbyCopy.players.filter((player) => {
-        return player.name === newPlayer;
-      });
-      if (playerExists.length === 0) {
-        lobbyCopy.players?.push({
-          name: newPlayer,
-          piece: "",
-          isHost: false,
-          playerNumber: 0,
-          isReady: false,
-        });
-        setLobby({ ...lobbyCopy });
-      }
+  console.log("connected to server");
+  socket.on("player-join-lobby", (newPlayer: any) => {
+   
+    const lobbyCopy = lobbyRef.current;
+    let playerExists = lobbyCopy.players.filter((player) => {
+      return player.name === newPlayer;
     });
-    socket.on("player-leave-lobby", (removedPlayer) => {
-      const lobbyCopy = lobbyRef.current;
-      let newPlayerList = lobbyCopy.players.filter((player) => {
-        return player.name !== removedPlayer;
+    if (playerExists.length === 0) {
+      lobbyCopy.players?.push({
+        name: newPlayer,
+        piece: "",
+        isHost: false,
+        playerNumber: 0,
+        isReady: false,
       });
-      lobbyCopy.players = newPlayerList;
       setLobby({ ...lobbyCopy });
+    }
+  });
+  socket.on("player-leave-lobby", (removedPlayer) => {
+    const lobbyCopy = lobbyRef.current;
+    let newPlayerList = lobbyCopy.players.filter((player) => {
+      return player.name !== removedPlayer;
     });
-    socket.on("player-ready", (receivedLobby) => {
-      console.log(receivedLobby, "PLAYER READY SOCKET");
-      const lobbyCopy = lobbyRef.current;
-      const getLobbyInfo = async () => {
-        const lobbyInfo = await getGame({ lobbyId: lobbyCopy.lobbyId });
-        console.log(lobbyInfo, "STARTGAMEGETGAMESOCKET");
-
-        await setLobby(lobbyInfo);
-      };
+    lobbyCopy.players = newPlayerList;
+    setLobby({ ...lobbyCopy });
+  });
+  socket.once("player-ready", (receivedLobby) => {
+   
+    let getCount = 0;
+    const lobbyCopy = lobbyRef.current;
+    const getLobbyInfo = async () => {
+      const lobbyInfo = await getGame({ lobbyId: lobbyCopy.lobbyId });
+      await setLobby(lobbyInfo);
+    };
+    if (getCount === 0) {
       getLobbyInfo();
-    });
-    socket.on("start-game", (data) => {
-      setSessionCookie("command", "begin", { path: "/" });
-     
-    });
-    socket.on("new-move", (newMove) => {
-      console.log(newMove, "SOCKET NEW MOVE")
-      setNewMove(newMove.newMove);
-      setGameStatus(newMove.gameStatus);  
-    });
-  
+      getCount += 1;
+    }
+  });
+  socket.on("start-game", (data) => {
+    setSessionCookie("command", "begin", { path: "/" });
+  });
+  socket.on("new-move", (newMove) => {
+    console.log(newMove, "SOCKET NEW MOVE");
+    setNewMove(newMove.newMove);
+    setGameStatus(newMove.gameStatus);
+  });
+
   useEffect(() => {
     if (sessionCookies.command === "begin") {
       const getLobbyInfo = async () => {
         const lobbyInfo = await getGame({ lobbyId: sessionCookies?.lobbyId });
+      
         console.log(lobbyInfo, "STARTGAMEGETGAMESOCKET");
         await setGameStatus(lobbyInfo?.gameStatus);
 
         await setLobby(lobbyInfo);
-        
       };
-      
-      startMusic()
+
+      startMusic();
       getLobbyInfo();
     }
     if (
@@ -126,11 +126,13 @@ function App() {
       const getLobbyInfo = async () => {
         const lobbyInfo = await getGame({ lobbyId: sessionCookies?.lobbyId });
         console.log(lobbyInfo, "STARTGAMEGETGAMESOCKET");
-
+        lobbyInfo?.players.map((player:Player)=>{if (player.name === sessionCookies?.name){
+          setPiece(player.piece)
+        }})
         await setLobby(lobbyInfo);
       };
       getLobbyInfo();
-      startMusic()
+      startMusic();
     }
   }, [sessionCookies?.command]);
 

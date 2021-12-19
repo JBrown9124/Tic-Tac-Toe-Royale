@@ -14,14 +14,17 @@ import Button from "@mui/material/Button";
 // setPiece:(piece:JSX.Element)=>void;
 // piece:JSX.Element;
 // }
-interface PieceSelectorProps{
-  setPiece:(piece:string)=>void;
-  playerPiece:string;
+interface PieceSelectorProps {
+  setPiece: (piece: string) => void;
+  playerPiece: string;
 }
-export default function PieceSelector({setPiece, playerPiece}:PieceSelectorProps) {
+export default function PieceSelector({
+  setPiece,
+  playerPiece,
+}: PieceSelectorProps) {
   const [sessionCookies, setSessionCookie] = useCookies();
   // const [image, setPiece] = useState<any>();
-  const pieces = createPiece("black")
+  const pieces = createPiece("black");
   const handleImageUpload = (event: any) => {
     getBase64(event[0], (result: string) => {
       setPiece(result);
@@ -55,10 +58,8 @@ export default function PieceSelector({setPiece, playerPiece}:PieceSelectorProps
             >
               {pieces.map((piece) => (
                 <ListItemButton
-                key={piece.name}
-                  onClick={() =>
-                    setPiece(piece.name)
-                  }
+                  key={piece.name}
+                  onClick={() => setPiece(piece.name)}
                   sx={{ justifyContent: "center" }}
                 >
                   {piece.value}
@@ -66,8 +67,8 @@ export default function PieceSelector({setPiece, playerPiece}:PieceSelectorProps
               ))}
             </List>
           </Grid>
-          <Grid item xs={12} sm={6} >
-            {playerPiece.length>15 ? (
+          <Grid item xs={12} sm={6}>
+            {playerPiece.length > 15 ? (
               <img
                 src={playerPiece}
                 alt={playerPiece}
@@ -82,6 +83,7 @@ export default function PieceSelector({setPiece, playerPiece}:PieceSelectorProps
             )}
           </Grid>
         </Grid>
+        <Grid item>
         <label htmlFor="contained-button-file">
           <Input
             sx={{ display: "none" }}
@@ -95,6 +97,7 @@ export default function PieceSelector({setPiece, playerPiece}:PieceSelectorProps
             Upload
           </Button>
         </label>
+        </Grid>
       </Grid>
     </>
   );

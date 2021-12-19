@@ -63,7 +63,7 @@ class Game(APIView):
         for player in lobby_players_copy:
             if player["name"] == player_name:
                 player["piece"] = player_piece
-                player["isReady"] = True
+                player["isReady"] = not player["isReady"]
                 lobbys[lobby_id]["players"] = lobby_players_copy
                 lobby_response = LobbyResponseModel(
                     lobby=lobbys[lobby_id], lobby_id=lobby_id

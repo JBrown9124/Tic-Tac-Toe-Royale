@@ -94,6 +94,9 @@ def game_status(sid, received_data):
 @sio.on("rejoin-room-after-refresh")
 def rejoin_room(sid, host_sid):
     print(host_sid)
-
-    sio.enter_room(sid, host_sid)
+    rooms = sio.rooms(sid)
+    if host_sid not in rooms:
+        sio.enter_room(sid, host_sid)
+        
+    
     
