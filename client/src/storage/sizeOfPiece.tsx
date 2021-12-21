@@ -1,1 +1,1 @@
-export const sizeOfPiece = "35px"
+export const sizeOfPiece = "40px"

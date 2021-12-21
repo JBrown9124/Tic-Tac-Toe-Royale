@@ -1,5 +1,7 @@
 import newMove from "./newMove";
 import { Lobby } from "../Models/Lobby";
+import { NewMove } from "../Models/NewMove";
+import { WinningMove } from "../Models/Win";
 import { GameStatus } from "../Models/GameStatus";
 const determineWinner = (
   rowIdx: number,
@@ -9,11 +11,12 @@ const determineWinner = (
   playerNumber: number,
   lobby: Lobby,
   setGameStatus: Function,
-  gameStatus: GameStatus
+  gameStatus: GameStatus,
+  setSessionCookies: Function
 ) => {
   board[rowIdx][tileIdx] = playerNumber;
-
-  const checkHorizontal = (winBy: number) => {
+  let winningMoves:WinningMove[] = [];
+  const checkHorizontal = (winBy: number): boolean => {
     console.log(board[rowIdx][tileIdx], "HorizontalMove");
     let leftIdx = tileIdx;
     let rightIdx = tileIdx;
@@ -31,6 +34,10 @@ const determineWinner = (
     console.log(rightIdx, "HorizontalRight");
     console.log(rightIdx - leftIdx + 1, "HorizontalDistance");
     let isWin = rightIdx - leftIdx + 1 >= winBy;
+    if (isWin){
+      for (let i = leftIdx; i <= rightIdx; i++)
+        winningMoves.push({rowIdx:rowIdx, tileIdx:i})
+    }
     console.log(isWin, "isHorizontalWin");
     return isWin;
   };
@@ -83,7 +90,7 @@ const determineWinner = (
   //   }
   // }
 
-  const checkVertical = (winBy: number) => {
+  const checkVertical = (winBy: number): boolean => {
     console.log(board[rowIdx][tileIdx], "VerticalMove");
     let topIdx = rowIdx;
     let bottomIdx = rowIdx;
@@ -215,14 +222,21 @@ const determineWinner = (
       }
     }
   };
-
-  let boardMove = {
+  const win = checkHorizontal(lobby?.board?.winBy)
+    ? "Horizontal"
+    : checkVertical(lobby?.board?.winBy)
+    ? "Vertical"
+    : checkDiagonal(lobby?.board?.winBy)
+    ? "Diagonal"
+    : null;
+  let boardMove: NewMove = {
     rowIdx: rowIdx,
     tileIdx: tileIdx,
-    won:
-      checkHorizontal(lobby?.board?.winBy) ||
-      checkVertical(lobby?.board?.winBy) ||
-      checkDiagonal(lobby?.board?.winBy),
+    win: {
+      type: win ? win : null,
+      whoWon: win ? playerNumber : null,
+      winningMoves: win ? winningMoves : null,
+    },
     playerNumber: playerNumber,
   };
 
@@ -233,7 +247,11 @@ const determineWinner = (
   };
   newMove(reqBody);
   setGameStatus({
-    whoWon: boardMove.won && playerNumber,
+    win: {
+      type: win ? win : null,
+      whoWon: win ? playerNumber : null,
+      winningMoves: win ? winningMoves : null,
+    },
     whoTurn: lobby.players.length === playerNumber ? 1 : gameStatus.whoTurn + 1,
   });
 

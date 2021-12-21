@@ -1,4 +1,5 @@
+import {Win} from "./Win"
 export interface GameStatus{
-    whoWon: number|null;
+    win: Win;
     whoTurn:number
 }

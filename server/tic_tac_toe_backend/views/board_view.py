@@ -11,6 +11,7 @@ from ..Models.lobby import LobbyModel
 from ..ResponseModels.response_lobby import LobbyResponseModel
 from ..Models.board import BoardModel
 from ..Models.player import Player
+from ..Models.win import Win
 from ..ResponseModels.response_board import BoardResponseModel
 
 # Create your views here.
@@ -22,7 +23,10 @@ class Board(APIView):
         """takes new move coordinates,lobbyId, playerNumber, and gameStatus. updates lobby board, and returns new move coordinates and update game status(whos move it is, who won)"""
         body = request.data
         new_move = body.get("newMove")
-        did_win = new_move.get("won")
+        win = new_move.get("win")
+        win_player_number = win.get("whoWon")
+        winning_moves = win.get("winningMoves")
+        win_type = win.get("type")
         last_turn = new_move.get("playerNumber")
         lobby_id = body.get("lobbyId")
 
@@ -33,7 +37,9 @@ class Board(APIView):
 
         lobby_game_status_copy = lobby_copy["gameStatus"]
         lobby_game_status_copy["whoTurn"] = next_turn
-        lobby_game_status_copy["whoWon"] = last_turn if did_win else None
+        if win_player_number:
+            win = Win(who_won=last_turn, type=win_type, winning_moves=winning_moves).to_dict()
+            lobby_game_status_copy["win"] = win 
 
         lobby_board_copy = lobby_copy["board"]
         lobby_board_copy["moves"].append(new_move)

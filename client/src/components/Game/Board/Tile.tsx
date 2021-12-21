@@ -8,6 +8,7 @@ import { RgbaColor } from "react-colorful";
 import { useCookies } from "react-cookie";
 import { GameStatus } from "../../../Models/GameStatus";
 import { PlayerPieces } from "../../../Models/PlayerPieces";
+import { sizeOfPiece } from "../../../storage/sizeOfPiece";
 interface TileProps {
   chosenPiece: JSX.Element | string | undefined;
   boardColor: RgbaColor;
@@ -47,7 +48,7 @@ export const Tile = ({
       <Grid
         //  onClick={() => selectTile(rowIdx, tileIdx)}
         onClick={() =>
-          gameStatus.whoTurn === playerNumber && gameStatus.whoWon === null
+          gameStatus.whoTurn === playerNumber && gameStatus.win.whoWon === null
             ? handleClick()
             : ""
         }
@@ -55,10 +56,15 @@ export const Tile = ({
         container
         direction="column"
         sx={{
-          width: "40px",
-          height: "40px",
+          width: sizeOfPiece,
+          height: sizeOfPiece,
           cursor: "pointer",
-          border: "solid black 1px",
+          border: `solid black 1px`,
+          borderColor:
+            boardColor.r * 0.299 + boardColor.g * 0.587 + boardColor.b * 0.114 >
+            186
+              ? "black"
+              : "white",
         }}
       >
         <Grid item sx={{}}>

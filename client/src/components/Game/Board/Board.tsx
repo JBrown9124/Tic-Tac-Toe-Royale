@@ -87,7 +87,7 @@ export default function Board({
               ),
             });
           }
-          createPiece("white").forEach((piece) => {
+          createPiece((lobby?.board?.color?.r*0.299 + lobby?.board?.color?.g*0.587 + lobby?.board?.color?.b*0.114) > 186 ? "black" : "white").forEach((piece) => {
             if (
               piece.name === player?.piece &&
               player?.playerNumber === playerNumber
@@ -121,7 +121,7 @@ export default function Board({
       {board.map((row: number[], rowIdx: number) => (
         <Grid key={rowIdx} justifyContent="center" container>
           {row.map((tile: number, tileIdx: number) => (<>
-            <TileHover beforeColor={lobby?.board?.color} delay={((rowIdx*tileIdx===0?50:rowIdx*tileIdx))*30}>
+            <TileHover isWin={newMove.win.whoWon!==null?true:false} beforeColor={lobby?.board?.color} delay={((rowIdx*tileIdx===0?0:rowIdx*tileIdx))*10} boardRenderTime={200*lobby?.board?.size}>
             <Tile
               gameStatus={gameStatus}
               playerNumber={playerNumber}
@@ -137,7 +137,8 @@ export default function Board({
                       playerNumber,
                       lobby,
                       setGameStatus,
-                      gameStatus
+                      gameStatus,
+                      setSessionCookies,
                     )
                   : ""
               }

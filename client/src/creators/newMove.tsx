@@ -1,8 +1,10 @@
 import {socket} from "../socket";
 import axios from "axios";
+import {Win} from '../Models/Win'
+import {NewMove} from '../Models/NewMove'
 interface BodyProps {
  
-  newMove:{rowIdx:number, tileIdx:number, won:boolean|undefined, playerNumber:number},
+  newMove:NewMove,
   lobbyId:number,
   hostSid:number,
 

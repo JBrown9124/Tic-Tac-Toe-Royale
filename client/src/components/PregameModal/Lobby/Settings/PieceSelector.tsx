@@ -68,7 +68,7 @@ export default function PieceSelector({
             </List>
           </Grid>
           <Grid item xs={12} sm={6}>
-            {playerPiece.length > 15 ? (
+            {playerPiece?.length > 15 ? (
               <img
                 src={playerPiece}
                 alt={playerPiece}

@@ -10,19 +10,20 @@ import Typography from "@mui/material/Typography";
 import { Player } from "../../../Models/Player";
 import { useCookies } from "react-cookie";
 import { useSound } from "use-sound";
+import CopyLobbyId from './CopyLobbyId'
 interface PlayerListProps {
   handleLeave: () => void;
   setPiece: (piece: string) => void;
   playerPiece: string;
   players: Player[];
-  hostSid:number,
+  hostSid: number;
 }
 export default function HostLobby({
   handleLeave,
   playerPiece,
   setPiece,
   players,
-  hostSid
+  hostSid,
 }: PlayerListProps) {
   const [sessionCookies, setSessionCookies] = useCookies();
   const [startMusic] = useSound(
@@ -30,6 +31,7 @@ export default function HostLobby({
   );
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isCopied, setIsCopied] = useState(false)
   const handleStart = () => {
     setSessionCookies("command", "start", { path: "/" });
     startMusic();
@@ -70,12 +72,11 @@ export default function HostLobby({
     };
     playerReady(reqBody);
   };
+ 
   return (
     <>
       <Grid container direction="column" spacing={2}>
-        <Grid item textAlign="right">
-          <Typography>Lobby ID: {sessionCookies?.lobbyId}</Typography>
-        </Grid>
+        <CopyLobbyId/>
         <Grid item container sx={{ textAlign: "center" }} spacing={6}>
           <Grid item xs={12} sm={6}>
             <Settings

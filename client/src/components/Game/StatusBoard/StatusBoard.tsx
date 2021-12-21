@@ -42,25 +42,31 @@ export default function StatusBoard({
           <Grid item>
             <Typography variant="h6">
               {players?.map((player: Player) => {
-                if (gameStatus.whoWon) {
-                  if (player.playerNumber === gameStatus.whoWon) {
+                if (gameStatus?.win?.whoWon) {
+                  if (player.playerNumber === gameStatus?.win?.whoWon) {
                     return `${player.name} Wins!`;
                   }
-                } else if (player.playerNumber === gameStatus.whoTurn)
+                } else if (player.playerNumber === gameStatus?.whoTurn)
                   return `${player.name}'s Turn`;
               })}
             </Typography>
           </Grid>
         </Grid>
         <Grid item>
-          {players.map((player) => {
-            if (gameStatus.whoWon) {
-              if (player.playerNumber === gameStatus.whoWon) {
+          {players?.map((player) => {
+            if (gameStatus?.win?.whoWon) {
+              if (player?.playerNumber === gameStatus?.win?.whoWon) {
+                if (player?.piece?.length>15){
+                  return <img src={player.piece} alt={player.piece} style={{width:"40px", height: "40px"}}/>
+                }
                 return pieces.map((piece) => {
                   if (piece.name === player.piece) return piece.value;
                 });
               }
-            } else if (player.playerNumber === gameStatus.whoTurn) {
+            } else if (player?.playerNumber === gameStatus?.whoTurn) {
+              if (player?.piece?.length>15){
+                return <img src={player.piece} alt={player.piece} style={{width:"40px", height: "40px"}}/>
+              }
               return pieces.map((piece) => {
                 if (piece.name === player.piece) return piece.value;
               });

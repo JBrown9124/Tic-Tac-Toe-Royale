@@ -7,6 +7,7 @@ import { Player } from "../../Models/Player";
 import { useState, useEffect } from "react";
 import {Lobby} from "../../Models/Lobby";
 import {GameStatus} from "../../Models/GameStatus";
+import GameOver from "./GameOver/GameOver"
 import StatusBoard from "./StatusBoard/StatusBoard";
 interface GameProps {
   newMove: NewMove;
@@ -18,6 +19,7 @@ interface GameProps {
 function Game({ newMove, lobby, gameStatus, setGameStatus}: GameProps) {
   const [sessionCookies, setSessionCookies] = useCookies();
   const [playerNumber, setPlayerNumber] = useState(0);
+  const [showGameOver, setShowGameOver] = useState(false)
 
   useEffect(() => {
     if (sessionCookies?.command === "begin") {
@@ -27,10 +29,14 @@ function Game({ newMove, lobby, gameStatus, setGameStatus}: GameProps) {
         }
       });
     }
+    else if (sessionCookies?.command === "gameover"){
+      setShowGameOver(true)
+    }
   }, [sessionCookies?.command,lobby]);
   return (
     <>
       <Grid container direction="column">
+        <GameOver showGameOver={showGameOver} gameStatus={gameStatus} players={lobby?.players}/>
         <Grid item xs={6}>
           <StatusBoard winBy={lobby?.board?.winBy} gameStatus={gameStatus}players={lobby?.players} />
         </Grid>

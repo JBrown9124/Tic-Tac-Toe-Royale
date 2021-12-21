@@ -29,11 +29,12 @@ function App() {
     playerNumber: 0,
     rowIdx: 0,
     tileIdx: 0,
+    win:{whoWon:0, type:null, winningMoves:[]}
   });
   const [piece, setPiece] = useState("");
   const [play] = useSound("./sounds/likeSpinningPlates.mp3");
   const [gameStatus, setGameStatus] = useState<GameStatus>({
-    whoWon: null,
+    win:{whoWon:0, type:null, winningMoves:[]},
     whoTurn: 0,
   });
   const [lobby, setLobby] = useState<Lobby>({
@@ -102,6 +103,7 @@ function App() {
     console.log(newMove, "SOCKET NEW MOVE");
     setNewMove(newMove.newMove);
     setGameStatus(newMove.gameStatus);
+   
   });
 
   useEffect(() => {

@@ -65,7 +65,7 @@ export default function PlayerList({ players, playerPiece }: PlayerListProps) {
                       />
                     </ListItemIcon>
                   )}
-                  {playerPiece.length > 15 ? (
+                  {playerPiece?.length > 15 ? (
                     <ListItemText
                       inset
                       key={playerPiece}

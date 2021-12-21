@@ -8,7 +8,7 @@ import PieceSelector from "./Settings/PieceSelector";
 import { useCookies } from "react-cookie";
 import playerReady from "../../../creators/playerReady";
 import { Lobby } from "../../../Models/Lobby";
-
+import CopyLobbyId from './CopyLobbyId'
 interface GuestLobbyProps {
   setPiece: (piece: string) => void;
   playerPiece: string;
@@ -53,9 +53,7 @@ export default function GuestLobby({
   return (
     <>
       <Grid container direction="column" spacing={6}>
-        <Grid item textAlign="right">
-          <Typography>Lobby ID: {lobby?.lobbyId}</Typography>
-        </Grid>
+      <CopyLobbyId/>
         <Grid container item direction="row">
           <Grid item md={6} textAlign="center">
             <PieceSelector
