@@ -29,12 +29,12 @@ function App() {
     playerNumber: 0,
     rowIdx: 0,
     tileIdx: 0,
-    win:{whoWon:0, type:null, winningMoves:[]}
+    win:{whoWon:null, type:null, winningMoves:null}
   });
   const [piece, setPiece] = useState("");
   const [play] = useSound("./sounds/likeSpinningPlates.mp3");
   const [gameStatus, setGameStatus] = useState<GameStatus>({
-    win:{whoWon:0, type:null, winningMoves:[]},
+    win:{whoWon:null, type:null, winningMoves:null},
     whoTurn: 0,
   });
   const [lobby, setLobby] = useState<Lobby>({

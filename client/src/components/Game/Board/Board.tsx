@@ -19,8 +19,8 @@ import { PlayerPieces } from "../../../Models/PlayerPieces";
 import { Lobby } from "../../../Models/Lobby";
 import { NewMove } from "../../../Models/NewMove";
 import { GameStatus } from "../../../Models/GameStatus";
-import {sizeOfPiece} from '../../../storage/sizeOfPiece'
-
+import { sizeOfPiece } from "../../../storage/sizeOfPiece";
+import { WinningMove } from "../../../Models/Win";
 interface BoardProps {
   newMove: NewMove;
   playerNumber: number;
@@ -87,7 +87,14 @@ export default function Board({
               ),
             });
           }
-          createPiece((lobby?.board?.color?.r*0.299 + lobby?.board?.color?.g*0.587 + lobby?.board?.color?.b*0.114) > 186 ? "black" : "white").forEach((piece) => {
+          createPiece(
+            lobby?.board?.color?.r * 0.299 +
+              lobby?.board?.color?.g * 0.587 +
+              lobby?.board?.color?.b * 0.114 >
+              186
+              ? "black"
+              : "white"
+          ).forEach((piece) => {
             if (
               piece.name === player?.piece &&
               player?.playerNumber === playerNumber
@@ -111,43 +118,71 @@ export default function Board({
   }, [playerNumber, lobby]);
 
   useEffect(() => {
-    if (newMove.playerNumber !== 0) {
-      board[newMove.rowIdx][newMove.tileIdx] = newMove.playerNumber;
+    if (newMove?.playerNumber !==undefined || newMove?.playerNumber !== 0) {
+      board[newMove?.rowIdx][newMove?.tileIdx] = newMove?.playerNumber;
     }
   }, [newMove]);
-
+  // const determineWinningMove = (rowIdx: number, tileIdx: number) => {
+  //   let isWinningMove = false;
+  //   gameStatus?.win?.winningMoves?.forEach((winningMove) => {
+  //     if (winningMove.tileIdx === tileIdx && winningMove.rowIdx === rowIdx) {
+  //       return (isWinningMove = true);
+  //     } else {
+  //       return (isWinningMove = false);
+  //     }
+  //   });
+  //   return isWinningMove
+  // };
+  
   return (
     <>
       {board.map((row: number[], rowIdx: number) => (
         <Grid key={rowIdx} justifyContent="center" container>
-          {row.map((tile: number, tileIdx: number) => (<>
-            <TileHover isWin={newMove.win.whoWon!==null?true:false} beforeColor={lobby?.board?.color} delay={((rowIdx*tileIdx===0?0:rowIdx*tileIdx))*10} boardRenderTime={200*lobby?.board?.size}>
-            <Tile
-              gameStatus={gameStatus}
-              playerNumber={playerNumber}
-              playerPieces={playerPieces}
-              updateBoardCache={() =>
-                gameStatus.whoTurn === playerNumber
-                  ? determineWinner(
-                      rowIdx,
-                      tileIdx,
-                      board,
+          {row.map((tile: number, tileIdx: number) => (
+            <>
+              <TileHover
+                move={{ rowIdx: rowIdx, tileIdx: tileIdx }}
+                // isWinMove={gameStatus.win?.winningMoves?.map((winningMove) => {
 
-                      lobby?.board?.size,
-                      playerNumber,
-                      lobby,
-                      setGameStatus,
-                      gameStatus,
-                      setSessionCookies,
-                    )
-                  : ""
-              }
-              value={tile}
-              newMove={newMove}
-              chosenPiece={piece}
-              boardColor={lobby?.board?.color}
-            />
-            </TileHover>
+                //   if(winningMove.rowIdx === rowIdx &&
+                //     winningMove.tileIdx === tileIdx){
+                //       return true
+                //     }
+                //   else{return false}
+
+                // })}
+               
+                win={gameStatus.win}
+                beforeColor={lobby?.board?.color}
+                delay={(rowIdx * tileIdx === 0 ? 0 : rowIdx * tileIdx) * 10}
+                boardRenderTime={200 * lobby?.board?.size}
+              >
+                <Tile
+                  gameStatus={gameStatus}
+                  playerNumber={playerNumber}
+                  playerPieces={playerPieces}
+                  updateBoardCache={() =>
+                    gameStatus.whoTurn === playerNumber
+                      ? determineWinner(
+                          rowIdx,
+                          tileIdx,
+                          board,
+
+                          lobby?.board?.size,
+                          playerNumber,
+                          lobby,
+                          setGameStatus,
+                          gameStatus,
+                          setSessionCookies
+                        )
+                      : ""
+                  }
+                  value={tile}
+                  newMove={newMove}
+                  chosenPiece={piece}
+                  boardColor={lobby?.board?.color}
+                />
+              </TileHover>
             </>
           ))}
         </Grid>

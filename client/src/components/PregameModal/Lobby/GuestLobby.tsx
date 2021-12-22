@@ -8,7 +8,7 @@ import PieceSelector from "./Settings/PieceSelector";
 import { useCookies } from "react-cookie";
 import playerReady from "../../../creators/playerReady";
 import { Lobby } from "../../../Models/Lobby";
-import CopyLobbyId from './CopyLobbyId'
+import CopyLobbyId from "./CopyLobbyId";
 interface GuestLobbyProps {
   setPiece: (piece: string) => void;
   playerPiece: string;
@@ -30,7 +30,7 @@ export default function GuestLobby({
         setIsReady(player.isReady);
       }
     });
-  }, []);
+  }, [lobby]);
   const handleReady = async () => {
     if (playerPiece) {
       setIsError(false);
@@ -53,7 +53,7 @@ export default function GuestLobby({
   return (
     <>
       <Grid container direction="column" spacing={6}>
-      <CopyLobbyId/>
+        <CopyLobbyId />
         <Grid container item direction="row">
           <Grid item md={6} textAlign="center">
             <PieceSelector
@@ -66,8 +66,8 @@ export default function GuestLobby({
           </Grid>
         </Grid>
         {isError && (
-          <Grid container item>
-            <Typography>Select a piece.</Typography>
+          <Grid container item textAlign="center" justifyContent="center">
+            <Typography sx={{color:"red", textAlign:"center"}}>Select a piece.</Typography>
           </Grid>
         )}
         <Grid

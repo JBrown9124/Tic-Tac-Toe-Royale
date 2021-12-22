@@ -4,6 +4,7 @@ import { useCookies } from "react-cookie";
 import { Player } from "../../../Models/Player";
 import { GameStatus } from "../../../Models/GameStatus";
 import createPiece from "../../../storage/createPiece";
+import Button from "@mui/material/Button";
 interface StatusBoardProps {
   players: Player[];
   gameStatus: GameStatus;
@@ -14,7 +15,13 @@ export default function StatusBoard({
   gameStatus,
   winBy,
 }: StatusBoardProps) {
-  const [sessionCookies, setSessionCookies] = useCookies();
+  const [sessionCookies, setSessionCookies, removeSessionCookies] = useCookies();
+  const handleLeaveGame = ()=>{
+    removeSessionCookies("command");
+
+  removeSessionCookies("lobbyId");
+  removeSessionCookies("board");
+  }
   const pieces = createPiece("black");
   return (
     <>
@@ -77,6 +84,12 @@ export default function StatusBoard({
           {" "}
           <Typography>{`Win by ${winBy}`}</Typography>
         </Grid>
+        {gameStatus?.win?.whoWon &&
+        <Grid container direction="column">
+          <Grid item>
+            <Button onClick={()=> handleLeaveGame()}>Leave Game</Button>
+          </Grid>
+          </Grid>}
       </Grid>
     </>
   );

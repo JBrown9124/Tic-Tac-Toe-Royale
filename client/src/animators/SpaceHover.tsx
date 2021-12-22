@@ -3,6 +3,7 @@ import { useRef, useState, useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import { RgbaColor } from "react-colorful";
 import { clear } from "console";
+import { Win } from "../Models/Win";
 interface Props {
   x?: number | string;
   y?: number | string;
@@ -15,8 +16,9 @@ interface Props {
   afterColor?: RgbaColor;
   width?: string;
   delay: number;
-  boardRenderTime:number;
-  isWin:boolean
+  boardRenderTime: number;
+  win: Win;
+  move: { rowIdx: number; tileIdx: number };
 }
 const TileHover = ({
   x = 0,
@@ -31,10 +33,16 @@ const TileHover = ({
   delay,
   children,
   boardRenderTime,
-  isWin
+  win,
+  move,
 }: Props) => {
   const [isBooped, setIsBooped] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [isWinningMove, setIsWinningMove] = useState(false);
+
+  const [lineDirection, setLineDirection] = useState<string>(
+    win.type === null ? "" : win.type
+  );
   const [config, setConfig] = useState({
     mass: 1,
     tension: 280,
@@ -47,16 +55,32 @@ const TileHover = ({
     setIsVisible(true);
     const t = setInterval(() => {
       setIsRendered(true);
-    },  boardRenderTime);
+    }, boardRenderTime);
     return () => {
       clearInterval(t);
     };
   }, []);
+  useEffect(() => {
+    setLineDirection(win?.type === null ? "None" : win.type);
+  }, [win.type]);
+  useEffect(() => {
+    setLineDirection(win?.type === null ? "None" : win.type);
+    const determineWinningMove = () => {
+      return win?.winningMoves?.map((winningMove) => {
+        if (
+          winningMove.rowIdx === move.rowIdx &&
+          winningMove.tileIdx === move.tileIdx
+        ) {
+          setIsWinningMove(true);
+        }
+      });
+    };
+    determineWinningMove();
+  }, [lineDirection]);
   const style = useSpring({
     opacity: isVisible ? 1 : 0,
     width: width,
-   
-  
+
     delay: isRendered ? 0 : delay,
     transform: isVisible
       ? `translate(${x}px, ${y}px)
@@ -73,17 +97,62 @@ const TileHover = ({
       : `rgba(${beforeColor.r}, ${beforeColor.g}, ${beforeColor.b}, ${beforeColor.a})`,
     config: isRendered
       ? { mass: 0.1, tension: 399, friction: 0, clamp: true }
-      : 		{ mass: 1, tension: 170, friction: 26 },
+      : { mass: 1, tension: 170, friction: 26 },
   });
+  const directionProps: any = {
+    vertical: {
+      height: isWinningMove ? "100%" : "0%",
+      width: "4px",
+      top: "0%",
+      left: "50%",
+      delay: move.rowIdx,
+      rotate: 0,
+    },
+    horizontal: {
+      height: "4px",
+      width: isWinningMove ? "100%" : "0%",
+      top: "50%",
+      left: "0%",
+      delay: move.tileIdx,
+      rotate: 0,
+    },
+    diagonalRight: {
+      rotate: 45,
+      height: "4px",
+      width: isWinningMove ? "150%" : "0%",
+      top: "40%",
+      left: "-25%",
+      delay: move.tileIdx,
+
+      opacity: isWinningMove ? 1 : 0,
+    },
+    diagonalLeft: {
+      height: "4px",
+      width: isWinningMove ? "150%" : "0%",
+      top: "40%",
+      left: "-20%",
+      delay: move.tileIdx,
+      rotate: -45,
+      opacity: isWinningMove ? 1 : 0,
+    },
+  };
   const lineStyle = useSpring({
-    
-    position: "absolute",
-    top: "50%",
-    left: 0,
-    width: isWin ? "100%" : "0%",
-    height: `2px`,
-    background: "black",
-    zIndex:9999,
+    // transform: `translate(${0}px, ${0}px)
+    //      rotate(${directionProps[lineDirection]?.rotate}deg)
+    //      scale(${1})`,
+
+    height: directionProps[lineDirection]?.height,
+    width: directionProps[lineDirection]?.width,
+    opacity: directionProps[lineDirection]?.opacity,
+
+    background:
+      beforeColor.r * 0.299 + beforeColor.g * 0.587 + beforeColor.b * 0.114 >
+      186
+        ? "black"
+        : "white",
+    zIndex: 9999,
+
+    delay: delay * directionProps[lineDirection]?.delay,
     config: {
       mass: 1,
       tension: 170,
@@ -96,16 +165,27 @@ const TileHover = ({
   const triggerLeave = () => {
     setIsBooped(false);
   };
+ 
   return (
-    <Grid  sx={{ position: "relative", display: "inline-block" }}>
-      <animated.div style={lineStyle as any}/>
-    <animated.div
-      onMouseEnter={trigger}
-      onMouseLeave={triggerLeave}
-      style={style as any}
-    >
-      {children}
-    </animated.div>
+    <Grid sx={{ position: "relative", display: "inline-block" }}>
+      <animated.div
+        style={{
+          ...(lineStyle as any),
+          transform: `translate(${0}px, ${0}px)
+         rotate(${directionProps[lineDirection]?.rotate}deg)
+         scale(${1})`,
+          position: "absolute",
+          top: directionProps[lineDirection]?.top,
+          left: directionProps[lineDirection]?.left,
+        }}
+      />
+      <animated.div
+        onMouseEnter={trigger}
+        onMouseLeave={triggerLeave}
+        style={style as any}
+      >
+        {children}
+      </animated.div>
     </Grid>
   );
 };
