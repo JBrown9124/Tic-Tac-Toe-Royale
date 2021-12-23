@@ -12,14 +12,12 @@ import StatusBoard from "./StatusBoard/StatusBoard";
 interface GameProps {
   newMove: NewMove;
   lobby: Lobby;
-
   gameStatus: GameStatus;
   setGameStatus: (status: GameStatus) => void;
 }
 function Game({ newMove, lobby, gameStatus, setGameStatus }: GameProps) {
   const [sessionCookies, setSessionCookies] = useCookies();
   const [playerNumber, setPlayerNumber] = useState(0);
-  const [showGameOver, setShowGameOver] = useState(false);
 
   useEffect(() => {
     if (sessionCookies?.command === "begin") {
@@ -28,27 +26,20 @@ function Game({ newMove, lobby, gameStatus, setGameStatus }: GameProps) {
           return setPlayerNumber(player.playerNumber);
         }
       });
-    } else if (sessionCookies?.command === "gameover") {
-      setShowGameOver(true);
     }
   }, [sessionCookies?.command, lobby]);
   return (
     <>
-      <Grid container direction="column">
-        <GameOver
-          showGameOver={showGameOver}
-          gameStatus={gameStatus}
-          players={lobby?.players}
-        />
-        <Grid item xs={6}>
+      <Grid container justifyContent="center" spacing={2}>
+        <Grid item md={3} sx={{marginTop:"5px"}}>
           <StatusBoard
             winBy={lobby?.board?.winBy}
             gameStatus={gameStatus}
             players={lobby?.players}
+            playerNumber={playerNumber}
           />
         </Grid>
-
-        <Grid container item sx={{ justifyContent: "center", margin: "auto" }}>
+        <Grid item md={12}>
           <Board
             gameStatus={gameStatus}
             setGameStatus={(props) => setGameStatus(props)}

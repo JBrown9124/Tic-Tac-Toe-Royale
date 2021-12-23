@@ -6,17 +6,19 @@ import Typography from "@mui/material/Typography";
 import SizeSlider from "./SizeSlider";
 import React, { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
+import {useSound} from 'use-sound'
 
 export default function ColorSelecter() {
   const [color, setColor] = useState<RgbaColor>({ r: 194, g: 42, b: 50, a: 1 });
   const [sessionCookies, setSessionCookies] = useCookies();
- 
+  
   useEffect(() => {
     setSessionCookies(
       "board",
       { ...sessionCookies?.board, color: color },
       { path: "/" }
     );
+   
   }, [color]);
   return (
     <>

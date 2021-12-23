@@ -3,9 +3,13 @@ import { useCookies } from "react-cookie";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { useState, useEffect } from "react";
+import {useSound} from 'use-sound'
 export default function WinBy() {
   const [sessionCookies, setSessionCookies] = useCookies();
   const [winBy, setWinBy] = useState(2);
+  const [playSound] = useSound(
+    process.env.PUBLIC_URL + "/assets/sounds/snareForwardButton.mp3", 
+  );
   useEffect(() => {
     
       setSessionCookies(
@@ -13,7 +17,7 @@ export default function WinBy() {
         { ...sessionCookies?.board, winBy: winBy },
         { path: "/" }
       );
-    
+      playSound()
   }, [winBy]);
   
   return (

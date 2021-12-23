@@ -23,18 +23,17 @@ import { useSound } from "use-sound";
 function App() {
   const [sessionCookies, setSessionCookie, removeSessionCookie] = useCookies();
   const [startMusic] = useSound(
-    process.env.PUBLIC_URL + "/assets/sounds/bugablue-656.mp3"
+    process.env.PUBLIC_URL + "/assets/sounds/warHorn.mp3", 
   );
   const [newMove, setNewMove] = useState<NewMove>({
     playerNumber: 0,
     rowIdx: 0,
     tileIdx: 0,
-    win:{whoWon:null, type:null, winningMoves:null}
+    win: { whoWon: null, type: null, winningMoves: null },
   });
   const [piece, setPiece] = useState("");
-  const [play] = useSound("./sounds/likeSpinningPlates.mp3");
   const [gameStatus, setGameStatus] = useState<GameStatus>({
-    win:{whoWon:null, type:null, winningMoves:null},
+    win: { whoWon: null, type: null, winningMoves: null },
     whoTurn: 0,
   });
   const [lobby, setLobby] = useState<Lobby>({
@@ -43,7 +42,7 @@ function App() {
     board: { size: 0, color: { r: 0, g: 0, b: 0, a: 0 }, winBy: 3, moves: [] },
     players: [],
   });
-  const getCount = 0
+  const getCount = 0;
   const lobbyRef = useRef(lobby);
   const getCountRef = useRef(getCount);
   useEffect(() => {
@@ -53,13 +52,10 @@ function App() {
     getCountRef.current = getCount;
   }, [getCount]);
 
-  let lobbyContext = useContext(LobbyContext);
-
   socket.on("connect", () => {});
 
   console.log("connected to server");
   socket.on("player-join-lobby", (newPlayer: any) => {
-   
     const lobbyCopy = lobbyRef.current;
     let playerExists = lobbyCopy.players.filter((player) => {
       return player.name === newPlayer;
@@ -84,7 +80,6 @@ function App() {
     setLobby({ ...lobbyCopy });
   });
   socket.once("player-ready", (receivedLobby) => {
-   
     let getCount = 0;
     const lobbyCopy = lobbyRef.current;
     const getLobbyInfo = async () => {
@@ -103,14 +98,35 @@ function App() {
     console.log(newMove, "SOCKET NEW MOVE");
     setNewMove(newMove.newMove);
     setGameStatus(newMove.gameStatus);
-   
   });
 
   useEffect(() => {
+    if (sessionCookies.command==="leave"){
+      removeSessionCookie("command");
+      removeSessionCookie("lobbyId");
+      setGameStatus({
+        win: { whoWon: null, type: null, winningMoves: null },
+        whoTurn: 0,
+      });
+      setLobby(({
+        hostSid: 0,
+        lobbyId: 0,
+        board: { size: 0, color: { r: 0, g: 0, b: 0, a: 0 }, winBy: 3, moves: [] },
+        players: [],
+      }))
+      setNewMove(({
+        playerNumber: 0,
+        rowIdx: 0,
+        tileIdx: 0,
+        win: { whoWon: null, type: null, winningMoves: null },
+      }));
+
+
+    }
     if (sessionCookies.command === "begin") {
       const getLobbyInfo = async () => {
         const lobbyInfo = await getGame({ lobbyId: sessionCookies?.lobbyId });
-      
+
         console.log(lobbyInfo, "STARTGAMEGETGAMESOCKET");
         await setGameStatus(lobbyInfo?.gameStatus);
 
@@ -128,9 +144,11 @@ function App() {
       const getLobbyInfo = async () => {
         const lobbyInfo = await getGame({ lobbyId: sessionCookies?.lobbyId });
         console.log(lobbyInfo, "STARTGAMEGETGAMESOCKET");
-        lobbyInfo?.players.map((player:Player)=>{if (player.name === sessionCookies?.name){
-          setPiece(player.piece)
-        }})
+        lobbyInfo?.players.map((player: Player) => {
+          if (player.name === sessionCookies?.name) {
+            setPiece(player.piece);
+          }
+        });
         await setLobby(lobbyInfo);
       };
       getLobbyInfo();
@@ -138,12 +156,6 @@ function App() {
     }
   }, [sessionCookies?.command]);
 
-  // removeSessionCookie("command");
-  // removeSessionCookie("lobby");
-  // removeSessionCookie("lobbyId");
-  // removeSessionCookie("board");
-  // removeSessionCookie("gameStatus");
-  // setSessionCookie("gameStatus", {...sessionCookies.gameStatus, whoWon:null,}, {path:"/"})
   return (
     <>
       <LobbyContext.Provider value={lobby}>

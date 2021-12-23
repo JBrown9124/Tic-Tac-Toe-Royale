@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import Slider from "@mui/material/Slider";
 import MuiInput from "@mui/material/Input";
 import { useCookies } from "react-cookie";
-
+import {useSound} from 'use-sound'
 const Input = styled(MuiInput)`
   width: 42px;
 `;
@@ -14,13 +14,17 @@ const Input = styled(MuiInput)`
 export default function SizeSlider() {
   const [size, setSize] = useState<number | string | Array<number | string>>(3);
   const [sessionCookies, setSessionCookies] = useCookies();
-
+  const [playSound] = useSound(
+    process.env.PUBLIC_URL + "/assets/sounds/snareForwardButton.mp3", 
+  );
   const handleSizeChange = (event: Event, value: number | number[]) => {
     setSize(value);
+    playSound()
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSize(event.target.value === "" ? "" : Number(event.target.value));
+    playSound()
   };
 
   const handleBlur = () => {

@@ -122,7 +122,7 @@ const TileHover = ({
       width: isWinningMove ? "150%" : "0%",
       top: "40%",
       left: "-25%",
-      delay: move.tileIdx,
+      delay: move.rowIdx,
 
       opacity: isWinningMove ? 1 : 0,
     },
@@ -131,7 +131,7 @@ const TileHover = ({
       width: isWinningMove ? "150%" : "0%",
       top: "40%",
       left: "-20%",
-      delay: move.tileIdx,
+      delay: move.rowIdx,
       rotate: -45,
       opacity: isWinningMove ? 1 : 0,
     },
@@ -148,8 +148,8 @@ const TileHover = ({
     background:
       beforeColor.r * 0.299 + beforeColor.g * 0.587 + beforeColor.b * 0.114 >
       186
-        ? "black"
-        : "white",
+        ? "white"
+        : "black",
     zIndex: 9999,
 
     delay: delay * directionProps[lineDirection]?.delay,

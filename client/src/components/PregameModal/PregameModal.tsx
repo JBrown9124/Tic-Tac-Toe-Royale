@@ -41,12 +41,13 @@ export default function PregameModal({
   const [isLobbyFound, setIsLobbyFound] = useState<boolean>(true);
   const [playForward] = useSound(process.env.PUBLIC_URL + '/assets/sounds/snareForwardButton.mp3')
   const [playBackward] = useSound(process.env.PUBLIC_URL + '/assets/sounds/floorDrumBackButton.mp3')
+  const [playJoinOrStart] = useSound(process.env.PUBLIC_URL + '/assets/sounds/joinOrStartSound.mp3')
   const [lobbyIdItem, setLobbyIdItem] = useState(0);
   const [sessionCookies, setSessionCookie, removeSessionCookies] = useCookies();
 
 
   const handleCreateGameSelect = (name: string) => {
-    playForward()
+    playJoinOrStart()
     setSessionCookie("command", "create", { path: "/" });
   };
   const handleJoinSelect = (name: string) => {
@@ -102,34 +103,35 @@ export default function PregameModal({
           setIsLobbyFound(true);
           setSessionCookie("lobbyId", lobbyIdItem, { path: "/" });
           setLobby(lobbyInfo);
+          playJoinOrStart()
         }
       };
       findLobby();
     }
-    if (sessionCookies?.command === "leave") {
-      const leavingLobby = async () => {
-        console.log(sessionCookies?.lobby?.lobbyId, "leavingLobbyId");
-        const reqBody = {
-          lobbyId: sessionCookies?.lobbyId,
-          playerName: sessionCookies?.name,
-          hostSid: lobby.hostSid,
-        };
-        const lobbyInfo = await leaveLobby(reqBody);
-      };
-      leavingLobby();
-      removeSessionCookies("lobbyId");
-      removeSessionCookies("command");
-      removeSessionCookies("name");
-      setLobby({
-        hostSid:0,
-        lobbyId: 0,
-        board: { size: 0, color: { r: 0, g: 0, b: 0, a: 0 }, winBy: 3, moves: [] },
-        players: [
+    // if (sessionCookies?.command === "leave") {
+    //   const leavingLobby = async () => {
+    //     console.log(sessionCookies?.lobby?.lobbyId, "leavingLobbyId");
+    //     const reqBody = {
+    //       lobbyId: sessionCookies?.lobbyId,
+    //       playerName: sessionCookies?.name,
+    //       hostSid: lobby.hostSid,
+    //     };
+    //     const lobbyInfo = await leaveLobby(reqBody);
+    //   };
+    //   leavingLobby();
+    //   removeSessionCookies("lobbyId");
+    //   removeSessionCookies("command");
+    
+    //   setLobby({
+    //     hostSid:0,
+    //     lobbyId: 0,
+    //     board: { size: 0, color: { r: 0, g: 0, b: 0, a: 0 }, winBy: 3, moves: [] },
+    //     players: [
          
-        ],
-      })
-      removeSessionCookies("piece");
-    }
+    //     ],
+    //   })
+    //   removeSessionCookies("piece");
+    // }
     if (sessionCookies?.command === "start") {
       const initiateGame = async () => {
         console.log(sessionCookies?.lobby?.lobbyId, "leavingLobbyId");

@@ -9,6 +9,7 @@ import { useCookies } from "react-cookie";
 import { GameStatus } from "../../../Models/GameStatus";
 import { PlayerPieces } from "../../../Models/PlayerPieces";
 import { sizeOfPiece } from "../../../storage/sizeOfPiece";
+import {useSound} from "use-sound"
 interface TileProps {
   chosenPiece: JSX.Element | string | undefined;
   boardColor: RgbaColor;
@@ -35,10 +36,14 @@ export const Tile = ({
   const [sessionCookies, setSessionCookies] = useCookies();
   const delay = 0;
   const delayRef = useRef(delay);
+  const [startSnare] = useSound(
+    process.env.PUBLIC_URL + "/assets/sounds/yourMoveSound.mp3"
+  );
   const handleClick = () => {
     if (value === 0) {
       setTile({ value: chosenPiece });
       console.log(chosenPiece, "chosenPiece");
+      startSnare();
       updateBoardCache();
     }
   };
@@ -54,6 +59,7 @@ export const Tile = ({
         }
         item
         container
+        
         direction="column"
         sx={{
           width: sizeOfPiece,

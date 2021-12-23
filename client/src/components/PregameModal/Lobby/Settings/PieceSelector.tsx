@@ -7,7 +7,7 @@ import { useCookies } from "react-cookie";
 import Grid from "@mui/material/Grid";
 import createPiece from "../../../../storage/createPiece";
 import Input from "@mui/material/Input";
-
+import useSound from 'use-sound'
 import Button from "@mui/material/Button";
 
 // interface PieceSelectorProps{
@@ -25,9 +25,13 @@ export default function PieceSelector({
   const [sessionCookies, setSessionCookie] = useCookies();
   // const [image, setPiece] = useState<any>();
   const pieces = createPiece("black");
+  const [playSound] = useSound(
+    process.env.PUBLIC_URL + "/assets/sounds/snareForwardButton.mp3", 
+  );
   const handleImageUpload = (event: any) => {
     getBase64(event[0], (result: string) => {
       setPiece(result);
+      playSound()
     });
   };
   const getBase64 = (file: any, cb: any) => {
@@ -40,7 +44,10 @@ export default function PieceSelector({
       console.log("Error: ", error);
     };
   };
- 
+  const handleSelectPiece = (pieceName:string) =>{
+    setPiece(pieceName)
+    playSound()
+  }
   return (
     <>
       <Grid container direction="column" spacing={2}>
@@ -59,7 +66,7 @@ export default function PieceSelector({
               {pieces.map((piece) => (
                 <ListItemButton
                   key={piece.name}
-                  onClick={() => setPiece(piece.name)}
+                  onClick={() => handleSelectPiece(piece.name)}
                   sx={{ justifyContent: "center" }}
                 >
                   {piece.value}

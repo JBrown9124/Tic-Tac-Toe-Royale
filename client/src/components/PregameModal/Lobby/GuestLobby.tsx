@@ -9,6 +9,7 @@ import { useCookies } from "react-cookie";
 import playerReady from "../../../creators/playerReady";
 import { Lobby } from "../../../Models/Lobby";
 import CopyLobbyId from "./CopyLobbyId";
+import useSound from 'use-sound'
 interface GuestLobbyProps {
   setPiece: (piece: string) => void;
   playerPiece: string;
@@ -24,10 +25,26 @@ export default function GuestLobby({
   const [sessionCookies, setSessionCookies] = useCookies();
   const [isReady, setIsReady] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [playReady] = useSound(
+    process.env.PUBLIC_URL + "/assets/sounds/snareForwardButton.mp3", 
+  );
+  const [playUnready]= useSound(
+    process.env.PUBLIC_URL + "/assets/sounds/floorDrumBackButton.mp3", 
+  );
+  useEffect(()=>{
+    lobby.players.map((player) => {
+      if (player.name === sessionCookies?.name) {
+        setIsReady(false);
+        return (player.isReady = false);
+      }
+    });
+ 
+  },[playerPiece])
   useEffect(() => {
     lobby.players.map((player) => {
       if (player.name === sessionCookies?.name) {
         setIsReady(player.isReady);
+        
       }
     });
   }, [lobby]);
@@ -40,6 +57,8 @@ export default function GuestLobby({
         hostSid: lobby?.hostSid,
       };
       playerReady(reqBody);
+      !isReady ? playReady():playUnready()
+      
       lobby.players.map((player) => {
         if (player.name === sessionCookies?.name) {
           setIsReady(!player.isReady);

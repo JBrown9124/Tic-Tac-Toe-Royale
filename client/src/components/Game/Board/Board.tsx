@@ -21,6 +21,8 @@ import { NewMove } from "../../../Models/NewMove";
 import { GameStatus } from "../../../Models/GameStatus";
 import { sizeOfPiece } from "../../../storage/sizeOfPiece";
 import { WinningMove } from "../../../Models/Win";
+import { useSound } from "use-sound";
+
 interface BoardProps {
   newMove: NewMove;
   playerNumber: number;
@@ -43,7 +45,9 @@ export default function Board({
     useCookies();
   const [piece, setPiece] = useState<JSX.Element | string>();
   const [playerPieces, setPlayerPieces] = useState<PlayerPieces[]>([]);
-
+  const [startOtherPlayerMove] = useSound(
+    process.env.PUBLIC_URL + "/assets/sounds/otherPlayerMoveSound.mp3"
+  );
   useEffect(() => {
     if (sessionCookies.command === "begin") {
       const getPlayerPieces = () => {
@@ -118,22 +122,12 @@ export default function Board({
   }, [playerNumber, lobby]);
 
   useEffect(() => {
-    if (newMove?.playerNumber !==undefined || newMove?.playerNumber !== 0) {
+    if (newMove?.playerNumber !== undefined || newMove?.playerNumber !== 0) {
       board[newMove?.rowIdx][newMove?.tileIdx] = newMove?.playerNumber;
+      startOtherPlayerMove();
     }
   }, [newMove]);
-  // const determineWinningMove = (rowIdx: number, tileIdx: number) => {
-  //   let isWinningMove = false;
-  //   gameStatus?.win?.winningMoves?.forEach((winningMove) => {
-  //     if (winningMove.tileIdx === tileIdx && winningMove.rowIdx === rowIdx) {
-  //       return (isWinningMove = true);
-  //     } else {
-  //       return (isWinningMove = false);
-  //     }
-  //   });
-  //   return isWinningMove
-  // };
-  
+
   return (
     <>
       {board.map((row: number[], rowIdx: number) => (
@@ -142,16 +136,6 @@ export default function Board({
             <>
               <TileHover
                 move={{ rowIdx: rowIdx, tileIdx: tileIdx }}
-                // isWinMove={gameStatus.win?.winningMoves?.map((winningMove) => {
-
-                //   if(winningMove.rowIdx === rowIdx &&
-                //     winningMove.tileIdx === tileIdx){
-                //       return true
-                //     }
-                //   else{return false}
-
-                // })}
-               
                 win={gameStatus.win}
                 beforeColor={lobby?.board?.color}
                 delay={(rowIdx * tileIdx === 0 ? 0 : rowIdx * tileIdx) * 10}
