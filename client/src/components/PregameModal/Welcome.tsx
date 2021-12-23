@@ -25,7 +25,7 @@ export default function Welcome({ createGame, joinGame }: OpenPageProps) {
         justifyContent="center"
       >
         <Grid item>
-          <Typography variant="h2">Welcome To Tic Tac Toe Online!</Typography>
+          <Typography variant="h2">Welcome To Tic Tac Toe Royale!</Typography>
         </Grid>
         <Grid item>
           <TextField

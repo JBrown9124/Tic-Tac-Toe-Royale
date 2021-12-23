@@ -19,7 +19,7 @@ import { PlayerPieces } from "../../../Models/PlayerPieces";
 import { Lobby } from "../../../Models/Lobby";
 import { NewMove } from "../../../Models/NewMove";
 import { GameStatus } from "../../../Models/GameStatus";
-import { sizeOfPiece } from "../../../storage/sizeOfPiece";
+import { sizeOfPiece, mobileSizeOfPiece } from "../../../storage/sizeOfPiece";
 import { WinningMove } from "../../../Models/Win";
 import { useSound } from "use-sound";
 
@@ -62,11 +62,10 @@ export default function Board({
                 src={player?.piece}
                 alt={player?.piece}
                 style={{
-                  width: sizeOfPiece,
-                  height: sizeOfPiece,
-                  justifyContent: "center",
-                  margin: "auto",
-                  textAlign: "center",
+                  height: mobileSizeOfPiece,
+                  width: mobileSizeOfPiece,
+                  maxHeight: sizeOfPiece,
+                  maxWidth: sizeOfPiece,
                 }}
               />
             );
@@ -81,11 +80,10 @@ export default function Board({
                   src={player?.piece}
                   alt={player?.piece}
                   style={{
-                    width: sizeOfPiece,
-                    height: sizeOfPiece,
-                    justifyContent: "center",
-                    margin: "auto",
-                    textAlign: "center",
+                    height: mobileSizeOfPiece,
+                    width: mobileSizeOfPiece,
+                    maxHeight: sizeOfPiece,
+                    maxWidth: sizeOfPiece,
                   }}
                 />
               ),

@@ -21,10 +21,6 @@ import { Lobby } from "../../Models/Lobby";
 import useSound from "use-sound";
 
 
-interface LobbyProps {
-  lobbyId: number;
-  players: Player[];
-}
 interface PregameModalProps {
   setPiece: (piece: string) => void;
   playerPiece: string;
@@ -156,15 +152,21 @@ export default function PregameModal({
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
         sx={{ overflow: "auto" }}
+        
       >
         <Grid
+        maxHeight="sm"
+        maxWidth="sm"
           sx={{
             position: "absolute" as "absolute",
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
             overflow: "auto",
-            width: 800,
+            maxHeight:'100%',
+            
+            maxWidth:'100%',
+            width:800,
 
             bgcolor: "background.paper",
             border: "2px solid #000",

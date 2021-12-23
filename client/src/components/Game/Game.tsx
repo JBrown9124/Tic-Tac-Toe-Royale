@@ -4,6 +4,7 @@ import { NewMove } from "../../Models/NewMove";
 import Board from "./Board/Board";
 import { useCookies } from "react-cookie";
 import { Player } from "../../Models/Player";
+import StatusBoardIn from "../../animators/StatusBoardIn";
 import { useState, useEffect } from "react";
 import { Lobby } from "../../Models/Lobby";
 import { GameStatus } from "../../Models/GameStatus";
@@ -31,15 +32,17 @@ function Game({ newMove, lobby, gameStatus, setGameStatus }: GameProps) {
   return (
     <>
       <Grid container justifyContent="center" spacing={2}>
-        <Grid item md={3} sx={{marginTop:"5px"}}>
-          <StatusBoard
-            winBy={lobby?.board?.winBy}
-            gameStatus={gameStatus}
-            players={lobby?.players}
-            playerNumber={playerNumber}
-          />
+        <Grid item xs={5} md={3} sx={{ marginTop: "5px" }}>
+          <StatusBoardIn fromX={-100} isVisible={true} delay={800}>
+            <StatusBoard
+              winBy={lobby?.board?.winBy}
+              gameStatus={gameStatus}
+              players={lobby?.players}
+              playerNumber={playerNumber}
+            />
+          </StatusBoardIn>
         </Grid>
-        <Grid item md={12}>
+        <Grid item xs={12} md={12}>
           <Board
             gameStatus={gameStatus}
             setGameStatus={(props) => setGameStatus(props)}

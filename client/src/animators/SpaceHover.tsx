@@ -152,7 +152,7 @@ const TileHover = ({
         : "black",
     zIndex: 9999,
 
-    delay: delay * directionProps[lineDirection]?.delay,
+    delay: delay/2 * directionProps[lineDirection]?.delay,
     config: {
       mass: 1,
       tension: 170,
@@ -165,7 +165,7 @@ const TileHover = ({
   const triggerLeave = () => {
     setIsBooped(false);
   };
- 
+
   return (
     <Grid sx={{ position: "relative", display: "inline-block" }}>
       <animated.div

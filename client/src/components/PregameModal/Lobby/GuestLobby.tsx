@@ -32,7 +32,7 @@ export default function GuestLobby({
     process.env.PUBLIC_URL + "/assets/sounds/floorDrumBackButton.mp3", 
   );
   useEffect(()=>{
-    lobby.players.map((player) => {
+    lobby?.players?.map((player) => {
       if (player.name === sessionCookies?.name) {
         setIsReady(false);
         return (player.isReady = false);

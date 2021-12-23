@@ -59,8 +59,8 @@ export default function StatusBoard({
          
           
           bgcolor: "background.paper",
-          border: "2px solid #000",
-          boxShadow: 24,
+          border: "1px solid #000",
+          boxShadow: 10,
         }}
         direction="column"
         textAlign="center"
