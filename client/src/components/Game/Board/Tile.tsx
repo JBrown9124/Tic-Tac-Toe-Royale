@@ -61,7 +61,7 @@ export const Tile = ({
         container
         maxWidth="sm"
         maxHeight="sm"
-        justifyContent="center"
+        justifyContent={{xs:"center", md:"normal"}}
         textAlign="center"
         direction="column"
         sx={{
