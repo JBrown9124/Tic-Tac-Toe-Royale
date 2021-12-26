@@ -35,14 +35,19 @@ export default function StatusBoard({
   const [startGameOver] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/darkGameOver.mp3"
   );
+  const [startTie] = useSound(
+    process.env.PUBLIC_URL + "static/assets/sounds/tie.mp3"
+  );
   const pieces = createPiece("black");
   useEffect(() => {
     players?.map((player: Player) => {
       if (gameStatus?.win?.whoWon) {
         if (playerNumber === gameStatus?.win?.whoWon) {
           return startWin();
-        } else {
+        } else if (gameStatus?.win?.whoWon !== "tie") {
           return startGameOver();
+        } else {
+          startTie();
         }
       }
     });
@@ -64,24 +69,28 @@ export default function StatusBoard({
         textAlign="center"
       >
         <Grid container direction="column">
-          <Grid item>
-            <Typography variant="h6">
-              {players?.map((player: Player) => {
-                if (gameStatus?.win?.whoWon) {
-                  if (player.playerNumber === gameStatus?.win?.whoWon) {
-                    if (player.playerNumber === playerNumber) {
-                      return "You Win!";
+          <Grid item sx={{ p: 1 }}>
+            {gameStatus?.win?.whoWon === "tie" ? (
+              <Typography variant="h6">Its a tie!</Typography>
+            ) : (
+              <Typography variant="h6">
+                {players?.map((player: Player) => {
+                  if (gameStatus?.win?.whoWon) {
+                    if (player.playerNumber === gameStatus?.win?.whoWon) {
+                      if (player.playerNumber === playerNumber) {
+                        return "You Win!";
+                      }
+                      return `${player.name} Wins!`;
                     }
-                    return `${player.name} Wins!`;
+                  } else if (player.playerNumber === gameStatus?.whoTurn) {
+                    if (player.playerNumber === playerNumber) {
+                      return "Your Turn";
+                    }
+                    return `${player.name}'s Turn`;
                   }
-                } else if (player.playerNumber === gameStatus?.whoTurn) {
-                  if (player.playerNumber === playerNumber) {
-                    return "Your Turn";
-                  }
-                  return `${player.name}'s Turn`;
-                }
-              })}
-            </Typography>
+                })}
+              </Typography>
+            )}
           </Grid>
         </Grid>
         <Grid item>

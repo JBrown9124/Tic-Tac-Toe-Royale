@@ -19,7 +19,7 @@ import startGame from "../../creators/startGame";
 import { Lobby } from "../../Models/Lobby";
 // import joinOrStartSound from require('../../sounds/joinOrStartSound.mp3')
 import useSound from "use-sound";
-require("../../sounds/joinOrStartSound.mp3");
+
 interface PregameModalProps {
   setPiece: (piece: string) => void;
   playerPiece: string;

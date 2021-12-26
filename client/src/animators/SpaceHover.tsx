@@ -41,7 +41,11 @@ const TileHover = ({
   const [isWinningMove, setIsWinningMove] = useState(false);
 
   const [lineDirection, setLineDirection] = useState<string>(
-    win.type === null ? "" : win.type
+    win?.type === null
+      ? "None"
+      : win?.type === "tie"
+      ? "horizontal"
+      : win?.type
   );
   const [config, setConfig] = useState({
     mass: 1,
@@ -61,10 +65,23 @@ const TileHover = ({
     };
   }, []);
   useEffect(() => {
-    setLineDirection(win?.type === null ? "None" : win.type);
-  }, [win.type]);
+    setLineDirection(
+      win?.type === null
+        ? "None"
+        : win?.type === "tie"
+        ? "horizontal"
+        : win?.type
+    );
+  }, [win?.type]);
   useEffect(() => {
-    setLineDirection(win?.type === null ? "None" : win.type);
+    setLineDirection(
+      win?.type === null
+        ? "None"
+        : win?.type === "tie"
+        ? "horizontal"
+        : win?.type
+    );
+
     const determineWinningMove = () => {
       return win?.winningMoves?.map((winningMove) => {
         if (
@@ -75,7 +92,11 @@ const TileHover = ({
         }
       });
     };
-    determineWinningMove();
+    if (win?.type === "tie") {
+      setIsWinningMove(true);
+    } else {
+      determineWinningMove();
+    }
   }, [lineDirection]);
   const style = useSpring({
     opacity: isVisible ? 1 : 0,
@@ -152,7 +173,7 @@ const TileHover = ({
         : "black",
     zIndex: 9999,
 
-    delay: delay/2 * directionProps[lineDirection]?.delay,
+    delay: (delay / 2) * directionProps[lineDirection]?.delay,
     config: {
       mass: 1,
       tension: 170,

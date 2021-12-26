@@ -33,7 +33,7 @@ function Game({ newMove, lobby, gameStatus, setGameStatus }: GameProps) {
     <>
       <Grid container justifyContent="center" spacing={2}>
         <Grid item xs={5} md={3} sx={{ marginTop: "5px" }}>
-          <StatusBoardIn fromX={-100} isVisible={true} delay={800}>
+          <StatusBoardIn fromY={-100} isVisible={true} delay={800}>
             <StatusBoard
               winBy={lobby?.board?.winBy}
               gameStatus={gameStatus}

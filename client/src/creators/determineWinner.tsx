@@ -3,7 +3,7 @@ import { Lobby } from "../Models/Lobby";
 import { NewMove } from "../Models/NewMove";
 import { WinningMove } from "../Models/Win";
 import { GameStatus } from "../Models/GameStatus";
-const determineWinner = (
+const determineWinner = async(
   rowIdx: number,
   tileIdx: number,
   board: number[][],
@@ -150,9 +150,9 @@ const determineWinner = (
     newMove: boardMove,
     hostSid: lobby?.hostSid,
   };
-  newMove(reqBody);
-  setGameStatus({
-    win: boardMove.win,
+  const gameStatusResponse:GameStatus = await newMove(reqBody);
+  await setGameStatus({
+    win: gameStatusResponse?.win,
     whoTurn: lobby.players.length === playerNumber ? 1 : gameStatus.whoTurn + 1,
   });
 };

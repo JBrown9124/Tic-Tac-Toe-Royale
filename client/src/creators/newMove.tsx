@@ -28,7 +28,7 @@ const newMove = async (body: BodyProps) => {
     const data = await saveNewMove(body);
     sendNewMove(data, body);
 
-    return await data.lobby;
+    return await data.gameStatus;
   } catch (e) {
     console.log(e);
   }

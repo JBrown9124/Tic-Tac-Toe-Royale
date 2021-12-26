@@ -44,7 +44,10 @@ class Board(APIView):
 
         lobby_board_copy = lobby_copy["board"]
         lobby_board_copy["moves"].append(new_move)
-
+        tile_amount = lobby_board_copy["size"] * lobby_board_copy["size"]
+        if len(lobby_board_copy["moves"]) == tile_amount and not win_player_number:
+            win = Win(who_won="tie", type="tie").to_dict()
+            lobby_game_status_copy["win"] = win 
         lobby_copy["board"] = lobby_board_copy
         lobby_copy["gameStatus"] = lobby_game_status_copy
         cache.set(lobby_id, lobby_copy, 43200)
