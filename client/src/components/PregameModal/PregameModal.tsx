@@ -17,9 +17,9 @@ import joinLobby from "../../creators/joinLobby";
 import leaveLobby from "../../creators/leaveLobby";
 import startGame from "../../creators/startGame";
 import { Lobby } from "../../Models/Lobby";
-
+// import joinOrStartSound from require('../../sounds/joinOrStartSound.mp3')
 import useSound from "use-sound";
-
+require("../../sounds/joinOrStartSound.mp3");
 interface PregameModalProps {
   setPiece: (piece: string) => void;
   playerPiece: string;
@@ -34,20 +34,23 @@ export default function PregameModal({
 }: PregameModalProps) {
   const [open, setOpen] = useState(true);
   const [isLobbyFound, setIsLobbyFound] = useState<boolean>(true);
+ 
+  
   const [playForward] = useSound(
-    window.location.origin + "/assets/sounds/snareForwardButton.mp3"
+    process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3"
   );
   const [playBackward] = useSound(
-    window.location.origin + "/assets/sounds/floorDrumBackButton.mp3"
+    process.env.PUBLIC_URL + "static/assets/sounds/floorDrumBackButton.mp3"
   );
   const [playJoinOrStart] = useSound(
-    window.location.origin + "http://127.0.0.1:8000/joinOrStartSound.mp3"
+    process.env.PUBLIC_URL + "static/assets/sounds/joinOrStartSound.mp3"
   );
   const [lobbyIdItem, setLobbyIdItem] = useState(0);
   const [sessionCookies, setSessionCookie, removeSessionCookies] = useCookies();
 
   const handleCreateGameSelect = (name: string) => {
     playJoinOrStart();
+
     setSessionCookie("command", "create", { path: "/" });
   };
   const handleJoinSelect = (name: string) => {

@@ -37,7 +37,7 @@ export const Tile = ({
   const delay = 0;
   const delayRef = useRef(delay);
   const [startSnare] = useSound(
-    window.location.origin + "/assets/sounds/yourMoveSound.mp3"
+    process.env.PUBLIC_URL + "static/assets/sounds/yourMoveSound.mp3"
   );
   const handleClick = () => {
     if (value === 0) {

@@ -26,10 +26,10 @@ export default function GuestLobby({
   const [isReady, setIsReady] = useState(false);
   const [isError, setIsError] = useState(false);
   const [playReady] = useSound(
-    window.location.origin + "/assets/sounds/snareForwardButton.mp3", 
+    process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3", 
   );
   const [playUnready]= useSound(
-    window.location.origin + "/assets/sounds/floorDrumBackButton.mp3", 
+    process.env.PUBLIC_URL + "static/assets/sounds/floorDrumBackButton.mp3", 
   );
   useEffect(()=>{
     lobby?.players?.map((player) => {

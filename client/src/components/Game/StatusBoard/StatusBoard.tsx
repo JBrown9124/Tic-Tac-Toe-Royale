@@ -27,13 +27,13 @@ export default function StatusBoard({
     setSessionCookies("command", "quit", { path: "/" });
   };
   const [playLeave] = useSound(
-    window.location.origin + "/assets/sounds/floorDrumBackButton.mp3"
+    process.env.PUBLIC_URL + "static/assets/sounds/floorDrumBackButton.mp3"
   );
   const [startWin] = useSound(
-    window.location.origin + "/assets/sounds/winnerSound.mp3"
+    process.env.PUBLIC_URL + "static/assets/sounds/winnerSound.mp3"
   );
   const [startGameOver] = useSound(
-    window.location.origin + "/assets/sounds/darkGameOver.mp3"
+    process.env.PUBLIC_URL + "static/assets/sounds/darkGameOver.mp3"
   );
   const pieces = createPiece("black");
   useEffect(() => {

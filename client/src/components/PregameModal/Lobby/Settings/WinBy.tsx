@@ -8,7 +8,7 @@ export default function WinBy() {
   const [sessionCookies, setSessionCookies] = useCookies();
   const [winBy, setWinBy] = useState(2);
   const [playSound] = useSound(
-    window.location.origin + "/assets/sounds/snareForwardButton.mp3", 
+    process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3", 
   );
   useEffect(() => {
     

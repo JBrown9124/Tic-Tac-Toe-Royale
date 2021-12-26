@@ -23,7 +23,7 @@ import { useSound } from "use-sound";
 function App() {
   const [sessionCookies, setSessionCookie, removeSessionCookie] = useCookies();
   const [startMusic] = useSound(
-    window.location.origin + "/assets/sounds/warHorn.mp3"
+    process.env.PUBLIC_URL + "static/assets/sounds/warHorn.mp3"
   );
   const [newMove, setNewMove] = useState<NewMove>({
     playerNumber: 0,
