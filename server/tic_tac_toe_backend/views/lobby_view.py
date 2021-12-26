@@ -26,7 +26,7 @@ class Lobby(APIView):
 
         lobby.players.append(player)
         lobby_dict = lobby.to_dict()
-        cache.set(lobby_id, lobby_dict, 43200)
+        cache.set(lobby_id, lobby_dict, 3600)
 
         lobby_response = LobbyResponseModel(
             lobby=lobby_dict[lobby_id], lobby_id=lobby_id
@@ -55,7 +55,7 @@ class Lobby(APIView):
             name=player_name, player_number=len(lobby["players"]) + 1
         ).to_dict()
         lobby["players"].append(player)
-        cache.set(lobby_id, lobby, 43200)
+        cache.set(lobby_id, lobby, 3600)
         lobby_response = LobbyResponseModel(lobby=lobby, lobby_id=lobby_id).to_dict()
         lobby_response["lobbyId"] = lobby_id
         return JsonResponse({"lobby": lobby_response})
@@ -81,7 +81,7 @@ class Lobby(APIView):
                 else:
                     lobby_players_copy.remove(player)
                     lobby_copy["players"] = lobby_players_copy
-                    cache.set(lobby_id, lobby_copy, 43200)
+                    cache.set(lobby_id, lobby_copy, 3600)
                     lobby_response = LobbyResponseModel(
                         lobby=lobby_copy, lobby_id=lobby_id
                     ).to_dict()

@@ -56,7 +56,7 @@ class Game(APIView):
                 player["isReady"] = not player["isReady"]
 
                 lobby_copy["players"] = lobby_players_copy
-                cache.set(lobby_id, lobby_copy, 43200)
+                cache.set(lobby_id, lobby_copy, 3600)
                 lobby_response = LobbyResponseModel(
                     lobby=lobby_copy, lobby_id=lobby_id
                 ).to_dict()
@@ -80,7 +80,7 @@ class Game(APIView):
                 player["piece"] = player_piece
                 player["isReady"] = not player["isReady"]
                 lobby["players"] = lobby_players_copy
-                cache.set(lobby_id, lobby, 43200)
+                cache.set(lobby_id, lobby, 3600)
                 lobby_response = LobbyResponseModel(
                     lobby=lobby, lobby_id=lobby_id
                 ).to_dict()

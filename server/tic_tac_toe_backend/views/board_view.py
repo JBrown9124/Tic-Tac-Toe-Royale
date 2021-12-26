@@ -50,7 +50,7 @@ class Board(APIView):
             lobby_game_status_copy["win"] = win 
         lobby_copy["board"] = lobby_board_copy
         lobby_copy["gameStatus"] = lobby_game_status_copy
-        cache.set(lobby_id, lobby_copy, 43200)
+        cache.set(lobby_id, lobby_copy, 3600)
 
         board_response = BoardResponseModel(
             new_move=new_move, game_status=lobby_game_status_copy
