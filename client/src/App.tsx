@@ -23,7 +23,7 @@ import { useSound } from "use-sound";
 function App() {
   const [sessionCookies, setSessionCookie, removeSessionCookie] = useCookies();
   const [startMusic] = useSound(
-    process.env.PUBLIC_URL + "/assets/sounds/warHorn.mp3", 
+    window.location.origin + "/assets/sounds/warHorn.mp3"
   );
   const [newMove, setNewMove] = useState<NewMove>({
     playerNumber: 0,
@@ -54,7 +54,6 @@ function App() {
 
   socket.on("connect", () => {});
 
-  console.log("connected to server");
   socket.on("player-join-lobby", (newPlayer: any) => {
     const lobbyCopy = lobbyRef.current;
     let playerExists = lobbyCopy.players.filter((player) => {
@@ -72,17 +71,22 @@ function App() {
     }
   });
   socket.on("player-leave-lobby", (removedPlayer) => {
-    const lobbyCopy = lobbyRef.current;
-    let newPlayerList = lobbyCopy.players.filter((player) => {
-      return player.name !== removedPlayer;
-    });
-    lobbyCopy.players = newPlayerList;
-    setLobby({ ...lobbyCopy });
+    if (removedPlayer === "HOST") {
+      setSessionCookie("command", "leave", { path: "/" });
+    } else {
+      const lobbyCopy = lobbyRef.current;
+      let newPlayerList = lobbyCopy.players.filter((player) => {
+        return player.name !== removedPlayer;
+      });
+      lobbyCopy.players = newPlayerList;
+      setLobby({ ...lobbyCopy });
+    }
   });
   socket.once("player-ready", (receivedLobby) => {
     let getCount = 0;
-    const lobbyCopy = lobbyRef.current;
+
     const getLobbyInfo = async () => {
+      const lobbyCopy = lobbyRef.current;
       const lobbyInfo = await getGame({ lobbyId: lobbyCopy.lobbyId });
       await setLobby(lobbyInfo);
     };
@@ -95,39 +99,40 @@ function App() {
     setSessionCookie("command", "begin", { path: "/" });
   });
   socket.on("new-move", (newMove) => {
-    console.log(newMove, "SOCKET NEW MOVE");
     setNewMove(newMove.newMove);
     setGameStatus(newMove.gameStatus);
   });
 
   useEffect(() => {
-    if (sessionCookies.command==="leave"){
+    if (sessionCookies.command === "quit") {
       removeSessionCookie("command");
       removeSessionCookie("lobbyId");
+      setLobby({
+        hostSid: 0,
+        lobbyId: 0,
+        board: {
+          size: 0,
+          color: { r: 0, g: 0, b: 0, a: 0 },
+          winBy: 3,
+          moves: [],
+        },
+        players: [],
+      });
       setGameStatus({
         win: { whoWon: null, type: null, winningMoves: null },
         whoTurn: 0,
       });
-      setLobby(({
-        hostSid: 0,
-        lobbyId: 0,
-        board: { size: 0, color: { r: 0, g: 0, b: 0, a: 0 }, winBy: 3, moves: [] },
-        players: [],
-      }))
-      setNewMove(({
+      setNewMove({
         playerNumber: 0,
         rowIdx: 0,
         tileIdx: 0,
         win: { whoWon: null, type: null, winningMoves: null },
-      }));
-
-
+      });
     }
     if (sessionCookies.command === "begin") {
       const getLobbyInfo = async () => {
         const lobbyInfo = await getGame({ lobbyId: sessionCookies?.lobbyId });
 
-        console.log(lobbyInfo, "STARTGAMEGETGAMESOCKET");
         await setGameStatus(lobbyInfo?.gameStatus);
 
         await setLobby(lobbyInfo);
@@ -143,7 +148,7 @@ function App() {
     ) {
       const getLobbyInfo = async () => {
         const lobbyInfo = await getGame({ lobbyId: sessionCookies?.lobbyId });
-        console.log(lobbyInfo, "STARTGAMEGETGAMESOCKET");
+
         lobbyInfo?.players.map((player: Player) => {
           if (player.name === sessionCookies?.name) {
             setPiece(player.piece);
@@ -155,7 +160,8 @@ function App() {
       startMusic();
     }
   }, [sessionCookies?.command]);
-
+  // removeSessionCookie("command")
+  // removeSessionCookie("LobbyId")
   return (
     <>
       <LobbyContext.Provider value={lobby}>

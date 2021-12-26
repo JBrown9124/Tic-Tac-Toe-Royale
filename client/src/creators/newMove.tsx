@@ -2,6 +2,7 @@ import {socket} from "../socket";
 import axios from "axios";
 import {Win} from '../Models/Win'
 import {NewMove} from '../Models/NewMove'
+import url from "../storage/url"
 interface BodyProps {
  
   newMove:NewMove,
@@ -10,8 +11,8 @@ interface BodyProps {
 
 }
 const saveNewMove = async (body: BodyProps) => {
-  console.log(body, "newMoveBody");
-  const { data } = await axios.put("http://127.0.0.1:8000/api/board", 
+ 
+  const { data } = await axios.put(`${url}/api/board`, 
     body,
   );
   return data;
@@ -26,7 +27,7 @@ const newMove = async (body: BodyProps) => {
   try {
     const data = await saveNewMove(body);
     sendNewMove(data, body);
-    console.log(data, "playerReadyData");
+
     return await data.lobby;
   } catch (e) {
     console.log(e);

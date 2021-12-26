@@ -1,5 +1,6 @@
 import {socket}from "../socket";
 import axios from "axios";
+import url from "../storage/url"
 interface BodyProps {
   player:{name:string, piece:string},
   lobbyId:number,
@@ -7,8 +8,8 @@ interface BodyProps {
   
 }
 const savePlayerReady = async (body: BodyProps) => {
-  console.log(body, "playerReadyBody");
-  const { data } = await axios.put("http://127.0.0.1:8000/api/game", 
+
+  const { data } = await axios.put(`${url}/api/game`, 
     body,
   );
   return data;
@@ -23,7 +24,7 @@ const playerReady = async (body: BodyProps) => {
   try {
     const data = await savePlayerReady(body);
     sendPlayerReady(body);
-    console.log(data, "playerReadyData");
+   
     return await data.lobby;
   } catch (e) {
     console.log(e);

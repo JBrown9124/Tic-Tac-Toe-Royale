@@ -24,16 +24,16 @@ export default function StatusBoard({
     useCookies();
   const handleLeaveGame = () => {
     playLeave();
-    setSessionCookies("command", "leave", { path: "/" });
+    setSessionCookies("command", "quit", { path: "/" });
   };
   const [playLeave] = useSound(
-    process.env.PUBLIC_URL + "/assets/sounds/floorDrumBackButton.mp3"
+    window.location.origin + "/assets/sounds/floorDrumBackButton.mp3"
   );
   const [startWin] = useSound(
-    process.env.PUBLIC_URL + "/assets/sounds/winnerSound.mp3"
+    window.location.origin + "/assets/sounds/winnerSound.mp3"
   );
   const [startGameOver] = useSound(
-    process.env.PUBLIC_URL + "/assets/sounds/darkGameOver.mp3"
+    window.location.origin + "/assets/sounds/darkGameOver.mp3"
   );
   const pieces = createPiece("black");
   useEffect(() => {
@@ -41,11 +41,10 @@ export default function StatusBoard({
       if (gameStatus?.win?.whoWon) {
         if (playerNumber === gameStatus?.win?.whoWon) {
           return startWin();
-        }
-        else {
+        } else {
           return startGameOver();
         }
-      } 
+      }
     });
   }, [gameStatus?.win?.whoWon]);
   return (
@@ -56,8 +55,7 @@ export default function StatusBoard({
           background: "white",
           borderRadius: "15px",
           padding: "5px",
-         
-          
+
           bgcolor: "background.paper",
           border: "1px solid #000",
           boxShadow: 10,

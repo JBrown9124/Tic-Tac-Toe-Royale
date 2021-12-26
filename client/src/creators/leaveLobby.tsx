@@ -1,13 +1,14 @@
 import {socket}from "../socket";
 import axios from "axios";
+import url from "../storage/url"
 interface BodyProps {
   playerName: string;
   lobbyId: number;
   hostSid:number
 }
 const saveLeaveLobby = async (body: BodyProps) => {
-  console.log(body, "saveLeaveLobbyBody");
-  const { data } = await axios.delete("http://127.0.0.1:8000/api/lobby", {
+ 
+  const { data } = await axios.delete(`${url}/api/lobby`, {
     data: body,
   });
   return data;
@@ -25,7 +26,7 @@ const leaveLobby = async (body: BodyProps) => {
   try {
     const data = await saveLeaveLobby(body);
     sendLeaveLobby(data, body);
-    console.log(data, "leaveLobbyData");
+    
     return await data.lobby;
   } catch (e) {
     console.log(e);

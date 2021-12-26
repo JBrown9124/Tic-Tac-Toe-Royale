@@ -12,7 +12,7 @@ interface PieceProps {
   value: JSX.Element;
 }
 const createPiece = (color: string): PieceProps[] => {
-  console.log(color, "CREATEPIECECOLOR");
+
   const pieces = [
     {
       name: "Clear",

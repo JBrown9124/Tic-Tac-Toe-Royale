@@ -15,7 +15,7 @@ export default function SizeSlider() {
   const [size, setSize] = useState<number | string | Array<number | string>>(3);
   const [sessionCookies, setSessionCookies] = useCookies();
   const [playSound] = useSound(
-    process.env.PUBLIC_URL + "/assets/sounds/snareForwardButton.mp3", 
+    window.location.origin + "/assets/sounds/snareForwardButton.mp3", 
   );
   const handleSizeChange = (event: Event, value: number | number[]) => {
     setSize(value);

@@ -46,7 +46,7 @@ export default function Board({
   const [piece, setPiece] = useState<JSX.Element | string>();
   const [playerPieces, setPlayerPieces] = useState<PlayerPieces[]>([]);
   const [startOtherPlayerMove] = useSound(
-    process.env.PUBLIC_URL + "/assets/sounds/otherPlayerMoveSound.mp3"
+    window.location.origin + "/assets/sounds/otherPlayerMoveSound.mp3"
   );
   useEffect(() => {
     if (sessionCookies.command === "begin") {

@@ -26,15 +26,13 @@ export default function HostLobby({
   hostSid,
 }: PlayerListProps) {
   const [sessionCookies, setSessionCookies] = useCookies();
-  const [startMusic] = useSound(
-    process.env.PUBLIC_URL + "/assets/sounds/bugablue-656.mp3"
-  );
+  
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isCopied, setIsCopied] = useState(false)
   const handleStart = () => {
     setSessionCookies("command", "start", { path: "/" });
-    startMusic();
+   
   };
   const allPlayersReady = () => {
     const playersNotReady = players.filter((player) => {

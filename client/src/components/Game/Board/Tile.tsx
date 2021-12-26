@@ -37,12 +37,12 @@ export const Tile = ({
   const delay = 0;
   const delayRef = useRef(delay);
   const [startSnare] = useSound(
-    process.env.PUBLIC_URL + "/assets/sounds/yourMoveSound.mp3"
+    window.location.origin + "/assets/sounds/yourMoveSound.mp3"
   );
   const handleClick = () => {
     if (value === 0) {
       setTile({ value: chosenPiece });
-      console.log(chosenPiece, "chosenPiece");
+  
       startSnare();
       updateBoardCache();
     }

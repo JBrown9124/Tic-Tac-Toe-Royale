@@ -43,17 +43,20 @@ def player_joined(sid, player):
 @sio.on("player-leave-lobby")
 def player_left(sid, lobby):
     print(lobby["playerName"])
-
+    leaving_player = lobby["playerName"]
     hostSid = lobby["hostSid"]
     rooms = sio.rooms(sid)
     for room in rooms:
         sio.leave_room(sid, room)
+    if sid == hostSid:
+         leaving_player = "HOST"
+    sio.emit("player-leave-lobby", leaving_player, room=hostSid, skip_sid=sid)
 
-    print(sio.rooms(sid))
     if sid == hostSid:
         sio.close_room(hostSid)
-
-    sio.emit("player-leave-lobby", lobby["playerName"], room=hostSid, skip_sid=sid)
+      
+  
+    
 
 
 @sio.on("player-ready")

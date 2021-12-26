@@ -26,7 +26,7 @@ export default function PlayerList({ players, playerPiece }: PlayerListProps) {
         textAlign="center"
         direction="column"
         justifyContent="center"
-        sx={{ border: "solid 1px black" }}
+        sx={{ border: "solid 1px black",  borderRadius:"10px"}}
       >
         <Grid item>
           <Typography> Players </Typography>
@@ -34,7 +34,7 @@ export default function PlayerList({ players, playerPiece }: PlayerListProps) {
         <Grid item>
           <List
             dense
-            sx={{ bgcolor: "background.paper", justifyContent: "center" }}
+            sx={{  justifyContent: "center" }}
             aria-label="players"
           >
             {players?.map((player: Player, idx: number) =>

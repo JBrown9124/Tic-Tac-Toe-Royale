@@ -26,7 +26,7 @@ export default function PieceSelector({
   // const [image, setPiece] = useState<any>();
   const pieces = createPiece("black");
   const [playSound] = useSound(
-    process.env.PUBLIC_URL + "/assets/sounds/snareForwardButton.mp3", 
+    window.location.origin + "/assets/sounds/snareForwardButton.mp3", 
   );
   const handleImageUpload = (event: any) => {
     getBase64(event[0], (result: string) => {

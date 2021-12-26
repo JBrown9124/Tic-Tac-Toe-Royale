@@ -41,7 +41,7 @@ const determineWinner = (
   };
 
   const checkVertical = (winBy: number): boolean => {
-    console.log(board[rowIdx][tileIdx], "VerticalMove");
+    
     let topIdx = rowIdx;
     let bottomIdx = rowIdx;
 
@@ -91,7 +91,7 @@ const determineWinner = (
         j -= 1;
       }
     }
-    console.log(right[1] - left[1] + 1, "DiaganolLeftDistance");
+    
     return isWin;
   };
   const checkDiagonalRight = (winBy: number) => {
@@ -121,7 +121,7 @@ const determineWinner = (
         j += 1;
       }
     }
-    console.log(right[1] - left[1] + 1, "DiaganolRightDistance");
+   
     return isWin;
   };
 

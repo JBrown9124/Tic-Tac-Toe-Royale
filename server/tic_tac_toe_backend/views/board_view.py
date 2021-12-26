@@ -13,7 +13,7 @@ from ..Models.board import BoardModel
 from ..Models.player import Player
 from ..Models.win import Win
 from ..ResponseModels.response_board import BoardResponseModel
-
+from django.core.cache import cache
 # Create your views here.
 class Board(APIView):
     def post(self, request: Request):
@@ -30,7 +30,8 @@ class Board(APIView):
         last_turn = new_move.get("playerNumber")
         lobby_id = body.get("lobbyId")
 
-        lobby_copy = lobbys[lobby_id]
+        lobby_copy = cache.get(lobby_id)
+      
         lobby_players_copy = lobby_copy["players"]
 
         next_turn = 1 if last_turn == len(lobby_players_copy) else last_turn + 1
@@ -44,8 +45,9 @@ class Board(APIView):
         lobby_board_copy = lobby_copy["board"]
         lobby_board_copy["moves"].append(new_move)
 
-        lobbys[lobby_id]["board"] = lobby_board_copy
-        lobbys[lobby_id]["gameStatus"] = lobby_game_status_copy
+        lobby_copy["board"] = lobby_board_copy
+        lobby_copy["gameStatus"] = lobby_game_status_copy
+        cache.set(lobby_id, lobby_copy, 43200)
 
         board_response = BoardResponseModel(
             new_move=new_move, game_status=lobby_game_status_copy

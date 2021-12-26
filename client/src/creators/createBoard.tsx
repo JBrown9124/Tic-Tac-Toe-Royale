@@ -18,7 +18,7 @@ const createBoard = (setBoard:Function, boardSize:number, moves:Object[]): void 
     // }
     // let row:  number[] = Array(boardSize).fill(0);
     // let board: number[][] = Array(boardSize).fill(row);
-    console.log(board, "BOARD");
+  
 
     return setBoard([...board]);
     

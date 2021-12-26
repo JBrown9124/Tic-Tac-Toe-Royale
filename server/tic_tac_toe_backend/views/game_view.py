@@ -13,6 +13,7 @@ from ..Models.player import Player
 from ..Models.board import BoardModel
 from ..Models.game_status import GameStatus
 from ..Models.win import Win
+from django.core.cache import cache
 
 # Create your views here.
 class Game(APIView):
@@ -21,7 +22,11 @@ class Game(APIView):
         test_request = request
         body = request.query_params
         lobby_id = int(body.get("lobbyId"))
-        lobby = lobbys[lobby_id]
+        lobby = cache.get(lobby_id)
+        try:
+            lobby = lobby[lobby_id]
+        except:
+            lobby = lobby
         lobby_response = LobbyResponseModel(lobby=lobby, lobby_id=lobby_id).to_dict()
         return JsonResponse({"lobby": lobby_response})
 
@@ -35,7 +40,11 @@ class Game(APIView):
             size=board["size"], color=board["color"], win_by=board["winBy"]
         ).to_dict()
 
-        lobby_copy = lobbys[lobby_id]
+        lobby_copy = cache.get(lobby_id)
+        try:
+            lobby_copy = lobby_copy[lobby_id]
+        except:
+            lobby_copy = lobby_copy
         lobby_copy["board"] = board_model
 
         lobby_players_copy = lobby_copy["players"]
@@ -44,31 +53,36 @@ class Game(APIView):
         for player in lobby_players_copy:
             if player["isHost"]:
                 player["piece"] = host_piece
-                player["isReady"] = True
+                player["isReady"] = not player["isReady"]
 
-                lobbys[lobby_id]["players"] = lobby_players_copy
-                lobbys[lobby_id] = lobby_copy
+                lobby_copy["players"] = lobby_players_copy
+                cache.set(lobby_id, lobby_copy, 43200)
                 lobby_response = LobbyResponseModel(
                     lobby=lobby_copy, lobby_id=lobby_id
                 ).to_dict()
                 return JsonResponse({"lobby": lobby_response})
 
     def put(self, request: Request):
-        """takes guests player settings when they hit ready button and lobbyId, changes ready status to true"""
+        """takes guests and host player pieces when they hit ready button (guest) or select piece (host) and lobbyId, changes ready status to true"""
         body = request.data
         lobby_id = body.get("lobbyId")
         player = body.get("player")
         player_name = player.get("name")
         player_piece = player.get("piece")
-        lobby = lobbys[lobby_id]
+        lobby = cache.get(lobby_id)
+        try:
+            lobby= lobby[lobby_id]
+        except:
+            lobby = lobby
         lobby_players_copy = lobby["players"]
         for player in lobby_players_copy:
             if player["name"] == player_name:
                 player["piece"] = player_piece
                 player["isReady"] = not player["isReady"]
-                lobbys[lobby_id]["players"] = lobby_players_copy
+                lobby["players"] = lobby_players_copy
+                cache.set(lobby_id, lobby, 43200)
                 lobby_response = LobbyResponseModel(
-                    lobby=lobbys[lobby_id], lobby_id=lobby_id
+                    lobby=lobby, lobby_id=lobby_id
                 ).to_dict()
 
                 return JsonResponse({"lobby": lobby_response})

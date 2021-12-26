@@ -16,9 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from tic_tac_toe_backend.views import lobby_view, game_view, board_view
-
+from .index import index
 
 urlpatterns = [
+      path('', index, name='index'),
     path('admin/', admin.site.urls),
     path('api/lobby', lobby_view.Lobby.as_view()),
      path('api/game', game_view.Game.as_view()),

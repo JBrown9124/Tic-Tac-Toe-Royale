@@ -1,5 +1,6 @@
 import {socket} from "../socket";
 import axios from "axios";
+import url from "../storage/url"
 interface BodyProps {
   board:{color:string, size:number|number[]}
   lobbyId:number
@@ -7,8 +8,8 @@ interface BodyProps {
   
 }
 const saveStartGame = async (body: BodyProps) => {
-  console.log(body, "saveStartGAmeBody");
-  const { data } = await axios.post("http://127.0.0.1:8000/api/game", 
+
+  const { data } = await axios.post(`${url}/api/game`, 
     body,
   );
   return data;
@@ -22,7 +23,7 @@ const startGame = async (body: BodyProps) => {
     const data = await saveStartGame(body);
     const responseBody = {lobby:await data.lobby, gameStatus:await data.gameStatus}
     await sendStartGame(responseBody);
-    console.log(data, "startGameData");
+ 
 
     return await responseBody;
   } catch (e) {
