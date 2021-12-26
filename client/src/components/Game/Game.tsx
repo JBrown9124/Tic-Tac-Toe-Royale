@@ -38,6 +38,7 @@ function Game({ newMove, lobby, gameStatus, setGameStatus }: GameProps) {
           container
           alignItems="center"
           justifyContent={{ md: "right", xs: "center" }}
+          sx={{ marginTop: "10px" }}
           md={2}
         >
           <StatusBoardIn fromX={-100} isVisible={true} delay={800}>
@@ -49,7 +50,13 @@ function Game({ newMove, lobby, gameStatus, setGameStatus }: GameProps) {
             />
           </StatusBoardIn>
         </Grid>
-        <Grid item xs={12} container justifyContent="center" md={8}>
+        <Grid
+          item
+          xs={12}
+          sx={{ marginTop: "10px" }}
+          justifyContent="center"
+          md={8}
+        >
           <Board
             gameStatus={gameStatus}
             setGameStatus={(props) => setGameStatus(props)}

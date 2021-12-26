@@ -128,7 +128,7 @@ export default function StatusBoard({
         </Grid>
         <Grid item>
           {" "}
-          <Typography>{`Win by ${winBy}`}</Typography>
+          <Typography sx={{ p: 1 }}>{`Win by ${winBy}`}</Typography>
         </Grid>
         {gameStatus?.win?.whoWon && (
           <Grid container direction="column">
