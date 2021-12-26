@@ -31,9 +31,16 @@ function Game({ newMove, lobby, gameStatus, setGameStatus }: GameProps) {
   }, [sessionCookies?.command, lobby]);
   return (
     <>
-      <Grid container justifyContent="center" spacing={2}>
-        <Grid item xs={5} md={3} sx={{ marginTop: "5px" }}>
-          <StatusBoardIn fromY={-100} isVisible={true} delay={800}>
+      <Grid container direction="row" spacing={{ md: 0, xs: 2 }}>
+        <Grid
+          item
+          xs={12}
+          container
+          alignItems="center"
+          justifyContent={{ md: "right", xs: "center" }}
+          md={2}
+        >
+          <StatusBoardIn fromX={-100} isVisible={true} delay={800}>
             <StatusBoard
               winBy={lobby?.board?.winBy}
               gameStatus={gameStatus}
@@ -42,7 +49,7 @@ function Game({ newMove, lobby, gameStatus, setGameStatus }: GameProps) {
             />
           </StatusBoardIn>
         </Grid>
-        <Grid item xs={12} md={12}>
+        <Grid item xs={12} container justifyContent="center" md={8}>
           <Board
             gameStatus={gameStatus}
             setGameStatus={(props) => setGameStatus(props)}

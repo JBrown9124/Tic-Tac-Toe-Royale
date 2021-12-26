@@ -66,6 +66,7 @@ export default function Board({
                   width: mobileSizeOfPiece,
                   maxHeight: sizeOfPiece,
                   maxWidth: sizeOfPiece,
+                  
                 }}
               />
             );
@@ -84,6 +85,7 @@ export default function Board({
                     width: mobileSizeOfPiece,
                     maxHeight: sizeOfPiece,
                     maxWidth: sizeOfPiece,
+                   
                   }}
                 />
               ),

@@ -68,7 +68,7 @@ class Lobby(APIView):
         lobby_id = int(body.get("lobbyId"))
         lobby_copy = cache.get(lobby_id)
         try:
-            lobby_copy= lobby_copy[lobby_id]
+            lobby_copy = lobby_copy[lobby_id]
         except:
             lobby_copy = lobby_copy
         lobby_players_copy = lobby_copy["players"]

@@ -9,7 +9,7 @@ import { useCookies } from "react-cookie";
 import { GameStatus } from "../../../Models/GameStatus";
 import { PlayerPieces } from "../../../Models/PlayerPieces";
 import { sizeOfPiece, mobileSizeOfPiece } from "../../../storage/sizeOfPiece";
-import {useSound} from "use-sound"
+import { useSound } from "use-sound";
 interface TileProps {
   chosenPiece: JSX.Element | string | undefined;
   boardColor: RgbaColor;
@@ -42,7 +42,7 @@ export const Tile = ({
   const handleClick = () => {
     if (value === 0) {
       setTile({ value: chosenPiece });
-  
+
       startSnare();
       updateBoardCache();
     }
@@ -61,12 +61,14 @@ export const Tile = ({
         container
         maxWidth="sm"
         maxHeight="sm"
-        
+        justifyContent="center"
+        textAlign="center"
+        direction="column"
         sx={{
           height: mobileSizeOfPiece,
           width: mobileSizeOfPiece,
-          maxHeight:sizeOfPiece,
-          maxWidth:sizeOfPiece,
+          maxHeight: sizeOfPiece,
+          maxWidth: sizeOfPiece,
           cursor: "pointer",
           border: `solid black 1px`,
           boxShadow: 7,
@@ -77,7 +79,7 @@ export const Tile = ({
               : "white",
         }}
       >
-        <Grid item sx={{}} >
+        <Grid item sx={{}}>
           {playerPieces?.map((playerPiece) => {
             if (playerPiece.playerNumber === value) {
               return playerPiece.piece;
