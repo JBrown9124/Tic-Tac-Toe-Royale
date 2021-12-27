@@ -24,7 +24,7 @@ outer-parent directory with your terminal. Then type the command `python manage.
 
 ## Available Scripts For Client
 
-###`cd client` in terminal before running the commands below!
+### `cd client` in terminal before running the commands below!
 
 In the project directory, you can run:
 
