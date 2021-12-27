@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import PieceSelector from "./Settings/PieceSelector";
 import { useCookies } from "react-cookie";
-import playerReady from "../../../creators/playerReady";
+import playerReady from "../../../creators/APICreators/playerReady";
 import { Lobby } from "../../../Models/Lobby";
 import CopyLobbyId from "./CopyLobbyId";
 import useSound from 'use-sound'

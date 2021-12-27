@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import { useState } from "react";
 import { RgbaColorPicker, RgbaColor } from "react-colorful";
 import ClearIcon from "@mui/icons-material/Clear";
-import playerReady from "../../../creators/playerReady";
+import playerReady from "../../../creators/APICreators/playerReady";
 import Typography from "@mui/material/Typography";
 import { Player } from "../../../Models/Player";
 import { useCookies } from "react-cookie";

@@ -1,14 +1,9 @@
 import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import TileHover from "../../../animators/SpaceHover";
 import { useState, useEffect, useRef } from "react";
-import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
-import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import { RgbaColor } from "react-colorful";
-import { useCookies } from "react-cookie";
 import { GameStatus } from "../../../Models/GameStatus";
 import { PlayerPieces } from "../../../Models/PlayerPieces";
-import { sizeOfPiece, mobileSizeOfPiece } from "../../../storage/sizeOfPiece";
+import { sizeOfPiece, mobileSizeOfPiece, determineSizeOfPiece } from "../../../creators/BoardCreators/sizeOfPiece";
 import { useSound } from "use-sound";
 interface TileProps {
   chosenPiece: JSX.Element | string | undefined;
@@ -19,6 +14,7 @@ interface TileProps {
   playerNumber: number;
   updateBoardCache: () => void;
   gameStatus: GameStatus;
+  sizeOfBoardPiece:{mobile:string, desktop:string};
 }
 export const Tile = ({
   boardColor,
@@ -29,16 +25,15 @@ export const Tile = ({
   playerPieces,
   gameStatus,
   playerNumber,
+  sizeOfBoardPiece
 }: TileProps) => {
   const [tile, setTile] = useState<{
     value: String | JSX.Element | number | undefined;
   }>({ value: value });
-  const [sessionCookies, setSessionCookies] = useCookies();
-  const delay = 0;
-  const delayRef = useRef(delay);
   const [startSnare] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/yourMoveSound.mp3"
   );
+  
   const handleClick = () => {
     if (value === 0) {
       setTile({ value: chosenPiece });
@@ -51,7 +46,6 @@ export const Tile = ({
   return (
     <>
       <Grid
-        //  onClick={() => selectTile(rowIdx, tileIdx)}
         onClick={() =>
           gameStatus.whoTurn === playerNumber && gameStatus.win.whoWon === null
             ? handleClick()
@@ -61,14 +55,14 @@ export const Tile = ({
         container
         maxWidth="sm"
         maxHeight="sm"
-        justifyContent={{xs:"center", md:"normal"}}
+        // justifyContent={{ xs: "center", md: "normal" }}
         textAlign="center"
         direction="column"
         sx={{
-          height: mobileSizeOfPiece,
-          width: mobileSizeOfPiece,
-          maxHeight: sizeOfPiece,
-          maxWidth: sizeOfPiece,
+          height: sizeOfBoardPiece.mobile,
+          width: sizeOfBoardPiece.mobile,
+          maxHeight: sizeOfBoardPiece.desktop,
+          maxWidth: sizeOfBoardPiece.desktop,
           cursor: "pointer",
           border: `solid black 1px`,
           boxShadow: 7,

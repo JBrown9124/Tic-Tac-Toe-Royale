@@ -8,7 +8,7 @@ import ListItemText from "@mui/material/ListItemText";
 import StarIcon from "@mui/icons-material/Star";
 import { FaCrown } from "react-icons/fa";
 import { Player } from "../../../Models/Player";
-import createPiece from "../../../storage/createPiece";
+import createPiece from "../../../creators/BoardCreators/createPiece";
 import CheckIcon from "@mui/icons-material/Check";
 import ClearIcon from "@mui/icons-material/Clear";
 import { useCookies } from "react-cookie";

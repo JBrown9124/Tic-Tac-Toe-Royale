@@ -1,9 +1,7 @@
 import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import Button from "@mui/material/Button";
-import axios from "axios";
 import React from "react";
 interface JoinProps {
   handleJoinSubmit: (lobbyId: number) => void;

@@ -53,7 +53,8 @@ function Game({ newMove, lobby, gameStatus, setGameStatus }: GameProps) {
         <Grid
           item
           xs={12}
-          sx={{ marginTop: "10px" }}
+      
+          sx={{ marginTop: "120px" }}
           justifyContent="center"
           md={8}
         >

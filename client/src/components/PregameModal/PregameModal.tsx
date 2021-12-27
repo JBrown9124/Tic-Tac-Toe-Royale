@@ -1,23 +1,16 @@
 import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
-import { RgbaColorPicker, RgbaColor } from "react-colorful";
-import Settings from "./Lobby/Settings/Settings";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Welcome from "./Welcome";
-import CircularProgress from "@mui/material/CircularProgress";
-import { LobbyContext } from "../../storage/lobbyContext";
 import { useCookies } from "react-cookie";
 import HostLobby from "./Lobby/HostLobby";
 import Join from "./Join";
 import GuestLobby from "./Lobby/GuestLobby";
-import { Player } from "../../Models/Player";
-import createLobby from "../../creators/createLobby";
-import joinLobby from "../../creators/joinLobby";
-import leaveLobby from "../../creators/leaveLobby";
-import startGame from "../../creators/startGame";
+import createLobby from "../../creators/APICreators/createLobby";
+import joinLobby from "../../creators/APICreators/joinLobby";
+import leaveLobby from "../../creators/APICreators/leaveLobby";
+import startGame from "../../creators/APICreators/startGame";
 import { Lobby } from "../../Models/Lobby";
-// import joinOrStartSound from require('../../sounds/joinOrStartSound.mp3')
 import useSound from "use-sound";
 
 interface PregameModalProps {
@@ -34,8 +27,7 @@ export default function PregameModal({
 }: PregameModalProps) {
   const [open, setOpen] = useState(true);
   const [isLobbyFound, setIsLobbyFound] = useState<boolean>(true);
- 
-  
+
   const [playForward] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3"
   );

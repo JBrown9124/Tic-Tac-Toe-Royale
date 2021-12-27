@@ -1,19 +1,13 @@
-import { useState, useEffect } from "react";
-
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import Typography from "@mui/material/Typography";
 import { useCookies } from "react-cookie";
 import Grid from "@mui/material/Grid";
-import createPiece from "../../../../storage/createPiece";
+import createPiece from "../../../../creators/BoardCreators/createPiece";
 import Input from "@mui/material/Input";
-import useSound from 'use-sound'
+import useSound from "use-sound";
 import Button from "@mui/material/Button";
 
-// interface PieceSelectorProps{
-// setPiece:(piece:JSX.Element)=>void;
-// piece:JSX.Element;
-// }
 interface PieceSelectorProps {
   setPiece: (piece: string) => void;
   playerPiece: string;
@@ -26,12 +20,12 @@ export default function PieceSelector({
   // const [image, setPiece] = useState<any>();
   const pieces = createPiece("black");
   const [playSound] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3", 
+    process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3"
   );
   const handleImageUpload = (event: any) => {
     getBase64(event[0], (result: string) => {
       setPiece(result);
-      playSound()
+      playSound();
     });
   };
   const getBase64 = (file: any, cb: any) => {
@@ -44,10 +38,10 @@ export default function PieceSelector({
       console.log("Error: ", error);
     };
   };
-  const handleSelectPiece = (pieceName:string) =>{
-    setPiece(pieceName)
-    playSound()
-  }
+  const handleSelectPiece = (pieceName: string) => {
+    setPiece(pieceName);
+    playSound();
+  };
   return (
     <>
       <Grid container direction="column" spacing={2}>
@@ -91,19 +85,19 @@ export default function PieceSelector({
           </Grid>
         </Grid>
         <Grid item>
-        <label htmlFor="contained-button-file">
-          <Input
-            sx={{ display: "none" }}
-            id="contained-button-file"
-            type="file"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleImageUpload(e.target.files)
-            }
-          />
-          <Button variant="contained" component="span">
-            Upload
-          </Button>
-        </label>
+          <label htmlFor="contained-button-file">
+            <Input
+              sx={{ display: "none" }}
+              id="contained-button-file"
+              type="file"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                handleImageUpload(e.target.files)
+              }
+            />
+            <Button variant="contained" component="span">
+              Upload
+            </Button>
+          </label>
         </Grid>
       </Grid>
     </>

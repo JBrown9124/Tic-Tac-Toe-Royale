@@ -1,8 +1,8 @@
-import newMove from "./newMove";
-import { Lobby } from "../Models/Lobby";
-import { NewMove } from "../Models/NewMove";
-import { WinningMove } from "../Models/Win";
-import { GameStatus } from "../Models/GameStatus";
+import newMove from "../APICreators/newMove";
+import { Lobby } from "../../Models/Lobby";
+import { NewMove } from "../../Models/NewMove";
+import { WinningMove } from "../../Models/Win";
+import { GameStatus } from "../../Models/GameStatus";
 const determineWinner = async(
   rowIdx: number,
   tileIdx: number,

@@ -8,12 +8,12 @@ import PregameModal from "./components/PregameModal/PregameModal";
 import { RgbaColor } from "react-colorful";
 import { LobbyContext } from "./storage/lobbyContext";
 import ClearIcon from "@mui/icons-material/Clear";
-import joinLobby from "./creators/joinLobby";
+import joinLobby from "./creators/APICreators/joinLobby";
 import { useCookies } from "react-cookie";
 import { socket } from "./socket";
 
 import { Player } from "./Models/Player";
-import getGame from "./creators/getGame";
+import getGame from "./creators/APICreators/getGame";
 import Game from "./components/Game/Game";
 import { NewMove } from "./Models/NewMove";
 import { Lobby } from "./Models/Lobby";

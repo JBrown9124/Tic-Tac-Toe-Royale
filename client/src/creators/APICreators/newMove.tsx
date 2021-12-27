@@ -1,8 +1,8 @@
-import {socket} from "../socket";
+import {socket} from "../../socket";
 import axios from "axios";
-import {Win} from '../Models/Win'
-import {NewMove} from '../Models/NewMove'
-import url from "../storage/url"
+import {Win} from '../../Models/Win'
+import {NewMove} from '../../Models/NewMove'
+import url from "../../storage/url"
 interface BodyProps {
  
   newMove:NewMove,

@@ -1,6 +1,6 @@
-import {socket}from "../socket";
+import {socket}from "../../socket";
 import axios from "axios";
-import url from "../storage/url"
+import url from "../../storage/url"
 interface BodyProps {
   player:{name:string, piece:string},
   lobbyId:number,

@@ -3,23 +3,27 @@ import Typography from "@mui/material/Typography";
 import TileHover from "../../../animators/SpaceHover";
 import { Tile } from "./Tile";
 import { useState, useEffect, useMemo } from "react";
-import determineWinner from "../../../creators/determineWinner";
-import getGame from "../../../creators/getGame";
-import createBoard from "../../../creators/createBoard";
+import determineWinner from "../../../creators/BoardCreators/determineWinner";
+import getGame from "../../../creators/APICreators/getGame";
+import createBoard from "../../../creators/BoardCreators/createBoard";
 import Icon from "@mui/material/Icon";
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import { useCookies } from "react-cookie";
 import { RgbaColor } from "react-colorful";
 import { Player } from "../../../Models/Player";
-import createPiece from "../../../storage/createPiece";
+import createPiece from "../../../creators/BoardCreators/createPiece";
 
 import { v4 as uuidv4 } from "uuid";
 import { PlayerPieces } from "../../../Models/PlayerPieces";
 import { Lobby } from "../../../Models/Lobby";
 import { NewMove } from "../../../Models/NewMove";
 import { GameStatus } from "../../../Models/GameStatus";
-import { sizeOfPiece, mobileSizeOfPiece } from "../../../storage/sizeOfPiece";
+import {
+  sizeOfPiece,
+  mobileSizeOfPiece,
+  determineSizeOfPiece,
+} from "../../../creators/BoardCreators/sizeOfPiece";
 import { WinningMove } from "../../../Models/Win";
 import { useSound } from "use-sound";
 
@@ -31,7 +35,6 @@ interface BoardProps {
   setGameStatus: (status: GameStatus) => void;
   gameStatus: GameStatus;
 }
-
 export default function Board({
   newMove,
   playerNumber,
@@ -45,6 +48,7 @@ export default function Board({
     useCookies();
   const [piece, setPiece] = useState<JSX.Element | string>();
   const [playerPieces, setPlayerPieces] = useState<PlayerPieces[]>([]);
+  const sizeOfBoardPiece = determineSizeOfPiece(lobby?.board?.size);
   const [startOtherPlayerMove] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/otherPlayerMoveSound.mp3"
   );
@@ -62,11 +66,10 @@ export default function Board({
                 src={player?.piece}
                 alt={player?.piece}
                 style={{
-                  height: mobileSizeOfPiece,
-                  width: mobileSizeOfPiece,
-                  maxHeight: sizeOfPiece,
-                  maxWidth: sizeOfPiece,
-                  
+                  height: sizeOfBoardPiece.mobile,
+                  width: sizeOfBoardPiece.mobile,
+                  maxHeight: sizeOfBoardPiece.desktop,
+                  maxWidth: sizeOfBoardPiece.desktop,
                 }}
               />
             );
@@ -81,11 +84,10 @@ export default function Board({
                   src={player?.piece}
                   alt={player?.piece}
                   style={{
-                    height: mobileSizeOfPiece,
-                    width: mobileSizeOfPiece,
-                    maxHeight: sizeOfPiece,
-                    maxWidth: sizeOfPiece,
-                   
+                    height: sizeOfBoardPiece.mobile,
+                    width: sizeOfBoardPiece.mobile,
+                    maxHeight: sizeOfBoardPiece.desktop,
+                    maxWidth: sizeOfBoardPiece.desktop,
                   }}
                 />
               ),
@@ -97,7 +99,8 @@ export default function Board({
               lobby?.board?.color?.b * 0.114 >
               186
               ? "black"
-              : "white"
+              : "white",
+            sizeOfBoardPiece
           ).forEach((piece) => {
             if (
               piece.name === player?.piece &&
@@ -145,6 +148,7 @@ export default function Board({
                   gameStatus={gameStatus}
                   playerNumber={playerNumber}
                   playerPieces={playerPieces}
+                  sizeOfBoardPiece={sizeOfBoardPiece}
                   updateBoardCache={() =>
                     gameStatus.whoTurn === playerNumber
                       ? determineWinner(
