@@ -14,6 +14,8 @@ from ..Models.player import Player
 from ..Models.win import Win
 from ..ResponseModels.response_board import BoardResponseModel
 from django.core.cache import cache
+from Providers.bot import Bot
+
 # Create your views here.
 class Board(APIView):
     def post(self, request: Request):
@@ -31,23 +33,29 @@ class Board(APIView):
         lobby_id = body.get("lobbyId")
 
         lobby_copy = cache.get(lobby_id)
-      
-        lobby_players_copy = lobby_copy["players"]
 
+        lobby_players_copy = lobby_copy["players"]
+        if not new_move:
+            bots_turn = Bot(board_size=lobby_copy["board"]["size"], moves=lobby_copy["board"]["moves"], players=lobby_players_copy, winBy=lobby_copy["board"]["winBy"])
         next_turn = 1 if last_turn == len(lobby_players_copy) else last_turn + 1
 
         lobby_game_status_copy = lobby_copy["gameStatus"]
         lobby_game_status_copy["whoTurn"] = next_turn
+        
         if win_player_number:
-            win = Win(who_won=last_turn, type=win_type, winning_moves=winning_moves).to_dict()
-            lobby_game_status_copy["win"] = win 
+            win = Win(
+                who_won=last_turn, type=win_type, winning_moves=winning_moves
+            ).to_dict()
+            lobby_game_status_copy["win"] = win
 
         lobby_board_copy = lobby_copy["board"]
         lobby_board_copy["moves"].append(new_move)
         tile_amount = lobby_board_copy["size"] * lobby_board_copy["size"]
+        
         if len(lobby_board_copy["moves"]) == tile_amount and not win_player_number:
             win = Win(who_won="tie", type="tie").to_dict()
-            lobby_game_status_copy["win"] = win 
+            lobby_game_status_copy["win"] = win
+        
         lobby_copy["board"] = lobby_board_copy
         lobby_copy["gameStatus"] = lobby_game_status_copy
         cache.set(lobby_id, lobby_copy, 3600)

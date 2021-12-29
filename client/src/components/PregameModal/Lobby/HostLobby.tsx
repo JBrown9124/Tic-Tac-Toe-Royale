@@ -70,7 +70,9 @@ export default function HostLobby({
     };
     playerReady(reqBody);
   };
- 
+  const handleAddABot = ()=>{
+
+  }
   return (
     <>
       <Grid container direction="column" spacing={2}>
@@ -84,6 +86,7 @@ export default function HostLobby({
           </Grid>
           <Grid item xs={12} sm={6}>
             <PlayerList players={players} playerPiece={playerPiece} />
+            <Button onClick={()=>handleAddABot()}> Add a Bot</Button>
           </Grid>
         </Grid>
         {isError && (
