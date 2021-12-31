@@ -1,69 +1,10 @@
 import copy
 from typing import *
-
-
-class Choice:
-    def __init__(self, move, value, depth):
-        self.move = move
-        self.value = value
-        self.depth = depth
-
-    def __str__(self):
-        return str(self.move) + ": " + str(self.value)
-
-
-class Move(object):
-    def __init__(self, row_idx, tile_idx, player_number=0):
-        self.row_idx = row_idx
-        self.tile_idx = tile_idx
-        self.player_number = player_number
-
-    def __repr__(self):
-        return f"({self.player_number}:{self.row_idx},{self.tile_idx})"
-
-
-class Board(object):
-    def __init__(self, size, moves):
-        self.size = size
-        self.board = [[0 for _ in range(size)] for _ in range(size)]
-        for move in moves:
-
-            self.board[move["row_idx"]][move["tile_idx"]] = move["player_number"]
-
-    def get_legal_moves(self):
-        legal_moves = []
-        for row_i in range(self.size):
-            for tile_i in range(self.size):
-                if self.board[row_i][tile_i] == 0:
-                    legal_moves.append(Move(row_idx=row_i, tile_idx=tile_i))
-        return legal_moves
-
-
-class WinningDistance(object):
-    def __init__(self, placement, type):
-        self.placement = placement
-        self.type = type
-
-    def __repr__(self):
-        return f"{self.type}:{self.placement}"
-
-
-class NewMove(object):
-    def __init__(self, coordinates, from_move):
-        self.coordinates = coordinates
-        self.from_move = from_move
-
-    def __repr__(self):
-        return f"{self.from_move}:{self.coordinates}"
-
-
-class Placement(object):
-    def __init__(self, direction, destination):
-        self.direction = direction
-        self.destination = destination
-
-    def __repr__(self):
-        return f"{self.direction}:{self.destination}"
+from BotModels.bot_board import Board
+from BotModels.choice import Choice
+from BotModels.move import Move
+from BotModels.new_move import NewMove
+from BotModels.placement import Placement
 
 
 class Bot(object):
@@ -113,49 +54,47 @@ class Bot(object):
 
             while (
                 right_idx < self.board_size - 1
-                and self.board[row_idx][right_idx + 1] == 0
+                and (self.board[row_idx][right_idx + 1] == 0 or self.board[row_idx][right_idx + 1] == self.player_making_move)
             ):
                 right_idx += 1
 
-            win_distance = (
-                right_idx - left_idx if right_idx - left_idx + 1 >= self.win_by else 0
-            )
-            if win_distance > 0:
+            is_win = right_idx - left_idx + 1 >= self.win_by 
+            
+            if is_win:
                 placement = (
-                    Placement("right", left_idx)
+                    Placement("right", left_idx, "horizontal")
                     if left_idx > right_idx
-                    else Placement("left", right_idx)
+                    else Placement("left", right_idx, "horizontal")
                 )
                 return placement
 
-            return Placement("bottom", 0)
+            return Placement("down", 0)
 
         def checkVertical():
 
             top_idx = row_idx
             bottom_idx = row_idx
 
-            while top_idx > 0 and self.board[top_idx - 1][tile_idx] == 0:
+            while top_idx > 0 and (self.board[top_idx - 1][tile_idx] == 0 or self.board[top_idx - 1][tile_idx] == self.player_making_move):
                 top_idx -= 1
 
             while (
                 bottom_idx < self.board_size - 1
-                and self.board[bottom_idx + 1][tile_idx] == 0
+                and (self.board[bottom_idx + 1][tile_idx] == 0 or self.board[bottom_idx + 1][tile_idx] == self.player_making_move)
             ):
                 bottom_idx += 1
 
-            win_distance = (
-                bottom_idx - top_idx if bottom_idx - top_idx + 1 >= self.win_by else 0
-            )
-            if win_distance > 0:
+            is_win = bottom_idx - top_idx + 1 >= self.win_by 
+            
+            if is_win:
                 placement = (
-                    Placement("bottom", top_idx)
+                    Placement("up", top_idx, "vertical")
                     if top_idx > bottom_idx
-                    else Placement("top", bottom_idx)
+                    else Placement("down", bottom_idx, "vertical")
                 )
                 return placement
 
-            return Placement("bottom", 0)
+            return Placement("down", 0)
 
         # named after bottom are of move diagonol direction
         def checkDiagonalLeft():
@@ -164,7 +103,7 @@ class Bot(object):
             while (
                 left[0] < self.board_size - 1
                 and left[1] > 0
-                and self.board[left[0] + 1][left[1] - 1] == 0
+                and (self.board[left[0] + 1][left[1] - 1] == 0 or self.board[left[0] + 1][left[1] - 1] == self.player_making_move)
             ):
 
                 left[0] += 1
@@ -173,24 +112,22 @@ class Bot(object):
             while (
                 right[0] > 0
                 and right[1] < self.board_size - 1
-                and self.board[right[0] - 1][right[1] + 1] == 0
+                and (self.board[right[0] - 1][right[1] + 1] == 0 or self.board[right[0] - 1][right[1] + 1] ==self.player_making_move)
             ):
 
                 right[0] -= 1
                 right[1] += 1
 
-            win_distance = (
-                right[1] - left[1] if right[1] - left[1] + 1 >= self.win_by else 0
-            )
-            if win_distance > 0:
-                placement = (
-                    Placement("left", right[1])
-                    if right[1] > left[1]
-                    else Placement("right", left[1])
-                )
-                return placement
+            is_win = right[1] - left[1] + 1 >= self.win_by 
+        
+            if is_win:
+                let j = left[0];
+                for (let i = left[1]; i <= right[1]; i++) 
+                    winningMoves.push({ rowIdx: j, tileIdx: i });
+                    j -= 1;
+      
 
-            return Placement("bottom", 0)
+            return Placement("down", 0)
 
         # named after bottom are of move diagonol direction
         def checkDiagonalRight():
@@ -199,112 +136,95 @@ class Bot(object):
             while (
                 right[0] < self.board_size - 1
                 and right[1] < self.board_size - 1
-                and self.board[right[0] + 1][right[1] + 1] == 0
+                and (self.board[right[0] + 1][right[1] + 1] == 0 or self.board[right[0] + 1][right[1] + 1] == self.player_making_move)
             ):
-
+                
                 right[0] += 1
                 right[1] += 1
 
             while (
                 left[0] > 0
                 and left[1] > 0
-                and self.board[left[0] - 1][left[1] - 1] == 0
+                and (self.board[left[0] - 1][left[1] - 1] == 0 or self.board[left[0] - 1][left[1] - 1] == self.player_making_move)
             ):
 
                 left[0] -= 1
                 left[1] -= 1
 
-            win_distance = (
-                right[1] - left[1] if right[1] - left[1] + 1 >= self.win_by else 0
-            )
-            if win_distance > 0:
-                placement = (
-                    Placement("left", right[1])
-                    if right[1] > left[1]
-                    else Placement("right", left[1])
-                )
-                return placement
-            return Placement("bottom", 0)
+            is_win = right[1] - left[1] + 1 >= self.win_by 
+        
+            if is_win:
+                j = left[0];
+                for i in range(left[1], right[1]) :
+                    if self.board[j][i] == 0:
+                        return Move(j,i,self.player_making_move)
+                    j += 1;
+      
+               
+            return None
 
         move = Move(row_idx=row_idx, tile_idx=tile_idx, player_number=player_number)
-        horizontal = WinningDistance(checkHorizontal(), "horizontal")
-        vertical = WinningDistance(checkVertical(), "vertical")
-        diagonal_left = WinningDistance(checkDiagonalLeft(), "diagonal_left")
-        diagonal_right = WinningDistance(checkDiagonalRight(), "diagonal_right")
-        best_placement = WinningDistance(0, "vertical")
-        if horizontal.placement.destination > 0:
+        horizontal = checkHorizontal()
+        vertical = checkVertical()
+        diagonal_left = checkDiagonalLeft()
+        diagonal_right = checkDiagonalRight()
+        best_placement = Placement("down", 0)
+        if horizontal:
             best_placement = horizontal
-        if vertical.placement.destination:
+        if vertical:
             best_placement = vertical
-        if diagonal_right.placement.destination > 0:
+        if diagonal_right:
             best_placement = diagonal_right
-        if diagonal_left.placement.destination > 0:
+        if diagonal_left:
             best_placement = diagonal_left
         new_move = NewMove(best_placement, move)
         self.make_move(new_move)
         print(new_move)
         return new_move
 
-    def make_move(new_move: NewMove):
-        pass
-
-    # def minimax(self, board, is_max, current_player, depth):
-    #     # if board has a winner or is a tie
-    #     # return with appropriate values
-    #     winner = board.has_winner()
-    #     last_move = board[-1]
-    #     last_move_coords = last_move
-    #     if winner == self.player:
-    #         return Choice(last_move, 10 - depth, depth)
-    #     elif winner != self.player:
-    #         return Choice(last_move, -10 + depth, depth)
-    #     elif len(self.moves) == self.win_by:
-    #         return Choice(last_move, 0, depth)
-
-    #     # otherwise, call minimax on each possible board combination
-    #     candidate_choices = []
-    #     candidates = board.get_legal_moves()
-    #     for i in range(len(candidates)):
-    #         row = candidates[i][0]
-    #         col = candidates[i][1]
-    #         newboard = copy.deepcopy(board)
-    #         newboard.make_move(row, col, current_player)
-    #         result = self.minimax(newboard, not is_max, current_player.other, depth + 1)
-    #         result.move = newboard.last_move()
-    #         candidate_choices.append(result)
-
-    #     max_choice = None
-    #     max_value = -100
-    #     min_choice = None
-    #     min_value = 100
-    #     # determine which board combinations result in
-    #     # best move for particular agent
-    #     for i in range(len(candidate_choices)):
-    #         choice = candidate_choices[i]
-    #         if is_max and choice.value > max_value:
-    #             max_choice = choice
-    #             max_value = choice.value
-    #         elif not is_max and choice.value < min_value:
-    #             min_choice = choice
-    #             min_value = choice.value
-
-    #     # pick whichever move is the best for the
-    #     # particular agent
-    #     if is_max:
-    #         return max_choice
-    #     else:
-    #         return min_choice
-
-    # def select_move(self, board):
-    #     choice = self.minimax(self.board, True, self.player, 0)
-    #     return choice.move
+    def make_move(self, new_move: NewMove):
+        row_idx = new_move.from_move.row_idx
+        tile_idx = new_move.from_move.tile_idx
+        direction = new_move.coordinates.direction_type
+        move_amount = new_move.coordinates.move_amount
+        move_direction = new_move.coordinates.move_direction
+        if direction == "horizontal":
+            if move_direction == "left":
+                self.board[row_idx][tile_idx - move_amount] = self.player_making_move
+            elif move_direction == "right":
+                self.board[row_idx][tile_idx + move_amount] = self.player_making_move
+        elif direction == "vertical":
+            if move_direction == "up":
+                self.board[row_idx - move_amount][tile_idx] = self.player_making_move
+            elif move_direction == "down":
+                self.board[row_idx + move_amount][tile_idx] = self.player_making_move
+        elif direction == "diagonal_right":
+            if move_direction == "left":
+                self.board[row_idx-move_amount][tile_idx-move_amount] = self.player_making_move
+            elif move_direction == "right":
+                self.board[row_idx+move_amount][tile_idx+move_amount] = self.player_making_move
+        elif direction == "diagonal_left":
+            if move_direction == "left":
+                self.board[row_idx+move_amount][tile_idx-move_amount] = self.player_making_move
+            elif move_direction == "right":
+                self.board[row_idx-move_amount][tile_idx+move_amount] = self.player_making_move
+        print("NEW BOARD")
+        for row in self.board:
+            print(f"{row}\n")
 
 
 if __name__ == "__main__":
     moves = [
-        {"player_number": 1, "row_idx": 2, "tile_idx": 2},
-        {"player_number": 2, "row_idx": 1, "tile_idx": 2},
-        {"player_number": 2, "row_idx": 0, "tile_idx": 2},
+        
+        {"player_number": 1, "row_idx": 0, "tile_idx": 1},
+        {"player_number": 1, "row_idx": 0, "tile_idx": 2},
+         {"player_number": 1, "row_idx": 1, "tile_idx": 0},
+        {"player_number": 1, "row_idx": 1, "tile_idx": 2},
+        {"player_number": 1, "row_idx": 2, "tile_idx": 0},
+        {"player_number": 1, "row_idx": 2, "tile_idx": 1},
+        {"player_number": 2, "row_idx": 2, "tile_idx": 2},
+        {"player_number": 2, "row_idx": 0, "tile_idx": 0},
+        
     ]
     bot = Bot(win_by=3, board_size=3, moves=moves)
 
