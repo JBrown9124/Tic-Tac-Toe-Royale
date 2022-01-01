@@ -11,7 +11,13 @@ interface PieceProps {
   name: string;
   value: JSX.Element;
 }
-const createPiece = (color: string, sizeOfPiece:{mobile:string,desktop:string}={mobile:"5vw", desktop:"40px"}, ): PieceProps[] => {
+const createPiece = (
+  color: string,
+  sizeOfPiece: { mobile: string; desktop: string } = {
+    mobile: "5vw",
+    desktop: "40px",
+  }
+): PieceProps[] => {
   const pieces = [
     {
       name: "Clear",
@@ -47,7 +53,7 @@ const createPiece = (color: string, sizeOfPiece:{mobile:string,desktop:string}={
         <CircleOutlinedIcon
           sx={{
             height: sizeOfPiece.mobile,
-            width:sizeOfPiece.mobile,
+            width: sizeOfPiece.mobile,
             maxHeight: sizeOfPiece.desktop,
             maxWidth: sizeOfPiece.desktop,
             color: color,
@@ -75,7 +81,7 @@ const createPiece = (color: string, sizeOfPiece:{mobile:string,desktop:string}={
         <FitnessCenterIcon
           sx={{
             height: sizeOfPiece.mobile,
-            width:sizeOfPiece.mobile,
+            width: sizeOfPiece.mobile,
             maxHeight: sizeOfPiece.desktop,
             maxWidth: sizeOfPiece.desktop,
             color: color,
@@ -88,7 +94,7 @@ const createPiece = (color: string, sizeOfPiece:{mobile:string,desktop:string}={
       value: (
         <FavoriteBorderIcon
           sx={{
-            height:sizeOfPiece.mobile,
+            height: sizeOfPiece.mobile,
             width: sizeOfPiece.mobile,
             maxHeight: sizeOfPiece.desktop,
             maxWidth: sizeOfPiece.desktop,
@@ -103,7 +109,7 @@ const createPiece = (color: string, sizeOfPiece:{mobile:string,desktop:string}={
         <ChildCareIcon
           sx={{
             height: sizeOfPiece.mobile,
-            width:sizeOfPiece.mobile,
+            width: sizeOfPiece.mobile,
             maxHeight: sizeOfPiece.desktop,
             maxWidth: sizeOfPiece.desktop,
             color: color,

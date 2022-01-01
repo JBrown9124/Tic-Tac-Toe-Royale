@@ -185,7 +185,7 @@ function App() {
                   gameStatus={gameStatus}
                   newMove={newMove}
                   lobby={lobby}
-                  setNewMove={(props)=>setNewMove(props)}
+                  setNewMove={(props) => setNewMove(props)}
                 />
               </Grid>
             ) : (

@@ -9,7 +9,7 @@ import { useCookies } from "react-cookie";
 import playerReady from "../../../creators/APICreators/playerReady";
 import { Lobby } from "../../../Models/Lobby";
 import CopyLobbyId from "./CopyLobbyId";
-import useSound from 'use-sound'
+import useSound from "use-sound";
 interface GuestLobbyProps {
   setPiece: (piece: string) => void;
   playerPiece: string;
@@ -26,12 +26,12 @@ export default function GuestLobby({
   const [isReady, setIsReady] = useState(false);
   const [isError, setIsError] = useState(false);
   const [playReady] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3", 
+    process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3"
   );
-  const [playUnready]= useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/floorDrumBackButton.mp3", 
+  const [playUnready] = useSound(
+    process.env.PUBLIC_URL + "static/assets/sounds/floorDrumBackButton.mp3"
   );
-  useEffect(()=>{
+  useEffect(() => {
     lobby?.players?.map((player) => {
       if (player.name === sessionCookies?.name) {
         setIsReady(false);
@@ -43,14 +43,14 @@ export default function GuestLobby({
       lobbyId: lobby?.lobbyId,
       hostSid: lobby?.hostSid,
     };
-    if (isReady){
-    playerReady(reqBody);}
-  },[playerPiece])
+    if (isReady) {
+      playerReady(reqBody);
+    }
+  }, [playerPiece]);
   useEffect(() => {
     lobby?.players?.map((player) => {
       if (player.name === sessionCookies?.name) {
         setIsReady(player.isReady);
-        
       }
     });
   }, [lobby]);
@@ -63,8 +63,8 @@ export default function GuestLobby({
         hostSid: lobby?.hostSid,
       };
       playerReady(reqBody);
-      !isReady ? playReady():playUnready()
-      
+      !isReady ? playReady() : playUnready();
+
       lobby.players.map((player) => {
         if (player.name === sessionCookies?.name) {
           setIsReady(!player.isReady);
@@ -92,7 +92,9 @@ export default function GuestLobby({
         </Grid>
         {isError && (
           <Grid container item textAlign="center" justifyContent="center">
-            <Typography sx={{color:"red", textAlign:"center"}}>Select a piece.</Typography>
+            <Typography sx={{ color: "red", textAlign: "center" }}>
+              Select a piece.
+            </Typography>
           </Grid>
         )}
         <Grid

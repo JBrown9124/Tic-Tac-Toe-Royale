@@ -3,7 +3,7 @@ import { Lobby } from "../../Models/Lobby";
 import { NewMove } from "../../Models/NewMove";
 import { WinningMove } from "../../Models/Win";
 import { GameStatus } from "../../Models/GameStatus";
-const determineWinner = async(
+const determineWinner = async (
   rowIdx: number,
   tileIdx: number,
   board: number[][],
@@ -41,7 +41,6 @@ const determineWinner = async(
   };
 
   const checkVertical = (winBy: number): boolean => {
-    
     let topIdx = rowIdx;
     let bottomIdx = rowIdx;
 
@@ -91,7 +90,7 @@ const determineWinner = async(
         j -= 1;
       }
     }
-    
+
     return isWin;
   };
   const checkDiagonalRight = (winBy: number) => {
@@ -121,7 +120,7 @@ const determineWinner = async(
         j += 1;
       }
     }
-   
+
     return isWin;
   };
 
@@ -155,6 +154,5 @@ const determineWinner = async(
     win: gameStatusResponse?.gameStatus?.win,
     whoTurn: gameStatusResponse?.gameStatus?.whoTurn,
   });
- 
 };
 export default determineWinner;

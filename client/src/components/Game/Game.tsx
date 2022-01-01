@@ -35,40 +35,7 @@ function Game({ newMove, lobby, gameStatus, setGameStatus, setNewMove }: GamePro
       });
     }
   }, [sessionCookies?.command, lobby]);
-  useEffect(() => {
-    const nextIsBot = lobby?.players?.find((player) => {
-      return (
-        player.playerNumber === gameStatus.whoTurn &&
-        player.playerId.substring(0, 3) === "BOT"
-      );
-    });
-    if (isHost && nextIsBot && sessionCookies?.command === "begin" && !gameStatus?.win?.whoWon) {
-      const botsMove = async () => {
-        const boardMove = {
-          rowIdx: 0,
-          tileIdx: 0,
-          win: {
-            type: null,
-            whoWon: null,
-            winningMoves: null,
-          },
-          playerNumber: nextIsBot.playerNumber,
-        };
-        const reqBody = {
-          lobbyId: lobby?.lobbyId,
-          newMove: boardMove,
-          hostSid: lobby?.hostSid,
-        };
-        const statusResponse = await makeNewMove(reqBody);
-        setGameStatus({
-          win: statusResponse?.gameStatus?.win,
-          whoTurn: statusResponse?.gameStatus?.whoTurn,
-        });
-        setNewMove(statusResponse?.newMove)
-      };
-      botsMove()
-    }
-  }, [gameStatus.whoTurn, sessionCookies?.command]);
+  
   return (
     <>
       <Grid container direction="row" spacing={{ md: 0, xs: 2 }}>
@@ -102,6 +69,7 @@ function Game({ newMove, lobby, gameStatus, setGameStatus, setNewMove }: GamePro
             setGameStatus={(props) => setGameStatus(props)}
             lobby={lobby}
             newMove={newMove}
+            isHost={isHost}
             playerNumber={playerNumber}
           />
         </Grid>

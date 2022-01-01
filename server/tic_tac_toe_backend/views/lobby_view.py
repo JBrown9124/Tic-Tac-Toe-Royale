@@ -11,7 +11,7 @@ from ..Models.lobby import LobbyModel
 from ..ResponseModels.response_lobby import LobbyResponseModel
 from ..Models.player import Player
 from django.core.cache import cache
-from ..Providers.Bot.bot_pieces import bot_pieces
+from ..Providers.BotProvider.bot_pieces import bot_pieces
 
 # Create your views here.
 class Lobby(APIView):
@@ -78,7 +78,7 @@ class Lobby(APIView):
             player = Player(
                 name=player_name,
                 player_number=player_number,
-                player_id=player_number,
+                player_id=str(player_number),
             ).to_dict()
         lobby["players"].append(player)
         cache.set(lobby_id, lobby, 3600)

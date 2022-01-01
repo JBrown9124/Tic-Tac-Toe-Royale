@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from tic_tac_toe_backend.views import lobby_view, game_view, board_view
+from tic_tac_toe_backend.views import lobby_view, game_view, board_view, bot_view
 from .index import index
 
 urlpatterns = [
@@ -24,4 +24,6 @@ urlpatterns = [
     path('api/lobby', lobby_view.Lobby.as_view()),
      path('api/game', game_view.Game.as_view()),
      path('api/board', board_view.Board.as_view()),
+     path('api/bot', bot_view.BotAction.as_view()),
+     
 ]

@@ -13,7 +13,7 @@ import { useCookies } from "react-cookie";
 import { RgbaColor } from "react-colorful";
 import { Player } from "../../../Models/Player";
 import createPiece from "../../../creators/BoardCreators/createPiece";
-
+import botNewMove from "../../../creators/APICreators/botNewMove";
 import { v4 as uuidv4 } from "uuid";
 import { PlayerPieces } from "../../../Models/PlayerPieces";
 import { Lobby } from "../../../Models/Lobby";
@@ -31,6 +31,7 @@ interface BoardProps {
   newMove: NewMove;
   playerNumber: number;
   lobby: Lobby;
+  isHost: boolean;
 
   setGameStatus: (status: GameStatus) => void;
   gameStatus: GameStatus;
@@ -40,6 +41,7 @@ export default function Board({
   playerNumber,
   lobby,
   setGameStatus,
+  isHost,
   gameStatus,
 }: BoardProps) {
   const [board, setBoard] = useState<number[][]>([[]]);
@@ -49,7 +51,7 @@ export default function Board({
   const [piece, setPiece] = useState<JSX.Element | string>();
   const [playerPieces, setPlayerPieces] = useState<PlayerPieces[]>([]);
   const sizeOfBoardPiece = determineSizeOfPiece(lobby?.board?.size);
-  const [startOtherPlayerMove] = useSound(
+  const [startOtherPlayerMoveSound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/otherPlayerMoveSound.mp3"
   );
   useEffect(() => {
@@ -123,11 +125,45 @@ export default function Board({
       createBoard(setBoard, lobby.board.size, lobby.board.moves);
     }
   }, [playerNumber, lobby]);
-
   useEffect(() => {
-    if (newMove?.playerNumber !== undefined || newMove?.playerNumber !== 0) {
+   
+      const nextIsBot = lobby?.players?.find((player) => {
+        return (
+          player.playerNumber === gameStatus.whoTurn &&
+          player.playerId.substring(0, 3) === "BOT"
+        );
+      });
+      console.log(nextIsBot, "NEXTISBOT");
+      if (isHost && nextIsBot !== undefined && !gameStatus?.win?.whoWon ) {
+        const botsMove = async () => {
+          const reqBody = {
+            lobbyId: lobby?.lobbyId,
+            playerId: nextIsBot.playerId,
+            playerNumber: nextIsBot.playerNumber,
+          };
+          const botNewMoveResponse = await botNewMove(reqBody);
+          
+          determineWinner(
+            botNewMoveResponse?.rowIdx,
+            botNewMoveResponse?.tileIdx,
+            board,
+
+            lobby?.board?.size,
+            botNewMoveResponse?.playerNumber,
+            lobby,
+            setGameStatus,
+            gameStatus,
+            setSessionCookies
+          );
+        };
+        botsMove();
+      }
+    
+  }, [gameStatus]);
+  useEffect(() => {
+    if (newMove?.playerNumber !== undefined && newMove?.playerNumber !== 0) {
       board[newMove?.rowIdx][newMove?.tileIdx] = newMove?.playerNumber;
-      startOtherPlayerMove();
+      startOtherPlayerMoveSound();
     }
   }, [newMove]);
 

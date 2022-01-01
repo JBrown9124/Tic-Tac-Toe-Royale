@@ -3,7 +3,11 @@ import { useState, useEffect, useRef } from "react";
 import { RgbaColor } from "react-colorful";
 import { GameStatus } from "../../../Models/GameStatus";
 import { PlayerPieces } from "../../../Models/PlayerPieces";
-import { sizeOfPiece, mobileSizeOfPiece, determineSizeOfPiece } from "../../../creators/BoardCreators/sizeOfPiece";
+import {
+  sizeOfPiece,
+  mobileSizeOfPiece,
+  determineSizeOfPiece,
+} from "../../../creators/BoardCreators/sizeOfPiece";
 import { useSound } from "use-sound";
 interface TileProps {
   chosenPiece: JSX.Element | string | undefined;
@@ -14,7 +18,7 @@ interface TileProps {
   playerNumber: number;
   updateBoardCache: () => void;
   gameStatus: GameStatus;
-  sizeOfBoardPiece:{mobile:string, desktop:string};
+  sizeOfBoardPiece: { mobile: string; desktop: string };
 }
 export const Tile = ({
   boardColor,
@@ -25,7 +29,7 @@ export const Tile = ({
   playerPieces,
   gameStatus,
   playerNumber,
-  sizeOfBoardPiece
+  sizeOfBoardPiece,
 }: TileProps) => {
   const [tile, setTile] = useState<{
     value: String | JSX.Element | number | undefined;
@@ -33,7 +37,7 @@ export const Tile = ({
   const [startSnare] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/yourMoveSound.mp3"
   );
-  
+
   const handleClick = () => {
     if (value === 0) {
       setTile({ value: chosenPiece });
@@ -74,13 +78,12 @@ export const Tile = ({
         }}
       >
         <Grid item sx={{}}>
-          {playerPieces?.map((playerPiece) => {
-            if (playerPiece.playerNumber === value) {
-              return playerPiece.piece;
-            } else if (value === playerNumber) {
-              return chosenPiece;
-            }
-          })}
+          {value === playerNumber
+            ? chosenPiece
+            : playerPieces?.map((playerPiece) => {
+                if (playerPiece.playerNumber === value)
+                  return playerPiece.piece;
+              })}
         </Grid>
       </Grid>
     </>
