@@ -4,4 +4,5 @@ export interface Player {
   isHost:boolean;
   playerNumber:number;
   isReady:boolean;
+  playerId:string;
 }

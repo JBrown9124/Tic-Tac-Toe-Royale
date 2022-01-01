@@ -1,6 +1,7 @@
 import {socket} from "../../socket";
 import axios from "axios";
 import url from "../../storage/url"
+import {Lobby} from "../../Models/Lobby"
 interface Body {
   lobbyId: number;
   playerName: string;
@@ -15,7 +16,7 @@ const sendLobbyInfo = (data: any, body:Body) => {
     player: body.playerName, lobbyId: data?.lobby?.lobbyId, hostSid:data?.lobby?.hostSid
   });
 };
-const joinLobby = async (body: Body) => {
+const joinLobby = async (body: Body)=> {
   try {
     const data = await saveLobby(body);
 

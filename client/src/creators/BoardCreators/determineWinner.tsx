@@ -1,4 +1,4 @@
-import newMove from "../APICreators/newMove";
+import makeNewMove from "../APICreators/makeNewMove";
 import { Lobby } from "../../Models/Lobby";
 import { NewMove } from "../../Models/NewMove";
 import { WinningMove } from "../../Models/Win";
@@ -150,10 +150,11 @@ const determineWinner = async(
     newMove: boardMove,
     hostSid: lobby?.hostSid,
   };
-  const gameStatusResponse:GameStatus = await newMove(reqBody);
+  const gameStatusResponse = await makeNewMove(reqBody);
   await setGameStatus({
-    win: gameStatusResponse?.win,
-    whoTurn: lobby.players.length === playerNumber ? 1 : gameStatus.whoTurn + 1,
+    win: gameStatusResponse?.gameStatus?.win,
+    whoTurn: gameStatusResponse?.gameStatus?.whoTurn,
   });
+ 
 };
 export default determineWinner;

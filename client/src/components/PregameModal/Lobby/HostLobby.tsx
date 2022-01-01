@@ -6,14 +6,17 @@ import { useState } from "react";
 import { RgbaColorPicker, RgbaColor } from "react-colorful";
 import ClearIcon from "@mui/icons-material/Clear";
 import playerReady from "../../../creators/APICreators/playerReady";
+import joinLobby from "../../../creators/APICreators/joinLobby";
 import Typography from "@mui/material/Typography";
 import { Player } from "../../../Models/Player";
+import { Lobby } from "../../../Models/Lobby";
 import { useCookies } from "react-cookie";
 import { useSound } from "use-sound";
-import CopyLobbyId from './CopyLobbyId'
+import CopyLobbyId from "./CopyLobbyId";
 interface PlayerListProps {
   handleLeave: () => void;
   setPiece: (piece: string) => void;
+  setLobby: (lobby: Lobby) => void;
   playerPiece: string;
   players: Player[];
   hostSid: number;
@@ -21,18 +24,18 @@ interface PlayerListProps {
 export default function HostLobby({
   handleLeave,
   playerPiece,
+  setLobby,
   setPiece,
   players,
   hostSid,
 }: PlayerListProps) {
   const [sessionCookies, setSessionCookies] = useCookies();
-  
+
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [isCopied, setIsCopied] = useState(false)
+  const [isCopied, setIsCopied] = useState(false);
   const handleStart = () => {
     setSessionCookies("command", "start", { path: "/" });
-   
   };
   const allPlayersReady = () => {
     const playersNotReady = players.filter((player) => {
@@ -70,13 +73,26 @@ export default function HostLobby({
     };
     playerReady(reqBody);
   };
-  const handleAddABot = ()=>{
-
-  }
+  const handleAddABot = () => {
+    const botsInLobby = players.filter((player) => {
+      return player.playerId.substring(0, 3) === "BOT";
+    });
+    console.log(botsInLobby,"BOTSINLOBBY")
+    const createBot = async () => {
+      const reqBody = { lobbyId: sessionCookies?.lobbyId, playerName: "BOT" };
+      const lobbyInfo = await joinLobby(reqBody);
+      console.log(lobbyInfo, "ADDABOT");
+      // players?.push(lobbyInfo?.players[lobbyInfo?.players.length - 1]);
+      setLobby(lobbyInfo);
+    };
+    if (botsInLobby.length < 10) {
+      createBot();
+    }
+  };
   return (
     <>
       <Grid container direction="column" spacing={2}>
-        <CopyLobbyId/>
+        <CopyLobbyId />
         <Grid item container sx={{ textAlign: "center" }} spacing={6}>
           <Grid item xs={12} sm={6}>
             <Settings
@@ -86,7 +102,7 @@ export default function HostLobby({
           </Grid>
           <Grid item xs={12} sm={6}>
             <PlayerList players={players} playerPiece={playerPiece} />
-            <Button onClick={()=>handleAddABot()}> Add a Bot</Button>
+            <Button onClick={() => handleAddABot()}> Add a Bot</Button>
           </Grid>
         </Grid>
         {isError && (

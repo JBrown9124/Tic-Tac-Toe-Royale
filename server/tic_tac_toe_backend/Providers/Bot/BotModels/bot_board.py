@@ -5,7 +5,7 @@ class Board(object):
         self.board = [[0 for _ in range(size)] for _ in range(size)]
         for move in moves:
 
-            self.board[move["row_idx"]][move["tile_idx"]] = move["player_number"]
+            self.board[move["rowIdx"]][move["tileIdx"]] = move["playerNumber"]
 
     def get_legal_moves(self):
         legal_moves = []

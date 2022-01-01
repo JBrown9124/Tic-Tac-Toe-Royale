@@ -11,6 +11,7 @@ from ..Models.lobby import LobbyModel
 from ..ResponseModels.response_lobby import LobbyResponseModel
 from ..Models.player import Player
 from django.core.cache import cache
+from ..Providers.Bot.bot_pieces import bot_pieces
 
 # Create your views here.
 class Lobby(APIView):
@@ -20,7 +21,7 @@ class Lobby(APIView):
         player_name = body.get("playerName")
         host_sid = body.get("hostSid")
 
-        player = Player(name=player_name, is_host=True, player_number=1).to_dict()
+        player = Player(name=player_name, is_host=True, player_number=1,).to_dict()
         lobby_id = randrange(99999)
         lobby = LobbyModel(lobby_id=lobby_id, host_sid=host_sid)
 
@@ -51,9 +52,34 @@ class Lobby(APIView):
             lobby = lobby[lobby_id]
         except:
             lobby = lobby
-        player = Player(
-            name=player_name, player_number=len(lobby["players"]) + 1
-        ).to_dict()
+        player_number = len(lobby["players"]) + 1
+        if player_name == "BOT":
+
+            lobby_bot_pieces = set()
+            lobby_players = lobby["players"]
+            for player in lobby_players:
+                player_id = player["playerId"]
+                if player_id[:3] == "BOT":
+                    lobby_bot_pieces.add(player["piece"])
+            bot_piece = None
+            for piece in bot_pieces:
+                if piece not in lobby_bot_pieces:
+                    bot_piece = piece
+                    break
+            bot_name = player_name + str(player_number)
+            player = Player(
+                name=bot_name,
+                player_number=player_number,
+                player_id=bot_name,
+                piece=bot_piece,
+                is_ready=True,
+            ).to_dict()
+        else:
+            player = Player(
+                name=player_name,
+                player_number=player_number,
+                player_id=player_number,
+            ).to_dict()
         lobby["players"].append(player)
         cache.set(lobby_id, lobby, 3600)
         lobby_response = LobbyResponseModel(lobby=lobby, lobby_id=lobby_id).to_dict()

@@ -8,27 +8,67 @@ import StatusBoardIn from "../../animators/StatusBoardIn";
 import { useState, useEffect } from "react";
 import { Lobby } from "../../Models/Lobby";
 import { GameStatus } from "../../Models/GameStatus";
-import GameOver from "./GameOver/GameOver";
+import makeNewMove from "../../creators/APICreators/makeNewMove";
+
 import StatusBoard from "./StatusBoard/StatusBoard";
 interface GameProps {
   newMove: NewMove;
   lobby: Lobby;
   gameStatus: GameStatus;
   setGameStatus: (status: GameStatus) => void;
+  setNewMove:(newMoveValue:NewMove)=>void;
 }
-function Game({ newMove, lobby, gameStatus, setGameStatus }: GameProps) {
+function Game({ newMove, lobby, gameStatus, setGameStatus, setNewMove }: GameProps) {
   const [sessionCookies, setSessionCookies] = useCookies();
   const [playerNumber, setPlayerNumber] = useState(0);
+  const [isHost, setIsHost] = useState(false);
 
   useEffect(() => {
     if (sessionCookies?.command === "begin") {
       lobby?.players?.map((player: Player) => {
         if (player.name === sessionCookies?.name) {
+          if (player.isHost) {
+            setIsHost(true);
+          }
           return setPlayerNumber(player.playerNumber);
         }
       });
     }
   }, [sessionCookies?.command, lobby]);
+  useEffect(() => {
+    const nextIsBot = lobby?.players?.find((player) => {
+      return (
+        player.playerNumber === gameStatus.whoTurn &&
+        player.playerId.substring(0, 3) === "BOT"
+      );
+    });
+    if (isHost && nextIsBot && sessionCookies?.command === "begin" && !gameStatus?.win?.whoWon) {
+      const botsMove = async () => {
+        const boardMove = {
+          rowIdx: 0,
+          tileIdx: 0,
+          win: {
+            type: null,
+            whoWon: null,
+            winningMoves: null,
+          },
+          playerNumber: nextIsBot.playerNumber,
+        };
+        const reqBody = {
+          lobbyId: lobby?.lobbyId,
+          newMove: boardMove,
+          hostSid: lobby?.hostSid,
+        };
+        const statusResponse = await makeNewMove(reqBody);
+        setGameStatus({
+          win: statusResponse?.gameStatus?.win,
+          whoTurn: statusResponse?.gameStatus?.whoTurn,
+        });
+        setNewMove(statusResponse?.newMove)
+      };
+      botsMove()
+    }
+  }, [gameStatus.whoTurn, sessionCookies?.command]);
   return (
     <>
       <Grid container direction="row" spacing={{ md: 0, xs: 2 }}>
@@ -53,7 +93,6 @@ function Game({ newMove, lobby, gameStatus, setGameStatus }: GameProps) {
         <Grid
           item
           xs={12}
-      
           sx={{ marginTop: "120px" }}
           justifyContent="center"
           md={8}

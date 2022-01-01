@@ -62,6 +62,7 @@ function App() {
     if (playerExists.length === 0) {
       lobbyCopy.players?.push({
         name: newPlayer,
+        playerId: "1",
         piece: "",
         isHost: false,
         playerNumber: 0,
@@ -184,6 +185,7 @@ function App() {
                   gameStatus={gameStatus}
                   newMove={newMove}
                   lobby={lobby}
+                  setNewMove={(props)=>setNewMove(props)}
                 />
               </Grid>
             ) : (

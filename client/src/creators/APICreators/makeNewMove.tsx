@@ -23,15 +23,15 @@ const sendNewMove = (data: any, body:BodyProps) => {
     {data:data, hostSid:body.hostSid},
   );
 };
-const newMove = async (body: BodyProps) => {
+const makeNewMove = async (body: BodyProps) => {
   try {
     const data = await saveNewMove(body);
     sendNewMove(data, body);
 
-    return await data.gameStatus;
+    return await data;
   } catch (e) {
     console.log(e);
   }
 };
 
-export default newMove;
+export default makeNewMove;
