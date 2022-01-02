@@ -126,39 +126,38 @@ export default function Board({
     }
   }, [playerNumber, lobby]);
   useEffect(() => {
-   
-      const nextIsBot = lobby?.players?.find((player) => {
-        return (
-          player.playerNumber === gameStatus.whoTurn &&
-          player.playerId.substring(0, 3) === "BOT"
-        );
-      });
-      console.log(nextIsBot, "NEXTISBOT");
-      if (isHost && nextIsBot !== undefined && !gameStatus?.win?.whoWon ) {
-        const botsMove = async () => {
-          const reqBody = {
-            lobbyId: lobby?.lobbyId,
-            playerId: nextIsBot.playerId,
-            playerNumber: nextIsBot.playerNumber,
-          };
-          const botNewMoveResponse = await botNewMove(reqBody);
-          
-          determineWinner(
-            botNewMoveResponse?.rowIdx,
-            botNewMoveResponse?.tileIdx,
-            board,
-
-            lobby?.board?.size,
-            botNewMoveResponse?.playerNumber,
-            lobby,
-            setGameStatus,
-            gameStatus,
-            setSessionCookies
-          );
+    const nextIsBot = lobby?.players?.find((player) => {
+      return (
+        player.playerNumber === gameStatus.whoTurn &&
+        player.playerId.substring(0, 3) === "BOT"
+      );
+    });
+    console.log(nextIsBot, "NEXTISBOT");
+    if (isHost && nextIsBot !== undefined && !gameStatus?.win?.whoWon) {
+      const botsMove = async () => {
+        const reqBody = {
+          lobbyId: lobby?.lobbyId,
+          playerId: nextIsBot.playerId,
+          playerNumber: nextIsBot.playerNumber,
         };
-        botsMove();
-      }
-    
+        const botNewMoveResponse = await botNewMove(reqBody);
+
+        determineWinner(
+          botNewMoveResponse?.rowIdx,
+          botNewMoveResponse?.tileIdx,
+          board,
+
+          lobby?.board?.size,
+          botNewMoveResponse?.playerNumber,
+          lobby,
+          setGameStatus,
+          gameStatus,
+          setSessionCookies
+        );
+      };
+      botsMove();
+      startOtherPlayerMoveSound();
+    }
   }, [gameStatus]);
   useEffect(() => {
     if (newMove?.playerNumber !== undefined && newMove?.playerNumber !== 0) {

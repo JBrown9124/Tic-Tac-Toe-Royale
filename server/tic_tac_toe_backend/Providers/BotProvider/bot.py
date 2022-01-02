@@ -31,7 +31,10 @@ class Bot(object):
         best_offense_moves = []
         best_defense_moves = []
         highest_chance = 0
+        defense = 0 if self.board_size == 3 else 1
+        offense = 1 if self.board_size == 3 else 0
         best_move = None
+        
         for move in self.moves:
             move = Move(
                 row_idx=move["rowIdx"],
@@ -52,14 +55,14 @@ class Bot(object):
                     best_defense_moves.append(possible_best_move)
         if len(best_defense_moves)>0:
             for move in best_defense_moves:
-                if move and move.chance-1>= highest_chance:
+                if move and move.chance - defense>= highest_chance:
                     best_move = Move(move.row_idx, move.tile_idx, self.player_making_move)
                     highest_chance = move.chance
                 continue
                             
         if len(best_offense_moves)>0:
             for move in best_offense_moves:
-                if move and move.chance >= highest_chance:
+                if move and move.chance - offense >= highest_chance:
                     best_move = Move(move.row_idx, move.tile_idx, self.player_making_move)
                     highest_chance = move.chance
                 continue
@@ -344,5 +347,5 @@ if __name__ == "__main__":
         {"player_number": 2, "row_idx": 2, "tile_idx": 2},
     ]
     bot = Bot(win_by=3, board_size=3, moves=moves, player_making_move=2)
-
+    
     print(bot.scan_moves())

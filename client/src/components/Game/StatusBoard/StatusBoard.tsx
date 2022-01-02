@@ -5,7 +5,7 @@ import { Player } from "../../../Models/Player";
 import { GameStatus } from "../../../Models/GameStatus";
 import createPiece from "../../../creators/BoardCreators/createPiece";
 import { sizeOfPiece } from "../../../creators/BoardCreators/sizeOfPiece";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSound } from "use-sound";
 import Button from "@mui/material/Button";
 interface StatusBoardProps {
@@ -22,35 +22,36 @@ export default function StatusBoard({
 }: StatusBoardProps) {
   const [sessionCookies, setSessionCookies, removeSessionCookies] =
     useCookies();
-  const handleLeaveGame = () => {
-    playLeave();
-    setSessionCookies("command", "quit", { path: "/" });
-  };
-  const [playLeave] = useSound(
+
+  const [playLeaveSound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/floorDrumBackButton.mp3"
   );
-  const [startWin] = useSound(
+  const [startWinSound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/winnerSound.mp3"
   );
-  const [startGameOver] = useSound(
+  const [startGameOverSound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/darkGameOver.mp3"
   );
-  const [startTie] = useSound(
+  const [startTieSound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/tie.mp3"
   );
   const pieces = createPiece("black");
+  const handleLeaveGame = () => {
+    playLeaveSound();
+    setSessionCookies("command", "quit", { path: "/" });
+  };
+ 
   useEffect(() => {
-    players?.map((player: Player) => {
-      if (gameStatus?.win?.whoWon) {
-        if (playerNumber === gameStatus?.win?.whoWon) {
-          return startWin();
-        } else if (gameStatus?.win?.whoWon !== "tie") {
-          return startGameOver();
-        } else {
-          startTie();
-        }
+    if (gameStatus?.win?.whoWon) {
+      if (playerNumber === gameStatus?.win?.whoWon) {
+        startWinSound();
+      } else if (gameStatus?.win?.whoWon !== "tie") {
+        startGameOverSound();
+      } else {
+        startTieSound();
       }
-    });
+
+    }
   }, [gameStatus?.win?.whoWon]);
   return (
     <>

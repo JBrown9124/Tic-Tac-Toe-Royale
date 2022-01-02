@@ -75,13 +75,13 @@ export default function HostLobby({
   };
   const handleAddABot = () => {
     const botsInLobby = players.filter((player) => {
-      return player.playerId.substring(0, 3) === "BOT";
+      return player?.playerId?.substring(0, 3) === "BOT";
     });
-    console.log(botsInLobby, "BOTSINLOBBY");
+  
     const createBot = async () => {
       const reqBody = { lobbyId: sessionCookies?.lobbyId, playerName: "BOT" };
       const lobbyInfo = await joinLobby(reqBody);
-      console.log(lobbyInfo, "ADDABOT");
+     
       // players?.push(lobbyInfo?.players[lobbyInfo?.players.length - 1]);
       setLobby(lobbyInfo);
     };

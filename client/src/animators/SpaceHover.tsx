@@ -173,7 +173,7 @@ const TileHover = ({
         : "black",
     zIndex: 9999,
 
-    delay: (delay / 2) * directionProps[lineDirection]?.delay,
+    delay: (delay / 2),
     config: {
       mass: 1,
       tension: 170,
