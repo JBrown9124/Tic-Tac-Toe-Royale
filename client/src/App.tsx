@@ -62,7 +62,7 @@ function App() {
     if (playerExists.length === 0) {
       lobbyCopy.players?.push({
         name: newPlayer,
-        playerId: "1",
+        playerId: "",
         piece: "",
         isHost: false,
         playerNumber: 0,

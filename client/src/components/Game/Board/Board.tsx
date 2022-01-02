@@ -50,12 +50,18 @@ export default function Board({
     useCookies();
   const [piece, setPiece] = useState<JSX.Element | string>();
   const [playerPieces, setPlayerPieces] = useState<PlayerPieces[]>([]);
+  const [isBoardCreated, setIsBoardCreated] = useState(false);
   const sizeOfBoardPiece = determineSizeOfPiece(lobby?.board?.size);
   const [startOtherPlayerMoveSound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/otherPlayerMoveSound.mp3"
   );
   useEffect(() => {
-    if (sessionCookies.command === "begin") {
+    if (
+      sessionCookies.command === "begin" &&
+      lobby.board.size &&
+      lobby.board.moves &&
+      lobby.players
+    ) {
       const getPlayerPieces = () => {
         let piecesValues: PlayerPieces[] = [];
         lobby?.players?.forEach((player: Player) => {
@@ -123,8 +129,10 @@ export default function Board({
 
       getPlayerPieces();
       createBoard(setBoard, lobby.board.size, lobby.board.moves);
+
+      setIsBoardCreated(true);
     }
-  }, [playerNumber, lobby]);
+  }, [playerNumber, lobby, lobby.board.size]);
   useEffect(() => {
     const nextIsBot = lobby?.players?.find((player) => {
       return (
@@ -132,8 +140,13 @@ export default function Board({
         player.playerId.substring(0, 3) === "BOT"
       );
     });
-    console.log(nextIsBot, "NEXTISBOT");
-    if (isHost && nextIsBot !== undefined && !gameStatus?.win?.whoWon) {
+
+    if (
+      isHost &&
+      nextIsBot !== undefined &&
+      !gameStatus?.win?.whoWon &&
+      isBoardCreated
+    ) {
       const botsMove = async () => {
         const reqBody = {
           lobbyId: lobby?.lobbyId,
@@ -142,7 +155,7 @@ export default function Board({
         };
         const botNewMoveResponse = await botNewMove(reqBody);
 
-        determineWinner(
+        return await determineWinner(
           botNewMoveResponse?.rowIdx,
           botNewMoveResponse?.tileIdx,
           board,
@@ -158,7 +171,7 @@ export default function Board({
       botsMove();
       startOtherPlayerMoveSound();
     }
-  }, [gameStatus]);
+  }, [isBoardCreated, gameStatus]);
   useEffect(() => {
     if (newMove?.playerNumber !== undefined && newMove?.playerNumber !== 0) {
       board[newMove?.rowIdx][newMove?.tileIdx] = newMove?.playerNumber;

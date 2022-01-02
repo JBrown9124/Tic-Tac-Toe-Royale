@@ -8,7 +8,7 @@ class GameStatus:
         players_amount=1,
         win: Dict[str, Union[str, int, List[dict]]] = None,
     ):
-        self.whoTurn = 1
+        self.whoTurn = randrange(players_amount)
         self.win = win
 
     def to_dict(self):

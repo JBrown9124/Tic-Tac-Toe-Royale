@@ -35,6 +35,7 @@ class Bot(object):
         offense = 1 if self.board_size == 3 else 0
         best_move = None
         
+        
         for move in self.moves:
             move = Move(
                 row_idx=move["rowIdx"],
@@ -55,14 +56,16 @@ class Bot(object):
                     best_defense_moves.append(possible_best_move)
         if len(best_defense_moves)>0:
             for move in best_defense_moves:
-                if move and move.chance - defense>= highest_chance:
+                # players_turn = self.player_making_move - move.player_number
+                if move and (move.chance - defense)>= highest_chance:
                     best_move = Move(move.row_idx, move.tile_idx, self.player_making_move)
                     highest_chance = move.chance
                 continue
                             
         if len(best_offense_moves)>0:
             for move in best_offense_moves:
-                if move and move.chance - offense >= highest_chance:
+                # players_turn = self.player_making_move - move.player_number
+                if move and (move.chance - offense) >= highest_chance:
                     best_move = Move(move.row_idx, move.tile_idx, self.player_making_move)
                     highest_chance = move.chance
                 continue
