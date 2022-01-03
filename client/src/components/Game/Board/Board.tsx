@@ -132,7 +132,7 @@ export default function Board({
 
       setIsBoardCreated(true);
     }
-  }, [playerNumber, lobby,]);
+  }, [playerNumber, lobby]);
   useEffect(() => {
     const nextIsBot = lobby?.players?.find((player) => {
       return (

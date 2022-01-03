@@ -38,7 +38,7 @@ export default function StatusBoard({
   const pieces = createPiece("black");
   const handleLeaveGame = () => {
     playLeaveSound();
-    setSessionCookies("command", "leave", { path: "/" });
+    setSessionCookies("command", "quit", { path: "/" });
   };
  
   useEffect(() => {

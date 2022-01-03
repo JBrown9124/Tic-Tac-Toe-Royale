@@ -28,6 +28,10 @@ export default function Welcome({ createGame, joinGame }: OpenPageProps) {
           <Typography variant="h2">Welcome To Tic Tac Toe Royale!</Typography>
         </Grid>
         <Grid item>
+        <Typography variant="body1" sx={{color:"red"}}>PLEASE READ BELOW</Typography>
+          <Typography variant="body1">This app is still in development. If you experience any problems please make sure cookies are enabled in your browser for this site. If cookies are enabled, try refreshing the page. If refreshing does not work please go to your browser privacy settings to clear the cookies from this site. Sorry for the inconvenience!</Typography>
+        </Grid>
+        <Grid item>
           <TextField
             error={isError}
             value={sessionCookies.name}
@@ -37,6 +41,7 @@ export default function Welcome({ createGame, joinGame }: OpenPageProps) {
             label="Name"
           />
         </Grid>
+        
         <Grid container item direction="column" sx={{}} justifyContent="center">
           <Grid item md={12}>
             <Button
@@ -62,7 +67,9 @@ export default function Welcome({ createGame, joinGame }: OpenPageProps) {
               Join a game
             </Button>
           </Grid>
+          
         </Grid>
+        
       </Grid>
     </>
   );

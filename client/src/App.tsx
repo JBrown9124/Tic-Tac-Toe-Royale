@@ -9,6 +9,7 @@ import { RgbaColor } from "react-colorful";
 import { LobbyContext } from "./storage/lobbyContext";
 import ClearIcon from "@mui/icons-material/Clear";
 import joinLobby from "./creators/APICreators/joinLobby";
+import getStartGame from "./creators/APICreators/getStartGame";
 import { useCookies } from "react-cookie";
 import { socket } from "./socket";
 
@@ -66,7 +67,7 @@ function App() {
         piece: "",
         isHost: false,
         playerNumber: 0,
-        isReady: false,
+        isReady: newPlayer.playerId.substring(0, 3) === "BOT" ? true : false,
       });
       setLobby({ ...lobbyCopy });
     }
@@ -105,10 +106,49 @@ function App() {
   });
 
   useLayoutEffect(() => {
-    
-    if (sessionCookies?.command === "begin") {
+    if (sessionCookies?.command === "quit") {
+      setNewMove({
+        playerNumber: 0,
+        rowIdx: 0,
+        tileIdx: 0,
+        win: { whoWon: null, type: null, winningMoves: null },
+      });
+
+      setGameStatus({
+        win: { whoWon: null, type: null, winningMoves: null },
+        whoTurn: 0,
+      });
+      setLobby({
+        hostSid: 0,
+        lobbyId: 0,
+        board: {
+          size: 0,
+          color: { r: 0, g: 0, b: 0, a: 0 },
+          winBy: 3,
+          moves: [],
+        },
+        players: [],
+      });
+      removeSessionCookie("lobbyId");
+      removeSessionCookie("command");
+    }
+    if (sessionCookies?.command === "begin" && lobby.lobbyId === 0) {
       const getLobbyInfo = async () => {
         const lobbyInfo = await getGame({ lobbyId: sessionCookies?.lobbyId });
+
+        setGameStatus(lobbyInfo.gameStatus);
+
+        setLobby(lobbyInfo);
+      };
+
+      startMusic();
+      getLobbyInfo();
+    }
+    if (sessionCookies?.command === "begin" && lobby.lobbyId > 0) {
+      const getLobbyInfo = async () => {
+        const lobbyInfo = await getStartGame({
+          lobbyId: sessionCookies?.lobbyId,
+        });
 
         setGameStatus(lobbyInfo.gameStatus);
 
@@ -124,7 +164,10 @@ function App() {
       sessionCookies.lobbyId !== undefined
     ) {
       const getLobbyInfo = async () => {
-        const lobbyInfo = await getGame({ lobbyId: lobby.lobbyId === 0?sessionCookies?.lobbyId: lobby.lobbyId });
+        const lobbyInfo = await getGame({
+          lobbyId:
+            lobby.lobbyId === 0 ? sessionCookies?.lobbyId : lobby.lobbyId,
+        });
 
         lobbyInfo?.players.map((player: Player) => {
           if (player.name === sessionCookies?.name) {
