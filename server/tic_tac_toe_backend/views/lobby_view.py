@@ -84,7 +84,7 @@ class Lobby(APIView):
         cache.set(lobby_id, lobby, 3600)
         lobby_response = LobbyResponseModel(lobby=lobby, lobby_id=lobby_id).to_dict()
         lobby_response["lobbyId"] = lobby_id
-        return JsonResponse({"lobby": lobby_response})
+        return JsonResponse({"lobby": lobby_response, "player":{"playerName":player["name"], "playerId":player["playerId"]}})
 
     def delete(self, request: Request):
         """takes name of requester and lobby Id. find lobby, remove player who left

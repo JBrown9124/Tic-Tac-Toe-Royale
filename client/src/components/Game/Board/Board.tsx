@@ -60,11 +60,11 @@ export default function Board({
       sessionCookies.command === "begin" &&
       lobby.board.size &&
       lobby.board.moves &&
-      lobby.players
+      lobby.players.length > 1
     ) {
       const getPlayerPieces = () => {
         let piecesValues: PlayerPieces[] = [];
-        lobby?.players?.forEach((player: Player) => {
+        lobby.players.forEach((player: Player) => {
           if (
             player?.piece?.length > 30 &&
             player?.playerNumber === playerNumber
@@ -132,7 +132,7 @@ export default function Board({
 
       setIsBoardCreated(true);
     }
-  }, [playerNumber, lobby, lobby.board.size]);
+  }, [playerNumber, lobby,]);
   useEffect(() => {
     const nextIsBot = lobby?.players?.find((player) => {
       return (

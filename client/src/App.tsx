@@ -3,7 +3,7 @@ import logo from "./logo.svg";
 import Grid from "@mui/material/Grid";
 import Board from "./components/Game/Board/Board";
 import "./App.css";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useLayoutEffect } from "react";
 import PregameModal from "./components/PregameModal/PregameModal";
 import { RgbaColor } from "react-colorful";
 import { LobbyContext } from "./storage/lobbyContext";
@@ -57,12 +57,12 @@ function App() {
   socket.on("player-join-lobby", (newPlayer: any) => {
     const lobbyCopy = lobbyRef.current;
     let playerExists = lobbyCopy.players.filter((player) => {
-      return player.name === newPlayer;
+      return player.playerId === newPlayer.playerId;
     });
     if (playerExists.length === 0) {
       lobbyCopy.players?.push({
-        name: newPlayer,
-        playerId: "",
+        name: newPlayer.playerName,
+        playerId: newPlayer.playerId,
         piece: "",
         isHost: false,
         playerNumber: 0,
@@ -104,51 +104,27 @@ function App() {
     setGameStatus(newMove.gameStatus);
   });
 
-  useEffect(() => {
-    if (sessionCookies.command === "quit") {
-      removeSessionCookie("command");
-      removeSessionCookie("lobbyId");
-      setLobby({
-        hostSid: 0,
-        lobbyId: 0,
-        board: {
-          size: 0,
-          color: { r: 0, g: 0, b: 0, a: 0 },
-          winBy: 3,
-          moves: [],
-        },
-        players: [],
-      });
-      setGameStatus({
-        win: { whoWon: null, type: null, winningMoves: null },
-        whoTurn: 0,
-      });
-      setNewMove({
-        playerNumber: 0,
-        rowIdx: 0,
-        tileIdx: 0,
-        win: { whoWon: null, type: null, winningMoves: null },
-      });
-    }
-    if (sessionCookies.command === "begin") {
+  useLayoutEffect(() => {
+    
+    if (sessionCookies?.command === "begin") {
       const getLobbyInfo = async () => {
         const lobbyInfo = await getGame({ lobbyId: sessionCookies?.lobbyId });
 
-        await setGameStatus(lobbyInfo?.gameStatus);
+        setGameStatus(lobbyInfo.gameStatus);
 
-        await setLobby(lobbyInfo);
+        setLobby(lobbyInfo);
       };
 
       startMusic();
       getLobbyInfo();
     }
     if (
-      (sessionCookies.command === "create" ||
-        sessionCookies.command === "guest") &&
+      (sessionCookies?.command === "create" ||
+        sessionCookies?.command === "guest") &&
       sessionCookies.lobbyId !== undefined
     ) {
       const getLobbyInfo = async () => {
-        const lobbyInfo = await getGame({ lobbyId: sessionCookies?.lobbyId });
+        const lobbyInfo = await getGame({ lobbyId: lobby.lobbyId === 0?sessionCookies?.lobbyId: lobby.lobbyId });
 
         lobbyInfo?.players.map((player: Player) => {
           if (player.name === sessionCookies?.name) {
