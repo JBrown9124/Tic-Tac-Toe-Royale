@@ -57,11 +57,11 @@ const TileHover = ({
 
   useEffect(() => {
     setIsVisible(true);
-    const t = setInterval(() => {
+    const t = setTimeout(() => {
       setIsRendered(true);
     }, boardRenderTime);
     return () => {
-      clearInterval(t);
+      clearTimeout(t);
     };
   }, []);
   useEffect(() => {

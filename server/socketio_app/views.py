@@ -85,7 +85,7 @@ def game_status(sid, received_data):
     data = received_data["data"]
     host_sid = received_data["hostSid"]
 
-    sio.enter_room(sid, host_sid)
+    
     sio.emit(
         "new-move",
         {"newMove": data["newMove"], "gameStatus": data["gameStatus"]},

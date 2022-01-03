@@ -130,7 +130,8 @@ export default function Board({
       getPlayerPieces();
       createBoard(setBoard, lobby.board.size, lobby.board.moves);
 
-      setIsBoardCreated(true);
+      let botWaitTime = setTimeout(()=>{setIsBoardCreated(true);},5000)
+      return ()=>{clearTimeout(botWaitTime);}
     }
   }, [playerNumber, lobby]);
   useEffect(() => {

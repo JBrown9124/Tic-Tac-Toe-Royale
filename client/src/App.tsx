@@ -89,7 +89,7 @@ function App() {
 
     const getLobbyInfo = async () => {
       const lobbyCopy = lobbyRef.current;
-      const lobbyInfo = await getGame({ lobbyId: lobbyCopy.lobbyId });
+      const lobbyInfo = await getStartGame({ lobbyId: lobbyCopy.lobbyId });
       await setLobby(lobbyInfo);
     };
     if (getCount === 0) {
