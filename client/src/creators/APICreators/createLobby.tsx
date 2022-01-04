@@ -19,7 +19,7 @@ const createLobby = async (body: BodyProps) => {
   });
   await sendLobby(data);
   
-  return await data.lobby;
+  return await data;
 };
 
 export default createLobby;

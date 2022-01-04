@@ -15,7 +15,7 @@ interface TileProps {
   newMove: any;
   value: number | JSX.Element;
   playerPieces: PlayerPieces[] | undefined;
-  playerNumber: number;
+  turnNumber: number;
   updateBoardCache: () => void;
   gameStatus: GameStatus;
   sizeOfBoardPiece: { mobile: string; desktop: string };
@@ -28,7 +28,7 @@ export const Tile = ({
   newMove,
   playerPieces,
   gameStatus,
-  playerNumber,
+  turnNumber,
   sizeOfBoardPiece,
 }: TileProps) => {
   const [tile, setTile] = useState<{
@@ -51,7 +51,7 @@ export const Tile = ({
     <>
       <Grid
         onClick={() =>
-          gameStatus.whoTurn === playerNumber && gameStatus.win.whoWon === null
+          gameStatus.whoTurn === turnNumber && gameStatus.win.whoWon === null
             ? handleClick()
             : ""
         }
@@ -78,10 +78,10 @@ export const Tile = ({
         }}
       >
         <Grid item sx={{}}>
-          {value === playerNumber
+          {value === turnNumber
             ? chosenPiece
             : playerPieces?.map((playerPiece) => {
-                if (playerPiece.playerNumber === value)
+                if (playerPiece.turnNumber === value)
                   return playerPiece.piece;
               })}
         </Grid>

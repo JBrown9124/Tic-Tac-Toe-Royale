@@ -30,21 +30,21 @@ def new_lobby(sid, lobby):
 
 
 @sio.on("player-join-lobby")
-def player_joined(sid, player):
-    hostSid = player["hostSid"]
+def player_joined(sid, data):
+    hostSid = data["hostSid"]
     rooms = sio.rooms(sid)
     for room in rooms:
         sio.leave_room(sid, room)
     sio.enter_room(sid, hostSid)
     print(sio.rooms(sid))
-    sio.emit("player-join-lobby", player["player"], room=hostSid, skip_sid=sid)
+    sio.emit("player-join-lobby", data["player"], room=hostSid, skip_sid=sid)
 
 
 @sio.on("player-leave-lobby")
-def player_left(sid, lobby):
-    print(lobby["playerName"])
-    leaving_player = lobby["playerName"]
-    hostSid = lobby["hostSid"]
+def player_left(sid, data):
+  
+    leaving_player = data["playerId"]
+    hostSid = data["hostSid"]
     rooms = sio.rooms(sid)
     for room in rooms:
         sio.leave_room(sid, room)

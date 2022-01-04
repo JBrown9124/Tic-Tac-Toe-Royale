@@ -13,8 +13,8 @@ const saveLobby = async (body: Body) => {
 const sendLobbyInfo = (data: any, body: Body) => {
   socket.emit("player-join-lobby", {
     player: data.player,
-    lobbyId: data?.lobby?.lobbyId,
-    hostSid: data?.lobby?.hostSid,
+    lobbyId: data.lobby.lobbyId,
+    hostSid: data.lobby.hostSid,
   });
 };
 const joinLobby = async (body: Body) => {
@@ -23,7 +23,7 @@ const joinLobby = async (body: Body) => {
 
     sendLobbyInfo(data, body);
 
-    return await data.lobby;
+    return await data;
   } catch (e) {
     return await "Lobby does not exist.";
   }

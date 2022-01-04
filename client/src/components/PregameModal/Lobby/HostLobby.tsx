@@ -20,6 +20,7 @@ interface PlayerListProps {
   playerPiece: string;
   players: Player[];
   hostSid: number;
+  playerId: string;
 }
 export default function HostLobby({
   handleLeave,
@@ -28,6 +29,7 @@ export default function HostLobby({
   setPiece,
   players,
   hostSid,
+  playerId
 }: PlayerListProps) {
   const [sessionCookies, setSessionCookies] = useCookies();
 
@@ -67,7 +69,7 @@ export default function HostLobby({
   const sendHostPiece = (pieceValue: string) => {
     setPiece(pieceValue);
     const reqBody = {
-      player: { name: sessionCookies.name, piece: pieceValue },
+      player: { name: sessionCookies.name, piece: pieceValue, playerId },
       lobbyId: parseInt(sessionCookies?.lobbyId),
       hostSid: hostSid,
     };
@@ -79,11 +81,11 @@ export default function HostLobby({
     });
   
     const createBot = async () => {
-      const reqBody = { lobbyId: sessionCookies?.lobbyId, playerName: "BOT" };
+      const reqBody = { lobbyId: sessionCookies?.lobbyId, playerName: "BOTPASSPASS" };
       const lobbyInfo = await joinLobby(reqBody);
      
       // players?.push(lobbyInfo?.players[lobbyInfo?.players.length - 1]);
-      setLobby(lobbyInfo);
+      setLobby(lobbyInfo.lobby);
     };
     if (botsInLobby.length < 10) {
       createBot();

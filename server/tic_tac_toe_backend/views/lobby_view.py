@@ -16,12 +16,12 @@ from ..Providers.BotProvider.bot_pieces import bot_pieces
 # Create your views here.
 class Lobby(APIView):
     def post(self, request: Request):
-        """takes name of requester and sid of requester. creates lobby"""
+        """creates looby. takes name of requester and sid of requester. creates lobby. returns lobby and playerId for requester"""
         body = request.data
         player_name = body.get("playerName")
         host_sid = body.get("hostSid")
 
-        player = Player(name=player_name, is_host=True, player_number=1,).to_dict()
+        player = Player(name=player_name, is_host=True,  turn_number=1,).to_dict()
         lobby_id = randrange(99999)
         lobby = LobbyModel(lobby_id=lobby_id, host_sid=host_sid)
 
@@ -34,11 +34,11 @@ class Lobby(APIView):
         ).to_dict()
 
         print(lobby)
-        return JsonResponse({"lobby": lobby_response})
+        return JsonResponse({"lobby": lobby_response, "playerId":player["playerId"]})
 
     def put(self, request: Request):
         """takes name of requester and lobbyId. find lobby, update lobby with new player,
-        return new lobby state to client"""
+        return new lobby state to client. Also creates bots"""
         body = request.data
         player_name = body.get("playerName")
         lobby_id = int(body.get("lobbyId"))
@@ -52,8 +52,8 @@ class Lobby(APIView):
             lobby = lobby[lobby_id]
         except:
             lobby = lobby
-        player_number = len(lobby["players"]) + 1
-        if player_name == "BOT":
+        turn_number = len(lobby["players"]) + 1
+        if player_name == "BOTPASSPASS":
 
             lobby_bot_pieces = set()
             lobby_players = lobby["players"]
@@ -66,50 +66,58 @@ class Lobby(APIView):
                 if piece not in lobby_bot_pieces:
                     bot_piece = piece
                     break
-            bot_name = player_name + str(player_number)
+            bot_name = "BOT" + str( turn_number)
             player = Player(
                 name=bot_name,
-                player_number=player_number,
-                player_id=bot_name,
+                 turn_number= turn_number,
+              
                 piece=bot_piece,
                 is_ready=True,
             ).to_dict()
+            player["playerId"] = bot_name
+            
         else:
             player = Player(
                 name=player_name,
-                player_number=player_number,
-                player_id=str(player_number),
+                 turn_number= turn_number,
+                
             ).to_dict()
         lobby["players"].append(player)
+        for index, player in enumerate(lobby["players"]):
+            player["turnNumber"] = index + 1
         cache.set(lobby_id, lobby, 3600)
         lobby_response = LobbyResponseModel(lobby=lobby, lobby_id=lobby_id).to_dict()
-        lobby_response["lobbyId"] = lobby_id
+        
         return JsonResponse({"lobby": lobby_response, "player":{"playerName":player["name"], "playerId":player["playerId"]}})
 
     def delete(self, request: Request):
         """takes name of requester and lobby Id. find lobby, remove player who left
         or if the host left remove all players from lobby."""
         body = request.data
-        player_name = body.get("playerName")
+       
         lobby_id = int(body.get("lobbyId"))
+        player_id = body.get("playerId")
         lobby_copy = cache.get(lobby_id)
         try:
             lobby_copy = lobby_copy[lobby_id]
         except:
             lobby_copy = lobby_copy
         lobby_players_copy = lobby_copy["players"]
-        for player in lobby_players_copy:
-            if player["name"] == player_name:
+        for index, player in enumerate(lobby_players_copy):
+            if player["playerId"] == player_id:
                 if player["isHost"]:
 
                     cache.delete(lobby_id)
                     return JsonResponse({"lobby": {}})
                 else:
                     lobby_players_copy.remove(player)
+                    player["turnNumber"] = index + 1
                     lobby_copy["players"] = lobby_players_copy
+                    
+                   
                     cache.set(lobby_id, lobby_copy, 3600)
                     lobby_response = LobbyResponseModel(
                         lobby=lobby_copy, lobby_id=lobby_id
                     ).to_dict()
-
+        
                     return JsonResponse({"lobby": lobby_response})

@@ -22,14 +22,14 @@ class Board(APIView):
         pass
 
     def put(self, request: Request):
-        """takes new move coordinates,lobbyId, playerNumber, and gameStatus. updates lobby board, and returns new move coordinates and update game status(whos move it is, who won)"""
+        """takes new move coordinates,lobbyId, turnNumber, and gameStatus. updates lobby board, and returns new move coordinates and update game status(whos move it is, who won)"""
         body = request.data
         new_move = body.get("newMove")
         win = new_move.get("win")
-        win_player_number = win.get("whoWon")
+        winner_turn_number = win.get("whoWon")
         winning_moves = win.get("winningMoves")
         win_type = win.get("type")
-        last_turn = new_move.get("playerNumber")
+        last_turn = new_move.get("turnNumber")
         lobby_id = body.get("lobbyId")
 
         lobby_copy = cache.get(lobby_id)
@@ -43,17 +43,17 @@ class Board(APIView):
         lobby_game_status_copy = lobby_copy["gameStatus"]
         lobby_game_status_copy["whoTurn"] = next_turn
 
-        if win_player_number:
+        if winner_turn_number:
             win = Win(
                 who_won=last_turn, type=win_type, winning_moves=winning_moves
             ).to_dict()
             lobby_game_status_copy["win"] = win
 
-        if new_move not in lobby_board_copy["moves"]:
-            lobby_board_copy["moves"].append(new_move)
+        
+        lobby_board_copy["moves"].append(new_move)
         tile_amount = lobby_board_copy["size"] * lobby_board_copy["size"]
 
-        if len(lobby_board_copy["moves"]) == tile_amount and not win_player_number:
+        if len(lobby_board_copy["moves"]) == tile_amount and not winner_turn_number:
             win = Win(who_won="tie", type="tie").to_dict()
             lobby_game_status_copy["win"] = win
 

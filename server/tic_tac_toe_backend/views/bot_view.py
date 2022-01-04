@@ -24,7 +24,7 @@ class BotAction(APIView):
         body = request.data
         playerId = body.get("playerId")
 
-        bot_number = body.get("playerNumber")
+        bot_number = body.get("turnNumber")
         lobby_id = body.get("lobbyId")
 
         lobby_copy = cache.get(lobby_id)

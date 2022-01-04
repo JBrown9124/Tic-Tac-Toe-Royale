@@ -45,7 +45,7 @@ export default function GameOver({
             <Grid item>
               <Typography variant="h2">
                 {players?.map((player) => {
-                  if (player.playerNumber === gameStatus?.win?.whoWon) {
+                  if (player.turnNumber === gameStatus?.win?.whoWon) {
                     return player.name;
                   }
                 })}

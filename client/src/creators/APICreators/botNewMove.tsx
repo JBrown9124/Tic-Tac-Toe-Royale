@@ -7,7 +7,7 @@ interface BodyProps {
  
   playerId:string,
   lobbyId:number,
-  playerNumber:number,
+  turnNumber:number,
 
 }
 const saveBotNewMove = async (body: BodyProps) => {

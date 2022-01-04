@@ -27,7 +27,7 @@ function App() {
     process.env.PUBLIC_URL + "static/assets/sounds/warHorn.mp3"
   );
   const [newMove, setNewMove] = useState<NewMove>({
-    playerNumber: 0,
+    turnNumber: 0,
     rowIdx: 0,
     tileIdx: 0,
     win: { whoWon: null, type: null, winningMoves: null },
@@ -53,32 +53,44 @@ function App() {
     getCountRef.current = getCount;
   }, [getCount]);
 
-  socket.on("connect", () => {});
-
-  socket.on("player-join-lobby", (newPlayer: any) => {
+  socket.on("connect", () => {console.log("Client Connected")});
+  socket.off("connect_error", () => {console.log("socket error")});
+  socket.on("disconnect", () => {
+    socket.removeAllListeners("player-join-lobby")
+    socket.removeAllListeners("player-leave-lobby")
+    socket.removeAllListeners("start-game")
+    socket.removeAllListeners("player-ready")
+    socket.removeAllListeners("new-move")
+    socket.removeAllListeners("connect")
+    socket.removeAllListeners()
+  });
+  socket.on("player-join-lobby", (newPlayer: {playerName:string, playerId:string}) => {
+    console.log(newPlayer.playerId)
     const lobbyCopy = lobbyRef.current;
-    let playerExists = lobbyCopy.players.filter((player) => {
+    let playerExists = lobbyCopy.players.filter((player:Player) => {
       return player.playerId === newPlayer.playerId;
     });
+    console.log(playerExists, "PLAYEREXISTS")
     if (playerExists.length === 0) {
       lobbyCopy.players?.push({
         name: newPlayer.playerName,
         playerId: newPlayer.playerId,
         piece: "",
         isHost: false,
-        playerNumber: 0,
+        turnNumber: 0,
         isReady: newPlayer.playerId.substring(0, 3) === "BOT" ? true : false,
       });
       setLobby({ ...lobbyCopy });
     }
   });
+  
   socket.on("player-leave-lobby", (removedPlayer) => {
     if (removedPlayer === "HOST") {
       setSessionCookie("command", "leave", { path: "/" });
     } else {
       const lobbyCopy = lobbyRef.current;
       let newPlayerList = lobbyCopy.players.filter((player) => {
-        return player.name !== removedPlayer;
+        return player.playerId !== removedPlayer;
       });
       lobbyCopy.players = newPlayerList;
       setLobby({ ...lobbyCopy });
@@ -108,7 +120,7 @@ function App() {
   useLayoutEffect(() => {
     if (sessionCookies?.command === "quit") {
       setNewMove({
-        playerNumber: 0,
+        turnNumber: 0,
         rowIdx: 0,
         tileIdx: 0,
         win: { whoWon: null, type: null, winningMoves: null },

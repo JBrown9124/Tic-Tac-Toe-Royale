@@ -27,7 +27,7 @@ export default function PregameModal({
 }: PregameModalProps) {
   const [open, setOpen] = useState(true);
   const [isLobbyFound, setIsLobbyFound] = useState<boolean>(true);
-
+  const [playerId, setPlayerId] = useState("");
   const [playForward] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3"
   );
@@ -72,9 +72,10 @@ export default function PregameModal({
     ) {
       const startLobby = async () => {
         const reqBody = { playerName: sessionCookies?.name };
-        const lobbyInfo = await createLobby(reqBody);
-        setSessionCookie("lobbyId", lobbyInfo.lobbyId, { path: "/" });
-        setLobby(lobbyInfo);
+        const response = await createLobby(reqBody);
+        setSessionCookie("lobbyId", response.lobby.lobbyId, { path: "/" });
+        setLobby(response.lobby);
+        setPlayerId(response.playerId)
       };
       startLobby();
       setSessionCookie(
@@ -100,7 +101,8 @@ export default function PregameModal({
         } else {
           setIsLobbyFound(true);
           setSessionCookie("lobbyId", lobbyIdItem, { path: "/" });
-          setLobby(lobbyInfo);
+          setLobby(lobbyInfo.lobby);
+          setPlayerId(lobbyInfo.player.playerId);
           playJoinOrStart();
         }
       };
@@ -110,7 +112,7 @@ export default function PregameModal({
       const leavingLobby = async () => {
         const reqBody = {
           lobbyId: sessionCookies?.lobbyId,
-          playerName: sessionCookies?.name,
+         playerId,
           hostSid: lobby.hostSid,
         };
         const lobbyInfo = await leaveLobby(reqBody);
@@ -141,11 +143,11 @@ export default function PregameModal({
         };
         const lobbyInfo = await startGame(reqBody);
 
-        await setSessionCookie("lobbyId", lobbyInfo?.lobby?.lobbyId, {
+        setSessionCookie("lobbyId", lobbyInfo?.lobby?.lobbyId, {
           path: "/",
         });
 
-        await setSessionCookie("command", "begin", { path: "/" });
+         setSessionCookie("command", "begin", { path: "/" });
       };
       initiateGame();
     }
@@ -193,6 +195,7 @@ export default function PregameModal({
           )}
           {sessionCookies?.command === "guest" && isLobbyFound && (
             <GuestLobby
+              playerId={playerId}
               lobby={lobby}
               setPiece={(props) => setPiece(props)}
               playerPiece={playerPiece}
@@ -202,7 +205,8 @@ export default function PregameModal({
 
           {sessionCookies?.command === "create" && (
             <HostLobby
-            setLobby={(props)=>setLobby(props)}
+            playerId={playerId}
+              setLobby={(props) => setLobby(props)}
               hostSid={lobby?.hostSid}
               players={lobby?.players}
               handleLeave={() => handleLeaveSelect()}

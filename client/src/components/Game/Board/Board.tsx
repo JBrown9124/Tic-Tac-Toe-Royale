@@ -29,7 +29,7 @@ import { useSound } from "use-sound";
 
 interface BoardProps {
   newMove: NewMove;
-  playerNumber: number;
+  turnNumber: number;
   lobby: Lobby;
   isHost: boolean;
 
@@ -38,7 +38,7 @@ interface BoardProps {
 }
 export default function Board({
   newMove,
-  playerNumber,
+  turnNumber,
   lobby,
   setGameStatus,
   isHost,
@@ -67,7 +67,7 @@ export default function Board({
         lobby.players.forEach((player: Player) => {
           if (
             player?.piece?.length > 30 &&
-            player?.playerNumber === playerNumber
+            player?.turnNumber === turnNumber
           ) {
             setPiece(
               <img
@@ -83,10 +83,10 @@ export default function Board({
             );
           } else if (
             player?.piece?.length > 30 &&
-            player?.playerNumber !== playerNumber
+            player?.turnNumber !== turnNumber
           ) {
             piecesValues.push({
-              playerNumber: player?.playerNumber,
+              turnNumber: player?.turnNumber,
               piece: (
                 <img
                   src={player?.piece}
@@ -112,12 +112,12 @@ export default function Board({
           ).forEach((piece) => {
             if (
               piece.name === player?.piece &&
-              player?.playerNumber === playerNumber
+              player?.turnNumber === turnNumber
             ) {
               setPiece(piece.value);
             } else if (piece.name === player?.piece) {
               piecesValues.push({
-                playerNumber: player?.playerNumber,
+                turnNumber: player?.turnNumber,
                 piece: piece.value,
               });
             }
@@ -133,11 +133,11 @@ export default function Board({
       let botWaitTime = setTimeout(()=>{setIsBoardCreated(true);},5000)
       return ()=>{clearTimeout(botWaitTime);}
     }
-  }, [playerNumber, lobby]);
+  }, [turnNumber, lobby]);
   useEffect(() => {
     const nextIsBot = lobby?.players?.find((player) => {
       return (
-        player.playerNumber === gameStatus.whoTurn &&
+        player.turnNumber === gameStatus.whoTurn &&
         player.playerId.substring(0, 3) === "BOT"
       );
     });
@@ -152,7 +152,7 @@ export default function Board({
         const reqBody = {
           lobbyId: lobby?.lobbyId,
           playerId: nextIsBot.playerId,
-          playerNumber: nextIsBot.playerNumber,
+          turnNumber: nextIsBot.turnNumber,
         };
         const botNewMoveResponse = await botNewMove(reqBody);
 
@@ -162,7 +162,7 @@ export default function Board({
           board,
 
           lobby?.board?.size,
-          botNewMoveResponse?.playerNumber,
+          botNewMoveResponse?.turnNumber,
           lobby,
           setGameStatus,
           gameStatus,
@@ -174,8 +174,8 @@ export default function Board({
     }
   }, [isBoardCreated, gameStatus]);
   useEffect(() => {
-    if (newMove?.playerNumber !== undefined && newMove?.playerNumber !== 0) {
-      board[newMove?.rowIdx][newMove?.tileIdx] = newMove?.playerNumber;
+    if (newMove?.turnNumber !== undefined && newMove?.turnNumber !== 0) {
+      board[newMove?.rowIdx][newMove?.tileIdx] = newMove?.turnNumber;
       startOtherPlayerMoveSound();
     }
   }, [newMove]);
@@ -195,18 +195,18 @@ export default function Board({
               >
                 <Tile
                   gameStatus={gameStatus}
-                  playerNumber={playerNumber}
+                  turnNumber={turnNumber}
                   playerPieces={playerPieces}
                   sizeOfBoardPiece={sizeOfBoardPiece}
                   updateBoardCache={() =>
-                    gameStatus.whoTurn === playerNumber
+                    gameStatus.whoTurn === turnNumber
                       ? determineWinner(
                           rowIdx,
                           tileIdx,
                           board,
 
                           lobby?.board?.size,
-                          playerNumber,
+                          turnNumber,
                           lobby,
                           setGameStatus,
                           gameStatus,

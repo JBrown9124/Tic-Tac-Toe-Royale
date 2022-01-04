@@ -12,9 +12,9 @@ const createBoard = (setBoard:Function, boardSize:number, moves:Object[]): void 
  
   
       
-    moves?.map((move:any)=>board[move.rowIdx][move.tileIdx]=move.playerNumber);
+    moves?.map((move:any)=>board[move.rowIdx][move.tileIdx]=move.turnNumber);
     // if (sessionCookies?.boardMoves!==undefined){
-    //   sessionCookies?.boardMoves?.map((move:any)=>board[move.rowIdx][move.tileIdx]=move.playerNumber)
+    //   sessionCookies?.boardMoves?.map((move:any)=>board[move.rowIdx][move.tileIdx]=move.turnNumber)
     // }
     // let row:  number[] = Array(boardSize).fill(0);
     // let board: number[][] = Array(boardSize).fill(row);

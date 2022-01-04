@@ -69,6 +69,7 @@ class Game(APIView):
         player = body.get("player")
         player_name = player.get("name")
         player_piece = player.get("piece")
+        player_id = player.get("playerId")
         lobby = cache.get(lobby_id)
         try:
             lobby= lobby[lobby_id]
@@ -76,7 +77,7 @@ class Game(APIView):
             lobby = lobby
         lobby_players_copy = lobby["players"]
         for player in lobby_players_copy:
-            if player["name"] == player_name:
+            if player["playerId"] == player_id:
                 player["piece"] = player_piece
                 player["isReady"] = not player["isReady"]
                 lobby["players"] = lobby_players_copy

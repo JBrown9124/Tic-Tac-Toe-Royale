@@ -12,13 +12,13 @@ interface StatusBoardProps {
   players: Player[];
   gameStatus: GameStatus;
   winBy: number;
-  playerNumber: number;
+  turnNumber: number;
 }
 export default function StatusBoard({
   players,
   gameStatus,
   winBy,
-  playerNumber,
+  turnNumber,
 }: StatusBoardProps) {
   const [sessionCookies, setSessionCookies, removeSessionCookies] =
     useCookies();
@@ -43,7 +43,7 @@ export default function StatusBoard({
  
   useEffect(() => {
     if (gameStatus?.win?.whoWon) {
-      if (playerNumber === gameStatus?.win?.whoWon) {
+      if (turnNumber === gameStatus?.win?.whoWon) {
         startWinSound();
       } else if (gameStatus?.win?.whoWon !== "tie") {
         startGameOverSound();
@@ -77,14 +77,14 @@ export default function StatusBoard({
               <Typography variant="h6">
                 {players?.map((player: Player) => {
                   if (gameStatus?.win?.whoWon) {
-                    if (player.playerNumber === gameStatus?.win?.whoWon) {
-                      if (player.playerNumber === playerNumber) {
+                    if (player.turnNumber === gameStatus?.win?.whoWon) {
+                      if (player.turnNumber === turnNumber) {
                         return "You Win!";
                       }
                       return `${player.name} Wins!`;
                     }
-                  } else if (player.playerNumber === gameStatus?.whoTurn) {
-                    if (player.playerNumber === playerNumber) {
+                  } else if (player.turnNumber === gameStatus?.whoTurn) {
+                    if (player.turnNumber === turnNumber) {
                       return "Your Turn";
                     }
                     return `${player.name}'s Turn`;
@@ -97,7 +97,7 @@ export default function StatusBoard({
         <Grid item>
           {players?.map((player) => {
             if (gameStatus?.win?.whoWon) {
-              if (player?.playerNumber === gameStatus?.win?.whoWon) {
+              if (player?.turnNumber === gameStatus?.win?.whoWon) {
                 if (player?.piece?.length > 15) {
                   return (
                     <img
@@ -111,7 +111,7 @@ export default function StatusBoard({
                   if (piece.name === player.piece) return piece.value;
                 });
               }
-            } else if (player?.playerNumber === gameStatus?.whoTurn) {
+            } else if (player?.turnNumber === gameStatus?.whoTurn) {
               if (player?.piece?.length > 15) {
                 return (
                   <img

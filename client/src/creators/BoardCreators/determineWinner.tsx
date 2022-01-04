@@ -8,25 +8,25 @@ const determineWinner = async (
   tileIdx: number,
   board: number[][],
   boardSize: number,
-  playerNumber: number,
+  turnNumber: number,
   lobby: Lobby,
   setGameStatus: Function,
   gameStatus: GameStatus,
   setSessionCookies: Function
 ) => {
-  board[rowIdx][tileIdx] = playerNumber;
+  board[rowIdx][tileIdx] = turnNumber;
   let winningMoves: WinningMove[] = [];
   const checkHorizontal = (winBy: number): boolean => {
     let leftIdx = tileIdx;
     let rightIdx = tileIdx;
 
-    while (leftIdx > 0 && playerNumber === board[rowIdx][leftIdx - 1]) {
+    while (leftIdx > 0 && turnNumber === board[rowIdx][leftIdx - 1]) {
       leftIdx -= 1;
     }
 
     while (
       rightIdx < boardSize - 1 &&
-      playerNumber === board[rowIdx][rightIdx + 1]
+      turnNumber === board[rowIdx][rightIdx + 1]
     ) {
       rightIdx += 1;
     }
@@ -44,13 +44,13 @@ const determineWinner = async (
     let topIdx = rowIdx;
     let bottomIdx = rowIdx;
 
-    while (topIdx > 0 && playerNumber === board[topIdx - 1][tileIdx]) {
+    while (topIdx > 0 && turnNumber === board[topIdx - 1][tileIdx]) {
       topIdx -= 1;
     }
 
     while (
       bottomIdx < boardSize - 1 &&
-      playerNumber === board[bottomIdx + 1][tileIdx]
+      turnNumber === board[bottomIdx + 1][tileIdx]
     ) {
       bottomIdx += 1;
     }
@@ -69,7 +69,7 @@ const determineWinner = async (
     while (
       left[0] < boardSize - 1 &&
       left[1] > 0 &&
-      board[left[0] + 1][left[1] - 1] === playerNumber
+      board[left[0] + 1][left[1] - 1] === turnNumber
     ) {
       left[0] += 1;
       left[1] -= 1;
@@ -77,7 +77,7 @@ const determineWinner = async (
     while (
       right[0] > 0 &&
       right[1] < boardSize - 1 &&
-      board[right[0] - 1][right[1] + 1] === playerNumber
+      board[right[0] - 1][right[1] + 1] === turnNumber
     ) {
       right[0] -= 1;
       right[1] += 1;
@@ -99,7 +99,7 @@ const determineWinner = async (
     while (
       right[0] < boardSize - 1 &&
       right[1] < boardSize - 1 &&
-      board[right[0] + 1][right[1] + 1] === playerNumber
+      board[right[0] + 1][right[1] + 1] === turnNumber
     ) {
       right[0] += 1;
       right[1] += 1;
@@ -107,7 +107,7 @@ const determineWinner = async (
     while (
       left[0] > 0 &&
       left[1] > 0 &&
-      board[left[0] - 1][left[1] - 1] === playerNumber
+      board[left[0] - 1][left[1] - 1] === turnNumber
     ) {
       left[0] -= 1;
       left[1] -= 1;
@@ -138,10 +138,10 @@ const determineWinner = async (
     tileIdx: tileIdx,
     win: {
       type: typeof win === "string" ? win : null,
-      whoWon: typeof win === "string" ? playerNumber : null,
+      whoWon: typeof win === "string" ? turnNumber : null,
       winningMoves: typeof win === "string" ? winningMoves : null,
     },
-    playerNumber: playerNumber,
+    turnNumber: turnNumber,
   };
 
   const reqBody = {

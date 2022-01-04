@@ -1,6 +1,6 @@
 import { Win } from "./Win";
 export interface NewMove {
-  playerNumber: number;
+  turnNumber: number;
   rowIdx: number;
   tileIdx: number;
   win: Win;

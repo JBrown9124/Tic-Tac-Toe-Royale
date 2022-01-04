@@ -38,7 +38,7 @@ index = never_cache(TemplateView.as_view(template_name='index.html'))
 
 #         lobby = lobbys
 #         lobby = lobbys[lobby_id]
-#         player = Player(name=player_name, playerNumber=len(lobby["players"])).to_dict()
+#         player = Player(name=player_name, turnNumber=len(lobby["players"])).to_dict()
 #         lobby["players"].append(player)
 #         lobby_response = LobbyResponseModel(lobby=lobby).to_dict()
 #         lobby_response["lobbyId"] = lobby_id

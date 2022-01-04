@@ -2,7 +2,7 @@ import {socket}from "../../socket";
 import axios from "axios";
 import url from "../../storage/url"
 interface BodyProps {
-  player:{name:string, piece:string},
+  player:{name:string, piece:string, playerId:string},
   lobbyId:number,
   hostSid:number
   

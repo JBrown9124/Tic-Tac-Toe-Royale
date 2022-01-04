@@ -15,12 +15,14 @@ interface GuestLobbyProps {
   playerPiece: string;
   handleLeave: () => void;
   lobby: Lobby;
+  playerId: string;
 }
 export default function GuestLobby({
   handleLeave,
   playerPiece,
   setPiece,
   lobby,
+  playerId,
 }: GuestLobbyProps) {
   const [sessionCookies, setSessionCookies] = useCookies();
   const [isReady, setIsReady] = useState(false);
@@ -39,7 +41,7 @@ export default function GuestLobby({
       }
     });
     const reqBody = {
-      player: { name: sessionCookies?.name, piece: playerPiece },
+      player: { name: sessionCookies?.name, piece: playerPiece, playerId },
       lobbyId: lobby?.lobbyId,
       hostSid: lobby?.hostSid,
     };
@@ -58,7 +60,7 @@ export default function GuestLobby({
     if (playerPiece) {
       setIsError(false);
       const reqBody = {
-        player: { name: sessionCookies?.name, piece: playerPiece },
+        player: { name: sessionCookies?.name, piece: playerPiece, playerId },
         lobbyId: lobby?.lobbyId,
         hostSid: lobby?.hostSid,
       };

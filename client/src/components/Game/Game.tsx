@@ -20,7 +20,7 @@ interface GameProps {
 }
 function Game({ newMove, lobby, gameStatus, setGameStatus, setNewMove }: GameProps) {
   const [sessionCookies, setSessionCookies] = useCookies();
-  const [playerNumber, setPlayerNumber] = useState(0);
+  const [turnNumber, setturnNumber] = useState(0);
   const [isHost, setIsHost] = useState(false);
 
   useEffect(() => {
@@ -30,7 +30,7 @@ function Game({ newMove, lobby, gameStatus, setGameStatus, setNewMove }: GamePro
           if (player.isHost) {
             setIsHost(true);
           }
-          return setPlayerNumber(player.playerNumber);
+          return setturnNumber(player.turnNumber);
         }
       });
     }
@@ -53,7 +53,7 @@ function Game({ newMove, lobby, gameStatus, setGameStatus, setNewMove }: GamePro
               winBy={lobby?.board?.winBy}
               gameStatus={gameStatus}
               players={lobby?.players}
-              playerNumber={playerNumber}
+              turnNumber={turnNumber}
             />
           </StatusBoardIn>
         </Grid>
@@ -70,7 +70,7 @@ function Game({ newMove, lobby, gameStatus, setGameStatus, setNewMove }: GamePro
             lobby={lobby}
             newMove={newMove}
             isHost={isHost}
-            playerNumber={playerNumber}
+            turnNumber={turnNumber}
           />
         </Grid>
       </Grid>
