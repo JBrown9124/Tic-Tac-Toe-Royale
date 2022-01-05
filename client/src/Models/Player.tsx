@@ -5,4 +5,5 @@ export interface Player {
   turnNumber:number;
   isReady:boolean;
   playerId:string;
+  playerLoaded:boolean
 }

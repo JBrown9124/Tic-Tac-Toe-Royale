@@ -4,6 +4,8 @@ import url from "../../storage/url"
 import { Lobby } from "../../Models/Lobby";
 interface BodyProps {
   lobbyId: number;
+  playerId:string|null;
+  hostSid:number
 }
 const saveGetGame = async (body: any) => {
   

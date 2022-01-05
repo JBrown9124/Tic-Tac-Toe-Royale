@@ -57,7 +57,9 @@ def player_left(sid, data):
       
   
     
-
+@sio.on("player-loaded-game")
+def player_loaded(sid, data):
+    sio.emit("player-loaded-game", data["playerId"], room=data["hostSid"], skip_sid=sid)
 
 @sio.on("player-ready")
 def player_ready(sid, data):

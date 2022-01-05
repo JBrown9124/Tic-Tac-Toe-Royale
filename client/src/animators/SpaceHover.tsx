@@ -19,6 +19,7 @@ interface Props {
   boardRenderTime: number;
   win: Win;
   move: { rowIdx: number; tileIdx: number };
+  isBoardCreated: boolean;
 }
 const TileHover = ({
   x = 0,
@@ -35,17 +36,14 @@ const TileHover = ({
   boardRenderTime,
   win,
   move,
+  isBoardCreated,
 }: Props) => {
   const [isBooped, setIsBooped] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isWinningMove, setIsWinningMove] = useState(false);
 
   const [lineDirection, setLineDirection] = useState<string>(
-    win?.type === null
-      ? "None"
-      : win?.type === "tie"
-      ? "horizontal"
-      : win?.type
+    win?.type === null ? "None" : win?.type === "tie" ? "horizontal" : win?.type
   );
   const [config, setConfig] = useState({
     mass: 1,
@@ -56,14 +54,16 @@ const TileHover = ({
   const [isRendered, setIsRendered] = useState(false);
 
   useEffect(() => {
-    setIsVisible(true);
-    const t = setTimeout(() => {
-      setIsRendered(true);
-    }, boardRenderTime);
-    return () => {
-      clearTimeout(t);
-    };
-  }, []);
+    if (isBoardCreated) {
+      setIsVisible(true);
+      const t = setTimeout(() => {
+        setIsRendered(true);
+      }, boardRenderTime);
+      return () => {
+        clearTimeout(t);
+      };
+    }
+  }, [isBoardCreated]);
   useEffect(() => {
     setLineDirection(
       win?.type === null
@@ -173,7 +173,7 @@ const TileHover = ({
         : "black",
     zIndex: 9999,
 
-    delay: (delay / 2),
+    delay: delay / 2,
     config: {
       mass: 1,
       tension: 170,

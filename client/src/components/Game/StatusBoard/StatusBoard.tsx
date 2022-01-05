@@ -40,7 +40,7 @@ export default function StatusBoard({
     playLeaveSound();
     setSessionCookies("command", "quit", { path: "/" });
   };
- 
+
   useEffect(() => {
     if (gameStatus?.win?.whoWon) {
       if (turnNumber === gameStatus?.win?.whoWon) {
@@ -50,7 +50,6 @@ export default function StatusBoard({
       } else {
         startTieSound();
       }
-
     }
   }, [gameStatus?.win?.whoWon]);
   return (
@@ -95,12 +94,13 @@ export default function StatusBoard({
           </Grid>
         </Grid>
         <Grid item>
-          {players?.map((player) => {
+          {players?.map((player, idx) => {
             if (gameStatus?.win?.whoWon) {
               if (player?.turnNumber === gameStatus?.win?.whoWon) {
                 if (player?.piece?.length > 15) {
                   return (
                     <img
+                    key={player.playerId}
                       src={player.piece}
                       alt={player.piece}
                       style={{ width: sizeOfPiece, height: sizeOfPiece }}
@@ -115,6 +115,7 @@ export default function StatusBoard({
               if (player?.piece?.length > 15) {
                 return (
                   <img
+                  key={player.playerId}
                     src={player.piece}
                     alt={player.piece}
                     style={{ width: sizeOfPiece, height: sizeOfPiece }}
@@ -131,13 +132,12 @@ export default function StatusBoard({
           {" "}
           <Typography sx={{ p: 1 }}>{`Win by ${winBy}`}</Typography>
         </Grid>
-        {gameStatus?.win?.whoWon && (
-          <Grid container direction="column">
-            <Grid item>
-              <Button onClick={() => handleLeaveGame()}>Leave Game</Button>
-            </Grid>
+
+        <Grid container direction="column">
+          <Grid item>
+            <Button onClick={() => handleLeaveGame()}>Leave Game</Button>
           </Grid>
-        )}
+        </Grid>
       </Grid>
     </>
   );

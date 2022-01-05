@@ -22,11 +22,16 @@ class Game(APIView):
         test_request = request
         body = request.query_params
         lobby_id = int(body.get("lobbyId"))
+        player_id = body.get("playerId")
         lobby = cache.get(lobby_id)
         try:
             lobby = lobby[lobby_id]
         except:
             lobby = lobby
+        lobby_players_copy = lobby["players"]
+        for player in lobby_players_copy:
+            if player["playerId"] == player_id:
+                player["isLoaded"] = True
         lobby_response = LobbyResponseModel(lobby=lobby, lobby_id=lobby_id).to_dict()
         return JsonResponse({"lobby": lobby_response})
 

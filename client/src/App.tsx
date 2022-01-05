@@ -23,6 +23,9 @@ import { useSound } from "use-sound";
 
 function App() {
   const [sessionCookies, setSessionCookie, removeSessionCookie] = useCookies();
+  const [playerId, setPlayerId] = useState("");
+  const [isAllPlayersLoaded, setIsAllPlayersLoaded] = useState(false);
+  const [isLobbyReceived, setIsLobbyReceived] = useState(false);
   const [startMusic] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/warHorn.mp3"
   );
@@ -53,38 +56,63 @@ function App() {
     getCountRef.current = getCount;
   }, [getCount]);
 
-  socket.on("connect", () => {console.log("Client Connected")});
-  socket.off("connect_error", () => {console.log("socket error")});
+  socket.on("connect", () => {
+    console.log("Client Connected");
+  });
+  socket.off("connect_error", () => {
+    console.log("socket error");
+  });
   socket.on("disconnect", () => {
-    socket.removeAllListeners("player-join-lobby")
-    socket.removeAllListeners("player-leave-lobby")
-    socket.removeAllListeners("start-game")
-    socket.removeAllListeners("player-ready")
-    socket.removeAllListeners("new-move")
-    socket.removeAllListeners("connect")
-    socket.removeAllListeners()
+    socket.removeAllListeners("player-join-lobby");
+    socket.removeAllListeners("player-leave-lobby");
+    socket.removeAllListeners("start-game");
+    socket.removeAllListeners("player-ready");
+    socket.removeAllListeners("new-move");
+    socket.removeAllListeners("connect");socket.removeAllListeners("player-loaded-game");
+    socket.removeAllListeners();
   });
-  socket.on("player-join-lobby", (newPlayer: {playerName:string, playerId:string}) => {
-    console.log(newPlayer.playerId)
-    const lobbyCopy = lobbyRef.current;
-    let playerExists = lobbyCopy.players.filter((player:Player) => {
-      return player.playerId === newPlayer.playerId;
-    });
-    console.log(playerExists, "PLAYEREXISTS")
-    if (playerExists.length === 0) {
-      lobbyCopy.players?.push({
-        name: newPlayer.playerName,
-        playerId: newPlayer.playerId,
-        piece: "",
-        isHost: false,
-        turnNumber: 0,
-        isReady: newPlayer.playerId.substring(0, 3) === "BOT" ? true : false,
+  socket.on(
+    "player-join-lobby",
+    (newPlayer: { playerName: string; playerId: string }) => {
+      console.log(newPlayer.playerId);
+      const lobbyCopy = lobbyRef.current;
+      let playerExists = lobbyCopy.players.filter((player: Player) => {
+        return player.playerId === newPlayer.playerId;
       });
-      setLobby({ ...lobbyCopy });
+      console.log(playerExists, "PLAYEREXISTS");
+      if (playerExists.length === 0) {
+        lobbyCopy.players?.push({
+          name: newPlayer.playerName,
+          playerId: newPlayer.playerId,
+          piece: "",
+          isHost: false,
+          turnNumber: 0,
+          playerLoaded:
+            newPlayer.playerId.substring(0, 3) === "BOT" ? true : false,
+          isReady: newPlayer.playerId.substring(0, 3) === "BOT" ? true : false,
+        });
+        setLobby({ ...lobbyCopy });
+      }
     }
-  });
-  
-  socket.on("player-leave-lobby", (removedPlayer) => {
+  );
+  // socket.once("player-loaded-game", (playerIdSocket: string) => {
+  //   const lobbyCopy = lobbyRef.current;
+   
+  //   lobbyCopy.players.map((player) => {
+  //     if (player.playerId === playerIdSocket) {
+  //       player.playerLoaded = true;
+  //     }
+  //   });
+  //   const allPlayersNotLoaded = lobbyCopy.players.filter((player) => {
+  //     return player.playerLoaded === false;
+  //   });
+  //   if (allPlayersNotLoaded.length === 0) {
+  //     setIsAllPlayersLoaded(true);
+  //     console.log(allPlayersNotLoaded,"ALLPLAYERSNOTLOADEDSOCKET")
+  //   }
+  //   setLobby({ ...lobbyCopy });
+  // });
+  socket.on("player-leave-lobby", (removedPlayer: string) => {
     if (removedPlayer === "HOST") {
       setSessionCookie("command", "leave", { path: "/" });
     } else {
@@ -96,18 +124,17 @@ function App() {
       setLobby({ ...lobbyCopy });
     }
   });
-  socket.once("player-ready", (receivedLobby) => {
-    let getCount = 0;
-
-    const getLobbyInfo = async () => {
-      const lobbyCopy = lobbyRef.current;
-      const lobbyInfo = await getStartGame({ lobbyId: lobbyCopy.lobbyId });
-      await setLobby(lobbyInfo);
-    };
-    if (getCount === 0) {
-      getLobbyInfo();
-      getCount += 1;
-    }
+  socket.once("player-ready", () => {
+    const lobbyCopy = lobbyRef.current;
+    setTimeout(() => {
+      getStartGame({
+        lobbyId: lobbyCopy.lobbyId,
+        playerId: null,
+        hostSid: lobby.hostSid,
+      }).then((lobbyInfo) => {
+        setLobby(lobbyInfo);
+      });
+    }, 500);
   });
   socket.on("start-game", (data) => {
     setSessionCookie("command", "begin", { path: "/" });
@@ -117,7 +144,7 @@ function App() {
     setGameStatus(newMove.gameStatus);
   });
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (sessionCookies?.command === "quit") {
       setNewMove({
         turnNumber: 0,
@@ -141,34 +168,64 @@ function App() {
         },
         players: [],
       });
+      setIsLobbyReceived(false);
       removeSessionCookie("lobbyId");
       removeSessionCookie("command");
+      removeSessionCookie("playerId");
     }
+    /* When they are in the middle of the game and they hit the refresh button */
     if (sessionCookies?.command === "begin" && lobby.lobbyId === 0) {
       const getLobbyInfo = async () => {
-        const lobbyInfo = await getGame({ lobbyId: sessionCookies?.lobbyId });
-
-        setGameStatus(lobbyInfo.gameStatus);
-
-        setLobby(lobbyInfo);
-      };
-
-      startMusic();
-      getLobbyInfo();
-    }
-    if (sessionCookies?.command === "begin" && lobby.lobbyId > 0) {
-      const getLobbyInfo = async () => {
-        const lobbyInfo = await getStartGame({
+        const lobbyInfo = await getGame({
           lobbyId: sessionCookies?.lobbyId,
+          playerId: sessionCookies.playerId,
+          hostSid: lobby.hostSid,
         });
 
         setGameStatus(lobbyInfo.gameStatus);
 
         setLobby(lobbyInfo);
+        const allPlayersNotLoaded = lobbyInfo.players.filter(
+          (player: Player) => {
+            return player.playerLoaded === false;
+          }
+        );
+        // if (allPlayersNotLoaded.length === 0) {
+        //   setIsAllPlayersLoaded(true);
+        // }
+        return true;
       };
 
       startMusic();
-      getLobbyInfo();
+      getLobbyInfo().then((isLobbyInfoReceived) => {
+        setIsLobbyReceived(isLobbyInfoReceived);
+      });
+    }
+    /* For when the game begins */
+    if (sessionCookies?.command === "begin" && lobby.lobbyId > 0) {
+      const getLobbyInfo = async () => {
+        try {
+          const lobbyInfo = await getStartGame({
+            lobbyId: sessionCookies?.lobbyId,
+            playerId: sessionCookies.playerId,
+            hostSid: lobby.hostSid,
+          });
+
+          setGameStatus(lobbyInfo.gameStatus);
+
+          setLobby(lobbyInfo);
+          
+         
+          return true;
+        } catch {
+          console.log("ERROR GETTING LOBBYINFO AT START OF GAME");
+          return false;
+        }
+      };
+      getLobbyInfo().then((isLobbyInfoReceived) => {
+        setIsLobbyReceived(isLobbyInfoReceived);
+      });
+      startMusic();
     }
     if (
       (sessionCookies?.command === "create" ||
@@ -177,16 +234,17 @@ function App() {
     ) {
       const getLobbyInfo = async () => {
         const lobbyInfo = await getGame({
-          lobbyId:
-            lobby.lobbyId === 0 ? sessionCookies?.lobbyId : lobby.lobbyId,
+          lobbyId: sessionCookies?.lobbyId,
+          playerId: sessionCookies.playerId,
+          hostSid: lobby.hostSid,
         });
 
         lobbyInfo?.players.map((player: Player) => {
-          if (player.name === sessionCookies?.name) {
+          if (player.playerId === sessionCookies?.playerId) {
             setPiece(player.piece);
           }
         });
-        await setLobby(lobbyInfo);
+        setLobby(lobbyInfo);
       };
       getLobbyInfo();
       startMusic();
@@ -217,11 +275,15 @@ function App() {
                   newMove={newMove}
                   lobby={lobby}
                   setNewMove={(props) => setNewMove(props)}
+                  isLobbyReceived={isLobbyReceived}
+                  isAllPlayersLoaded={isAllPlayersLoaded}
                 />
               </Grid>
             ) : (
               <PregameModal
                 setLobby={(props) => setLobby(props)}
+                playerId={playerId}
+                setPlayerId={(props) => setPlayerId(props)}
                 playerPiece={piece}
                 setPiece={(props) => setPiece(props)}
                 lobby={lobby}

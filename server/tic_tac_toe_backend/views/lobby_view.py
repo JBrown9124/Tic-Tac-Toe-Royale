@@ -70,7 +70,7 @@ class Lobby(APIView):
             player = Player(
                 name=bot_name,
                  turn_number= turn_number,
-              
+              is_loaded=True,
                 piece=bot_piece,
                 is_ready=True,
             ).to_dict()

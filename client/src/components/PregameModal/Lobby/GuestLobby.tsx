@@ -27,10 +27,10 @@ export default function GuestLobby({
   const [sessionCookies, setSessionCookies] = useCookies();
   const [isReady, setIsReady] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [playReady] = useSound(
+  const [playReadySound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3"
   );
-  const [playUnready] = useSound(
+  const [playUnreadySound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/floorDrumBackButton.mp3"
   );
   useEffect(() => {
@@ -56,16 +56,16 @@ export default function GuestLobby({
       }
     });
   }, [lobby]);
-  const handleReady = async () => {
+  const handleReady = () => {
     if (playerPiece) {
       setIsError(false);
       const reqBody = {
-        player: { name: sessionCookies?.name, piece: playerPiece, playerId },
+        player: { name: sessionCookies?.name, piece: playerPiece, playerId:sessionCookies.playerId },
         lobbyId: lobby?.lobbyId,
         hostSid: lobby?.hostSid,
       };
       playerReady(reqBody);
-      !isReady ? playReady() : playUnready();
+      !isReady ? playReadySound() : playUnreadySound();
 
       lobby.players.map((player) => {
         if (player.name === sessionCookies?.name) {

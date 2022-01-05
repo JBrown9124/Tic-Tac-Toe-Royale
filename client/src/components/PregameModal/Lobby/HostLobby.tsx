@@ -69,7 +69,7 @@ export default function HostLobby({
   const sendHostPiece = (pieceValue: string) => {
     setPiece(pieceValue);
     const reqBody = {
-      player: { name: sessionCookies.name, piece: pieceValue, playerId },
+      player: { name: sessionCookies.name, piece: pieceValue, playerId:sessionCookies.playerId },
       lobbyId: parseInt(sessionCookies?.lobbyId),
       hostSid: hostSid,
     };

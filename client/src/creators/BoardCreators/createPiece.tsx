@@ -23,6 +23,7 @@ const createPiece = (
       name: "Clear",
       value: (
         <ClearIcon
+        key={400}
           sx={{
             height: sizeOfPiece.mobile,
             width: sizeOfPiece.mobile,
@@ -37,6 +38,7 @@ const createPiece = (
       name: "Star",
       value: (
         <StarIcon
+        key={500}
           sx={{
             height: sizeOfPiece.mobile,
             width: sizeOfPiece.mobile,
@@ -51,6 +53,7 @@ const createPiece = (
       name: "CircleOutlined",
       value: (
         <CircleOutlinedIcon
+        key={600}
           sx={{
             height: sizeOfPiece.mobile,
             width: sizeOfPiece.mobile,
@@ -65,6 +68,7 @@ const createPiece = (
       name: "Pets",
       value: (
         <PetsIcon
+        key={700}
           sx={{
             height: sizeOfPiece.mobile,
             width: sizeOfPiece.mobile,
@@ -79,6 +83,7 @@ const createPiece = (
       name: "FitnessCenter",
       value: (
         <FitnessCenterIcon
+        key={800}
           sx={{
             height: sizeOfPiece.mobile,
             width: sizeOfPiece.mobile,
@@ -93,6 +98,7 @@ const createPiece = (
       name: "FavoriteBorder",
       value: (
         <FavoriteBorderIcon
+        key={900}
           sx={{
             height: sizeOfPiece.mobile,
             width: sizeOfPiece.mobile,
@@ -107,6 +113,7 @@ const createPiece = (
       name: "ChildCare",
       value: (
         <ChildCareIcon
+        key={1000}
           sx={{
             height: sizeOfPiece.mobile,
             width: sizeOfPiece.mobile,

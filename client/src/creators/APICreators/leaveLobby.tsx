@@ -14,7 +14,7 @@ const saveLeaveLobby = async (body: BodyProps) => {
 };
 const sendLeaveLobby = (data: any, body: BodyProps) => {
   socket.emit("player-leave-lobby", {
-    lobby: data.lobby,
+  
     playerId: body.playerId,
 
     hostSid: body.hostSid,

@@ -18,16 +18,20 @@ interface PregameModalProps {
   playerPiece: string;
   lobby: Lobby;
   setLobby: (lobbyValue: Lobby) => void;
+  setPlayerId: (playerIdValue: string) => void;
+  playerId: string;
 }
 export default function PregameModal({
   setPiece,
   playerPiece,
   lobby,
   setLobby,
+  setPlayerId,
+  playerId,
 }: PregameModalProps) {
   const [open, setOpen] = useState(true);
   const [isLobbyFound, setIsLobbyFound] = useState<boolean>(true);
-  const [playerId, setPlayerId] = useState("");
+
   const [playForward] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3"
   );
@@ -62,94 +66,90 @@ export default function PregameModal({
     playBackward();
     setSessionCookie("command", "leave", { path: "/" });
   };
-  const handleStartGameSelect = () => {
-    setSessionCookie("command", "start", { path: "/" });
-  };
+
   useEffect(() => {
     if (
       sessionCookies?.command === "create" &&
       sessionCookies.lobbyId === undefined
     ) {
-      const startLobby = async () => {
-        const reqBody = { playerName: sessionCookies?.name };
-        const response = await createLobby(reqBody);
+      const reqBody = { playerName: sessionCookies?.name };
+      createLobby(reqBody).then((response) => {
         setSessionCookie("lobbyId", response.lobby.lobbyId, { path: "/" });
         setLobby(response.lobby);
-        setPlayerId(response.playerId)
-      };
-      startLobby();
-      setSessionCookie(
-        "board",
-        { size: 3, winBy: 2, color: { r: 194, g: 42, b: 50, a: 1 } },
-        { path: "/" }
-      );
+        // setPlayerId(response.playerId);
+        setSessionCookie("playerId", response.playerId, {
+          path: "/",
+        });
+
+        setSessionCookie(
+          "board",
+          { size: 3, winBy: 2, color: { r: 194, g: 42, b: 50, a: 1 } },
+          { path: "/" }
+        );
+      });
     }
     if (
       sessionCookies?.command === "guest" &&
       sessionCookies.lobbyId === undefined
     ) {
-      const findLobby = async () => {
-        const reqBody = {
-          lobbyId: lobbyIdItem,
-          playerName: sessionCookies?.name,
-        };
-        const lobbyInfo = await joinLobby(reqBody);
-
+      const reqBody = {
+        lobbyId: lobbyIdItem,
+        playerName: sessionCookies?.name,
+      };
+      joinLobby(reqBody).then((lobbyInfo) => {
         if (typeof lobbyInfo === "string") {
           setSessionCookie("command", "join", { path: "/" });
           setIsLobbyFound(false);
         } else {
           setIsLobbyFound(true);
           setSessionCookie("lobbyId", lobbyIdItem, { path: "/" });
+          setSessionCookie("playerId", lobbyInfo.player.playerId, {
+            path: "/",
+          });
           setLobby(lobbyInfo.lobby);
-          setPlayerId(lobbyInfo.player.playerId);
+          // setPlayerId(lobbyInfo.player.playerId);
           playJoinOrStart();
         }
-      };
-      findLobby();
+      });
     }
     if (sessionCookies?.command === "leave") {
-      const leavingLobby = async () => {
-        const reqBody = {
-          lobbyId: sessionCookies?.lobbyId,
-         playerId,
-          hostSid: lobby.hostSid,
-        };
-        const lobbyInfo = await leaveLobby(reqBody);
+      const reqBody = {
+        lobbyId: sessionCookies?.lobbyId,
+        playerId:sessionCookies.playerId,
+        hostSid: lobby.hostSid,
       };
-      leavingLobby();
-      removeSessionCookies("lobbyId");
-      removeSessionCookies("command");
+      leaveLobby(reqBody).then(() => {
+        removeSessionCookies("lobbyId");
+        removeSessionCookies("command");
+        removeSessionCookies("playerId");
 
-      setLobby({
-        hostSid: 0,
-        lobbyId: 0,
-        board: {
-          size: 0,
-          color: { r: 0, g: 0, b: 0, a: 0 },
-          winBy: 3,
-          moves: [],
-        },
-        players: [],
+        setLobby({
+          hostSid: 0,
+          lobbyId: 0,
+          board: {
+            size: 0,
+            color: { r: 0, g: 0, b: 0, a: 0 },
+            winBy: 3,
+            moves: [],
+          },
+          players: [],
+        });
+        removeSessionCookies("piece");
       });
-      removeSessionCookies("piece");
     }
     if (sessionCookies?.command === "start") {
-      const initiateGame = async () => {
-        const reqBody = {
-          lobbyId: lobby?.lobbyId,
-          board: sessionCookies?.board,
-          piece: playerPiece,
-        };
-        const lobbyInfo = await startGame(reqBody);
-
+      const reqBody = {
+        lobbyId: lobby?.lobbyId,
+        board: sessionCookies?.board,
+        piece: playerPiece,
+      };
+      startGame(reqBody).then((lobbyInfo) => {
         setSessionCookie("lobbyId", lobbyInfo?.lobby?.lobbyId, {
           path: "/",
         });
 
-         setSessionCookie("command", "begin", { path: "/" });
-      };
-      initiateGame();
+        setSessionCookie("command", "begin", { path: "/" });
+      });
     }
   }, [sessionCookies?.command]);
   return (
@@ -205,7 +205,7 @@ export default function PregameModal({
 
           {sessionCookies?.command === "create" && (
             <HostLobby
-            playerId={playerId}
+              playerId={playerId}
               setLobby={(props) => setLobby(props)}
               hostSid={lobby?.hostSid}
               players={lobby?.players}

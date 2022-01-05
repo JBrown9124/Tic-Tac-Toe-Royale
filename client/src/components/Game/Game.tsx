@@ -15,10 +15,12 @@ interface GameProps {
   newMove: NewMove;
   lobby: Lobby;
   gameStatus: GameStatus;
+  isAllPlayersLoaded:boolean
+  isLobbyReceived: boolean;
   setGameStatus: (status: GameStatus) => void;
   setNewMove:(newMoveValue:NewMove)=>void;
 }
-function Game({ newMove, lobby, gameStatus, setGameStatus, setNewMove }: GameProps) {
+function Game({ newMove, lobby, gameStatus, setGameStatus, setNewMove, isLobbyReceived, isAllPlayersLoaded }: GameProps) {
   const [sessionCookies, setSessionCookies] = useCookies();
   const [turnNumber, setturnNumber] = useState(0);
   const [isHost, setIsHost] = useState(false);
@@ -65,6 +67,8 @@ function Game({ newMove, lobby, gameStatus, setGameStatus, setNewMove }: GamePro
           md={8}
         >
           <Board
+          isLobbyReceived={isLobbyReceived}
+          isAllPlayersLoaded={isAllPlayersLoaded}
             gameStatus={gameStatus}
             setGameStatus={(props) => setGameStatus(props)}
             lobby={lobby}

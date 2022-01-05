@@ -4,8 +4,10 @@ import url from "../../storage/url"
 import { Lobby } from "../../Models/Lobby";
 interface BodyProps {
   lobbyId: number;
+  playerId:string|null;
+  hostSid:number
 }
-const saveGetStartGame = async (body: any) => {
+const saveGetStartGame = async (body: BodyProps) => {
   
   const { data } = await axios.get(`${url}/api/game`, {
     params: body,
@@ -16,7 +18,7 @@ const saveGetStartGame = async (body: any) => {
 const getStartGame = async (body: BodyProps) => {
   try {
     const data = await saveGetStartGame(body);
-   
+    
 
     return await data.lobby;
   } catch (e) {
