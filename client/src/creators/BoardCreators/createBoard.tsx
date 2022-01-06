@@ -1,4 +1,4 @@
-const createBoard = (
+const createBoard = async (
   setBoard: Function,
   boardSize: number,
   moves: Object[]
@@ -23,9 +23,10 @@ const createBoard = (
   // let row:  number[] = Array(boardSize).fill(0);
   // let board: number[][] = Array(boardSize).fill(row);
 
-  setBoard([...board]);
-  return new Promise((resolve, reject) => {
-    resolve(true);
-  });
+  await setBoard([...board]);
+  return board.length > 0;
+  // return new Promise((resolve, reject) => {
+  //   resolve(true);
+  // });
 };
 export default createBoard;

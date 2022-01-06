@@ -1,26 +1,40 @@
 import { socket } from "../../socket";
 import axios, { AxiosResponse } from "axios";
-import url from "../../storage/url"
+import url from "../../storage/url";
 import { Lobby } from "../../Models/Lobby";
+import { GameStatus } from "../../Models/GameStatus";
+
 interface BodyProps {
   lobbyId: number;
-  playerId:string|null;
-  hostSid:number
+  playerId: string | null;
+  hostSid: number;
 }
 const saveGetStartGame = async (body: BodyProps) => {
-  
   const { data } = await axios.get(`${url}/api/game`, {
     params: body,
   });
   return data;
 };
-
-const getStartGame = async (body: BodyProps) => {
+const sendGetStartGame = async (hostSidValue: number) => {
+  socket.emit("rejoin-room-after-refresh", hostSidValue);
+};
+const getStartGame = async (
+  body: BodyProps,
+  setGameStatus: (status: GameStatus) => void,
+  setLobby: (lobby: Lobby) => void,
+  setIsLobbyReceived: (isLobbyReceived: boolean) => void
+) => {
   try {
-    const data = await saveGetStartGame(body);
-    
+    const { lobby } = await saveGetStartGame(body);
+    console.log(lobby,"GETSTARTGAMELOBBY")
+    setGameStatus(lobby.gameStatus);
 
-    return await data.lobby;
+    setLobby(lobby);
+    if (!body.playerId){
+      await sendGetStartGame(lobby.hostSid)
+    } 
+    
+    return setIsLobbyReceived(true);
   } catch (e) {
     console.log(e);
   }

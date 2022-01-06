@@ -1,7 +1,6 @@
 import PlayerList from "./PlayerList";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { Player } from "../../../Models/Player";
 import { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import PieceSelector from "./Settings/PieceSelector";
@@ -34,6 +33,8 @@ export default function GuestLobby({
     process.env.PUBLIC_URL + "static/assets/sounds/floorDrumBackButton.mp3"
   );
   useEffect(() => {
+    /*When player clicks a piece while players status is set to ready. Sets players status to false and makes a api 
+    call to update players status on server side*/
     lobby?.players?.map((player) => {
       if (player.name === sessionCookies?.name) {
         setIsReady(false);
@@ -41,7 +42,11 @@ export default function GuestLobby({
       }
     });
     const reqBody = {
-      player: { name: sessionCookies?.name, piece: playerPiece, playerId },
+      player: {
+        name: sessionCookies?.name,
+        piece: playerPiece,
+        playerId: sessionCookies.playerId,
+      },
       lobbyId: lobby?.lobbyId,
       hostSid: lobby?.hostSid,
     };
@@ -56,11 +61,15 @@ export default function GuestLobby({
       }
     });
   }, [lobby]);
-  const handleReady = () => {
+  const handleReadyClick = () => {
     if (playerPiece) {
       setIsError(false);
       const reqBody = {
-        player: { name: sessionCookies?.name, piece: playerPiece, playerId:sessionCookies.playerId },
+        player: {
+          name: sessionCookies?.name,
+          piece: playerPiece,
+          playerId: sessionCookies.playerId,
+        },
         lobbyId: lobby?.lobbyId,
         hostSid: lobby?.hostSid,
       };
@@ -112,7 +121,7 @@ export default function GuestLobby({
 
           <Grid item>
             {" "}
-            <Button onClick={() => handleReady()}>
+            <Button onClick={() => handleReadyClick()}>
               {isReady ? "Cancel" : "Ready"}
             </Button>
           </Grid>

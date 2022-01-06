@@ -51,7 +51,7 @@ export const Tile = ({
     <>
       <Grid
         onClick={() =>
-          gameStatus.whoTurn === turnNumber && gameStatus.win.whoWon === null
+          gameStatus.whoTurn === turnNumber && !gameStatus.win.whoWon 
             ? handleClick()
             : ""
         }

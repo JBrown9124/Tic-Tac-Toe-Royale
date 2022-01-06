@@ -13,6 +13,7 @@ import { useCookies } from "react-cookie";
 import { RgbaColor } from "react-colorful";
 import { Player } from "../../../Models/Player";
 import createPiece from "../../../creators/BoardCreators/createPiece";
+import getPlayerPieces from "../../../creators/BoardCreators/getPlayerPieces";
 import botNewMove from "../../../creators/APICreators/botNewMove";
 import { v4 as uuidv4 } from "uuid";
 import { PlayerPieces } from "../../../Models/PlayerPieces";
@@ -52,7 +53,7 @@ export default function Board({
   const [cacheBoard, setCacheBoard] = useState<number[][]>([[]]);
   const [sessionCookies, setSessionCookies, removeSessionCookies] =
     useCookies();
-
+  const [botCanMove, setBotCanMove] = useState(false);
   const [piece, setPiece] = useState<JSX.Element | string>();
   const [playerPieces, setPlayerPieces] = useState<PlayerPieces[]>([]);
   const [isBoardCreated, setIsBoardCreated] = useState(false);
@@ -62,95 +63,122 @@ export default function Board({
   );
   useEffect(() => {
     if (sessionCookies.command === "begin") {
-      const getPlayerPieces = async () => {
-        try {
-          let piecesValues: PlayerPieces[] = [];
-          lobby.players.forEach((player: Player) => {
-            if (
-              player?.piece?.length > 30 &&
-              player?.turnNumber === turnNumber
-            ) {
-              setPiece(
-                <img
-                  src={player?.piece}
-                  alt={player?.piece}
-                  key={player.playerId}
-                  style={{
-                    height: sizeOfBoardPiece.mobile,
-                    width: sizeOfBoardPiece.mobile,
-                    maxHeight: sizeOfBoardPiece.desktop,
-                    maxWidth: sizeOfBoardPiece.desktop,
-                  }}
-                />
-              );
-            } else if (
-              player?.piece?.length > 30 &&
-              player?.turnNumber !== turnNumber
-            ) {
-              piecesValues.push({
-                turnNumber: player?.turnNumber,
-                piece: (
-                  <img
-                    key={player.playerId}
-                    src={player?.piece}
-                    alt={player?.piece}
-                    style={{
-                      height: sizeOfBoardPiece.mobile,
-                      width: sizeOfBoardPiece.mobile,
-                      maxHeight: sizeOfBoardPiece.desktop,
-                      maxWidth: sizeOfBoardPiece.desktop,
-                    }}
-                  />
-                ),
-              });
-            }
-            createPiece(
-              lobby?.board?.color?.r * 0.299 +
-                lobby?.board?.color?.g * 0.587 +
-                lobby?.board?.color?.b * 0.114 >
-                186
-                ? "black"
-                : "white",
-              sizeOfBoardPiece
-            ).forEach((piece) => {
-              if (
-                piece.name === player?.piece &&
-                player?.turnNumber === turnNumber
-              ) {
-                setPiece(piece.value);
-              } else if (piece.name === player?.piece) {
-                piecesValues.push({
-                  turnNumber: player?.turnNumber,
-                  piece: piece.value,
-                });
-              }
-            });
-          });
-          await setPlayerPieces(piecesValues);
-          return true;
-        } catch (e) {
-          console.log("Creating pieces failed");
-          return false;
-        }
-      };
+      // const getPlayerPieces = async () => {
+      //   try {
+      //     let piecesValues: PlayerPieces[] = [];
+      //     lobby.players.forEach((player: Player) => {
+      //       if (
+      //         player?.piece?.length > 30 &&
+      //         player?.turnNumber === turnNumber
+      //       ) {
+      //         setPiece(
+      //           <img
+      //             src={player?.piece}
+      //             alt={player?.piece}
+      //             key={player.playerId}
+      //             style={{
+      //               height: sizeOfBoardPiece.mobile,
+      //               width: sizeOfBoardPiece.mobile,
+      //               maxHeight: sizeOfBoardPiece.desktop,
+      //               maxWidth: sizeOfBoardPiece.desktop,
+      //             }}
+      //           />
+      //         );
+      //       } else if (
+      //         player?.piece?.length > 30 &&
+      //         player?.turnNumber !== turnNumber
+      //       ) {
+      //         piecesValues.push({
+      //           turnNumber: player?.turnNumber,
+      //           piece: (
+      //             <img
+      //               key={player.playerId}
+      //               src={player?.piece}
+      //               alt={player?.piece}
+      //               style={{
+      //                 height: sizeOfBoardPiece.mobile,
+      //                 width: sizeOfBoardPiece.mobile,
+      //                 maxHeight: sizeOfBoardPiece.desktop,
+      //                 maxWidth: sizeOfBoardPiece.desktop,
+      //               }}
+      //             />
+      //           ),
+      //         });
+      //       }
+      //       createPiece(
+      //         lobby?.board?.color?.r * 0.299 +
+      //           lobby?.board?.color?.g * 0.587 +
+      //           lobby?.board?.color?.b * 0.114 >
+      //           186
+      //           ? "black"
+      //           : "white",
+      //         sizeOfBoardPiece
+      //       ).forEach((piece) => {
+      //         if (
+      //           piece.name === player?.piece &&
+      //           player?.turnNumber === turnNumber
+      //         ) {
+      //           setPiece(piece.value);
+      //         } else if (piece.name === player?.piece) {
+      //           piecesValues.push({
+      //             turnNumber: player?.turnNumber,
+      //             piece: piece.value,
+      //           });
+      //         }
+      //       });
+      //     });
+      //     setPlayerPieces(piecesValues);
+      //     return piecesValues.length > 0;
+      //   } catch (e) {
+      //     console.log("Creating pieces failed");
+      //     return false;
+      //   }
+      // };
+      const setUpGame = async() =>{
+        await getPlayerPieces(
+          turnNumber,
+          lobby.players,
+          setPiece,
+          sizeOfBoardPiece,
+          setPlayerPieces,
+          lobby.board.color
+        )
+        const boardCreated = await createBoard(setBoard, lobby.board.size, lobby.board.moves)
+        setIsBoardCreated(boardCreated);
+        return setTimeout(() => {
+          setBotCanMove(true);
+        }, 10000);
+      }
+      setUpGame()
+      // getPlayerPieces(
+      //   turnNumber,
+      //   lobby.players,
+      //   setPiece,
+      //   sizeOfBoardPiece,
+      //   setPlayerPieces,
+      //   lobby.board.color
+      // ).then(
+      //   () => {
+      //     createBoard(setBoard, lobby.board.size, lobby.board.moves).then(
+      //       (isBoardMade) => {
+      //         const handleBotStart = (boardReady: boolean) => {
+      //           setIsBoardCreated(boardReady);
+      //           return setTimeout(() => {
+      //             setBotCanMove(true);
+      //           }, 10000);
+      //         };
 
-      getPlayerPieces().then(
-        (arePiecesMade) => {
-          createBoard(setBoard, lobby.board.size, lobby.board.moves).then(
-            (isBoardMade) => {
-              setTimeout(() => {
-                setIsBoardCreated(isBoardMade);
-              }, 5000);
-            },
-            (onReject) => {
-              console.log(`Error creating board${onReject}`);
-            }
-          );
-        },
-        (onReject) => {
-          console.log(`Error creating pieces ${onReject} `);
-        }
-      );
+      //         handleBotStart(isBoardMade);
+      //       },
+      //       (onReject) => {
+      //         console.log(`Error creating board${onReject}`);
+      //       }
+      //     );
+      //   },
+      //   (onReject) => {
+      //     console.log(`Error creating pieces ${onReject} `);
+      //   }
+      // );
     }
   }, [isLobbyReceived]);
   //   useLayoutEffect(()=>{
@@ -159,46 +187,48 @@ export default function Board({
   //                 //   hostSid: lobby.hostSid,
   //                 // });
   //   },[isBoardCreated])
-  useLayoutEffect(() => {
-    const nextIsBot = lobby?.players?.find((player) => {
-      return (
-        player.turnNumber === gameStatus.whoTurn &&
-        player.playerId.substring(0, 3) === "BOT"
-      );
-    });
-
-    if (
-      isBoardCreated &&
-      isHost &&
-      nextIsBot !== undefined &&
-      !gameStatus?.win?.whoWon &&
-      isBoardCreated
-    ) {
-      const botsMove = async () => {
-        const reqBody = {
-          lobbyId: lobby?.lobbyId,
-          playerId: nextIsBot.playerId,
-          turnNumber: nextIsBot.turnNumber,
-        };
-        const botNewMoveResponse = await botNewMove(reqBody);
-
-        return await determineWinner(
-          botNewMoveResponse?.rowIdx,
-          botNewMoveResponse?.tileIdx,
-          board,
-
-          lobby?.board?.size,
-          botNewMoveResponse?.turnNumber,
-          lobby,
-          setGameStatus,
-          gameStatus,
-          setSessionCookies
-        );
+  useEffect(() => {
+    if (botCanMove) {
+      const findIfBot = async () => {
+        return lobby?.players?.find((player) => {
+          return (
+            player.turnNumber === gameStatus.whoTurn &&
+            player.playerId.substring(0, 3) === "BOT"
+          );
+        });
       };
-      botsMove();
-      startOtherPlayerMoveSound();
+      findIfBot().then((nextIsBot) => {
+        if (
+          isHost &&
+          nextIsBot !== undefined &&
+          !gameStatus?.win?.whoWon &&
+          botCanMove
+        ) {
+          const reqBody = {
+            lobbyId: sessionCookies.lobbyId,
+            playerId: nextIsBot.playerId,
+            turnNumber: nextIsBot.turnNumber,
+          };
+          botNewMove(reqBody).then((botNewMoveResponse) => {
+            determineWinner(
+              botNewMoveResponse.rowIdx,
+              botNewMoveResponse.tileIdx,
+              board,
+
+              lobby.board.size,
+              botNewMoveResponse.turnNumber,
+              lobby,
+              setGameStatus,
+              gameStatus,
+              setSessionCookies
+            );
+          });
+
+          startOtherPlayerMoveSound();
+        }
+      });
     }
-  }, [gameStatus, isBoardCreated]);
+  }, [gameStatus, botCanMove]);
   useEffect(() => {
     if (newMove?.turnNumber !== undefined && newMove?.turnNumber !== 0) {
       board[newMove.rowIdx][newMove.tileIdx] = newMove?.turnNumber;
