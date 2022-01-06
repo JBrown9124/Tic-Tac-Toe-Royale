@@ -17,7 +17,7 @@ interface PlayerListProps {
   playerPiece: string;
 }
 export default function PlayerList({ players, playerPiece }: PlayerListProps) {
-  const [sessionCookies, setSessionCookies] = useCookies();
+  const [sessionCookie, setSessionCookie] = useCookies();
   const pieces = createPiece("black");
   return (
     <>
@@ -26,19 +26,15 @@ export default function PlayerList({ players, playerPiece }: PlayerListProps) {
         textAlign="center"
         direction="column"
         justifyContent="center"
-        sx={{ border: "solid 1px black",  borderRadius:"10px"}}
+        sx={{ border: "solid 1px black", borderRadius: "10px" }}
       >
         <Grid item>
           <Typography> Players </Typography>
         </Grid>
         <Grid item>
-          <List
-            dense
-            sx={{  justifyContent: "center" }}
-            aria-label="players"
-          >
-            {players?.map((player: Player, idx: number) =>
-              player.name === sessionCookies.name ? (
+          <List dense sx={{ justifyContent: "center" }} aria-label="players">
+            {players.map((player: Player, idx: number) =>
+              player.name === sessionCookie.name ? (
                 <ListItem key={idx}>
                   {!player.isHost && (
                     <ListItemIcon>
@@ -53,7 +49,7 @@ export default function PlayerList({ players, playerPiece }: PlayerListProps) {
                       )}
                     </ListItemIcon>
                   )}
-                  {player?.isHost && (
+                  {player.isHost && (
                     <ListItemIcon>
                       {" "}
                       <FaCrown
@@ -65,7 +61,7 @@ export default function PlayerList({ players, playerPiece }: PlayerListProps) {
                       />
                     </ListItemIcon>
                   )}
-                  {playerPiece?.length > 15 ? (
+                  {playerPiece.length > 30 ? (
                     <ListItemText
                       inset
                       key={playerPiece}
@@ -79,7 +75,7 @@ export default function PlayerList({ players, playerPiece }: PlayerListProps) {
                     />
                   ) : (
                     pieces.map((piece) => {
-                      if (piece?.name === playerPiece)
+                      if (piece.name === playerPiece)
                         return (
                           <ListItemText
                             inset
@@ -97,7 +93,7 @@ export default function PlayerList({ players, playerPiece }: PlayerListProps) {
                 </ListItem>
               ) : (
                 <ListItem key={idx}>
-                   {!player.isHost && (
+                  {!player.isHost && (
                     <ListItemIcon>
                       {player.isReady ? (
                         <CheckIcon
@@ -111,7 +107,7 @@ export default function PlayerList({ players, playerPiece }: PlayerListProps) {
                     </ListItemIcon>
                   )}
 
-                  {player?.isHost && (
+                  {player.isHost && (
                     <ListItemIcon>
                       {" "}
                       <FaCrown
@@ -123,26 +119,26 @@ export default function PlayerList({ players, playerPiece }: PlayerListProps) {
                       />
                     </ListItemIcon>
                   )}
-                  {player?.piece?.length > 15 ? (
+                  {player.piece && player.piece.length > 30 ? (
                     <ListItemText
                       inset
-                      key={player?.piece}
+                      key={player.piece}
                       primary={
                         <img
-                          src={player?.piece}
-                          alt={player?.piece}
+                          src={player.piece}
+                          alt={player.piece}
                           style={{ width: "40px", height: "40px" }}
                         />
                       }
                     />
                   ) : (
                     pieces.map((piece) => {
-                      if (piece?.name === player?.piece)
+                      if (piece.name === player.piece)
                         return (
                           <ListItemText
                             inset
-                            key={piece?.name}
-                            primary={piece?.value}
+                            key={piece.name}
+                            primary={piece.value}
                           />
                         );
                     })

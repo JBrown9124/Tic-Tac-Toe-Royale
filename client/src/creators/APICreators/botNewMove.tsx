@@ -18,14 +18,15 @@ const saveBotNewMove = async (body: BodyProps) => {
   return data;
 };
 
-const botNewMove = async (body: BodyProps) => {
+const botNewMove = async (body: BodyProps):Promise<NewMove|undefined> => {
   try {
-    const data = await saveBotNewMove(body);
+    const newMove = await saveBotNewMove(body);
    
 
-    return await data;
+    return newMove;
   } catch (e) {
     console.log(e);
+    
   }
 };
 

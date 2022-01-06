@@ -23,7 +23,7 @@ const getGame = async (
   
   setLobby: (lobby: Lobby) => void,
   setPiece: (piece: string) => void
-) => {
+):Promise<void> => {
   try {
     const { lobby } = await saveGetGame(body);
     if (!body.playerId){

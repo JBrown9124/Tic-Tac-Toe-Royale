@@ -42,86 +42,88 @@ export default function PregameModal({
     process.env.PUBLIC_URL + "static/assets/sounds/joinOrStartSound.mp3"
   );
   const [lobbyIdItem, setLobbyIdItem] = useState(0);
-  const [sessionCookies, setSessionCookie, removeSessionCookies] = useCookies();
+  const [sessionCookie, setsessionCookie, removesessionCookie] = useCookies();
 
-  const handleCreateGameSelect = (name: string) => {
+  const handleCreateGameSelect = () => {
     playJoinOrStart();
 
-    setSessionCookie("command", "create", { path: "/" });
+    setsessionCookie("command", "create", { path: "/" });
   };
-  const handleJoinSelect = (name: string) => {
+  const handleJoinSelect = () => {
     playForward();
-    setSessionCookie("command", "join", { path: "/" });
+    setsessionCookie("command", "join", { path: "/" });
   };
   const handleFindSubmit = (lobbyId: number) => {
     playForward();
     setLobbyIdItem(lobbyId);
-    setSessionCookie("command", "guest", { path: "/" });
+    setsessionCookie("command", "guest", { path: "/" });
   };
   const handleJoinBackSelect = () => {
     playBackward();
-    removeSessionCookies("command");
+    removesessionCookie("command");
   };
   const handleLeaveSelect = () => {
     playBackward();
-    setSessionCookie("command", "leave", { path: "/" });
+    setsessionCookie("command", "leave", { path: "/" });
   };
 
   useEffect(() => {
     if (
-      sessionCookies?.command === "create" &&
-      sessionCookies.lobbyId === undefined
+      sessionCookie?.command === "create" &&
+      sessionCookie.lobbyId === undefined
     ) {
-      const reqBody = { playerName: sessionCookies?.name };
+      const reqBody = { playerName: sessionCookie?.name };
       createLobby(reqBody).then((response) => {
-        setSessionCookie("lobbyId", response.lobby.lobbyId, { path: "/" });
-        setLobby(response.lobby);
-        // setPlayerId(response.playerId);
-        setSessionCookie("playerId", response.playerId, {
-          path: "/",
-        });
+        if (response) {
+          setsessionCookie("lobbyId", response.lobby.lobbyId, { path: "/" });
+          setLobby(response.lobby);
 
-        setSessionCookie(
-          "board",
-          { size: 3, winBy: 2, color: { r: 194, g: 42, b: 50, a: 1 } },
-          { path: "/" }
-        );
+          setsessionCookie("playerId", response.playerId, {
+            path: "/",
+          });
+
+          setsessionCookie(
+            "board",
+            { size: 3, winBy: 2, color: { r: 194, g: 42, b: 50, a: 1 } },
+            { path: "/" }
+          );
+        }
       });
     }
     if (
-      sessionCookies?.command === "guest" &&
-      sessionCookies.lobbyId === undefined
+      sessionCookie?.command === "guest" &&
+      sessionCookie.lobbyId === undefined
     ) {
       const reqBody = {
         lobbyId: lobbyIdItem,
-        playerName: sessionCookies?.name,
+        playerName: sessionCookie?.name,
       };
-      joinLobby(reqBody).then((lobbyInfo) => {
-        if (typeof lobbyInfo === "string") {
-          setSessionCookie("command", "join", { path: "/" });
+      joinLobby(reqBody).then((response) => {
+        if (typeof response === "string") {
+          setsessionCookie("command", "join", { path: "/" });
           setIsLobbyFound(false);
         } else {
           setIsLobbyFound(true);
-          setSessionCookie("lobbyId", lobbyIdItem, { path: "/" });
-          setSessionCookie("playerId", lobbyInfo.player.playerId, {
+          setsessionCookie("lobbyId", lobbyIdItem, { path: "/" });
+          setsessionCookie("playerId", response.player.playerId, {
             path: "/",
           });
-          setLobby(lobbyInfo.lobby);
-          // setPlayerId(lobbyInfo.player.playerId);
+          setLobby(response.lobby);
+
           playJoinOrStart();
         }
       });
     }
-    if (sessionCookies?.command === "leave") {
+    if (sessionCookie?.command === "leave") {
       const reqBody = {
-        lobbyId: sessionCookies?.lobbyId,
-        playerId:sessionCookies.playerId,
+        lobbyId: sessionCookie?.lobbyId,
+        playerId: sessionCookie.playerId,
         hostSid: lobby.hostSid,
       };
       leaveLobby(reqBody).then(() => {
-        removeSessionCookies("lobbyId");
-        removeSessionCookies("command");
-        removeSessionCookies("playerId");
+        removesessionCookie("lobbyId");
+        removesessionCookie("command");
+        removesessionCookie("playerId");
 
         setLobby({
           hostSid: 0,
@@ -134,24 +136,24 @@ export default function PregameModal({
           },
           players: [],
         });
-        removeSessionCookies("piece");
+        removesessionCookie("piece");
       });
     }
-    if (sessionCookies?.command === "start") {
+    if (sessionCookie?.command === "start") {
       const reqBody = {
         lobbyId: lobby?.lobbyId,
-        board: sessionCookies?.board,
+        board: sessionCookie?.board,
         piece: playerPiece,
       };
       startGame(reqBody).then((lobbyInfo) => {
-        setSessionCookie("lobbyId", lobbyInfo?.lobby?.lobbyId, {
+        setsessionCookie("lobbyId", lobbyInfo?.lobby?.lobbyId, {
           path: "/",
         });
 
-        setSessionCookie("command", "begin", { path: "/" });
+        setsessionCookie("command", "begin", { path: "/" });
       });
     }
-  }, [sessionCookies?.command]);
+  }, [sessionCookie?.command]);
   return (
     <>
       <Modal
@@ -180,20 +182,20 @@ export default function PregameModal({
             p: 4,
           }}
         >
-          {sessionCookies?.command === undefined && (
+          {sessionCookie?.command === undefined && (
             <Welcome
-              joinGame={(name) => handleJoinSelect(name)}
-              createGame={(name) => handleCreateGameSelect(name)}
+              joinGame={() => handleJoinSelect()}
+              createGame={() => handleCreateGameSelect()}
             />
           )}
-          {sessionCookies?.command === "join" && (
+          {sessionCookie?.command === "join" && (
             <Join
               handleJoinBack={() => handleJoinBackSelect()}
               handleJoinSubmit={(lobbyId) => handleFindSubmit(lobbyId)}
               isLobbyFound={isLobbyFound}
             />
           )}
-          {sessionCookies?.command === "guest" && isLobbyFound && (
+          {sessionCookie?.command === "guest" && isLobbyFound && (
             <GuestLobby
               playerId={playerId}
               lobby={lobby}
@@ -203,7 +205,7 @@ export default function PregameModal({
             />
           )}
 
-          {sessionCookies?.command === "create" && (
+          {sessionCookie?.command === "create" && (
             <HostLobby
               playerId={playerId}
               setLobby={(props) => setLobby(props)}
@@ -214,10 +216,10 @@ export default function PregameModal({
               playerPiece={playerPiece}
             />
           )}
-          {sessionCookies?.command === "leave" && (
+          {sessionCookie?.command === "leave" && (
             <Welcome
-              joinGame={(name) => handleJoinSelect(name)}
-              createGame={(name) => handleCreateGameSelect(name)}
+              joinGame={() => handleJoinSelect()}
+              createGame={() => handleCreateGameSelect()}
             />
           )}
         </Grid>

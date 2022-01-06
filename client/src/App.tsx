@@ -1,7 +1,7 @@
 import React, { createContext, useRef } from "react";
 import Grid from "@mui/material/Grid";
 import "./App.css";
-import { useState, useEffect,} from "react";
+import { useState, useEffect } from "react";
 import PregameModal from "./components/PregameModal/PregameModal";
 import { LobbyContext } from "./storage/lobbyContext";
 import getStartGame from "./creators/APICreators/getStartGame";
@@ -16,20 +16,19 @@ import { GameStatus } from "./Models/GameStatus";
 import { useSound } from "use-sound";
 
 function App() {
-  const [sessionCookies, setSessionCookie, removeSessionCookie] = useCookies();
+  const [sessionCookie, setSessionCookie, removeSessionCookie] = useCookies();
   const [playerId, setPlayerId] = useState("");
-  const [isAllPlayersLoaded, setIsAllPlayersLoaded] = useState(false);
   const [isLobbyReceived, setIsLobbyReceived] = useState(false);
   const [startOpenSound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/warHorn.mp3"
   );
+  const [piece, setPiece] = useState("");
   const [newMove, setNewMove] = useState<NewMove>({
     turnNumber: 0,
     rowIdx: 0,
     tileIdx: 0,
     win: { whoWon: null, type: null, winningMoves: null },
   });
-  const [piece, setPiece] = useState("");
   const [gameStatus, setGameStatus] = useState<GameStatus>({
     win: { whoWon: null, type: null, winningMoves: null },
     whoTurn: 0,
@@ -71,7 +70,7 @@ function App() {
         getGame(
           {
             lobbyId: lobbyCopy.lobbyId,
-            playerId: sessionCookies.playerId,
+            playerId: sessionCookie.playerId,
             hostSid: lobbyCopy.hostSid,
           },
           setLobby,
@@ -95,17 +94,16 @@ function App() {
           return player.playerId === newPlayer.playerId;
         });
         console.log(playerExists, "PLAYEREXISTS");
+        const isNewPlayerBot = newPlayer.playerId.substring(0, 3) === "BOT";
         if (playerExists.length === 0) {
-          lobbyCopy.players?.push({
+          lobbyCopy.players.push({
             name: newPlayer.playerName,
             playerId: newPlayer.playerId,
             piece: "",
             isHost: false,
             turnNumber: 0,
-            playerLoaded:
-              newPlayer.playerId.substring(0, 3) === "BOT" ? true : false,
-            isReady:
-              newPlayer.playerId.substring(0, 3) === "BOT" ? true : false,
+            playerLoaded: isNewPlayerBot ? true : false,
+            isReady: isNewPlayerBot ? true : false,
           });
           setLobby({ ...lobbyCopy });
         }
@@ -126,9 +124,8 @@ function App() {
     socket.removeAllListeners();
   });
 
-
   useEffect(() => {
-    if (sessionCookies?.command === "quit") {
+    if (sessionCookie?.command === "quit") {
       setNewMove({
         turnNumber: 0,
         rowIdx: 0,
@@ -157,10 +154,10 @@ function App() {
       removeSessionCookie("playerId");
     }
     /* When they are in the middle of the game and they hit the refresh button */
-    if (sessionCookies?.command === "begin" && lobby.lobbyId === 0) {
+    if (sessionCookie.command === "begin" && lobby.lobbyId === 0) {
       getStartGame(
         {
-          lobbyId: sessionCookies?.lobbyId,
+          lobbyId: sessionCookie.lobbyId,
           playerId: null,
           hostSid: lobby.hostSid,
         },
@@ -176,11 +173,11 @@ function App() {
       // });
     }
     /* For when the game begins */
-    if (sessionCookies?.command === "begin" && lobby.lobbyId > 0) {
+    if (sessionCookie?.command === "begin" && lobby.lobbyId > 0) {
       getStartGame(
         {
-          lobbyId: sessionCookies?.lobbyId,
-          playerId: sessionCookies.playerId,
+          lobbyId: sessionCookie.lobbyId,
+          playerId: sessionCookie.playerId,
           hostSid: lobby.hostSid,
         },
         setGameStatus,
@@ -191,13 +188,13 @@ function App() {
       startOpenSound();
     }
     if (
-      (sessionCookies?.command === "create" ||
-        sessionCookies?.command === "guest") &&
-      sessionCookies.lobbyId !== undefined
+      (sessionCookie.command === "create" ||
+        sessionCookie.command === "guest") &&
+      sessionCookie.lobbyId !== undefined
     ) {
       getGame(
         {
-          lobbyId: sessionCookies?.lobbyId,
+          lobbyId: sessionCookie.lobbyId,
           playerId: null,
           hostSid: lobby.hostSid,
         },
@@ -207,9 +204,8 @@ function App() {
 
       startOpenSound();
     }
-  }, [sessionCookies?.command]);
-  // removeSessionCookie("command")
-  // removeSessionCookie("LobbyId")
+  }, [sessionCookie.command]);
+
   return (
     <>
       <LobbyContext.Provider value={lobby}>
@@ -218,14 +214,14 @@ function App() {
             position: "fixed",
             width: "100%",
             height: "100%",
-            background: `rgba(${lobby?.board?.color?.r}, ${
-              lobby?.board?.color?.g
-            }, ${lobby?.board?.color?.b}, ${lobby?.board?.color?.a - 0.5})`,
+            background: `rgba(${lobby.board.color?.r}, ${
+              lobby.board.color?.g
+            }, ${lobby.board.color?.b}, ${lobby.board.color?.a - 0.5})`,
             overflow: "auto",
           }}
         >
           <Grid container direction="column" justifyContent="center">
-            {sessionCookies.command === "begin" ? (
+            {sessionCookie.command === "begin" ? (
               <Grid item>
                 <Game
                   setGameStatus={(props) => setGameStatus(props)}
@@ -234,7 +230,7 @@ function App() {
                   lobby={lobby}
                   setNewMove={(props) => setNewMove(props)}
                   isLobbyReceived={isLobbyReceived}
-                  isAllPlayersLoaded={isAllPlayersLoaded}
+                 
                 />
               </Grid>
             ) : (

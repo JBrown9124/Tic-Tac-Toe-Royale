@@ -5,9 +5,9 @@ import { useState } from "react";
 import { useCookies } from "react-cookie";
 const CopyLobbyId = () => {
   const [isCopied, setIsCopied] = useState(false);
-  const [sessionCookies, setSessionCookies] = useCookies();
+  const [sessionCookie, setSessionCookie] = useCookies();
   const handleCopyLobbyId = () => {
-    navigator.clipboard.writeText(sessionCookies?.lobbyId);
+    navigator.clipboard.writeText(sessionCookie?.lobbyId);
     setIsCopied(true);
   };
   return (
@@ -29,7 +29,7 @@ const CopyLobbyId = () => {
         </Button>
       </Grid>
       <Grid item>
-        <Typography>Lobby ID: {sessionCookies?.lobbyId}</Typography>
+        <Typography>Lobby ID: {sessionCookie?.lobbyId}</Typography>
       </Grid>
     </Grid>
   );

@@ -16,8 +16,6 @@ export default function PieceSelector({
   setPiece,
   playerPiece,
 }: PieceSelectorProps) {
-  const [sessionCookies, setSessionCookie] = useCookies();
-  // const [image, setPiece] = useState<any>();
   const pieces = createPiece("black");
   const [playSound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3"

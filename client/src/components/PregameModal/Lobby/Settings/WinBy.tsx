@@ -5,16 +5,16 @@ import Typography from "@mui/material/Typography";
 import { useState, useEffect } from "react";
 import {useSound} from 'use-sound'
 export default function WinBy() {
-  const [sessionCookies, setSessionCookies] = useCookies();
+  const [sessionCookie, setSessionCookie] = useCookies();
   const [winBy, setWinBy] = useState(2);
   const [playSound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3", 
   );
   useEffect(() => {
     
-      setSessionCookies(
+      setSessionCookie(
         "board",
-        { ...sessionCookies?.board, winBy: winBy },
+        { ...sessionCookie?.board, winBy: winBy },
         { path: "/" }
       );
       playSound()
@@ -30,18 +30,18 @@ export default function WinBy() {
           <TextField
             error={
               winBy >
-                (sessionCookies?.board?.size === undefined
+                (sessionCookie?.board?.size === undefined
                   ? 2
-                  : sessionCookies?.board?.size) 
+                  : sessionCookie?.board?.size) 
             }
             inputProps={{
               defaultValue:2,
               step: 1,
               min: 2,
               max:
-              sessionCookies?.board?.size === undefined
+              sessionCookie?.board?.size === undefined
                   ? 2
-                  : sessionCookies?.board?.size,
+                  : sessionCookie?.board?.size,
               type: "number",
               "aria-labelledby": "winBy",
             }}

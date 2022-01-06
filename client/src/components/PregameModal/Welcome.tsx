@@ -13,7 +13,7 @@ interface OpenPageProps {
 }
 export default function Welcome({ createGame, joinGame }: OpenPageProps) {
   const [name, setName] = useState("Tic Tac Toe Master");
-  const [sessionCookies, setSessionCookies] = useCookies();
+  const [sessionCookie, setSessionCookie] = useCookies();
   const [isError, setIsError] = useState(false);
 
   return (
@@ -37,9 +37,9 @@ export default function Welcome({ createGame, joinGame }: OpenPageProps) {
         <Grid item>
           <TextField
             error={isError}
-            value={sessionCookies.name}
+            value={sessionCookie.name}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setSessionCookies("name", e.target.value, { path: "/" })
+              setSessionCookie("name", e.target.value, { path: "/" })
             }
             label="Name"
           />
@@ -49,8 +49,8 @@ export default function Welcome({ createGame, joinGame }: OpenPageProps) {
           <Grid item md={12}>
             <Button
               onClick={() =>
-                sessionCookies?.name?.length === 0 ||
-                sessionCookies?.name === undefined
+                sessionCookie?.name?.length === 0 ||
+                sessionCookie?.name === undefined
                   ? setIsError(true)
                   : createGame(name)
               }
@@ -61,8 +61,8 @@ export default function Welcome({ createGame, joinGame }: OpenPageProps) {
           <Grid item md={12}>
             <Button
               onClick={() =>
-                sessionCookies?.name?.length === 0 ||
-                sessionCookies?.name === undefined
+                sessionCookie?.name?.length === 0 ||
+                sessionCookie?.name === undefined
                   ? setIsError(true)
                   : joinGame(name)
               }

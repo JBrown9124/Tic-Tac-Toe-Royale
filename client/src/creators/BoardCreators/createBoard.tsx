@@ -1,5 +1,5 @@
 const createBoard = async (
-  setBoard: Function,
+  setBoard: (boardValue: number[][]) => void,
   boardSize: number,
   moves: Object[]
 ): Promise<boolean> => {
@@ -17,16 +17,8 @@ const createBoard = async (
   moves?.map(
     (move: any) => (board[move.rowIdx][move.tileIdx] = move.turnNumber)
   );
-  // if (sessionCookies?.boardMoves!==undefined){
-  //   sessionCookies?.boardMoves?.map((move:any)=>board[move.rowIdx][move.tileIdx]=move.turnNumber)
-  // }
-  // let row:  number[] = Array(boardSize).fill(0);
-  // let board: number[][] = Array(boardSize).fill(row);
 
-  await setBoard([...board]);
+  setBoard([...board]);
   return board.length > 0;
-  // return new Promise((resolve, reject) => {
-  //   resolve(true);
-  // });
 };
 export default createBoard;

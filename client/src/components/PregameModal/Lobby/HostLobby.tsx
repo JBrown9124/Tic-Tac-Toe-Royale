@@ -3,15 +3,12 @@ import Grid from "@mui/material/Grid";
 import PlayerList from "./PlayerList";
 import Button from "@mui/material/Button";
 import { useState } from "react";
-import { RgbaColorPicker, RgbaColor } from "react-colorful";
-import ClearIcon from "@mui/icons-material/Clear";
 import playerReady from "../../../creators/APICreators/playerReady";
 import joinLobby from "../../../creators/APICreators/joinLobby";
 import Typography from "@mui/material/Typography";
 import { Player } from "../../../Models/Player";
 import { Lobby } from "../../../Models/Lobby";
 import { useCookies } from "react-cookie";
-import { useSound } from "use-sound";
 import CopyLobbyId from "./CopyLobbyId";
 interface PlayerListProps {
   handleLeave: () => void;
@@ -29,15 +26,13 @@ export default function HostLobby({
   setPiece,
   players,
   hostSid,
-  playerId
+  playerId,
 }: PlayerListProps) {
-  const [sessionCookies, setSessionCookies] = useCookies();
-
+  const [sessionCookie, setSessionCookie] = useCookies();
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [isCopied, setIsCopied] = useState(false);
   const handleStart = () => {
-    setSessionCookies("command", "start", { path: "/" });
+    setSessionCookie("command", "start", { path: "/" });
   };
   const allPlayersReady = () => {
     const playersNotReady = players.filter((player) => {
@@ -58,7 +53,7 @@ export default function HostLobby({
       setIsError(true);
       return false;
     }
-    if (sessionCookies?.board?.winBy > sessionCookies?.board?.size) {
+    if (sessionCookie?.board?.winBy > sessionCookie?.board?.size) {
       setErrorMessage("Win By must be less than or equal to board size.");
       setIsError(true);
       return false;
@@ -69,8 +64,12 @@ export default function HostLobby({
   const sendHostPiece = (pieceValue: string) => {
     setPiece(pieceValue);
     const reqBody = {
-      player: { name: sessionCookies.name, piece: pieceValue, playerId:sessionCookies.playerId },
-      lobbyId: parseInt(sessionCookies?.lobbyId),
+      player: {
+        name: sessionCookie.name,
+        piece: pieceValue,
+        playerId: sessionCookie.playerId,
+      },
+      lobbyId: parseInt(sessionCookie?.lobbyId),
       hostSid: hostSid,
     };
     playerReady(reqBody);
@@ -79,13 +78,16 @@ export default function HostLobby({
     const botsInLobby = players.filter((player) => {
       return player?.playerId?.substring(0, 3) === "BOT";
     });
-  
+
     const createBot = async () => {
-      const reqBody = { lobbyId: sessionCookies?.lobbyId, playerName: "BOTPASSPASS" };
-      const lobbyInfo = await joinLobby(reqBody);
-     
-      // players?.push(lobbyInfo?.players[lobbyInfo?.players.length - 1]);
-      setLobby(lobbyInfo.lobby);
+      const reqBody = {
+        lobbyId: sessionCookie?.lobbyId,
+        playerName: "BOTPASSPASS",
+      };
+      const response = await joinLobby(reqBody);
+      if (typeof response !== "string") {
+        setLobby(response.lobby);
+      }
     };
     if (botsInLobby.length < 10) {
       createBot();

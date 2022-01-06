@@ -21,7 +21,7 @@ interface Props {
   move: { rowIdx: number; tileIdx: number };
   isBoardCreated: boolean;
 }
-const TileHover = ({
+const BoardAnimator= ({
   x = 0,
   y = 0,
   rotation = 0,
@@ -43,7 +43,7 @@ const TileHover = ({
   const [isWinningMove, setIsWinningMove] = useState(false);
 
   const [lineDirection, setLineDirection] = useState<string>(
-    win?.type === null ? "None" : win?.type === "tie" ? "horizontal" : win?.type
+    win.type === null ? "None" : win.type === "tie" ? "horizontal" : win.type
   );
   const [config, setConfig] = useState({
     mass: 1,
@@ -68,18 +68,18 @@ const TileHover = ({
     setLineDirection(
       win?.type === null
         ? "None"
-        : win?.type === "tie"
+        : win.type === "tie"
         ? "horizontal"
-        : win?.type
+        : win.type
     );
   }, [win?.type]);
   useEffect(() => {
     setLineDirection(
       win?.type === null
         ? "None"
-        : win?.type === "tie"
+        : win.type === "tie"
         ? "horizontal"
-        : win?.type
+        : win.type
     );
 
     const determineWinningMove = () => {
@@ -158,10 +158,6 @@ const TileHover = ({
     },
   };
   const lineStyle = useSpring({
-    // transform: `translate(${0}px, ${0}px)
-    //      rotate(${directionProps[lineDirection]?.rotate}deg)
-    //      scale(${1})`,
-
     height: directionProps[lineDirection]?.height,
     width: directionProps[lineDirection]?.width,
     opacity: directionProps[lineDirection]?.opacity,
@@ -211,4 +207,4 @@ const TileHover = ({
   );
 };
 
-export default TileHover;
+export default BoardAnimator;

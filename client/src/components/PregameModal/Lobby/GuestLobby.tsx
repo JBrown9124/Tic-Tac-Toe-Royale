@@ -23,7 +23,7 @@ export default function GuestLobby({
   lobby,
   playerId,
 }: GuestLobbyProps) {
-  const [sessionCookies, setSessionCookies] = useCookies();
+  const [sessionCookie, setSessionCookie] = useCookies();
   const [isReady, setIsReady] = useState(false);
   const [isError, setIsError] = useState(false);
   const [playReadySound] = useSound(
@@ -36,16 +36,16 @@ export default function GuestLobby({
     /*When player clicks a piece while players status is set to ready. Sets players status to false and makes a api 
     call to update players status on server side*/
     lobby?.players?.map((player) => {
-      if (player.name === sessionCookies?.name) {
+      if (player.name === sessionCookie?.name) {
         setIsReady(false);
         return (player.isReady = false);
       }
     });
     const reqBody = {
       player: {
-        name: sessionCookies?.name,
+        name: sessionCookie?.name,
         piece: playerPiece,
-        playerId: sessionCookies.playerId,
+        playerId: sessionCookie.playerId,
       },
       lobbyId: lobby?.lobbyId,
       hostSid: lobby?.hostSid,
@@ -56,7 +56,7 @@ export default function GuestLobby({
   }, [playerPiece]);
   useEffect(() => {
     lobby?.players?.map((player) => {
-      if (player.name === sessionCookies?.name) {
+      if (player.name === sessionCookie?.name) {
         setIsReady(player.isReady);
       }
     });
@@ -66,9 +66,9 @@ export default function GuestLobby({
       setIsError(false);
       const reqBody = {
         player: {
-          name: sessionCookies?.name,
+          name: sessionCookie?.name,
           piece: playerPiece,
-          playerId: sessionCookies.playerId,
+          playerId: sessionCookie.playerId,
         },
         lobbyId: lobby?.lobbyId,
         hostSid: lobby?.hostSid,
@@ -77,7 +77,7 @@ export default function GuestLobby({
       !isReady ? playReadySound() : playUnreadySound();
 
       lobby.players.map((player) => {
-        if (player.name === sessionCookies?.name) {
+        if (player.name === sessionCookie?.name) {
           setIsReady(!player.isReady);
           return (player.isReady = !player.isReady);
         }

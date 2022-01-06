@@ -4,7 +4,7 @@ import { NewMove } from "../../Models/NewMove";
 import Board from "./Board/Board";
 import { useCookies } from "react-cookie";
 import { Player } from "../../Models/Player";
-import StatusBoardIn from "../../animators/StatusBoardIn";
+import StatusBoardIn from "../../animators/StatusBoardAnimator";
 import { useState, useEffect } from "react";
 import { Lobby } from "../../Models/Lobby";
 import { GameStatus } from "../../Models/GameStatus";
@@ -15,20 +15,19 @@ interface GameProps {
   newMove: NewMove;
   lobby: Lobby;
   gameStatus: GameStatus;
-  isAllPlayersLoaded:boolean
   isLobbyReceived: boolean;
   setGameStatus: (status: GameStatus) => void;
   setNewMove:(newMoveValue:NewMove)=>void;
 }
-function Game({ newMove, lobby, gameStatus, setGameStatus, setNewMove, isLobbyReceived, isAllPlayersLoaded }: GameProps) {
-  const [sessionCookies, setSessionCookies] = useCookies();
+function Game({ newMove, lobby, gameStatus, setGameStatus, setNewMove, isLobbyReceived,}: GameProps) {
+  const [sessionCookie, setSessionCookie] = useCookies();
   const [turnNumber, setturnNumber] = useState(0);
   const [isHost, setIsHost] = useState(false);
 
   useEffect(() => {
-    if (sessionCookies?.command === "begin") {
+    if (sessionCookie?.command === "begin") {
       lobby?.players?.map((player: Player) => {
-        if (player.name === sessionCookies?.name) {
+        if (player.name === sessionCookie?.name) {
           if (player.isHost) {
             setIsHost(true);
           }
@@ -36,7 +35,7 @@ function Game({ newMove, lobby, gameStatus, setGameStatus, setNewMove, isLobbyRe
         }
       });
     }
-  }, [sessionCookies?.command, lobby]);
+  }, [sessionCookie?.command, lobby]);
   
   return (
     <>
@@ -68,7 +67,7 @@ function Game({ newMove, lobby, gameStatus, setGameStatus, setNewMove, isLobbyRe
         >
           <Board
           isLobbyReceived={isLobbyReceived}
-          isAllPlayersLoaded={isAllPlayersLoaded}
+       
             gameStatus={gameStatus}
             setGameStatus={(props) => setGameStatus(props)}
             lobby={lobby}

@@ -10,12 +10,12 @@ import {useSound} from 'use-sound'
 
 export default function ColorSelecter() {
   const [color, setColor] = useState<RgbaColor>({ r: 194, g: 42, b: 50, a: 1 });
-  const [sessionCookies, setSessionCookies] = useCookies();
+  const [sessionCookie, setSessionCookie] = useCookies();
   
   useEffect(() => {
-    setSessionCookies(
+    setSessionCookie(
       "board",
-      { ...sessionCookies?.board, color: color },
+      { ...sessionCookie?.board, color: color },
       { path: "/" }
     );
    

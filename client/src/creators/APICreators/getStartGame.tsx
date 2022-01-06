@@ -23,17 +23,17 @@ const getStartGame = async (
   setGameStatus: (status: GameStatus) => void,
   setLobby: (lobby: Lobby) => void,
   setIsLobbyReceived: (isLobbyReceived: boolean) => void
-) => {
+): Promise<void> => {
   try {
     const { lobby } = await saveGetStartGame(body);
-    console.log(lobby,"GETSTARTGAMELOBBY")
+    console.log(lobby, "GETSTARTGAMELOBBY");
     setGameStatus(lobby.gameStatus);
 
     setLobby(lobby);
-    if (!body.playerId){
-      await rejoinRoom(lobby.hostSid)
-    } 
-    
+    if (!body.playerId) {
+      await rejoinRoom(lobby.hostSid);
+    }
+
     return setIsLobbyReceived(true);
   } catch (e) {
     console.log(e);

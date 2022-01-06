@@ -20,7 +20,7 @@ export default function StatusBoard({
   winBy,
   turnNumber,
 }: StatusBoardProps) {
-  const [sessionCookies, setSessionCookies, removeSessionCookies] =
+  const [sessionCookie, setSessionCookie, removeSessionCookie] =
     useCookies();
 
   const [playLeaveSound] = useSound(
@@ -38,7 +38,7 @@ export default function StatusBoard({
   const pieces = createPiece("black");
   const handleLeaveGame = () => {
     playLeaveSound();
-    setSessionCookies("command", "quit", { path: "/" });
+    setSessionCookie("command", "quit", { path: "/" });
   };
 
   useEffect(() => {

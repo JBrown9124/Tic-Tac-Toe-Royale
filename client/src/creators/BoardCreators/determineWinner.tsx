@@ -10,9 +10,8 @@ const determineWinner = async (
   boardSize: number,
   turnNumber: number,
   lobby: Lobby,
-  setGameStatus: Function,
-  gameStatus: GameStatus,
-  setSessionCookies: Function
+  setGameStatus: (gameStatus:GameStatus)=>void,
+  
 ) => {
   board[rowIdx][tileIdx] = turnNumber;
   let winningMoves: WinningMove[] = [];
@@ -124,13 +123,13 @@ const determineWinner = async (
     return isWin;
   };
 
-  const win = checkHorizontal(lobby?.board?.winBy)
+  const win = checkHorizontal(lobby.board.winBy)
     ? "horizontal"
-    : checkVertical(lobby?.board?.winBy)
+    : checkVertical(lobby.board.winBy)
     ? "vertical"
-    : checkDiagonalRight(lobby?.board?.winBy)
+    : checkDiagonalRight(lobby.board.winBy)
     ? "diagonalRight"
-    : checkDiagonalLeft(lobby?.board?.winBy)
+    : checkDiagonalLeft(lobby.board.winBy)
     ? "diagonalLeft"
     : null;
   let boardMove: NewMove = {
@@ -145,14 +144,15 @@ const determineWinner = async (
   };
 
   const reqBody = {
-    lobbyId: lobby?.lobbyId,
+    lobbyId: lobby.lobbyId,
     newMove: boardMove,
-    hostSid: lobby?.hostSid,
+    hostSid: lobby.hostSid,
   };
   const gameStatusResponse = await makeNewMove(reqBody);
-  await setGameStatus({
-    win: gameStatusResponse?.gameStatus?.win,
-    whoTurn: gameStatusResponse?.gameStatus?.whoTurn,
-  });
+  if (gameStatusResponse){
+  setGameStatus({
+    win: gameStatusResponse.win,
+    whoTurn: gameStatusResponse.whoTurn,
+  });}
 };
 export default determineWinner;

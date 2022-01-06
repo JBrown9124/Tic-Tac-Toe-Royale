@@ -12,7 +12,7 @@ interface StatusBoardInProps{
     fromScale?:number,
     children:React.ReactNode,
 }
-export default function StatusBoardIn({
+export default function StatusBoardAnimator({
   isVisible = false,
   delay = 0,
   x = 0,

@@ -13,7 +13,7 @@ const Input = styled(MuiInput)`
 
 export default function SizeSlider() {
   const [size, setSize] = useState<number | string | Array<number | string>>(3);
-  const [sessionCookies, setSessionCookies] = useCookies();
+  const [sessionCookie, setSessionCookie] = useCookies();
   const [playSound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3"
   );
@@ -35,9 +35,9 @@ export default function SizeSlider() {
   };
 
   useEffect(() => {
-    setSessionCookies(
+    setSessionCookie(
       "board",
-      { ...sessionCookies?.board, size: size },
+      { ...sessionCookie?.board, size: size },
       { path: "/" }
     );
   }, [size]);

@@ -1,6 +1,7 @@
 import { socket } from "../../socket";
 import axios from "axios";
 import url from "../../storage/url";
+import { Lobby } from "../../Models/Lobby";
 interface BodyProps {
   playerId: string;
   lobbyId: number;
@@ -12,20 +13,19 @@ const saveLeaveLobby = async (body: BodyProps) => {
   });
   return data;
 };
-const sendLeaveLobby = (data: any, body: BodyProps) => {
+const sendLeaveLobby = (body: BodyProps) => {
   socket.emit("player-leave-lobby", {
-  
     playerId: body.playerId,
 
     hostSid: body.hostSid,
   });
 };
-const leaveLobby = async (body: BodyProps) => {
+const leaveLobby = async (body: BodyProps): Promise<Lobby | undefined> => {
   try {
-    const data = await saveLeaveLobby(body);
-    sendLeaveLobby(data, body);
+    const { lobby } = await saveLeaveLobby(body);
+    sendLeaveLobby(body);
 
-    return await data.lobby;
+    return lobby;
   } catch (e) {
     console.log(e);
   }
