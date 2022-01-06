@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import Slider from "@mui/material/Slider";
 import MuiInput from "@mui/material/Input";
 import { useCookies } from "react-cookie";
-import {useSound} from 'use-sound'
+import { useSound } from "use-sound";
 const Input = styled(MuiInput)`
   width: 42px;
 `;
@@ -15,16 +15,15 @@ export default function SizeSlider() {
   const [size, setSize] = useState<number | string | Array<number | string>>(3);
   const [sessionCookies, setSessionCookies] = useCookies();
   const [playSound] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3", 
+    process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3"
   );
-  const handleSizeChange = (event: Event, value: number | number[]) => {
+  const handleSliderChange = (event: Event, value: number | number[]) => {
     setSize(value);
-    playSound()
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSize(event.target.value === "" ? "" : Number(event.target.value));
-    playSound()
+    playSound();
   };
 
   const handleBlur = () => {
@@ -34,7 +33,7 @@ export default function SizeSlider() {
       setSize(20);
     }
   };
- 
+
   useEffect(() => {
     setSessionCookies(
       "board",
@@ -43,26 +42,22 @@ export default function SizeSlider() {
     );
   }, [size]);
   return (
-    // <Box sx={{ width: 250 }}>
-    //   <Typography id="input-slider" gutterBottom>
-    //     Size
-    //   </Typography>
     <Grid container direction="column" spacing={2}>
       <Grid item>
         <Typography>Select Board Size</Typography>
       </Grid>
       <Grid container item spacing={2}>
-        <Grid item xs={12}md={10}>
+        <Grid item xs={12} md={10}>
           <Slider
             max={20}
             step={1}
             min={3}
             value={typeof size === "number" ? size : 0}
-            onChange={handleSizeChange}
+            onChange={handleSliderChange}
             aria-labelledby="input-slider"
           />
         </Grid>
-        <Grid item  xs={12} md={2}>
+        <Grid item xs={12} md={2}>
           <Input
             value={size}
             size="small"
@@ -79,6 +74,5 @@ export default function SizeSlider() {
         </Grid>
       </Grid>
     </Grid>
-    // </Box>
   );
 }
