@@ -38,16 +38,17 @@ function App() {
     lobbyId: 0,
     board: { size: 0, color: { r: 0, g: 0, b: 0, a: 0 }, winBy: 3, moves: [] },
     players: [],
+    gameStatus: {
+      win: { whoWon: null, type: null, winningMoves: null },
+      whoTurn: 0,
+    },
   });
-  const getCount = 0;
+
   const lobbyRef = useRef(lobby);
-  const getCountRef = useRef(getCount);
+
   useEffect(() => {
     lobbyRef.current = lobby;
   }, [lobby]);
-  useEffect(() => {
-    getCountRef.current = getCount;
-  }, [getCount]);
 
   socket.on("connect", () => {
     console.log("Client Connected");
@@ -147,6 +148,10 @@ function App() {
           moves: [],
         },
         players: [],
+        gameStatus: {
+          win: { whoWon: null, type: null, winningMoves: null },
+          whoTurn: 0,
+        },
       });
       setIsLobbyReceived(false);
       removeSessionCookie("lobbyId");
@@ -208,44 +213,43 @@ function App() {
 
   return (
     <>
-      <LobbyContext.Provider value={lobby}>
-        <Grid
-          sx={{
-            position: "fixed",
-            width: "100%",
-            height: "100%",
-            background: `rgba(${lobby.board.color?.r}, ${
-              lobby.board.color?.g
-            }, ${lobby.board.color?.b}, ${lobby.board.color?.a - 0.5})`,
-            overflow: "auto",
-          }}
-        >
-          <Grid container direction="column" justifyContent="center">
-            {sessionCookie.command === "begin" ? (
-              <Grid item>
-                <Game
-                  setGameStatus={(props) => setGameStatus(props)}
-                  gameStatus={gameStatus}
-                  newMove={newMove}
-                  lobby={lobby}
-                  setNewMove={(props) => setNewMove(props)}
-                  isLobbyReceived={isLobbyReceived}
-                 
-                />
-              </Grid>
-            ) : (
-              <PregameModal
-                setLobby={(props) => setLobby(props)}
-                playerId={playerId}
-                setPlayerId={(props) => setPlayerId(props)}
-                playerPiece={piece}
-                setPiece={(props) => setPiece(props)}
+      {/* <LobbyContext.Provider value={lobby}> */}
+      <Grid
+        sx={{
+          position: "fixed",
+          width: "100%",
+          height: "100%",
+          background: `rgba(${lobby.board.color?.r}, ${lobby.board.color?.g}, ${
+            lobby.board.color?.b
+          }, ${lobby.board.color?.a - 0.5})`,
+          overflow: "auto",
+        }}
+      >
+        <Grid container direction="column" justifyContent="center">
+          {sessionCookie.command === "begin" ? (
+            <Grid item>
+              <Game
+                setGameStatus={(props) => setGameStatus(props)}
+                gameStatus={gameStatus}
+                newMove={newMove}
                 lobby={lobby}
+                setNewMove={(props) => setNewMove(props)}
+                isLobbyReceived={isLobbyReceived}
               />
-            )}
-          </Grid>
+            </Grid>
+          ) : (
+            <PregameModal
+              setLobby={(props) => setLobby(props)}
+              playerId={playerId}
+              setPlayerId={(props) => setPlayerId(props)}
+              playerPiece={piece}
+              setPiece={(props) => setPiece(props)}
+              lobby={lobby}
+            />
+          )}
         </Grid>
-      </LobbyContext.Provider>
+      </Grid>
+      {/* </LobbyContext.Provider> */}
     </>
   );
 }

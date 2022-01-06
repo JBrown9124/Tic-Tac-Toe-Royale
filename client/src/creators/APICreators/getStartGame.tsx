@@ -1,5 +1,5 @@
 import { socket } from "../../socket";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import url from "../../storage/url";
 import { Lobby } from "../../Models/Lobby";
 import { GameStatus } from "../../Models/GameStatus";
@@ -25,7 +25,7 @@ const getStartGame = async (
   setIsLobbyReceived: (isLobbyReceived: boolean) => void
 ): Promise<void> => {
   try {
-    const { lobby } = await saveGetStartGame(body);
+    const { lobby }:{lobby:Lobby} = await saveGetStartGame(body);
     console.log(lobby, "GETSTARTGAMELOBBY");
     setGameStatus(lobby.gameStatus);
 

@@ -1,7 +1,6 @@
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import Typography from "@mui/material/Typography";
-import { useCookies } from "react-cookie";
 import Grid from "@mui/material/Grid";
 import createPiece from "../../../../creators/BoardCreators/createPiece";
 import Input from "@mui/material/Input";

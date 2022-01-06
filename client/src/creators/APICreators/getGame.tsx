@@ -1,8 +1,7 @@
 import { socket } from "../../socket";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import url from "../../storage/url";
 import { Lobby } from "../../Models/Lobby";
-import { GameStatus } from "../../Models/GameStatus";
 import { Player } from "../../Models/Player";
 interface BodyProps {
   lobbyId: number;
@@ -15,27 +14,26 @@ const saveGetGame = async (body: any) => {
   });
   return data;
 };
-const rejoinRoom = async (data: any) => {
-  socket.emit("rejoin-room-after-refresh", data.hostSid);
+const rejoinRoom = async (hostSid: number) => {
+  socket.emit("rejoin-room-after-refresh", hostSid);
 };
 const getGame = async (
   body: BodyProps,
-  
+
   setLobby: (lobby: Lobby) => void,
   setPiece: (piece: string) => void
-):Promise<void> => {
+): Promise<void> => {
   try {
-    const { lobby } = await saveGetGame(body);
-    if (!body.playerId){
-      await rejoinRoom(lobby)
-    } 
-    
-    setLobby(lobby);
-    return lobby.players.map((player: Player) => {
+    const { lobby }: { lobby: Lobby } = await saveGetGame(body);
+    if (!body.playerId) {
+      await rejoinRoom(lobby.hostSid);
+    }
+    lobby.players.map((player: Player) => {
       if (player.playerId === body.playerId) {
         setPiece(player.piece);
       }
     });
+    return setLobby(lobby);
   } catch (e) {
     console.log(e);
   }

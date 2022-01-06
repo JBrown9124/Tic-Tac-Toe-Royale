@@ -35,11 +35,19 @@ export default function Join({
           />
         </Grid>
 
-        <Grid container item textAlign="center" justifyContent="center" spacing={2}>
+        <Grid
+          container
+          item
+          textAlign="center"
+          justifyContent="center"
+          spacing={2}
+        >
           <Grid item>
-          <Button onClick={() => handleJoinBack()}>Back</Button></Grid>
+            <Button onClick={() => handleJoinBack()}>Back</Button>
+          </Grid>
           <Grid item>
-          <Button onClick={() => handleJoinSubmit(lobbyId)}>Find</Button></Grid>
+            <Button onClick={() => handleJoinSubmit(lobbyId)}>Find</Button>
+          </Grid>
         </Grid>
       </Grid>
     </>

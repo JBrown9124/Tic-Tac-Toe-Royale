@@ -135,6 +135,10 @@ export default function PregameModal({
             moves: [],
           },
           players: [],
+          gameStatus:{
+            win: { whoWon: null, type: null, winningMoves: null },
+            whoTurn: 0,
+          }
         });
         removesessionCookie("piece");
       });

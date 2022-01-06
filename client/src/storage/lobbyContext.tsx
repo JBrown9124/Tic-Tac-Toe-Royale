@@ -5,6 +5,10 @@ const lobby:Lobby = {
     lobbyId: 0,
     board: { size: 0, color: { r: 0, g: 0, b: 0, a: 0 }, winBy: 3, moves: [] },
     players: [],
+    gameStatus: {
+      win: { whoWon: null, type: null, winningMoves: null },
+      whoTurn: 0,
+    },
   };
 
 export const LobbyContext=createContext(lobby)
