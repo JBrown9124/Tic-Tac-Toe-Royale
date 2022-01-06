@@ -15,7 +15,7 @@ const saveGetGame = async (body: any) => {
   });
   return data;
 };
-const sendGetGame = async (data: any) => {
+const rejoinRoom = async (data: any) => {
   socket.emit("rejoin-room-after-refresh", data.hostSid);
 };
 const getGame = async (
@@ -26,7 +26,10 @@ const getGame = async (
 ) => {
   try {
     const { lobby } = await saveGetGame(body);
-    await sendGetGame(lobby);
+    if (!body.playerId){
+      await rejoinRoom(lobby)
+    } 
+    
     setLobby(lobby);
     return lobby.players.map((player: Player) => {
       if (player.playerId === body.playerId) {

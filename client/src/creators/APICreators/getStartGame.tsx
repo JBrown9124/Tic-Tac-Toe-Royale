@@ -15,7 +15,7 @@ const saveGetStartGame = async (body: BodyProps) => {
   });
   return data;
 };
-const sendGetStartGame = async (hostSidValue: number) => {
+const rejoinRoom = async (hostSidValue: number) => {
   socket.emit("rejoin-room-after-refresh", hostSidValue);
 };
 const getStartGame = async (
@@ -31,7 +31,7 @@ const getStartGame = async (
 
     setLobby(lobby);
     if (!body.playerId){
-      await sendGetStartGame(lobby.hostSid)
+      await rejoinRoom(lobby.hostSid)
     } 
     
     return setIsLobbyReceived(true);

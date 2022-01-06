@@ -198,7 +198,7 @@ function App() {
       getGame(
         {
           lobbyId: sessionCookies?.lobbyId,
-          playerId: sessionCookies.playerId,
+          playerId: null,
           hostSid: lobby.hostSid,
         },
         setLobby,
