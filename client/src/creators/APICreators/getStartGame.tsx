@@ -34,7 +34,7 @@ const getStartGame = async (
       await rejoinRoom(lobby.hostSid);
     }
 
-    return setIsLobbyReceived(true);
+    setIsLobbyReceived(true);
   } catch (e) {
     console.log(e);
   }

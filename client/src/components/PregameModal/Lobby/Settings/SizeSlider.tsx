@@ -9,19 +9,23 @@ import { useSound } from "use-sound";
 const Input = styled(MuiInput)`
   width: 42px;
 `;
-
-export default function SizeSlider() {
-  const [size, setSize] = useState<number | string | Array<number | string>>(3);
+interface SizeSliderProps {
+  setSize: (size: number) => void;
+  size: number;
+}
+export default function SizeSlider({ setSize, size }: SizeSliderProps) {
+  // const [size, setSize] = useState<number | string | Array<number | string>>(3);
   const [sessionCookie, setSessionCookie] = useCookies();
   const [playSound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3"
   );
-  const handleSliderChange = (event: Event, value: number | number[]) => {
-    setSize(value);
+  const handleSliderChange = (value: number|number[]) => {
+    if (typeof value === "number"){
+    setSize(value);}
   };
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSize(event.target.value === "" ? "" : Number(event.target.value));
+  const handleInputChange = (value: number) => {
+    setSize(value);
     playSound();
   };
 
@@ -33,13 +37,13 @@ export default function SizeSlider() {
     }
   };
 
-  useEffect(() => {
-    setSessionCookie(
-      "board",
-      { ...sessionCookie?.board, size: size },
-      { path: "/" }
-    );
-  }, [size]);
+  // useEffect(() => {
+  //   setSessionCookie(
+  //     "board",
+  //     { ...sessionCookie?.board, size: size },
+  //     { path: "/" }
+  //   );
+  // }, [size]);
   return (
     <Grid container direction="column" spacing={2}>
       <Grid item>
@@ -51,8 +55,11 @@ export default function SizeSlider() {
             max={20}
             step={1}
             min={3}
-            value={typeof size === "number" ? size : 0}
-            onChange={handleSliderChange}
+            value={size}
+            onChange={(e:Event, value: number | number[], activeThumb: number) => {
+              handleSliderChange(value);
+            }}
+           
             aria-labelledby="input-slider"
           />
         </Grid>
@@ -60,7 +67,7 @@ export default function SizeSlider() {
           <Input
             value={size}
             size="small"
-            onChange={handleInputChange}
+            onChange={(e:React.ChangeEvent<HTMLInputElement>)=>{handleInputChange(parseInt(e.target.value))}}
             onBlur={handleBlur}
             inputProps={{
               step: 1,

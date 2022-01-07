@@ -19,9 +19,7 @@ function App() {
   const [sessionCookie, setSessionCookie, removeSessionCookie] = useCookies();
   const [playerId, setPlayerId] = useState("");
   const [isLobbyReceived, setIsLobbyReceived] = useState(false);
-  const [startOpenSound] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/warHorn.mp3"
-  );
+  
   const [piece, setPiece] = useState("");
   const [newMove, setNewMove] = useState<NewMove>({
     turnNumber: 0,
@@ -36,7 +34,7 @@ function App() {
   const [lobby, setLobby] = useState<Lobby>({
     hostSid: 0,
     lobbyId: 0,
-    board: { size: 0, color: { r: 0, g: 0, b: 0, a: 0 }, winBy: 3, moves: [] },
+    board: { size: 0, color: { r: 255, g: 255, b: 255, a: 0.9 }, winBy: 3, moves: [] },
     players: [],
     gameStatus: {
       win: { whoWon: null, type: null, winningMoves: null },
@@ -143,7 +141,7 @@ function App() {
         lobbyId: 0,
         board: {
           size: 0,
-          color: { r: 0, g: 0, b: 0, a: 0 },
+          color: { r: 255, g: 255, b: 255, a: 0.9 },
           winBy: 3,
           moves: [],
         },
@@ -171,11 +169,7 @@ function App() {
         setIsLobbyReceived
       );
 
-      startOpenSound();
-
-      // getLobbyInfo().then((isLobbyInfoReceived) => {
-      //   setIsLobbyReceived(isLobbyInfoReceived);
-      // });
+     
     }
     /* For when the game begins */
     if (sessionCookie?.command === "begin" && lobby.lobbyId > 0) {
@@ -190,7 +184,7 @@ function App() {
         setIsLobbyReceived
       );
 
-      startOpenSound();
+     
     }
     if (
       (sessionCookie.command === "create" ||
@@ -207,7 +201,7 @@ function App() {
         setPiece
       );
 
-      startOpenSound();
+   
     }
   }, [sessionCookie.command]);
 

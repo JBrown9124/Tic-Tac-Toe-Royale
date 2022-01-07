@@ -40,7 +40,7 @@ export const Tile = ({
 
   const handleClick = () => {
     if (value === 0) {
-      setTile({ value: chosenPiece });
+      // setTile({ value: chosenPiece });
 
       startSnare();
       updateBoardCache();
@@ -51,7 +51,7 @@ export const Tile = ({
     <>
       <Grid
         onClick={() =>
-          gameStatus.whoTurn === turnNumber && !gameStatus.win.whoWon 
+          gameStatus.whoTurn === turnNumber && !gameStatus.win.whoWon
             ? handleClick()
             : ""
         }
@@ -81,8 +81,7 @@ export const Tile = ({
           {value === turnNumber
             ? chosenPiece
             : playerPieces?.map((playerPiece) => {
-                if (playerPiece.turnNumber === value)
-                  return playerPiece.piece;
+                if (playerPiece.turnNumber === value) return playerPiece.piece;
               })}
         </Grid>
       </Grid>

@@ -19,9 +19,8 @@ interface Props {
   boardRenderTime: number;
   win: Win;
   move: { rowIdx: number; tileIdx: number };
-  isBoardCreated: boolean;
 }
-const BoardAnimator= ({
+const BoardAnimator = ({
   x = 0,
   y = 0,
   rotation = 0,
@@ -36,7 +35,6 @@ const BoardAnimator= ({
   boardRenderTime,
   win,
   move,
-  isBoardCreated,
 }: Props) => {
   const [isBooped, setIsBooped] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
@@ -54,32 +52,22 @@ const BoardAnimator= ({
   const [isRendered, setIsRendered] = useState(false);
 
   useEffect(() => {
-    if (isBoardCreated) {
-      setIsVisible(true);
-      const t = setTimeout(() => {
-        setIsRendered(true);
-      }, boardRenderTime);
-      return () => {
-        clearTimeout(t);
-      };
-    }
-  }, [isBoardCreated]);
+    setIsVisible(true);
+    const t = setTimeout(() => {
+      setIsRendered(true);
+    }, boardRenderTime);
+    return () => {
+      clearTimeout(t);
+    };
+  }, []);
   useEffect(() => {
     setLineDirection(
-      win?.type === null
-        ? "None"
-        : win.type === "tie"
-        ? "horizontal"
-        : win.type
+      win?.type === null ? "None" : win.type === "tie" ? "horizontal" : win.type
     );
   }, [win?.type]);
   useEffect(() => {
     setLineDirection(
-      win?.type === null
-        ? "None"
-        : win.type === "tie"
-        ? "horizontal"
-        : win.type
+      win?.type === null ? "None" : win.type === "tie" ? "horizontal" : win.type
     );
 
     const determineWinningMove = () => {

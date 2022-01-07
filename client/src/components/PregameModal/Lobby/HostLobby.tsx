@@ -14,6 +14,8 @@ interface PlayerListProps {
   handleLeave: () => void;
   setPiece: (piece: string) => void;
   setLobby: (lobby: Lobby) => void;
+  setSize: (size: number) => void;
+  size:number,
   playerPiece: string;
   players: Player[];
   hostSid: number;
@@ -27,6 +29,7 @@ export default function HostLobby({
   players,
   hostSid,
   playerId,
+  setSize, size 
 }: PlayerListProps) {
   const [sessionCookie, setSessionCookie] = useCookies();
   const [isError, setIsError] = useState(false);
@@ -100,6 +103,8 @@ export default function HostLobby({
         <Grid item container sx={{ textAlign: "center" }} spacing={6}>
           <Grid item xs={12} sm={6}>
             <Settings
+            size={size}
+            setSize={(props)=>setSize(props)}
               playerPiece={playerPiece}
               setPiece={(props) => sendHostPiece(props)}
             />

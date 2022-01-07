@@ -9,7 +9,10 @@ const determineWinner = async (
   board: number[][],
   boardSize: number,
   turnNumber: number,
-  lobby: Lobby,
+
+  winBy:number,
+  lobbyId:number,
+  lobbyHostSid: number,
   setGameStatus: (gameStatus:GameStatus)=>void,
   
 ) => {
@@ -123,13 +126,13 @@ const determineWinner = async (
     return isWin;
   };
 
-  const win = checkHorizontal(lobby.board.winBy)
+  const win = checkHorizontal(winBy)
     ? "horizontal"
-    : checkVertical(lobby.board.winBy)
+    : checkVertical(winBy)
     ? "vertical"
-    : checkDiagonalRight(lobby.board.winBy)
+    : checkDiagonalRight(winBy)
     ? "diagonalRight"
-    : checkDiagonalLeft(lobby.board.winBy)
+    : checkDiagonalLeft(winBy)
     ? "diagonalLeft"
     : null;
   let boardMove: NewMove = {
@@ -144,9 +147,9 @@ const determineWinner = async (
   };
 
   const reqBody = {
-    lobbyId: lobby.lobbyId,
+    lobbyId: lobbyId,
     newMove: boardMove,
-    hostSid: lobby.hostSid,
+    hostSid: lobbyHostSid,
   };
   const gameStatusResponse = await makeNewMove(reqBody);
   if (gameStatusResponse){

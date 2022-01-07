@@ -3,7 +3,7 @@ from django.db.models import Max, Q
 from django.db.models.query import Prefetch
 from django.http import HttpResponse, JsonResponse
 from random import randrange
-from ..lobbys import lobbys
+
 from rest_framework.views import APIView
 from rest_framework.request import Request
 from django.utils import timezone

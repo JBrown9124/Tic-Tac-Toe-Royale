@@ -1,33 +1,30 @@
-import {socket} from "../../socket";
+import { socket } from "../../socket";
 import axios from "axios";
-import {Lobby} from "../../Models/Lobby";
-import {GameStatus} from "../../Models/GameStatus";
-import url from "../../storage/url"
+import { Lobby } from "../../Models/Lobby";
+import { GameStatus } from "../../Models/GameStatus";
+import {Board } from "../../Models/Board";
+import url from "../../storage/url";
 interface BodyProps {
-  board:{color:string, size:number|number[]}
-  lobbyId:number
-  piece:string
-  
+  board: Board;
+  lobbyId: number;
+  piece: string;
 }
 const saveStartGame = async (body: BodyProps) => {
-
-  const { data } = await axios.post(`${url}/api/game`, 
-    body,
-  );
+  const { data } = await axios.post(`${url}/api/game`, body);
   return data;
 };
-const sendStartGame = (data: any) => {
-  
-  socket.emit("start-game", {lobbyId:data.lobby.lobbyId, hostSid:data?.lobby?.hostSid});
+const sendStartGame = (data: Lobby) => {
+  socket.emit("start-game", { lobbyId: data.lobbyId, hostSid: data.hostSid });
 };
-const startGame = async (body: BodyProps):Promise<{lobby:Lobby, gameStatus:GameStatus}|undefined> => {
+const startGame = async (
+  body: BodyProps
+): Promise<Lobby| undefined> => {
   try {
-    const data = await saveStartGame(body);
-    const responseBody = {lobby:await data.lobby, gameStatus:await data.gameStatus}
-    sendStartGame(responseBody);
- 
+    const { lobby } = await saveStartGame(body);
 
-    return responseBody;
+    sendStartGame(lobby);
+
+    return lobby;
   } catch (e) {
     console.log(e);
   }

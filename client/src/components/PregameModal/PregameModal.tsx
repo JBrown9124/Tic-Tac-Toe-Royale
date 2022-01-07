@@ -10,6 +10,7 @@ import createLobby from "../../creators/APICreators/createLobby";
 import joinLobby from "../../creators/APICreators/joinLobby";
 import leaveLobby from "../../creators/APICreators/leaveLobby";
 import startGame from "../../creators/APICreators/startGame";
+import { RgbaColor} from "react-colorful";
 import { Lobby } from "../../Models/Lobby";
 import useSound from "use-sound";
 
@@ -43,7 +44,9 @@ export default function PregameModal({
   );
   const [lobbyIdItem, setLobbyIdItem] = useState(0);
   const [sessionCookie, setsessionCookie, removesessionCookie] = useCookies();
-
+  const [winBy, setWinBy] = useState(2)
+  const [color, setColor] = useState<RgbaColor>({ r: 194, g: 42, b: 50, a: 1 });
+  const [size, setSize] = useState<number>(3);
   const handleCreateGameSelect = () => {
     playJoinOrStart();
 
@@ -135,26 +138,30 @@ export default function PregameModal({
             moves: [],
           },
           players: [],
-          gameStatus:{
+          gameStatus: {
             win: { whoWon: null, type: null, winningMoves: null },
             whoTurn: 0,
-          }
+          },
         });
         removesessionCookie("piece");
       });
     }
     if (sessionCookie?.command === "start") {
       const reqBody = {
-        lobbyId: lobby?.lobbyId,
-        board: sessionCookie?.board,
+        lobbyId: lobby.lobbyId,
+        board: {
+          size: size,
+          color: { r: 0, b: 0, g: 0, a: 0 },
+
+          winBy: 3,
+          moves: [],
+        },
         piece: playerPiece,
       };
       startGame(reqBody).then((lobbyInfo) => {
-        setsessionCookie("lobbyId", lobbyInfo?.lobby?.lobbyId, {
-          path: "/",
-        });
-
-        setsessionCookie("command", "begin", { path: "/" });
+        if (lobbyInfo) {
+          setsessionCookie("command", "begin", { path: "/" });
+        }
       });
     }
   }, [sessionCookie?.command]);
@@ -211,6 +218,8 @@ export default function PregameModal({
 
           {sessionCookie?.command === "create" && (
             <HostLobby
+              size={size}
+              setSize={(props) => setSize(props)}
               playerId={playerId}
               setLobby={(props) => setLobby(props)}
               hostSid={lobby?.hostSid}

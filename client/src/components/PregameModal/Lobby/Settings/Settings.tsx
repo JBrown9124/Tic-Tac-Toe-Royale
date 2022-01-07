@@ -5,13 +5,18 @@ import PieceSelector from "./PieceSelector";
 import WinBy from "./WinBy";
 interface SettingsProps {
   setPiece: (piece: string) => void;
+  setSize:(size:number)=>void;
+  size:number,
   playerPiece: string;
 }
-export default function Settings({ setPiece, playerPiece }: SettingsProps) {
+export default function Settings({ setPiece, playerPiece, setSize, size }: SettingsProps) {
   return (
     <Grid container spacing={2} direction="column">
       <Grid item>
-        <SizeSlider />
+        <SizeSlider
+        size={size}
+        setSize={(props)=>setSize(props)}
+        />
       </Grid>
       <Grid item>
         <WinBy />
