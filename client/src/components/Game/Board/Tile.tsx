@@ -71,7 +71,7 @@ export const Tile = ({
           border: `solid black 1px`,
           boxShadow: 7,
           borderColor:
-            boardColor.r * 0.299 + boardColor.g * 0.587 + boardColor.b * 0.114 >
+            boardColor?.r * 0.299 + boardColor?.g * 0.587 + boardColor?.b * 0.114 >
             186
               ? "black"
               : "white",

@@ -19,6 +19,7 @@ interface Props {
   boardRenderTime: number;
   win: Win;
   move: { rowIdx: number; tileIdx: number };
+  isCountDownFinished: boolean;
 }
 const BoardAnimator = ({
   x = 0,
@@ -35,6 +36,7 @@ const BoardAnimator = ({
   boardRenderTime,
   win,
   move,
+  isCountDownFinished,
 }: Props) => {
   const [isBooped, setIsBooped] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
@@ -52,14 +54,20 @@ const BoardAnimator = ({
   const [isRendered, setIsRendered] = useState(false);
 
   useEffect(() => {
-    setIsVisible(true);
-    const t = setTimeout(() => {
-      setIsRendered(true);
-    }, boardRenderTime);
-    return () => {
-      clearTimeout(t);
-    };
-  }, []);
+    if (isCountDownFinished) {
+      setIsVisible(true);
+      const t = setTimeout(() => {
+        setIsRendered(true);
+      }, boardRenderTime);
+      return () => {
+        clearTimeout(t);
+      };
+    } else {
+      setIsWinningMove(false);
+      setIsVisible(false);
+      setIsRendered(false);
+    }
+  }, [isCountDownFinished]);
   useEffect(() => {
     setLineDirection(
       win?.type === null ? "None" : win.type === "tie" ? "horizontal" : win.type
@@ -100,10 +108,10 @@ const BoardAnimator = ({
          
          scale(5)`,
     background: isBooped
-      ? `rgba(${beforeColor.r}, ${beforeColor.g}, ${beforeColor.b}, ${
+      ? `rgba(${beforeColor?.r}, ${beforeColor?.g}, ${beforeColor?.b}, ${
           beforeColor.a - 0.5
         })`
-      : `rgba(${beforeColor.r}, ${beforeColor.g}, ${beforeColor.b}, ${beforeColor.a})`,
+      : `rgba(${beforeColor?.r}, ${beforeColor?.g}, ${beforeColor?.b}, ${beforeColor?.a})`,
     config: isRendered
       ? { mass: 0.1, tension: 399, friction: 0, clamp: true }
       : { mass: 1, tension: 170, friction: 26 },
@@ -150,11 +158,7 @@ const BoardAnimator = ({
     width: directionProps[lineDirection]?.width,
     opacity: directionProps[lineDirection]?.opacity,
 
-    background:
-      beforeColor.r * 0.299 + beforeColor.g * 0.587 + beforeColor.b * 0.114 >
-      186
-        ? "white"
-        : "black",
+    
     zIndex: 9999,
 
     delay: delay / 2,
@@ -181,7 +185,11 @@ const BoardAnimator = ({
          scale(${1})`,
           position: "absolute",
           top: directionProps[lineDirection]?.top,
-          left: directionProps[lineDirection]?.left,
+          left: directionProps[lineDirection]?.left,background:
+          beforeColor?.r * 0.299 + beforeColor?.g * 0.587 + beforeColor?.b * 0.114 >
+          186
+            ? "white"
+            : "black",
         }}
       />
       <animated.div

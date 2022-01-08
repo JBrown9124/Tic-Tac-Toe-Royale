@@ -18,6 +18,7 @@ import Board from "./Board/Board";
 import StatusBoardAnimator from "../../animators/StatusBoardAnimator";
 import StatusBoard from "./StatusBoard/StatusBoard";
 import HashLoader from "react-spinners/HashLoader";
+import CountDownAnimator from "../../animators/CountDownAnimator";
 import Typography from "@mui/material/Typography";
 interface GameProps {
   newMove: NewMove;
@@ -39,41 +40,24 @@ function Game({
   const [turnNumber, setturnNumber] = useState(0);
   const [board, setBoard] = useState<number[][]>([[]]);
 
-  const [botCanMove, setBotCanMove] = useState(false);
   const [piece, setPiece] = useState<JSX.Element | string>("");
   const [playerPieces, setPlayerPieces] = useState<PlayerPieces[]>([]);
   const [isBoardCreated, setIsBoardCreated] = useState(false);
+  const [botCanMove, setBotCanMove] = useState(false);
   const sizeOfBoardPiece = determineSizeOfPiece(lobby?.board?.size);
-  const [countDown, setCountDown] = useState(5);
+  const [playLeaveSound] = useSound(
+    process.env.PUBLIC_URL + "static/assets/sounds/floorDrumBackButton.mp3"
+  );
   const [startOtherPlayerMoveSound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/otherPlayerMoveSound.mp3"
   );
+
   const [isHost, setIsHost] = useState(false);
-  const [startOpenSound] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/warHorn.mp3"
-  );
-  const [startCountDown, setStartCountDown] = useState(false);
+
+  const [isCountDownFinished, setIsCountDownFinished] = useState(false);
 
   useEffect(() => {
-    if (countDown >= 0) {
-      const t = setTimeout(() => {
-        setCountDown((state) => state - 1);
-      }, 1000);
-      return () => {
-        clearTimeout(t);
-      };
-    } else if (countDown === -1) {
-      startOpenSound();
-      const t = setTimeout(() => {
-        setBotCanMove(true);
-      }, 5000);
-      return () => {
-        clearTimeout(t);
-      };
-    }
-  }, [startCountDown, countDown]);
-  useEffect(() => {
-    if (sessionCookie.command === "begin") {
+    if (sessionCookie.command === "begin" && isLobbyReceived) {
       const setUpGame = async () => {
         await getPlayerPieces(
           turnNumber,
@@ -90,7 +74,6 @@ function Game({
         );
 
         setIsBoardCreated(boardCreated);
-        setStartCountDown(true);
       };
       if (lobby.board.color) {
         setUpGame();
@@ -161,6 +144,15 @@ function Game({
       });
     }
   }, [sessionCookie?.command, lobby]);
+  const quitGame = () => {
+    playLeaveSound();
+    setIsCountDownFinished(false);
+    setIsBoardCreated(false);
+    setTimeout(() => {
+      setSessionCookie("command", "quit", { path: "/" });
+    }, 3500);
+  };
+
   const override = `
   display: block;
   margin: 0 auto;
@@ -178,15 +170,18 @@ function Game({
           sx={{ marginTop: "10px" }}
           md={2}
         >
-          <StatusBoardAnimator fromX={-100} isVisible={true} delay={800}>
-            {countDown < 0 && isLobbyReceived && (
-              <StatusBoard
-                winBy={lobby?.board?.winBy}
-                gameStatus={gameStatus}
-                players={lobby?.players}
-                turnNumber={turnNumber}
-              />
-            )}
+          <StatusBoardAnimator
+            fromX={-100}
+            isVisible={isCountDownFinished}
+            delay={800}
+          >
+            <StatusBoard
+              winBy={lobby?.board?.winBy}
+              gameStatus={gameStatus}
+              players={lobby?.players}
+              turnNumber={turnNumber}
+              quitGame={() => quitGame()}
+            />
           </StatusBoardAnimator>
         </Grid>
         <Grid
@@ -196,39 +191,42 @@ function Game({
           justifyContent="center"
           md={8}
         >
-          {countDown < 0 && isLobbyReceived ? (
-            <Board
-              isLobbyReceived={isLobbyReceived}
-              isBoardCreated={isBoardCreated}
-              boardColor={lobby.board.color}
-              gameStatus={gameStatus}
-              setGameStatus={(props) => setGameStatus(props)}
-              winBy={lobby.board.winBy}
-              lobbyId={lobby.lobbyId}
-              lobbyHostSid={lobby.hostSid}
-              newMove={newMove}
-              isHost={isHost}
-              turnNumber={turnNumber}
-              board={board}
-              sizeOfBoardPiece={sizeOfBoardPiece}
-              playerPieces={playerPieces}
-              piece={piece}
-              boardSize={lobby.board.size}
-            />
-          ) : (
-            <Typography
-              variant="h6"
-              sx={{
-                textAlign: "center",
-                justifyContent: "center",
-                fontSize: "6rem",
-              }}
-            >
-              {countDown === 0 ? "Begin!" : countDown}
-            </Typography>
-          )}
+          <Board
+            isCountDownFinished={isCountDownFinished}
+            boardColor={lobby.board.color}
+            gameStatus={gameStatus}
+            setGameStatus={(props) => setGameStatus(props)}
+            winBy={lobby.board.winBy}
+            lobbyId={lobby.lobbyId}
+            lobbyHostSid={lobby.hostSid}
+            newMove={newMove}
+            turnNumber={turnNumber}
+            board={board}
+            sizeOfBoardPiece={sizeOfBoardPiece}
+            playerPieces={playerPieces}
+            piece={piece}
+            boardSize={lobby.board.size}
+          />
         </Grid>
       </Grid>
+      {!isCountDownFinished && isBoardCreated && (
+        <Grid
+          container
+          sx={{
+            position: "absolute",
+            top: "43%",
+            left: "50%",
+            transform: "translate(-50%,-50%)",
+          }}
+        >
+          <CountDownAnimator
+            startCountDown={isBoardCreated}
+            setBotCanMove={(props) => setBotCanMove(props)}
+            setIsCountDownFinished={(props) => setIsCountDownFinished(props)}
+            fromScale={0}
+          />
+        </Grid>
+      )}
     </>
   );
 }

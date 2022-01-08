@@ -13,12 +13,15 @@ interface StatusBoardProps {
   gameStatus: GameStatus;
   winBy: number;
   turnNumber: number;
+  quitGame:()=>void;
+
 }
 export default function StatusBoard({
   players,
   gameStatus,
   winBy,
   turnNumber,
+  quitGame
 }: StatusBoardProps) {
   const [sessionCookie, setSessionCookie, removeSessionCookie] =
     useCookies();
@@ -39,13 +42,14 @@ export default function StatusBoard({
   const handleLeaveGame = () => {
     playLeaveSound();
     setSessionCookie("command", "quit", { path: "/" });
+    
   };
 
   useEffect(() => {
-    if (gameStatus?.win?.whoWon) {
-      if (turnNumber === gameStatus?.win?.whoWon) {
+    if (gameStatus.win.whoWon) {
+      if (turnNumber === gameStatus.win.whoWon) {
         startWinSound();
-      } else if (gameStatus?.win?.whoWon !== "tie") {
+      } else if (gameStatus.win.whoWon !== "tie") {
         startGameOverSound();
       } else {
         startTieSound();
@@ -135,7 +139,7 @@ export default function StatusBoard({
 
         <Grid container direction="column">
           <Grid item>
-            <Button onClick={() => handleLeaveGame()}>Leave Game</Button>
+            <Button onClick={() => quitGame()}>Leave Game</Button>
           </Grid>
         </Grid>
       </Grid>

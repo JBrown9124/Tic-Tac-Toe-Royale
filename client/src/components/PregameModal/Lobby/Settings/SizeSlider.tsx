@@ -14,14 +14,13 @@ interface SizeSliderProps {
   size: number;
 }
 export default function SizeSlider({ setSize, size }: SizeSliderProps) {
-  // const [size, setSize] = useState<number | string | Array<number | string>>(3);
-  const [sessionCookie, setSessionCookie] = useCookies();
   const [playSound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3"
   );
-  const handleSliderChange = (value: number|number[]) => {
-    if (typeof value === "number"){
-    setSize(value);}
+  const handleSliderChange = (value: number | number[]) => {
+    if (typeof value === "number") {
+      setSize(value);
+    }
   };
 
   const handleInputChange = (value: number) => {
@@ -37,13 +36,7 @@ export default function SizeSlider({ setSize, size }: SizeSliderProps) {
     }
   };
 
-  // useEffect(() => {
-  //   setSessionCookie(
-  //     "board",
-  //     { ...sessionCookie?.board, size: size },
-  //     { path: "/" }
-  //   );
-  // }, [size]);
+  
   return (
     <Grid container direction="column" spacing={2}>
       <Grid item>
@@ -56,10 +49,13 @@ export default function SizeSlider({ setSize, size }: SizeSliderProps) {
             step={1}
             min={3}
             value={size}
-            onChange={(e:Event, value: number | number[], activeThumb: number) => {
+            onChange={(
+              e: Event,
+              value: number | number[],
+              activeThumb: number
+            ) => {
               handleSliderChange(value);
             }}
-           
             aria-labelledby="input-slider"
           />
         </Grid>
@@ -67,7 +63,9 @@ export default function SizeSlider({ setSize, size }: SizeSliderProps) {
           <Input
             value={size}
             size="small"
-            onChange={(e:React.ChangeEvent<HTMLInputElement>)=>{handleInputChange(parseInt(e.target.value))}}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              handleInputChange(parseInt(e.target.value));
+            }}
             onBlur={handleBlur}
             inputProps={{
               step: 1,

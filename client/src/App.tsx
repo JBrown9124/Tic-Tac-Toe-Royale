@@ -3,7 +3,7 @@ import Grid from "@mui/material/Grid";
 import "./App.css";
 import { useState, useEffect } from "react";
 import PregameModal from "./components/PregameModal/PregameModal";
-import { LobbyContext } from "./storage/lobbyContext";
+
 import getStartGame from "./creators/APICreators/getStartGame";
 import { useCookies } from "react-cookie";
 import { socket } from "./socket";
@@ -13,13 +13,29 @@ import Game from "./components/Game/Game";
 import { NewMove } from "./Models/NewMove";
 import { Lobby } from "./Models/Lobby";
 import { GameStatus } from "./Models/GameStatus";
-import { useSound } from "use-sound";
-
+import createLobby from "./creators/APICreators/createLobby";
+import joinLobby from "./creators/APICreators/joinLobby";
+import leaveLobby from "./creators/APICreators/leaveLobby";
+import startGame from "./creators/APICreators/startGame";
+import { RgbaColor } from "react-colorful";
+import useSound from "use-sound";
 function App() {
   const [sessionCookie, setSessionCookie, removeSessionCookie] = useCookies();
   const [playerId, setPlayerId] = useState("");
+  const [lobbyId, setLobbyId] = useState(0);
   const [isLobbyReceived, setIsLobbyReceived] = useState(false);
-  
+  const [isLobbyFound, setIsLobbyFound] = useState(false);
+  const [playJoinOrStart] = useSound(
+    process.env.PUBLIC_URL + "static/assets/sounds/joinOrStartSound.mp3"
+  );
+  const [hostWinBy, setHostWinBy] = useState(2);
+  const [hostColor, setHostColor] = useState<RgbaColor>({
+    r: 194,
+    g: 42,
+    b: 50,
+    a: 1,
+  });
+  const [hostSize, setHostSize] = useState<number>(3);
   const [piece, setPiece] = useState("");
   const [newMove, setNewMove] = useState<NewMove>({
     turnNumber: 0,
@@ -34,7 +50,12 @@ function App() {
   const [lobby, setLobby] = useState<Lobby>({
     hostSid: 0,
     lobbyId: 0,
-    board: { size: 0, color: { r: 255, g: 255, b: 255, a: 0.9 }, winBy: 3, moves: [] },
+    board: {
+      size: 0,
+      color: { r: 255, g: 255, b: 255, a: 0.9 },
+      winBy: 3,
+      moves: [],
+    },
     players: [],
     gameStatus: {
       win: { whoWon: null, type: null, winningMoves: null },
@@ -124,37 +145,84 @@ function App() {
   });
 
   useEffect(() => {
-    if (sessionCookie?.command === "quit") {
-      setNewMove({
-        turnNumber: 0,
-        rowIdx: 0,
-        tileIdx: 0,
-        win: { whoWon: null, type: null, winningMoves: null },
+    if (
+      sessionCookie?.command === "create" &&
+      parseInt(sessionCookie.lobbyId) === 0
+    ) {
+      const reqBody = { playerName: sessionCookie?.name };
+      createLobby(reqBody).then((response) => {
+        if (response) {
+          setSessionCookie("lobbyId", response.lobby.lobbyId, { path: "/" });
+          setLobby(response.lobby);
+          setGameStatus({
+            win: { whoWon: null, type: null, winningMoves: null },
+            whoTurn: 0,
+          });
+          setHostColor({ r: 255, g: 255, b: 255, a: 0.9 });
+          setHostWinBy(2);
+          setHostSize(3);
+          setSessionCookie("playerId", response.playerId, {
+            path: "/",
+          });
+        }
       });
-
-      setGameStatus({
-        win: { whoWon: null, type: null, winningMoves: null },
-        whoTurn: 0,
+    }
+    if (
+      sessionCookie?.command === "guest" &&
+      parseInt(sessionCookie.lobbyId) === 0
+    ) {
+      const reqBody = {
+        lobbyId: lobbyId,
+        playerName: sessionCookie?.name,
+      };
+      joinLobby(reqBody).then((response) => {
+        if (typeof response === "string") {
+          setSessionCookie("command", "join", { path: "/" });
+          setIsLobbyFound(false);
+        } else {
+          setIsLobbyFound(true);
+          setSessionCookie("lobbyId", lobbyId, { path: "/" });
+          setSessionCookie("playerId", response.player.playerId, {
+            path: "/",
+          });
+          setLobby(response.lobby);
+          setGameStatus(response.lobby.gameStatus);
+          playJoinOrStart();
+        }
       });
-      setLobby({
-        hostSid: 0,
-        lobbyId: 0,
+    }
+    if (
+      sessionCookie?.command === "leave" &&
+      parseInt(sessionCookie.lobbyId) !== 0
+    ) {
+      const reqBody = {
+        lobbyId: sessionCookie?.lobbyId,
+        playerId: sessionCookie.playerId,
+        hostSid: lobby.hostSid,
+      };
+      lobby.players = [];
+      leaveLobby(reqBody);
+      setSessionCookie("lobbyId", 0, { path: "/" });
+    }
+   
+    if (sessionCookie?.command === "start") {
+      const reqBody = {
+        lobbyId: lobby.lobbyId,
         board: {
-          size: 0,
-          color: { r: 255, g: 255, b: 255, a: 0.9 },
-          winBy: 3,
+          size: hostSize,
+          color: hostColor,
+
+          winBy: hostWinBy,
           moves: [],
         },
-        players: [],
-        gameStatus: {
-          win: { whoWon: null, type: null, winningMoves: null },
-          whoTurn: 0,
-        },
-      });
+        piece: piece,
+      };
+      startGame(reqBody, setSessionCookie);
+    }
+    if (sessionCookie?.command === "quit") {
+      setSessionCookie("lobbyId", 0, { path: "/" });
       setIsLobbyReceived(false);
-      removeSessionCookie("lobbyId");
-      removeSessionCookie("command");
-      removeSessionCookie("playerId");
+      lobby.players = [];
     }
     /* When they are in the middle of the game and they hit the refresh button */
     if (sessionCookie.command === "begin" && lobby.lobbyId === 0) {
@@ -168,11 +236,12 @@ function App() {
         setLobby,
         setIsLobbyReceived
       );
-
-     
     }
     /* For when the game begins */
-    if (sessionCookie?.command === "begin" && lobby.lobbyId > 0) {
+    if (
+      sessionCookie?.command === "begin" &&
+      parseInt(sessionCookie.lobbyId) > 0
+    ) {
       getStartGame(
         {
           lobbyId: sessionCookie.lobbyId,
@@ -183,13 +252,11 @@ function App() {
         setLobby,
         setIsLobbyReceived
       );
-
-     
     }
     if (
       (sessionCookie.command === "create" ||
         sessionCookie.command === "guest") &&
-      sessionCookie.lobbyId !== undefined
+      parseInt(sessionCookie.lobbyId) !== 0
     ) {
       getGame(
         {
@@ -200,8 +267,6 @@ function App() {
         setLobby,
         setPiece
       );
-
-   
     }
   }, [sessionCookie.command]);
 
@@ -216,11 +281,14 @@ function App() {
           background: `rgba(${lobby.board.color?.r}, ${lobby.board.color?.g}, ${
             lobby.board.color?.b
           }, ${lobby.board.color?.a - 0.5})`,
-          overflow: "auto",
+          overflowY: "auto",
+          overflowX: "hidden",
         }}
       >
         <Grid container direction="column" justifyContent="center">
-          {sessionCookie.command === "begin" ? (
+          {(sessionCookie.command === "create" ||
+            sessionCookie.command === "guest" ||
+            sessionCookie.command === "begin") && (
             <Grid item>
               <Game
                 setGameStatus={(props) => setGameStatus(props)}
@@ -231,12 +299,21 @@ function App() {
                 isLobbyReceived={isLobbyReceived}
               />
             </Grid>
-          ) : (
+          )}
+          {sessionCookie.command !== "begin" && (
             <PregameModal
+              isOpen={true}
+              setLobbyId={(props) => setLobbyId(props)}
               setLobby={(props) => setLobby(props)}
               playerId={playerId}
               setPlayerId={(props) => setPlayerId(props)}
               playerPiece={piece}
+              hostSize={hostSize}
+              setHostSize={(props) => setHostSize(props)}
+              hostWinBy={hostWinBy}
+              setHostWinBy={(props) => setHostWinBy(props)}
+              setHostColor={(props) => setHostColor(props)}
+              hostColor={hostColor}
               setPiece={(props) => setPiece(props)}
               lobby={lobby}
             />

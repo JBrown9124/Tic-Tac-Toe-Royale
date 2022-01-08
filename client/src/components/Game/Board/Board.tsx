@@ -3,12 +3,9 @@ import { RgbaColor } from "react-colorful";
 
 import BoardAnimator from "../../../animators/BoardAnimator";
 import { Tile } from "./Tile";
-import { useState, useEffect } from "react";
+
 import determineWinner from "../../../creators/BoardCreators/determineWinner";
-import createBoard from "../../../creators/BoardCreators/createBoard";
-import { useCookies } from "react-cookie";
-import getPlayerPieces from "../../../creators/BoardCreators/getPlayerPieces";
-import botNewMove from "../../../creators/APICreators/botNewMove";
+
 import { PlayerPieces } from "../../../Models/PlayerPieces";
 import { Lobby } from "../../../Models/Lobby";
 import { NewMove } from "../../../Models/NewMove";
@@ -19,38 +16,40 @@ import { useSound } from "use-sound";
 interface BoardProps {
   newMove: NewMove;
   turnNumber: number;
-  isHost: boolean;
-  isLobbyReceived: boolean;
+
+  
   setGameStatus: (status: GameStatus) => void;
   gameStatus: GameStatus;
   sizeOfBoardPiece: { mobile: string; desktop: string };
   board: number[][];
   boardColor: RgbaColor;
-  isBoardCreated: boolean;
+ 
   playerPieces: PlayerPieces[];
   piece: JSX.Element | string;
   winBy: number;
   boardSize: number;
   lobbyId: number;
   lobbyHostSid: number;
+  isCountDownFinished: boolean;
 }
 export default function Board({
   newMove,
   turnNumber,
 
   setGameStatus,
-  isHost,
+  
   gameStatus,
-  isLobbyReceived,
+  
   board,
   sizeOfBoardPiece,
   boardColor,
-  isBoardCreated,
+ 
   playerPieces,
   winBy,
   boardSize,
   lobbyHostSid,
   lobbyId,
+  isCountDownFinished,
   piece,
 }: BoardProps) {
   return (
@@ -60,6 +59,7 @@ export default function Board({
           {row.map((tile: number, tileIdx: number) => (
             <>
               <BoardAnimator
+              isCountDownFinished={ isCountDownFinished}
                 key={rowIdx * tileIdx}
                 move={{ rowIdx: rowIdx, tileIdx: tileIdx }}
                 win={gameStatus.win}

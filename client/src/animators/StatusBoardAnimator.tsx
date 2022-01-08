@@ -26,11 +26,11 @@ export default function StatusBoardAnimator({
 }:StatusBoardInProps) {
   const [fade, setFade] = useState(false);
   useEffect(()=>{
-    if (isVisible){
+  
     setFade(isVisible)
 
 
-  }}, [isVisible])
+  }, [isVisible])
   const props = useSpring({
     from: {
       transform: `translate(${fromX}px, ${fromY}px)

@@ -8,6 +8,7 @@ import joinLobby from "../../../creators/APICreators/joinLobby";
 import Typography from "@mui/material/Typography";
 import { Player } from "../../../Models/Player";
 import { Lobby } from "../../../Models/Lobby";
+import { RgbaColor } from "react-colorful";
 import { useCookies } from "react-cookie";
 import CopyLobbyId from "./CopyLobbyId";
 interface PlayerListProps {
@@ -15,7 +16,11 @@ interface PlayerListProps {
   setPiece: (piece: string) => void;
   setLobby: (lobby: Lobby) => void;
   setSize: (size: number) => void;
-  size:number,
+  setColor: (color: RgbaColor) => void;
+  setWinBy:(value:number) => void;
+  winBy: number;
+  color: RgbaColor;
+  size: number;
   playerPiece: string;
   players: Player[];
   hostSid: number;
@@ -29,7 +34,12 @@ export default function HostLobby({
   players,
   hostSid,
   playerId,
-  setSize, size 
+  setSize,
+  size,
+  setColor,
+  color,
+  winBy,
+  setWinBy
 }: PlayerListProps) {
   const [sessionCookie, setSessionCookie] = useCookies();
   const [isError, setIsError] = useState(false);
@@ -103,8 +113,12 @@ export default function HostLobby({
         <Grid item container sx={{ textAlign: "center" }} spacing={6}>
           <Grid item xs={12} sm={6}>
             <Settings
-            size={size}
-            setSize={(props)=>setSize(props)}
+            winBy={winBy}
+            setWinBy={(props) =>setWinBy(props)}
+              color={color}
+              setColor={(props) => setColor(props)}
+              size={size}
+              setSize={(props) => setSize(props)}
               playerPiece={playerPiece}
               setPiece={(props) => sendHostPiece(props)}
             />

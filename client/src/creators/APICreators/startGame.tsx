@@ -17,14 +17,14 @@ const sendStartGame = (data: Lobby) => {
   socket.emit("start-game", { lobbyId: data.lobbyId, hostSid: data.hostSid });
 };
 const startGame = async (
-  body: BodyProps
-): Promise<Lobby| undefined> => {
+  body: BodyProps, setSessionCookie:Function
+): Promise<undefined|void> => {
   try {
     const { lobby } = await saveStartGame(body);
 
     sendStartGame(lobby);
-
-    return lobby;
+    setSessionCookie("command","begin", { path: "/" })
+    
   } catch (e) {
     console.log(e);
   }

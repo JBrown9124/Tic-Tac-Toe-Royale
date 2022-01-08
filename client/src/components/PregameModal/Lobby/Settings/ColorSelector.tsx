@@ -3,18 +3,12 @@ import { RgbaColor, RgbaColorPicker } from "react-colorful";
 import Typography from "@mui/material/Typography";
 import React, { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
+interface ColorSelectorProps{
+  setColor: (value: RgbaColor) =>void;
+  color:RgbaColor
+}
+export default function ColorSelecter({color,setColor}:ColorSelectorProps) {
 
-export default function ColorSelecter() {
-  const [color, setColor] = useState<RgbaColor>({ r: 194, g: 42, b: 50, a: 1 });
-  const [sessionCookie, setSessionCookie] = useCookies();
-
-  useEffect(() => {
-    setSessionCookie(
-      "board",
-      { ...sessionCookie?.board, color: color },
-      { path: "/" }
-    );
-  }, [color]);
   return (
     <>
       <Grid
