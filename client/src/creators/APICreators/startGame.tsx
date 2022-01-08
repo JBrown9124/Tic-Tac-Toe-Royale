@@ -2,7 +2,7 @@ import { socket } from "../../socket";
 import axios from "axios";
 import { Lobby } from "../../Models/Lobby";
 import { GameStatus } from "../../Models/GameStatus";
-import {Board } from "../../Models/Board";
+import { Board } from "../../Models/Board";
 import url from "../../storage/url";
 interface BodyProps {
   board: Board;
@@ -17,16 +17,17 @@ const sendStartGame = (data: Lobby) => {
   socket.emit("start-game", { lobbyId: data.lobbyId, hostSid: data.hostSid });
 };
 const startGame = async (
-  body: BodyProps, setSessionCookie:Function
-): Promise<undefined|void> => {
+  body: BodyProps,
+  setSessionCookie: Function
+): Promise<undefined | void> => {
   try {
     const { lobby } = await saveStartGame(body);
 
     sendStartGame(lobby);
-    setSessionCookie("command","begin", { path: "/" })
-    
+    setSessionCookie("command", "begin", { path: "/" });
   } catch (e) {
-    console.log(e);
+
+    console.log("Failed to start the game. Please try refreshing your browser first. If that does not work clear your cookies for this website. Error"+e);
   }
 };
 

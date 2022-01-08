@@ -24,7 +24,8 @@ const createLobby = async (
 
     return data;
   } catch (e) {
-    console.log(e);
+    console.log("Failed to get create lobby! Please try refreshing your browser first. If that does not work clear your cookies for this website. Error"+e);
+
   }
 };
 

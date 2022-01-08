@@ -21,7 +21,8 @@ const getGame = async (
   body: BodyProps,
 
   setLobby: (lobby: Lobby) => void,
-  setPiece: (piece: string) => void
+  setPiece: (piece: string) => void,
+  setSessionCookie:Function
 ): Promise<void> => {
   try {
     const { lobby }: { lobby: Lobby } = await saveGetGame(body);
@@ -35,7 +36,9 @@ const getGame = async (
     });
     return setLobby(lobby);
   } catch (e) {
-    console.log(e);
+    console.log("Failed to get Game! Please try refreshing your browser first. If that does not work clear your cookies for this website. Error"+e);
+    setSessionCookie("command", "welcome", { path: "/" });
+    setSessionCookie("lobbyId", 0, {path: "/"})
   }
 };
 

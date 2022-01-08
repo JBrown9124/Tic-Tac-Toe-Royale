@@ -27,6 +27,11 @@ export default function Welcome({ createGame, joinGame }: OpenPageProps) {
           <Typography variant="h2">Welcome To Tic Tac Toe Royale!</Typography>
         </Grid>
         <Grid item>
+        <Typography variant="body1">
+            This app is still in development. If you experience any problems
+            please make sure cookies are enabled in your browser settings. Sorry
+            for the inconvenience!
+          </Typography>
           <Typography variant="body1">
             This app is still in development. If you experience any problems
             please make sure cookies are enabled in your browser settings. Sorry

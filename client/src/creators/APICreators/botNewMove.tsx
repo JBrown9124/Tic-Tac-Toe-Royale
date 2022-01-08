@@ -17,7 +17,8 @@ const botNewMove = async (body: BodyProps): Promise<NewMove | undefined> => {
 
     return newMove;
   } catch (e) {
-    console.log(e);
+    console.log("Failed to make move for bot! Please try refreshing your browser first. If that does not work clear your cookies for this website. Error"+e);
+
   }
 };
 

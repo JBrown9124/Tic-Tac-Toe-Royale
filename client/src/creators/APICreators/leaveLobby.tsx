@@ -27,7 +27,8 @@ const leaveLobby = async (body: BodyProps): Promise<Lobby | undefined> => {
 
     return lobby;
   } catch (e) {
-    console.log(e);
+    console.log("Failed to leave lobby! Please try refreshing your browser first. If that does not work clear your cookies for this website. Error"+e);
+
   }
 };
 

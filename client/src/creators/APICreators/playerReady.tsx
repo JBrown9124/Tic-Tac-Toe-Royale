@@ -23,7 +23,7 @@ const playerReady = async (body: BodyProps): Promise<Lobby | undefined> => {
 
     return await data.lobby;
   } catch (e) {
-    console.log(e);
+    console.log("Failed to hit ready! Please try refreshing your browser first. If that does not work clear your cookies for this website. Error"+e);
   }
 };
 

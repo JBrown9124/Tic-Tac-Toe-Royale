@@ -51,7 +51,7 @@ function App() {
     hostSid: 0,
     lobbyId: 0,
     board: {
-      size: 0,
+      size: 3,
       color: { r: 255, g: 255, b: 255, a: 0.9 },
       winBy: 3,
       moves: [],
@@ -94,7 +94,8 @@ function App() {
             hostSid: lobbyCopy.hostSid,
           },
           setLobby,
-          setPiece
+          setPiece,
+          setSessionCookie
         );
       }, 500);
     });
@@ -204,7 +205,7 @@ function App() {
       leaveLobby(reqBody);
       setSessionCookie("lobbyId", 0, { path: "/" });
     }
-   
+
     if (sessionCookie?.command === "start") {
       const reqBody = {
         lobbyId: lobby.lobbyId,
@@ -234,7 +235,8 @@ function App() {
         },
         setGameStatus,
         setLobby,
-        setIsLobbyReceived
+        setIsLobbyReceived,
+        setSessionCookie
       );
     }
     /* For when the game begins */
@@ -250,7 +252,8 @@ function App() {
         },
         setGameStatus,
         setLobby,
-        setIsLobbyReceived
+        setIsLobbyReceived,
+        setSessionCookie
       );
     }
     if (
@@ -265,7 +268,8 @@ function App() {
           hostSid: lobby.hostSid,
         },
         setLobby,
-        setPiece
+        setPiece,
+        setSessionCookie
       );
     }
   }, [sessionCookie.command]);

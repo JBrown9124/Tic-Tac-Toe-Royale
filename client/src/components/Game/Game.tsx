@@ -152,7 +152,7 @@ function Game({
       setSessionCookie("command", "quit", { path: "/" });
     }, 3500);
   };
-
+  
   const override = `
   display: block;
   margin: 0 auto;

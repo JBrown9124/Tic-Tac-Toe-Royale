@@ -22,7 +22,8 @@ const getStartGame = async (
   body: BodyProps,
   setGameStatus: (status: GameStatus) => void,
   setLobby: (lobby: Lobby) => void,
-  setIsLobbyReceived: (isLobbyReceived: boolean) => void
+  setIsLobbyReceived: (isLobbyReceived: boolean) => void,
+  setSessionCookie:Function
 ): Promise<void> => {
   try {
     const { lobby }:{lobby:Lobby} = await saveGetStartGame(body);
@@ -36,7 +37,10 @@ const getStartGame = async (
 
     setIsLobbyReceived(true);
   } catch (e) {
-    console.log(e);
+    console.log("Failed to get Game! Please try refreshing your browser first. If that does not work clear your cookies for this website. Error"+e);
+
+    setSessionCookie("command", "welcome", { path: "/" });
+    setSessionCookie("lobbyId", 0, {path: "/"})
   }
 };
 
