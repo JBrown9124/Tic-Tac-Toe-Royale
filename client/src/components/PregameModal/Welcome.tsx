@@ -32,7 +32,7 @@ export default function Welcome({ createGame, joinGame }: OpenPageProps) {
           </Typography>
           <Typography variant="body1">
             This app is in development. If you experience any problems
-            please make sure cookies are enabled in your browser settings. If you are stuck on a screen and cannot escape please go to your browser privacy settings to clear the cookies for this application. Sorry
+            please try clicking your browser's refresh button. If that does not work, please make sure cookies are enabled in your browser settings. If you are stuck on a screen and cannot escape please go to your browser privacy settings to clear the cookies for this application. Sorry
             for the inconvenience and enjoy!
           </Typography>
         </Grid>
