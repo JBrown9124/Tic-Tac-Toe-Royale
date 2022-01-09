@@ -142,19 +142,19 @@ function App() {
   //     }
   //   );
   // });
-  socket.off("connect_error", () => {
-    console.log("socket error");
-  });
-  socket.on("disconnect", () => {
-    socket.removeAllListeners("player-join-lobby");
-    socket.removeAllListeners("player-leave-lobby");
-    socket.removeAllListeners("start-game");
-    socket.removeAllListeners("player-ready");
-    socket.removeAllListeners("new-move");
-    socket.removeAllListeners("connect");
-    socket.removeAllListeners("player-loaded-game");
-    socket.removeAllListeners();
-  });
+  // socket.off("connect_error", () => {
+  //   console.log("socket error");
+  // });
+  // socket.on("disconnect", () => {
+  //   socket.removeAllListeners("player-join-lobby");
+  //   socket.removeAllListeners("player-leave-lobby");
+  //   socket.removeAllListeners("start-game");
+  //   socket.removeAllListeners("player-ready");
+  //   socket.removeAllListeners("new-move");
+  //   socket.removeAllListeners("connect");
+  //   socket.removeAllListeners("player-loaded-game");
+  //   socket.removeAllListeners();
+  // });
   useCommands({
     sessionCookie,
     lobby,
@@ -225,8 +225,10 @@ function App() {
     setIsLobbyReceived(false);
     setIsHost(false);
     setIsLobbyFound(false);
+    
+    
     setTimeout(() => {
-      setSessionCookie("command", "quit", { path: "/" });
+      setSessionCookie("command", "leave", { path: "/" });
       setBoard([[]]);
       setPiece("");
       setPieceSelection("");

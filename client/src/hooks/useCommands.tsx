@@ -81,23 +81,19 @@ export default function useCommands({sessionCookie, lobbyId, lobby, setSessionCo
       parseInt(sessionCookie.lobbyId) !== 0
     ) {
       const reqBody = {
-        lobbyId: sessionCookie?.lobbyId,
+        lobbyId: sessionCookie.lobbyId,
         playerId: sessionCookie.playerId,
         hostSid: lobby.hostSid,
       };
-      lobby.players = [];
-      leaveLobby(reqBody);
-      setSessionCookie("lobbyId", 0, { path: "/" });
+      
+      leaveLobby(reqBody, setSessionCookie);
+      
     }
 
     if (sessionCookie?.command === "welcome") {
       setSessionCookie("lobbyId", 0, { path: "/" });
     }
-    if (sessionCookie?.command === "quit") {
-      setSessionCookie("lobbyId", 0, { path: "/" });
-      setIsLobbyReceived(false);
-      lobby.players = [];
-    }
+    
     /* When they are in the middle of the game and they hit the refresh button */
     if (sessionCookie.command === "begin" && lobby.lobbyId === 0) {
       getStartGame(

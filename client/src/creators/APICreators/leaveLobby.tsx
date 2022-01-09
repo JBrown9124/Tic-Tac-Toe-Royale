@@ -20,11 +20,11 @@ const sendLeaveLobby = (body: BodyProps) => {
     hostSid: body.hostSid,
   });
 };
-const leaveLobby = async (body: BodyProps): Promise<Lobby | undefined> => {
+const leaveLobby = async (body: BodyProps, setSessionCookie:Function): Promise<Lobby | undefined> => {
   try {
     const { lobby } = await saveLeaveLobby(body);
     sendLeaveLobby(body);
-
+    setSessionCookie("lobbyId", 0, { path: "/" });
     return lobby;
   } catch (e) {
     console.log("Failed to leave lobby! Please try refreshing your browser first. If that does not work clear your cookies for this website. Error"+e);
