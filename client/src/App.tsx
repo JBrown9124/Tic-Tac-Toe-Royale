@@ -77,71 +77,71 @@ function App() {
   const [botCanMove, setBotCanMove] = useState(false);
   const [isCountDownFinished, setIsCountDownFinished] = useState(false);
   const lobbyRef = useRef(lobby);
-  useEffect(() => {
-    lobbyRef.current = lobby;
-  }, [lobby]);
+  // useEffect(() => {
+  //   lobbyRef.current = lobby;
+  // }, [lobby]);
 
-  socket.on("connect", () => {
-    console.log("Client Connected");
-    socket.on("player-leave-lobby", (removedPlayer: string) => {
-      if (removedPlayer === "HOST") {
-        setSessionCookie("command", "leave", { path: "/" });
-      } else {
-        const lobbyCopy = lobbyRef.current;
-        let newPlayerList = lobbyCopy.players.filter((player) => {
-          return player.playerId !== removedPlayer;
-        });
-        lobbyCopy.players = newPlayerList;
-        setLobby({ ...lobbyCopy });
-      }
-    });
-    socket.on("player-ready", () => {
-      const lobbyCopy = lobbyRef.current;
+  // socket.on("connect", () => {
+  //   console.log("Client Connected");
+  //   socket.on("player-leave-lobby", (removedPlayer: string) => {
+  //     if (removedPlayer === "HOST") {
+  //       setSessionCookie("command", "leave", { path: "/" });
+  //     } else {
+  //       const lobbyCopy = lobbyRef.current;
+  //       let newPlayerList = lobbyCopy.players.filter((player) => {
+  //         return player.playerId !== removedPlayer;
+  //       });
+  //       lobbyCopy.players = newPlayerList;
+  //       setLobby({ ...lobbyCopy });
+  //     }
+  //   });
+  //   socket.on("player-ready", () => {
+  //     const lobbyCopy = lobbyRef.current;
 
-      setTimeout(() => {
-        getGame(
-          {
-            lobbyId: lobbyCopy.lobbyId,
-            playerId: sessionCookie.playerId,
-            hostSid: lobbyCopy.hostSid,
-          },
-          setLobby,
-          setPieceSelection,
-          setSessionCookie
-        );
-      }, 500);
-    });
-    socket.on("start-game", (data) => {
-      setSessionCookie("command", "begin", { path: "/" });
-    });
-    socket.on("new-move", (newMove) => {
-      setNewMove(newMove.newMove);
-      setGameStatus(newMove.gameStatus);
-    });
-    socket.on(
-      "player-join-lobby",
-      (newPlayer: { playerName: string; playerId: string }) => {
-        const lobbyCopy = lobbyRef.current;
-        let playerExists = lobbyCopy.players.filter((player: Player) => {
-          return player.playerId === newPlayer.playerId;
-        });
+  //     setTimeout(() => {
+  //       getGame(
+  //         {
+  //           lobbyId: lobbyCopy.lobbyId,
+  //           playerId: sessionCookie.playerId,
+  //           hostSid: lobbyCopy.hostSid,
+  //         },
+  //         setLobby,
+  //         setPieceSelection,
+  //         setSessionCookie
+  //       );
+  //     }, 500);
+  //   });
+  //   socket.on("start-game", (data) => {
+  //     setSessionCookie("command", "begin", { path: "/" });
+  //   });
+  //   socket.on("new-move", (newMove) => {
+  //     setNewMove(newMove.newMove);
+  //     setGameStatus(newMove.gameStatus);
+  //   });
+  //   socket.on(
+  //     "player-join-lobby",
+  //     (newPlayer: { playerName: string; playerId: string }) => {
+  //       const lobbyCopy = lobbyRef.current;
+  //       let playerExists = lobbyCopy.players.filter((player: Player) => {
+  //         return player.playerId === newPlayer.playerId;
+  //       });
 
-        const isNewPlayerBot = newPlayer.playerId.substring(0, 3) === "BOT";
-        if (playerExists.length === 0) {
-          lobbyCopy.players.push({
-            name: newPlayer.playerName,
-            playerId: newPlayer.playerId,
-            piece: "",
-            isHost: false,
-            turnNumber: 0,
-            playerLoaded: isNewPlayerBot ? true : false,
-            isReady: isNewPlayerBot ? true : false,
-          });
-          setLobby({ ...lobbyCopy });
-        }
-      }
-    );
-  });
+  //       const isNewPlayerBot = newPlayer.playerId.substring(0, 3) === "BOT";
+  //       if (playerExists.length === 0) {
+  //         lobbyCopy.players.push({
+  //           name: newPlayer.playerName,
+  //           playerId: newPlayer.playerId,
+  //           piece: "",
+  //           isHost: false,
+  //           turnNumber: 0,
+  //           playerLoaded: isNewPlayerBot ? true : false,
+  //           isReady: isNewPlayerBot ? true : false,
+  //         });
+  //         setLobby({ ...lobbyCopy });
+  //       }
+  //     }
+  //   );
+  // });
   socket.off("connect_error", () => {
     console.log("socket error");
   });
@@ -169,15 +169,15 @@ function App() {
     setPieceSelection,
     setIsLobbyFound,
   });
-  // useSocket({
-  //   lobby,
-  //   setLobby,
-  //   setPieceSelection,
-  //   sessionCookie,
-  //   setSessionCookie,
-  //   setNewMove,
-  //   setGameStatus,
-  // });
+  useSocket({
+    lobby,
+    setLobby,
+    setPieceSelection,
+    sessionCookie,
+    setSessionCookie,
+    setNewMove,
+    setGameStatus,
+  });
   useMoveHandler({
     botCanMove,
     lobby,
