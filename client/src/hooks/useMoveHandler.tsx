@@ -11,14 +11,14 @@ interface UseMoveHandler{
     gameStatus:GameStatus
     setGameStatus:(gameStatus:GameStatus)=>void,
     isHost:boolean,
-    sessionCookie:any, 
+   action:string, 
     board:number[][],
     newMove:NewMove
 
 
 
 }
-export default function useMoveHandler({botCanMove, lobby, gameStatus, isHost, sessionCookie, board, setGameStatus, newMove}:UseMoveHandler){
+export default function useMoveHandler({botCanMove, lobby, gameStatus, isHost, action, board, setGameStatus, newMove}:UseMoveHandler){
     const [startOtherPlayerMoveSound] = useSound(
         process.env.PUBLIC_URL + "static/assets/sounds/otherPlayerMoveSound.mp3"
       );
@@ -40,7 +40,7 @@ export default function useMoveHandler({botCanMove, lobby, gameStatus, isHost, s
               botCanMove
             ) {
               const reqBody = {
-                lobbyId: sessionCookie.lobbyId,
+                lobbyId: lobby.lobbyId,
                 playerId: nextIsBot.playerId,
                 turnNumber: nextIsBot.turnNumber,
               };
@@ -67,7 +67,7 @@ export default function useMoveHandler({botCanMove, lobby, gameStatus, isHost, s
         }
       }, [gameStatus, botCanMove]);
       useEffect(() => {
-        if (newMove.turnNumber !== undefined && newMove.turnNumber !== 0) {
+        if (newMove.turnNumber !== 0) {
           board[newMove.rowIdx][newMove.tileIdx] = newMove.turnNumber;
           startOtherPlayerMoveSound();
         }

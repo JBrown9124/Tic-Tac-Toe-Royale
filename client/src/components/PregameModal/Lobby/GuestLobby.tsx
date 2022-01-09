@@ -15,6 +15,7 @@ interface GuestLobbyProps {
   handleLeave: () => void;
   lobby: Lobby;
   playerId: string;
+  playerName: string;
 }
 export default function GuestLobby({
   handleLeave,
@@ -22,8 +23,8 @@ export default function GuestLobby({
   setPiece,
   lobby,
   playerId,
+  playerName,
 }: GuestLobbyProps) {
-  const [sessionCookie, setSessionCookie] = useCookies();
   const [isReady, setIsReady] = useState(false);
   const [isError, setIsError] = useState(false);
   const [playReadySound] = useSound(
@@ -36,16 +37,16 @@ export default function GuestLobby({
     /*When player clicks a piece while players status is set to ready. Sets players status to false and makes a api 
     call to update players status on server side*/
     lobby?.players?.map((player) => {
-      if (player.name === sessionCookie?.name) {
+      if (player.name === playerName) {
         setIsReady(false);
         return (player.isReady = false);
       }
     });
     const reqBody = {
       player: {
-        name: sessionCookie?.name,
+        name: playerName,
         piece: playerPiece,
-        playerId: sessionCookie.playerId,
+        playerId: playerId,
       },
       lobbyId: lobby?.lobbyId,
       hostSid: lobby?.hostSid,
@@ -56,7 +57,7 @@ export default function GuestLobby({
   }, [playerPiece]);
   useEffect(() => {
     lobby?.players?.map((player) => {
-      if (player.name === sessionCookie?.name) {
+      if (player.name === playerName) {
         setIsReady(player.isReady);
       }
     });
@@ -66,9 +67,9 @@ export default function GuestLobby({
       setIsError(false);
       const reqBody = {
         player: {
-          name: sessionCookie?.name,
+          name: playerName,
           piece: playerPiece,
-          playerId: sessionCookie.playerId,
+          playerId: playerId,
         },
         lobbyId: lobby?.lobbyId,
         hostSid: lobby?.hostSid,
@@ -77,7 +78,7 @@ export default function GuestLobby({
       !isReady ? playReadySound() : playUnreadySound();
 
       lobby.players.map((player) => {
-        if (player.name === sessionCookie?.name) {
+        if (player.name === playerName) {
           setIsReady(!player.isReady);
           return (player.isReady = !player.isReady);
         }
@@ -89,7 +90,7 @@ export default function GuestLobby({
   return (
     <>
       <Grid container direction="column" spacing={6}>
-        <CopyLobbyId />
+        <CopyLobbyId lobbyId={lobby.lobbyId} />
         <Grid container item direction="row" spacing={2}>
           <Grid item xs={12} md={6} textAlign="center">
             <PieceSelector
@@ -98,7 +99,11 @@ export default function GuestLobby({
             />
           </Grid>
           <Grid item xs={12} md={6}>
-            <PlayerList players={lobby?.players} playerPiece={playerPiece} />
+            <PlayerList
+              playerName={playerName}
+              players={lobby.players}
+              playerPiece={playerPiece}
+            />
           </Grid>
         </Grid>
         {isError && (

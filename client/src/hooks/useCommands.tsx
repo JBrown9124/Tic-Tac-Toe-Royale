@@ -5,14 +5,15 @@ import createLobby from "../creators/APICreators/createLobby";
 import joinLobby from "../creators/APICreators/joinLobby";
 import leaveLobby from "../creators/APICreators/leaveLobby";
 import getStartGame from "../creators/APICreators/getStartGame";
-import getGame from "../creators/APICreators/getGame";
+import getGame from "../creators/APICreators/getLobby";
 import useSound from "use-sound";
 import { RgbaColor } from "react-colorful";
+import { NewMove } from "../Models/NewMove";
 interface UseCommandsProps {
-  sessionCookie: any;
+  action: string;
   lobby: Lobby;
   lobbyId: number;
-  setSessionCookie: Function;
+
   setLobby: (lobby: Lobby) => void;
   setGameStatus: (gameStatus: GameStatus) => void;
   setHostColor: (color: RgbaColor) => void;
@@ -21,13 +22,21 @@ interface UseCommandsProps {
   setIsLobbyReceived: (isLobbyReceived: boolean) => void;
   setPieceSelection: (piece: string) => void;
   setIsLobbyFound: (isLobbyFound: boolean) => void;
+  setLobbyId: (lobbyId: number) => void;
+  setPlayerId: (playerId: string) => void;
+  setPlayerName: (playerName: string) => void;
+  playerName: string;
+  playerId: string;
+  setAction: (action: string) => void;
+  isHost: boolean;
+  setNewMove:(newMove:NewMove) => void;
 }
 
 export default function useCommands({
-  sessionCookie,
+  action,
   lobbyId,
   lobby,
-  setSessionCookie,
+
   setLobby,
   setGameStatus,
   setHostColor,
@@ -36,118 +45,102 @@ export default function useCommands({
   setIsLobbyReceived,
   setPieceSelection,
   setIsLobbyFound,
+  setPlayerId,
+  setLobbyId,
+  isHost,
+  setPlayerName,
+  playerName,
+  playerId,
+  setAction,
+  setNewMove
 }: UseCommandsProps) {
   const [playJoinOrStart] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/joinOrStartSound.mp3"
   );
   useEffect(() => {
-    if (
-      sessionCookie?.command === "create" &&
-      (parseInt(sessionCookie.lobbyId) === 0 ||
-        sessionCookie.lobbyId === undefined)
-    ) {
-      const reqBody = { playerName: sessionCookie?.name };
+    if (action === "create") {
+      const reqBody = { playerName: playerName };
       createLobby(reqBody).then((response) => {
         if (response) {
-          setSessionCookie("lobbyId", response.lobby.lobbyId, { path: "/" });
+          setLobbyId(response.lobby.lobbyId);
           setLobby(response.lobby);
-          setGameStatus({
-            win: { whoWon: null, type: null, winningMoves: null },
-            whoTurn: 0,
-          });
+         
           setHostColor({ r: 255, g: 255, b: 255, a: 0.9 });
           setHostWinBy(2);
-          setHostSize(3);
-          setSessionCookie("playerId", response.playerId, {
-            path: "/",
-          });
+          setPlayerId(response.playerId);
         }
       });
-    } else if (
-      sessionCookie?.command === "guest" &&
-      (parseInt(sessionCookie.lobbyId) === 0 ||
-        sessionCookie.lobbyId === undefined)
-    ) {
+    } else if (action === "guest") {
       const reqBody = {
         lobbyId: lobbyId,
-        playerName: sessionCookie?.name,
+        playerName: playerName,
       };
       joinLobby(reqBody).then((response) => {
         if (typeof response === "string") {
-          setSessionCookie("command", "join", { path: "/" });
+          setAction("join");
           setIsLobbyFound(false);
         } else {
           setIsLobbyFound(true);
-          setSessionCookie("lobbyId", lobbyId, { path: "/" });
-          setSessionCookie("playerId", response.player.playerId, {
-            path: "/",
-          });
+          setLobbyId(response.lobby.lobbyId);
+          setPlayerId(response.player.playerId);
           setLobby(response.lobby);
-          setGameStatus(response.lobby.gameStatus);
+     
           playJoinOrStart();
         }
       });
-    } else if (sessionCookie?.command === "leave") {
+    } else if (action === "leave") {
       const reqBody = {
-        lobbyId: sessionCookie.lobbyId,
-        playerId: sessionCookie.playerId,
+        lobbyId: lobbyId,
+        player: {
+          name: playerName,
+          piece: "Not Needed",
+          isHost: isHost,
+          turnNumber: 0,
+          isReady: false,
+          playerId: playerId,
+          playerLoaded: false,
+        },
         hostSid: lobby.hostSid,
       };
-
-      leaveLobby(reqBody, setSessionCookie);
-      setSessionCookie("lobbyId", 0, { path: "/" });
-    } else if (sessionCookie?.command === "welcome") {
-      setSessionCookie("lobbyId", 0, { path: "/" });
-    } else if (
-
-    /* When they are in the middle of the game and they hit the refresh button */
-      sessionCookie.command === "begin" &&
-      (parseInt(sessionCookie.lobbyId) !== 0 ||
-        sessionCookie.lobbyId !== undefined)
-    ) {
+      setLobby({
+        hostSid: 0,
+        lobbyId: 0,
+        board: {
+          size: 3,
+          color: { r: 255, g: 255, b: 255, a: 0.9 },
+          winBy: 3,
+          moves: [],
+        },
+        players: [],
+        gameStatus: {
+          win: { whoWon: null, type: null, winningMoves: null },
+          whoTurn: 0,
+        },
+      })
+      setGameStatus({
+        win: { whoWon: null, type: null, winningMoves: null },
+        whoTurn: 0,
+      });
+      setNewMove({
+        turnNumber: 0,
+        rowIdx: 0,
+        tileIdx: 0,
+        win: { whoWon: null, type: null, winningMoves: null },
+      });
+      setIsLobbyReceived(false);
+      setIsLobbyFound(true);
+      leaveLobby(reqBody);
+    } else if (action === "begin") {
       getStartGame(
         {
-          lobbyId: sessionCookie.lobbyId,
+          lobbyId: lobbyId,
           playerId: null,
           hostSid: lobby.hostSid,
         },
         setGameStatus,
         setLobby,
-        setIsLobbyReceived,
-        setSessionCookie
-      );
-    } else if (
-    /* For when the game begins */
-      sessionCookie?.command === "begin" &&
-      (parseInt(sessionCookie.lobbyId) === 0 ||
-        sessionCookie.lobbyId === undefined)
-    ) {
-      getStartGame(
-        {
-          lobbyId: sessionCookie.lobbyId,
-          playerId: sessionCookie.playerId,
-          hostSid: lobby.hostSid,
-        },
-        setGameStatus,
-        setLobby,
-        setIsLobbyReceived,
-        setSessionCookie
-      );
-    } else if (
-      (sessionCookie.command === "create" ||
-        sessionCookie.command === "guest") &&
-      lobby.lobbyId === 0
-    ) {
-      getGame(
-        {
-          lobbyId: sessionCookie.lobbyId,
-          playerId: null,
-          hostSid: lobby.hostSid,
-        },
-        setLobby,
-        setPieceSelection,
-        setSessionCookie
+        setIsLobbyReceived
       );
     }
-  }, [sessionCookie.command]);
+  }, [action]);
 }

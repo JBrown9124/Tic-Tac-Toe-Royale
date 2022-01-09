@@ -18,13 +18,13 @@ const sendStartGame = (data: Lobby) => {
 };
 const startGame = async (
   body: BodyProps,
-  setSessionCookie: Function
+  setAction: (action: string) => void
 ): Promise<undefined | void> => {
   try {
     const { lobby } = await saveStartGame(body);
 
     sendStartGame(lobby);
-    setSessionCookie("command", "begin", { path: "/" });
+    setAction("begin")
   } catch (e) {
 
     console.log("Failed to start the game. Please try refreshing your browser first. If that does not work clear your cookies for this website. Error"+e);

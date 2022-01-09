@@ -27,6 +27,8 @@ interface PlayerListProps {
   players: Player[];
   hostSid: number;
   playerId: string;
+  playerName: string;
+  lobbyId: number;
 }
 export default function HostLobby({
   handleLeave,
@@ -43,8 +45,10 @@ export default function HostLobby({
   color,
   winBy,
   setWinBy,
+  playerName,
+  lobbyId
 }: PlayerListProps) {
-  const [sessionCookie, setSessionCookie] = useCookies();
+
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [playAddBotSound] = useSound(
@@ -68,7 +72,7 @@ export default function HostLobby({
     if (!playerPiece) {
       handleError("Select a piece.");
     }
-    if (sessionCookie?.board?.winBy > sessionCookie?.board?.size) {
+    if (winBy > size) {
       handleError("Win By must be less than or equal to board size.");
     }
     setIsError(false);
@@ -78,11 +82,11 @@ export default function HostLobby({
     setPiece(pieceValue);
     const reqBody = {
       player: {
-        name: sessionCookie.name,
+        name: playerName,
         piece: pieceValue,
-        playerId: sessionCookie.playerId,
+        playerId: playerId,
       },
-      lobbyId: parseInt(sessionCookie?.lobbyId),
+      lobbyId: lobbyId,
       hostSid: hostSid,
     };
     playerReady(reqBody);
@@ -94,7 +98,7 @@ export default function HostLobby({
 
     const createBot = async () => {
       const reqBody = {
-        lobbyId: sessionCookie?.lobbyId,
+        lobbyId: lobbyId,
         playerName: "BOTPASSPASS",
       };
       const response = await joinLobby(reqBody);
@@ -110,7 +114,7 @@ export default function HostLobby({
   return (
     <>
       <Grid container direction="column" spacing={2}>
-        <CopyLobbyId />
+        <CopyLobbyId lobbyId={lobbyId} />
         <Grid item container sx={{ textAlign: "center" }} spacing={6}>
           <Grid item xs={12} sm={6}>
             <Settings
@@ -125,7 +129,7 @@ export default function HostLobby({
             />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <PlayerList players={players} playerPiece={playerPiece} />
+            <PlayerList playerName={playerName} players={players} playerPiece={playerPiece} />
             <Button onClick={() => handleAddABot()}> Add a Bot</Button>
           </Grid>
         </Grid>

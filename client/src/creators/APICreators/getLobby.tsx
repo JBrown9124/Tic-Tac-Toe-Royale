@@ -14,21 +14,17 @@ const saveGetGame = async (body: any) => {
   });
   return data;
 };
-const rejoinRoom = async (hostSid: number) => {
-  socket.emit("rejoin-room-after-refresh", hostSid);
-};
-const getGame = async (
+
+const getLobby = async (
   body: BodyProps,
 
   setLobby: (lobby: Lobby) => void,
   setPiece: (piece: string) => void,
-  setSessionCookie: Function
+  
 ): Promise<void> => {
   try {
     const { lobby }: { lobby: Lobby } = await saveGetGame(body);
-    if (!body.playerId) {
-      await rejoinRoom(lobby.hostSid);
-    }
+    
     lobby.players.map((player: Player) => {
       if (
         typeof player.piece === "string" &&
@@ -39,7 +35,7 @@ const getGame = async (
     });
     return setLobby(lobby);
   } catch (e) {
-    // setSessionCookie("command", "quit", { path: "/" });
+ 
     console.log(
       "Failed to get game while in lobby! Please try refreshing your browser first. If that does not work clear your cookies for this website. Error" +
         e
@@ -49,4 +45,4 @@ const getGame = async (
   }
 };
 
-export default getGame;
+export default getLobby;

@@ -9,10 +9,15 @@ import { useCookies } from "react-cookie";
 interface OpenPageProps {
   createGame: (name: string) => void;
   joinGame: (name: string) => void;
+  playerName: string;
+  setPlayerName: (name: string) => void;
 }
-export default function Welcome({ createGame, joinGame }: OpenPageProps) {
-  const [name, setName] = useState("Tic Tac Toe Master");
-  const [sessionCookie, setSessionCookie] = useCookies();
+export default function Welcome({
+  createGame,
+  joinGame,
+  playerName,
+  setPlayerName,
+}: OpenPageProps) {
   const [isError, setIsError] = useState(false);
 
   return (
@@ -23,25 +28,25 @@ export default function Welcome({ createGame, joinGame }: OpenPageProps) {
         spacing={6}
         justifyContent="center"
       >
+        <Grid
+          container
+          item
+          direction="column"
+          textAlign="right"
+          sx={{ fontSize: "10px" }}
+        >
+         IN DEVELOPMENT
+        </Grid>
         <Grid item>
           <Typography variant="h2">Welcome To Tic Tac Toe Royale!</Typography>
         </Grid>
-        <Grid item>
-        <Typography variant="body1" sx={{color:"red"}}>
-            PLEASE READ BELOW
-          </Typography>
-          <Typography variant="body1">
-            This app is in development. If you experience any problems
-            please try clicking your browser's refresh button. If that does not work, please make sure cookies are enabled in your browser settings. If you are stuck on a screen and cannot escape please go to your browser privacy settings to clear the cookies for this application. Sorry
-            for the inconvenience and enjoy!
-          </Typography>
-        </Grid>
+
         <Grid item>
           <TextField
             error={isError}
-            value={sessionCookie.name}
+            value={playerName}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setSessionCookie("name", e.target.value, { path: "/" })
+              setPlayerName(e.target.value)
             }
             label="Name"
           />
@@ -51,10 +56,9 @@ export default function Welcome({ createGame, joinGame }: OpenPageProps) {
           <Grid item md={12}>
             <Button
               onClick={() =>
-                sessionCookie?.name?.length === 0 ||
-                sessionCookie?.name === undefined
+                playerName.length === 0
                   ? setIsError(true)
-                  : createGame(name)
+                  : createGame(playerName)
               }
             >
               Start a game
@@ -63,10 +67,9 @@ export default function Welcome({ createGame, joinGame }: OpenPageProps) {
           <Grid item md={12}>
             <Button
               onClick={() =>
-                sessionCookie?.name?.length === 0 ||
-                sessionCookie?.name === undefined
+                playerName.length === 0
                   ? setIsError(true)
-                  : joinGame(name)
+                  : joinGame(playerName)
               }
             >
               Join a game

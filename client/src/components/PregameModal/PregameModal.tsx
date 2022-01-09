@@ -28,8 +28,13 @@ interface PregameModalProps {
   setHostSize: (size: number) => void;
   setHostWinBy: (winBy: number) => void;
   hostWinBy: number;
-  setLobbyId:(lobbyId:number) => void;
-  handleStart:()=>void;
+  setLobbyId: (lobbyId: number) => void;
+  handleStart: () => void;
+  action: string;
+  setAction: (action: string) => void;
+  isLobbyFound: boolean;
+  playerName: string;
+  setPlayerName: (playerName: string) => void;
 }
 export default function PregameModal({
   setPiece,
@@ -46,10 +51,14 @@ export default function PregameModal({
   hostWinBy,
   setHostWinBy,
   setLobbyId,
-  handleStart
+  handleStart,
+  action,
+  setAction,
+  isLobbyFound,
+  playerName,
+  setPlayerName,
 }: PregameModalProps) {
   const [open, setOpen] = useState(true);
-  const [isLobbyFound, setIsLobbyFound] = useState<boolean>(true);
 
   const [playForward] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3"
@@ -60,32 +69,29 @@ export default function PregameModal({
   const [playJoinOrStart] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/joinOrStartSound.mp3"
   );
-  
-  const [sessionCookie, setSessionCookie, removeSessionCookie] = useCookies();
 
   const handleCreateGameSelect = () => {
     playJoinOrStart();
 
-    setSessionCookie("command", "create", { path: "/" });
+    setAction("create");
   };
   const handleJoinSelect = () => {
     playForward();
-    setSessionCookie("command", "join", { path: "/" });
+    setAction("join");
   };
   const handleFindSubmit = (lobbyId: number) => {
     playForward();
     setLobbyId(lobbyId);
-    setSessionCookie("command", "guest", { path: "/" });
+    setAction("guest");
   };
   const handleJoinBackSelect = () => {
     playBackward();
-    setSessionCookie("command", "welcome", { path: "/" });
+    setAction("welcome");
   };
   const handleLeaveSelect = () => {
     playBackward();
-    setSessionCookie("command", "leave", { path: "/" });
+    setAction("leave");
   };
-
 
   return (
     <>
@@ -115,23 +121,26 @@ export default function PregameModal({
             p: 4,
           }}
         >
-          {(sessionCookie?.command === "welcome" ||
-            sessionCookie?.command === "leave" ||
-            sessionCookie?.command === "quit" || sessionCookie?.command === undefined) && (
+          {(action === "welcome" ||
+            action === "leave" ||
+            action === "quit") && (
             <Welcome
+              playerName={playerName}
+              setPlayerName={(props) => setPlayerName(props)}
               joinGame={() => handleJoinSelect()}
               createGame={() => handleCreateGameSelect()}
             />
           )}
-          {sessionCookie?.command === "join" && (
+          {action === "join" && (
             <Join
               handleJoinBack={() => handleJoinBackSelect()}
               handleJoinSubmit={(lobbyId) => handleFindSubmit(lobbyId)}
               isLobbyFound={isLobbyFound}
             />
           )}
-          {sessionCookie?.command === "guest" && isLobbyFound && (
+          {action === "guest" && isLobbyFound && (
             <GuestLobby
+            playerName={playerName}
               playerId={playerId}
               lobby={lobby}
               setPiece={(props) => setPiece(props)}
@@ -140,8 +149,10 @@ export default function PregameModal({
             />
           )}
 
-          {sessionCookie?.command === "create" && (
+          {action === "create" && (
             <HostLobby
+              lobbyId={lobby.lobbyId}
+              playerName={playerName}
               handleStart={() => handleStart()}
               setWinBy={(props) => setHostWinBy(props)}
               winBy={hostWinBy}

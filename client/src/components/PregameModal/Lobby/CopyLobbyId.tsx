@@ -2,12 +2,15 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import { useState } from "react";
-import { useCookies } from "react-cookie";
-const CopyLobbyId = () => {
+
+interface CopyLobbyIdProps{
+  lobbyId: number
+} 
+const CopyLobbyId = ({lobbyId}:CopyLobbyIdProps) => {
   const [isCopied, setIsCopied] = useState(false);
-  const [sessionCookie, setSessionCookie] = useCookies();
+
   const handleCopyLobbyId = () => {
-    navigator.clipboard.writeText(sessionCookie?.lobbyId);
+    navigator.clipboard.writeText(String(lobbyId));
     setIsCopied(true);
   };
   return (
@@ -29,7 +32,7 @@ const CopyLobbyId = () => {
         </Button>
       </Grid>
       <Grid item>
-        <Typography>Lobby ID: {sessionCookie?.lobbyId}</Typography>
+        <Typography>Lobby ID: {lobbyId}</Typography>
       </Grid>
     </Grid>
   );

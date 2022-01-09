@@ -43,7 +43,7 @@ def player_joined(sid, data):
 @sio.on("player-leave-lobby")
 def player_left(sid, data):
   
-    leaving_player = data["playerId"]
+    leaving_player = data["player"]
     hostSid = data["hostSid"]
     rooms = sio.rooms(sid)
     for room in rooms:

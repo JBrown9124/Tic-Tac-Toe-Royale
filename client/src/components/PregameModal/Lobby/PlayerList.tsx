@@ -15,9 +15,10 @@ import SkeletonPlayers from "./SkeletonPlayers";
 interface PlayerListProps {
   players: Player[];
   playerPiece: string;
+  playerName:string
 }
-export default function PlayerList({ players, playerPiece }: PlayerListProps) {
-  const [sessionCookie, setSessionCookie] = useCookies();
+export default function PlayerList({ players, playerPiece,playerName }: PlayerListProps) {
+
   const pieces = createPiece("black");
   return (
     <>
@@ -39,7 +40,7 @@ export default function PlayerList({ players, playerPiece }: PlayerListProps) {
               <>
                 {" "}
                 {players.map((player: Player, idx: number) =>
-                  player.name === sessionCookie.name ? (
+                  player.name === playerName ? (
                     <ListItem key={idx}>
                       {!player.isHost && (
                         <ListItemIcon>

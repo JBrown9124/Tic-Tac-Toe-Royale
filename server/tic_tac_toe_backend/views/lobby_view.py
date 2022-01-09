@@ -96,7 +96,8 @@ class Lobby(APIView):
         body = request.data
        
         lobby_id = int(body.get("lobbyId"))
-        player_id = body.get("playerId")
+        player = body.get("player")
+        player_id = player.get("playerId")
         lobby_copy = cache.get(lobby_id)
         try:
             lobby_copy = lobby_copy[lobby_id]
