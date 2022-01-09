@@ -39,7 +39,7 @@ const getGame = async (
     });
     return setLobby(lobby);
   } catch (e) {
-    setSessionCookie("command", "quit", { path: "/" });
+    // setSessionCookie("command", "quit", { path: "/" });
     console.log(
       "Failed to get game while in lobby! Please try refreshing your browser first. If that does not work clear your cookies for this website. Error" +
         e
