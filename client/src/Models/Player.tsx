@@ -1,6 +1,6 @@
 export interface Player {
   name: string;
-  piece: string;
+  piece: string| JSX.Element;
   isHost:boolean;
   turnNumber:number;
   isReady:boolean;

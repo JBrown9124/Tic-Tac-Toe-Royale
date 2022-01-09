@@ -29,6 +29,7 @@ interface PregameModalProps {
   setHostWinBy: (winBy: number) => void;
   hostWinBy: number;
   setLobbyId:(lobbyId:number) => void;
+  handleStart:()=>void;
 }
 export default function PregameModal({
   setPiece,
@@ -44,7 +45,8 @@ export default function PregameModal({
   setHostSize,
   hostWinBy,
   setHostWinBy,
-  setLobbyId
+  setLobbyId,
+  handleStart
 }: PregameModalProps) {
   const [open, setOpen] = useState(true);
   const [isLobbyFound, setIsLobbyFound] = useState<boolean>(true);
@@ -140,6 +142,7 @@ export default function PregameModal({
 
           {sessionCookie?.command === "create" && (
             <HostLobby
+              handleStart={() => handleStart()}
               setWinBy={(props) => setHostWinBy(props)}
               winBy={hostWinBy}
               color={hostColor}

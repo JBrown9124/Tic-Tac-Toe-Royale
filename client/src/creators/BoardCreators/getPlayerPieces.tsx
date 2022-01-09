@@ -8,84 +8,71 @@ interface getPlayerPiecesArguments {
   players: Player[];
   setPiece: (piece: JSX.Element) => void;
   sizeOfBoardPiece: { mobile: string; desktop: string };
-  setPlayerPieces: (playerPieces: PlayerPieces[]) => void;
+  setPlayerPieces: (playerPieces: Player[]) => void;
   boardColor: RgbaColor;
 }
 
 const getPlayerPieces = async (
   turnNumber: number,
+
   players: Player[],
   setPiece: (piece: JSX.Element) => void,
   sizeOfBoardPiece: { mobile: string; desktop: string },
-  setPlayerPieces: (playerPieces: PlayerPieces[]) => void,
-  boardColor: RgbaColor
+
+  setPlayerPieces: (playerPieces: Player[]) => void,
+  boardColor: RgbaColor,
+  playerId: string,
+  setIsHost: (isHost: boolean) => void,
+  setTurnNumber: (turnNumber: number) => void,
+  playerPieces: Player[]
 ) => {
- 
-    const makePieces = async () => {
-      let piecesValues: PlayerPieces[] = [];
-      await players.map((player: Player) => {
-        if (player?.piece?.length > 30 && player?.turnNumber === turnNumber) {
-          setPiece(
-            <img
-              src={player?.piece}
-              alt={player?.piece}
-              key={player.playerId}
-              style={{
-                height: sizeOfBoardPiece.mobile,
-                width: sizeOfBoardPiece.mobile,
-                maxHeight: sizeOfBoardPiece.desktop,
-                maxWidth: sizeOfBoardPiece.desktop,
-              }}
-            />
-          );
-        } else if (
-          player?.piece?.length > 30 &&
-          player?.turnNumber !== turnNumber
-        ) {
-          piecesValues.push({
-            turnNumber: player?.turnNumber,
-            piece: (
-              <img
-                key={player.playerId}
-                src={player?.piece}
-                alt={player?.piece}
-                style={{
-                  height: sizeOfBoardPiece.mobile,
-                  width: sizeOfBoardPiece.mobile,
-                  maxHeight: sizeOfBoardPiece.desktop,
-                  maxWidth: sizeOfBoardPiece.desktop,
-                }}
-              />
-            ),
-          });
+  return players.forEach((player: Player) => {
+    console.log(sizeOfBoardPiece, "SIZEOFBOARDPIECE");
+    const defaultPieces = createPiece(
+      boardColor.r * 0.299 + boardColor.g * 0.587 + boardColor.b * 0.114 > 186
+        ? "black"
+        : "white",
+      sizeOfBoardPiece
+    );
+    if (typeof player.piece === "string") {
+      if (player.piece.length > 30) {
+        const convertedPlayerPiece = (
+          <img
+            key={player.playerId}
+            src={player.piece}
+            alt={player.piece}
+            style={{
+              height: sizeOfBoardPiece.mobile,
+              width: sizeOfBoardPiece.mobile,
+              maxHeight: sizeOfBoardPiece.desktop,
+              maxWidth: sizeOfBoardPiece.desktop,
+            }}
+          />
+        );
+        if (player.playerId === playerId) {
+          setPiece(convertedPlayerPiece);
+          setTurnNumber(player.turnNumber);
+          setIsHost(player.isHost);
         }
 
-        createPiece(
-          boardColor.r * 0.299 + boardColor.g * 0.587 + boardColor.b * 0.114 >
-            186
-            ? "black"
-            : "white",
-          sizeOfBoardPiece
-        ).map((piece) => {
-          if (
-            piece.name === player?.piece &&
-            player?.turnNumber === turnNumber
-          ) {
-            setPiece(piece.value);
-          } else if (piece.name === player?.piece) {
-            piecesValues.push({
-              turnNumber: player?.turnNumber,
-              piece: piece.value,
-            });
+        player.piece = convertedPlayerPiece;
+        playerPieces.push(player);
+      } else {
+        defaultPieces.map((piece) => {
+          if (piece.name === player.piece) {
+            if (player.playerId === playerId) {
+              setPiece(piece.value);
+              setTurnNumber(player.turnNumber);
+              setIsHost(player.isHost);
+            }
+
+            player.piece = piece.value;
+            playerPieces.push(player);
           }
         });
-      });
-      return piecesValues;
-    };
-    const piecesValues = await makePieces();
-   
-    return setPlayerPieces(piecesValues);
-  
+      }
+    }
+  });
 };
 
 export default getPlayerPieces;

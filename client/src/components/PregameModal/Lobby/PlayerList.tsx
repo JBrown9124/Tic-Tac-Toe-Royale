@@ -140,7 +140,9 @@ export default function PlayerList({ players, playerPiece }: PlayerListProps) {
                           />
                         </ListItemIcon>
                       )}
-                      {player.piece && player.piece.length > 30 ? (
+                      {typeof player.piece === "string" &&
+                      player.piece &&
+                      player.piece.length > 30 ? (
                         <ListItemText
                           inset
                           key={player.piece}

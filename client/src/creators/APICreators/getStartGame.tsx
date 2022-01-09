@@ -27,7 +27,7 @@ const getStartGame = async (
 ): Promise<void> => {
   try {
     const { lobby }:{lobby:Lobby} = await saveGetStartGame(body);
-    console.log(lobby, "GETSTARTGAMELOBBY");
+ 
     setGameStatus(lobby.gameStatus);
 
     setLobby(lobby);
@@ -37,10 +37,11 @@ const getStartGame = async (
 
     setIsLobbyReceived(true);
   } catch (e) {
-    console.log("Failed to get Game! Please try refreshing your browser first. If that does not work clear your cookies for this website. Error"+e);
+    setSessionCookie("command", "quit", { path: "/" });
+    console.log("Failed to get get game at start of game! Please try refreshing your browser first. If that does not work clear your cookies for this website. Error"+e);
 
-    setSessionCookie("command", "welcome", { path: "/" });
-    setSessionCookie("lobbyId", 0, {path: "/"})
+    
+   
   }
 };
 

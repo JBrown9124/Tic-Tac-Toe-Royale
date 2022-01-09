@@ -36,7 +36,7 @@ export default function CountDownAnimator({
   const [fade, setFade] = useState(false);
 
   const [index, setIndex] = useState(0);
-  const [numbers, setNumbers] = useState(["",5, 4, 3, 2, 1, "Begin", ""]);
+  const [numbers, setNumbers] = useState(["", 3, 2, 1, "Begin", ""]);
   const [startCountDownSound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/countDown.mp3"
   );
@@ -46,7 +46,7 @@ export default function CountDownAnimator({
 
   useEffect(() => {
     if (startCountDown) {
-      if (index < 6) {
+      if (index < 4) {
         const t = setTimeout(() => {
           startCountDownSound();
           setIndex((state) => state + 1);
@@ -54,7 +54,7 @@ export default function CountDownAnimator({
         return () => {
           clearTimeout(t);
         };
-      } else if (index === 6) {
+      } else if (index === 4) {
         const t = setTimeout(() => {
           setIndex((state) => state + 1);
           setIsCountDownFinished(true);
@@ -63,7 +63,7 @@ export default function CountDownAnimator({
         return () => {
           clearTimeout(t);
         };
-      } else if (index === 7) {
+      } else if (index === 5) {
         setTimeout(() => setBotCanMove(true), 5000);
       }
     }

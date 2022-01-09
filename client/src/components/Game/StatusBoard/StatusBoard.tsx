@@ -9,26 +9,20 @@ import { useEffect, useState } from "react";
 import { useSound } from "use-sound";
 import Button from "@mui/material/Button";
 interface StatusBoardProps {
-  players: Player[];
+  playerPieces: Player[];
   gameStatus: GameStatus;
   winBy: number;
   turnNumber: number;
-  quitGame:()=>void;
-
+  quitGame: () => void;
 }
 export default function StatusBoard({
-  players,
+  playerPieces,
   gameStatus,
   winBy,
   turnNumber,
-  quitGame
+  quitGame,
 }: StatusBoardProps) {
-  const [sessionCookie, setSessionCookie, removeSessionCookie] =
-    useCookies();
-
-  const [playLeaveSound] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/floorDrumBackButton.mp3"
-  );
+  
   const [startWinSound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/winnerSound.mp3"
   );
@@ -38,12 +32,7 @@ export default function StatusBoard({
   const [startTieSound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/tie.mp3"
   );
-  const pieces = createPiece("black");
-  const handleLeaveGame = () => {
-    playLeaveSound();
-    setSessionCookie("command", "quit", { path: "/" });
-    
-  };
+ 
 
   useEffect(() => {
     if (gameStatus.win.whoWon) {
@@ -74,19 +63,19 @@ export default function StatusBoard({
       >
         <Grid container direction="column">
           <Grid item sx={{ p: 1 }}>
-            {gameStatus?.win?.whoWon === "tie" ? (
+            {gameStatus.win.whoWon === "tie" ? (
               <Typography variant="h6">Its a tie!</Typography>
             ) : (
               <Typography variant="h6">
-                {players?.map((player: Player) => {
-                  if (gameStatus?.win?.whoWon) {
-                    if (player.turnNumber === gameStatus?.win?.whoWon) {
+                {playerPieces.map((player: Player) => {
+                  if (gameStatus.win.whoWon) {
+                    if (player.turnNumber === gameStatus.win.whoWon) {
                       if (player.turnNumber === turnNumber) {
                         return "You Win!";
                       }
                       return `${player.name} Wins!`;
                     }
-                  } else if (player.turnNumber === gameStatus?.whoTurn) {
+                  } else if (player.turnNumber === gameStatus.whoTurn) {
                     if (player.turnNumber === turnNumber) {
                       return "Your Turn";
                     }
@@ -98,37 +87,13 @@ export default function StatusBoard({
           </Grid>
         </Grid>
         <Grid item>
-          {players?.map((player, idx) => {
-            if (gameStatus?.win?.whoWon) {
-              if (player?.turnNumber === gameStatus?.win?.whoWon) {
-                if (player?.piece?.length > 15) {
-                  return (
-                    <img
-                    key={player.playerId}
-                      src={player.piece}
-                      alt={player.piece}
-                      style={{ width: sizeOfPiece, height: sizeOfPiece }}
-                    />
-                  );
-                }
-                return pieces.map((piece) => {
-                  if (piece.name === player.piece) return piece.value;
-                });
+          {playerPieces.map((player, idx) => {
+            if (gameStatus.win.whoWon) {
+              if (player.turnNumber === gameStatus.win.whoWon ) {
+                return player.piece;
               }
-            } else if (player?.turnNumber === gameStatus?.whoTurn) {
-              if (player?.piece?.length > 15) {
-                return (
-                  <img
-                  key={player.playerId}
-                    src={player.piece}
-                    alt={player.piece}
-                    style={{ width: sizeOfPiece, height: sizeOfPiece }}
-                  />
-                );
-              }
-              return pieces.map((piece) => {
-                if (piece.name === player.piece) return piece.value;
-              });
+            } else if (player.turnNumber === gameStatus.whoTurn) {
+              return player.piece;
             }
           })}
         </Grid>

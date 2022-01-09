@@ -28,7 +28,10 @@ const makeNewMove = async (
 
     return await data.gameStatus;
   } catch (e) {
-    console.log("Failed to make a move! Please try refreshing your browser first. If that does not work clear your cookies for this website. Error"+e);
+    console.log(
+      "Failed to make a move! Please try refreshing your browser first. If that does not work clear your cookies for this website. Error" +
+        e
+    );
   }
 };
 

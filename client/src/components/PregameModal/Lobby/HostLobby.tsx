@@ -11,13 +11,15 @@ import { Lobby } from "../../../Models/Lobby";
 import { RgbaColor } from "react-colorful";
 import { useCookies } from "react-cookie";
 import CopyLobbyId from "./CopyLobbyId";
+import useSound from "use-sound"
 interface PlayerListProps {
   handleLeave: () => void;
   setPiece: (piece: string) => void;
   setLobby: (lobby: Lobby) => void;
   setSize: (size: number) => void;
   setColor: (color: RgbaColor) => void;
-  setWinBy:(value:number) => void;
+  setWinBy: (value: number) => void;
+  handleStart: () => void;
   winBy: number;
   color: RgbaColor;
   size: number;
@@ -31,6 +33,7 @@ export default function HostLobby({
   playerPiece,
   setLobby,
   setPiece,
+  handleStart,
   players,
   hostSid,
   playerId,
@@ -39,37 +42,34 @@ export default function HostLobby({
   setColor,
   color,
   winBy,
-  setWinBy
+  setWinBy,
 }: PlayerListProps) {
   const [sessionCookie, setSessionCookie] = useCookies();
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const handleStart = () => {
-    setSessionCookie("command", "start", { path: "/" });
+  const [playAddBotSound] = useSound(
+    process.env.PUBLIC_URL + "static/assets/sounds/addBotSound.mp3"
+  );
+  const handleError = (message: string) => {
+    setErrorMessage(message);
+    setIsError(true);
+    return false;
   };
   const allPlayersReady = () => {
     const playersNotReady = players.filter((player) => {
       return !player.isReady && !player.isHost;
     });
     if (playersNotReady.length > 0) {
-      setErrorMessage("Players not ready.");
-      setIsError(true);
-      return false;
+      handleError("Players not ready.");
     }
     if (players.length <= 1) {
-      setErrorMessage("Need at least 2 players.");
-      setIsError(true);
-      return false;
+      handleError("Need at least 2 players.");
     }
     if (!playerPiece) {
-      setErrorMessage("Select a piece.");
-      setIsError(true);
-      return false;
+      handleError("Select a piece.");
     }
     if (sessionCookie?.board?.winBy > sessionCookie?.board?.size) {
-      setErrorMessage("Win By must be less than or equal to board size.");
-      setIsError(true);
-      return false;
+      handleError("Win By must be less than or equal to board size.");
     }
     setIsError(false);
     return true;
@@ -104,6 +104,7 @@ export default function HostLobby({
     };
     if (botsInLobby.length < 10) {
       createBot();
+      playAddBotSound();
     }
   };
   return (
@@ -113,8 +114,8 @@ export default function HostLobby({
         <Grid item container sx={{ textAlign: "center" }} spacing={6}>
           <Grid item xs={12} sm={6}>
             <Settings
-            winBy={winBy}
-            setWinBy={(props) =>setWinBy(props)}
+              winBy={winBy}
+              setWinBy={(props) => setWinBy(props)}
               color={color}
               setColor={(props) => setColor(props)}
               size={size}

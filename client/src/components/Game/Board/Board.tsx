@@ -17,13 +17,11 @@ interface BoardProps {
   newMove: NewMove;
   turnNumber: number;
 
-  
   setGameStatus: (status: GameStatus) => void;
   gameStatus: GameStatus;
   sizeOfBoardPiece: { mobile: string; desktop: string };
   board: number[][];
   boardColor: RgbaColor;
- 
   playerPieces: PlayerPieces[];
   piece: JSX.Element | string;
   winBy: number;
@@ -35,15 +33,11 @@ interface BoardProps {
 export default function Board({
   newMove,
   turnNumber,
-
   setGameStatus,
-  
   gameStatus,
-  
   board,
   sizeOfBoardPiece,
   boardColor,
- 
   playerPieces,
   winBy,
   boardSize,
@@ -59,14 +53,13 @@ export default function Board({
           {row.map((tile: number, tileIdx: number) => (
             <>
               <BoardAnimator
-              isCountDownFinished={ isCountDownFinished}
+                isCountDownFinished={isCountDownFinished}
                 key={rowIdx * tileIdx}
                 move={{ rowIdx: rowIdx, tileIdx: tileIdx }}
                 win={gameStatus.win}
                 beforeColor={boardColor}
                 delay={(rowIdx * tileIdx === 0 ? 0 : rowIdx * tileIdx) * 10}
                 boardRenderTime={200 * boardSize}
-              
               >
                 <Tile
                   key={rowIdx * tileIdx}

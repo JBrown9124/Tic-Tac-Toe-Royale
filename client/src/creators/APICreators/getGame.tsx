@@ -22,7 +22,7 @@ const getGame = async (
 
   setLobby: (lobby: Lobby) => void,
   setPiece: (piece: string) => void,
-  setSessionCookie:Function
+  setSessionCookie: Function
 ): Promise<void> => {
   try {
     const { lobby }: { lobby: Lobby } = await saveGetGame(body);
@@ -30,15 +30,22 @@ const getGame = async (
       await rejoinRoom(lobby.hostSid);
     }
     lobby.players.map((player: Player) => {
-      if (player.playerId === body.playerId) {
+      if (
+        typeof player.piece === "string" &&
+        player.playerId === body.playerId
+      ) {
         setPiece(player.piece);
       }
     });
     return setLobby(lobby);
   } catch (e) {
-    console.log("Failed to get Game! Please try refreshing your browser first. If that does not work clear your cookies for this website. Error"+e);
-    setSessionCookie("command", "welcome", { path: "/" });
-    setSessionCookie("lobbyId", 0, {path: "/"})
+    setSessionCookie("command", "quit", { path: "/" });
+    console.log(
+      "Failed to get game while in lobby! Please try refreshing your browser first. If that does not work clear your cookies for this website. Error" +
+        e
+    );
+    
+
   }
 };
 
