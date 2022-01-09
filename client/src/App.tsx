@@ -155,68 +155,6 @@ function App() {
   //   socket.removeAllListeners("player-loaded-game");
   //   socket.removeAllListeners();
   // });
-  useCommands({
-    sessionCookie,
-    lobby,
-    lobbyId,
-    setSessionCookie,
-    setLobby,
-    setGameStatus,
-    setHostColor,
-    setHostWinBy,
-    setHostSize,
-    setIsLobbyReceived,
-    setPieceSelection,
-    setIsLobbyFound,
-  });
-  useSocket({
-    lobby,
-    setLobby,
-    setPieceSelection,
-    sessionCookie,
-    setSessionCookie,
-    setNewMove,
-    setGameStatus,
-  });
-  useMoveHandler({
-    botCanMove,
-    lobby,
-    gameStatus,
-    isHost,
-    sessionCookie,
-    board,
-    setGameStatus,
-    newMove,
-  });
-  useEffect(() => {
-    if (sessionCookie.command === "begin" && isLobbyReceived) {
-      const setUpGame = async () => {
-        await getPlayerPieces(
-          turnNumber,
-          lobby.players,
-          setPiece,
-          sizeOfBoardPiece,
-          setPlayerPieces,
-          lobby.board.color,
-          sessionCookie.playerId,
-          setIsHost,
-          setTurnNumber,
-          playerPieces
-        );
-        const boardCreated = await createBoard(
-          setBoard,
-          lobby.board.size,
-          lobby.board.moves
-        );
-
-        setIsBoardCreated(boardCreated);
-      };
-      if (lobby.board.color) {
-        setUpGame();
-      }
-    }
-  }, [isLobbyReceived]);
-
   const quitGame = () => {
     playLeaveSound();
     setBotCanMove(false);
@@ -273,6 +211,70 @@ function App() {
     };
     startGame(reqBody, setSessionCookie);
   };
+  useCommands({
+    sessionCookie,
+    lobby,
+    lobbyId,
+    setSessionCookie,
+    setLobby,
+    setGameStatus,
+    setHostColor,
+    setHostWinBy,
+    setHostSize,
+    setIsLobbyReceived,
+    setPieceSelection,
+    setIsLobbyFound,
+  });
+  useSocket({
+    lobby,
+    setLobby,
+    setPieceSelection,
+    sessionCookie,
+    setSessionCookie,
+    setNewMove,
+    setGameStatus,
+    
+  });
+  useMoveHandler({
+    botCanMove,
+    lobby,
+    gameStatus,
+    isHost,
+    sessionCookie,
+    board,
+    setGameStatus,
+    newMove,
+  });
+  useEffect(() => {
+    if (sessionCookie.command === "begin" && isLobbyReceived) {
+      const setUpGame = async () => {
+        await getPlayerPieces(
+          turnNumber,
+          lobby.players,
+          setPiece,
+          sizeOfBoardPiece,
+          setPlayerPieces,
+          lobby.board.color,
+          sessionCookie.playerId,
+          setIsHost,
+          setTurnNumber,
+          playerPieces
+        );
+        const boardCreated = await createBoard(
+          setBoard,
+          lobby.board.size,
+          lobby.board.moves
+        );
+
+        setIsBoardCreated(boardCreated);
+      };
+      if (lobby.board.color) {
+        setUpGame();
+      }
+    }
+  }, [isLobbyReceived]);
+
+  
   return (
     <>
       {/* <LobbyContext.Provider value={lobby}> */}
