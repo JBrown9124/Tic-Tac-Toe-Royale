@@ -29,6 +29,8 @@ interface GameProps {
   playerId: string;
   isHost: boolean;
   setIsHost: (isHost: boolean) => void;
+  playerWhoLeft: string;
+  
 }
 export default function Game({
   newMove,
@@ -42,6 +44,7 @@ export default function Game({
   playerId,
   isHost,
   setIsHost,
+  playerWhoLeft,
 }: GameProps) {
   const [playLeaveSound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/floorDrumBackButton.mp3"
@@ -57,6 +60,19 @@ export default function Game({
   const [board, setBoard] = useState<number[][]>([[]]);
   const [playerPieces, setPlayerPieces] = useState<Player[]>([]);
   const sizeOfBoardPiece = determineSizeOfPiece(lobby?.board?.size);
+  useEffect(() => {
+    setPlayerPieces(
+      playerPieces.filter((playerPiece) => {
+        return playerPiece.sessionId !== playerWhoLeft;
+      })
+    );
+    playerPieces.map((playerPiece,idx) =>{return playerPiece.turnNumber=idx+1})
+    const whoTurn = gameStatus.whoTurn
+    setGameStatus({
+      win: { whoWon: null, type: null, winningMoves: null },
+      whoTurn: whoTurn >= playerPieces.length ? 1:whoTurn,
+    })
+  }, [playerWhoLeft]);
   useMoveHandler({
     botCanMove,
     lobby,

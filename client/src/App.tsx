@@ -34,16 +34,17 @@ function App() {
   });
   const [hostSize, setHostSize] = useState<number>(3);
   const [pieceSelection, setPieceSelection] = useState("");
-  const [isHost, setIsHost] = useState(false)
+  const [isHost, setIsHost] = useState(false);
+  const [playerWhoLeft, setPlayerWhoLeft]=useState("")
   const [newMove, setNewMove] = useState<NewMove>({
-    turnNumber: 0,
+    turnNumber: 1,
     rowIdx: 0,
     tileIdx: 0,
     win: { whoWon: null, type: null, winningMoves: null },
   });
   const [gameStatus, setGameStatus] = useState<GameStatus>({
     win: { whoWon: null, type: null, winningMoves: null },
-    whoTurn: 0,
+    whoTurn: 1,
   });
   const [lobby, setLobby] = useState<Lobby>({
     hostSid: 0,
@@ -57,7 +58,7 @@ function App() {
     players: [],
     gameStatus: {
       win: { whoWon: null, type: null, winningMoves: null },
-      whoTurn: 0,
+      whoTurn: 1,
     },
   });
 
@@ -81,7 +82,6 @@ function App() {
     action,
     lobbyId,
     lobby,
-
     setLobby,
     setGameStatus,
     setHostColor,
@@ -92,13 +92,13 @@ function App() {
     setIsLobbyFound,
     setPlayerId,
     setLobbyId,
-
     setPlayerName,
     playerName,
     playerId,
     setAction,
     isHost,
-    setNewMove
+    setNewMove,
+  
   });
   useSocket({
     lobby,
@@ -108,8 +108,8 @@ function App() {
     setAction,
     setNewMove,
     setGameStatus,
-
     playerId,
+    setPlayerWhoLeft,
   });
 
   return (
@@ -133,6 +133,7 @@ function App() {
             action === "begin") && (
             <Grid item>
               <Game
+                playerWhoLeft={playerWhoLeft}
                 setGameStatus={(props) => setGameStatus(props)}
                 gameStatus={gameStatus}
                 newMove={newMove}
@@ -143,14 +144,14 @@ function App() {
                 setAction={(props) => setAction(props)}
                 playerId={playerId}
                 isHost={isHost}
-                setIsHost={(props)=>setIsHost(props)}
+                setIsHost={(props) => setIsHost(props)}               
               />
             </Grid>
           )}
           {action !== "begin" && (
             <PregameModal
-            playerName={playerName}
-            setPlayerName={(props)=>setPlayerName(props)}
+              playerName={playerName}
+              setPlayerName={(props) => setPlayerName(props)}
               handleStart={() => handleStart()}
               action={action}
               isOpen={true}

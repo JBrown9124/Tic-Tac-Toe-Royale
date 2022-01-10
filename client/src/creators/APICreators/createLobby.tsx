@@ -4,8 +4,9 @@ import url from "../../storage/url";
 import { Lobby } from "../../Models/Lobby";
 interface BodyProps {
   playerName: string;
+  hostSid:string,
 }
-const saveLobby = async (body: { playerName: string; hostSid: string }) => {
+const saveLobby = async (body: BodyProps) => {
   const { data } = await axios.post(`${url}/api/lobby`, body);
   return data;
 };
@@ -13,11 +14,11 @@ const sendLobby = (data: any) => {
   socket.emit("new-lobby", data.lobbyId);
 };
 const createLobby = async (
-  body: BodyProps
+  playerName:string,
 ): Promise<{ lobby: Lobby; playerId: string } | undefined> => {
   try {
     const data = await saveLobby({
-      playerName: body.playerName,
+      playerName: playerName,
       hostSid: socket.id,
     });
     sendLobby(data.lobby);

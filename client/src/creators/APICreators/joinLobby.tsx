@@ -6,6 +6,7 @@ import { Player } from "../../Models/Player";
 interface BodyProps {
   lobbyId: number;
   playerName: string;
+  sessionId:string|null;
 }
 interface DataProps {
   lobby: Lobby;

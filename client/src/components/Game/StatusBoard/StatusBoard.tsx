@@ -50,11 +50,11 @@ export default function StatusBoard({
       <Grid
         container
         sx={{
-          background: "white",
+         
           borderRadius: "15px",
           padding: "5px",
 
-          bgcolor: "background.paper",
+          bgcolor: "#dedfe8",
           border: "1px solid #000",
           boxShadow: 10,
         }}

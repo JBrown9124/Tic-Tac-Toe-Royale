@@ -16,8 +16,9 @@ interface PlayerListProps {
   players: Player[];
   playerPiece: string;
   playerName:string
+  playerId:string
 }
-export default function PlayerList({ players, playerPiece,playerName }: PlayerListProps) {
+export default function PlayerList({ players, playerPiece,playerName, playerId}: PlayerListProps) {
 
   const pieces = createPiece("black");
   return (
@@ -40,7 +41,7 @@ export default function PlayerList({ players, playerPiece,playerName }: PlayerLi
               <>
                 {" "}
                 {players.map((player: Player, idx: number) =>
-                  player.name === playerName ? (
+                  player.playerId === playerId ? (
                     <ListItem key={idx}>
                       {!player.isHost && (
                         <ListItemIcon>

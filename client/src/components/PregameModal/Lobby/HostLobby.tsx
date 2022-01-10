@@ -64,16 +64,16 @@ export default function HostLobby({
       return !player.isReady && !player.isHost;
     });
     if (playersNotReady.length > 0) {
-      handleError("Players not ready.");
+      return handleError("Players not ready.");
     }
     if (players.length <= 1) {
-      handleError("Need at least 2 players.");
+      return handleError("Need at least 2 players.");
     }
     if (!playerPiece) {
-      handleError("Select a piece.");
+      return handleError("Select a piece.");
     }
     if (winBy > size) {
-      handleError("Win By must be less than or equal to board size.");
+      return handleError("Win By must be less than or equal to board size.");
     }
     setIsError(false);
     return true;
@@ -88,6 +88,7 @@ export default function HostLobby({
       },
       lobbyId: lobbyId,
       hostSid: hostSid,
+      
     };
     playerReady(reqBody);
   };
@@ -100,6 +101,7 @@ export default function HostLobby({
       const reqBody = {
         lobbyId: lobbyId,
         playerName: "BOTPASSPASS",
+        sessionId:null
       };
       const response = await joinLobby(reqBody);
       if (typeof response !== "string") {
@@ -129,7 +131,7 @@ export default function HostLobby({
             />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <PlayerList playerName={playerName} players={players} playerPiece={playerPiece} />
+            <PlayerList playerId={playerId} playerName={playerName} players={players} playerPiece={playerPiece} />
             <Button onClick={() => handleAddABot()}> Add a Bot</Button>
           </Grid>
         </Grid>

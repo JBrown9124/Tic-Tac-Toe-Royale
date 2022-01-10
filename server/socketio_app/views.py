@@ -19,7 +19,16 @@ def connect(sid, environ):
     print(sio.rooms(sid))
 
     sio.emit("my_response", {"data": "Connected", "count": 0}, room=sid)
+@sio.event
+def disconnect(sid):
+    print(sio.rooms(sid))
+    rooms = sio.rooms(sid)
+    hostSid = None
+    for room in rooms:
+        hostSid = room
+        sio.leave_room(sid, room)
 
+    sio.emit("player-disconnected", sid, room=hostSid)
 
 @sio.on("new-lobby")
 def new_lobby(sid, lobby):
@@ -44,16 +53,15 @@ def player_joined(sid, data):
 def player_left(sid, data):
   
     leaving_player = data["player"]
+    new_host = data["newHost"]
     hostSid = data["hostSid"]
     rooms = sio.rooms(sid)
     for room in rooms:
         sio.leave_room(sid, room)
-    if sid == hostSid:
-         leaving_player = "HOST"
-    sio.emit("player-leave-lobby", leaving_player, room=hostSid, skip_sid=sid)
+   
+    sio.emit("player-leave-lobby", {"removedPlayer":leaving_player, "newHost":new_host}, room=hostSid, skip_sid=sid)
 
-    if sid == hostSid:
-        sio.close_room(hostSid)
+  
       
   
     

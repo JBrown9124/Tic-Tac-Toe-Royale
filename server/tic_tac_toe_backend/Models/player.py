@@ -1,10 +1,12 @@
 import uuid
+
+
 class Player:
     def __init__(
         self,
         name,
-  
-         turn_number=1,
+        session_id,
+        turn_number=1,
         piece=None,
         is_loaded=False,
         is_host=False,
@@ -17,6 +19,7 @@ class Player:
         self.player_id = str(uuid.uuid4())
         self.turn_number = turn_number
         self.is_ready = is_ready
+        self.session_id = session_id
 
     def to_dict(self):
         return {
@@ -27,6 +30,7 @@ class Player:
             "turnNumber": self.turn_number,
             "isReady": self.is_ready,
             "isLoaded": self.is_loaded,
+            "sessionId": self.session_id,
         }
 
     def __repr__(self):
@@ -38,6 +42,7 @@ class Player:
             playerId: {self.player_id}, \n \
             turnNumber: {self.turn_number},\n \
                 isReady: {self.is_ready},\n \
-                    isLoaded: {self.is_loaded},\
+                    isLoaded: {self.is_loaded}, \n \
+                        sessionId:{self.session_id}\
             "
         )

@@ -27,7 +27,7 @@ const getPlayerPieces = async (
   playerPieces: Player[]
 ) => {
   return players.forEach((player: Player) => {
-    console.log(sizeOfBoardPiece, "SIZEOFBOARDPIECE");
+    
     const defaultPieces = createPiece(
       boardColor.r * 0.299 + boardColor.g * 0.587 + boardColor.b * 0.114 > 186
         ? "black"

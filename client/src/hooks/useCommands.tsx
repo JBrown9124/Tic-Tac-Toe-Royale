@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Lobby } from "../Models/Lobby";
 import { GameStatus } from "../Models/GameStatus";
+import {socket} from "../socket"
 import createLobby from "../creators/APICreators/createLobby";
 import joinLobby from "../creators/APICreators/joinLobby";
 import leaveLobby from "../creators/APICreators/leaveLobby";
@@ -30,6 +31,7 @@ interface UseCommandsProps {
   setAction: (action: string) => void;
   isHost: boolean;
   setNewMove:(newMove:NewMove) => void;
+ 
 }
 
 export default function useCommands({
@@ -52,21 +54,21 @@ export default function useCommands({
   playerName,
   playerId,
   setAction,
-  setNewMove
+  setNewMove,
+ 
 }: UseCommandsProps) {
   const [playJoinOrStart] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/joinOrStartSound.mp3"
   );
   useEffect(() => {
     if (action === "create") {
-      const reqBody = { playerName: playerName };
-      createLobby(reqBody).then((response) => {
+      
+      createLobby(playerName).then((response) => {
         if (response) {
           setLobbyId(response.lobby.lobbyId);
           setLobby(response.lobby);
          
-          setHostColor({ r: 255, g: 255, b: 255, a: 0.9 });
-          setHostWinBy(2);
+        
           setPlayerId(response.playerId);
         }
       });
@@ -74,6 +76,7 @@ export default function useCommands({
       const reqBody = {
         lobbyId: lobbyId,
         playerName: playerName,
+        sessionId:socket.id,
       };
       joinLobby(reqBody).then((response) => {
         if (typeof response === "string") {
@@ -99,6 +102,7 @@ export default function useCommands({
           isReady: false,
           playerId: playerId,
           playerLoaded: false,
+          sessionId:socket.id
         },
         hostSid: lobby.hostSid,
       };
@@ -114,21 +118,22 @@ export default function useCommands({
         players: [],
         gameStatus: {
           win: { whoWon: null, type: null, winningMoves: null },
-          whoTurn: 0,
+          whoTurn: 1,
         },
       })
       setGameStatus({
         win: { whoWon: null, type: null, winningMoves: null },
-        whoTurn: 0,
+        whoTurn: 1,
       });
       setNewMove({
-        turnNumber: 0,
+        turnNumber: 1,
         rowIdx: 0,
         tileIdx: 0,
         win: { whoWon: null, type: null, winningMoves: null },
       });
       setIsLobbyReceived(false);
       setIsLobbyFound(true);
+    
       leaveLobby(reqBody);
     } else if (action === "begin") {
       getStartGame(

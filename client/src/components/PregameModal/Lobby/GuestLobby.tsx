@@ -100,6 +100,7 @@ export default function GuestLobby({
           </Grid>
           <Grid item xs={12} md={6}>
             <PlayerList
+            playerId={playerId}
               playerName={playerName}
               players={lobby.players}
               playerPiece={playerPiece}

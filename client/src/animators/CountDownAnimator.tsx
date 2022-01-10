@@ -64,7 +64,7 @@ export default function CountDownAnimator({
           clearTimeout(t);
         };
       } else if (index === 5) {
-        setTimeout(() => setBotCanMove(true), 10000);
+        setTimeout(() => setBotCanMove(true), 7000);
       }
     }
   }, [startCountDown, index]);

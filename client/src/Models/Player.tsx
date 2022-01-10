@@ -1,9 +1,10 @@
 export interface Player {
-  name: string;
+  name: string|null;
   piece: string| JSX.Element;
   isHost:boolean;
   turnNumber:number;
   isReady:boolean;
   playerId:string;
-  playerLoaded:boolean
+  playerLoaded:boolean,
+  sessionId:string;
 }
