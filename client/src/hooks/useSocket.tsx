@@ -21,27 +21,26 @@ export default function useSocket({
   lobby,
   setLobby,
   setPieceSelection,
- setPlayerWhoLeft,
+  setPlayerWhoLeft,
   setNewMove,
   setGameStatus,
   action,
   playerId,
   setAction,
-  
 }: UseSocketProps) {
   const lobbyRef = useRef(lobby);
   const playerIdRef = useRef(playerId);
-  const actionRef = useRef(action)
+  const actionRef = useRef(action);
   useEffect(() => {
     lobbyRef.current = lobby;
   }, [lobby]);
   useEffect(() => {
-playerIdRef.current = playerId
-  },[playerId])
+    playerIdRef.current = playerId;
+  }, [playerId]);
   useEffect(() => {
-    actionRef.current = action
-      },[action])
-  
+    actionRef.current = action;
+  }, [action]);
+
   useEffect(() => {
     socket.on("connect", () => {
       console.log("Client Connected");
@@ -50,26 +49,26 @@ playerIdRef.current = playerId
         let newPlayerList = lobbyCopy.players.filter((player) => {
           return player.playerId !== data.removedPlayer.playerId;
         });
-      
+
         if (data.newHost) {
           lobbyCopy.players.map((player) => {
             if (player.playerId === data.newHost.playerId) {
               player.isHost = true;
-              
             }
-            
           });
-          if (actionRef.current !== "begin" && data.newHost.playerId === playerIdRef.current){
-            setAction("create")
+          if (
+            actionRef.current !== "begin" &&
+            data.newHost.playerId === playerIdRef.current
+          ) {
+            setAction("create");
           }
-        
         }
-        
+
         lobbyCopy.players = newPlayerList;
 
         setLobby({ ...lobbyCopy });
         if (actionRef.current === "begin") {
-          setPlayerWhoLeft(data.removedPlayer.sessionId)
+          setPlayerWhoLeft(data.removedPlayer.sessionId);
         }
       });
       socket.on("player-ready", () => {
@@ -101,6 +100,7 @@ playerIdRef.current = playerId
         //   return player.sessionId !== playerSessionId;
         // });
         // lobbyCopy.players = updatedPlayers;
+
         const reqBody = {
           lobbyId: lobbyCopy.lobbyId,
           player: {
@@ -117,9 +117,15 @@ playerIdRef.current = playerId
         };
         leaveLobby(reqBody).then((response) => {
           if (response) {
-            setLobby(response);
+            setLobby(response.data.lobby);
             if (actionRef.current === "begin") {
-              setPlayerWhoLeft(playerSessionId)
+              setPlayerWhoLeft(playerSessionId);
+            }
+            if (
+              actionRef.current !== "begin" &&
+              response.data.newHost.playerId === playerIdRef.current
+            ) {
+              setAction("create");
             }
           }
         });
