@@ -5,10 +5,10 @@ from .win import Win
 class GameStatus:
     def __init__(
         self,
-        players_amount=1,
+        players_amount=2,
         win: Dict[str, Union[str, int, List[dict]]] = Win().to_dict(),
     ):
-        self.whoTurn = randrange(players_amount)
+        self.whoTurn = randrange(1,players_amount)
         self.win = win
 
     def to_dict(self):

@@ -7,4 +7,5 @@ export interface Player {
   playerId:string;
   playerLoaded:boolean,
   sessionId:string;
+  height?:number
 }

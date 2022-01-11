@@ -29,18 +29,18 @@ class Board(APIView):
         winner_turn_number = win.get("whoWon")
         winning_moves = win.get("winningMoves")
         win_type = win.get("type")
-        last_turn = new_move.get("turnNumber")
+       
         lobby_id = body.get("lobbyId")
-
+        
         lobby_copy = cache.get(lobby_id)
 
         lobby_players_copy = lobby_copy["players"]
         lobby_board_copy = lobby_copy["board"]
-    
-        
+        lobby_game_status_copy = lobby_copy["gameStatus"]
+        last_turn = lobby_game_status_copy["whoTurn"]
         next_turn = 1 if last_turn == len(lobby_players_copy) else last_turn + 1
 
-        lobby_game_status_copy = lobby_copy["gameStatus"]
+        
         lobby_game_status_copy["whoTurn"] = next_turn
 
         if winner_turn_number:

@@ -33,7 +33,7 @@ class BotAction(APIView):
         lobby_board_copy = lobby_copy["board"]
 
         if playerId[:3] == "BOT":
-            bot_move = Bot(board_size=lobby_board_copy["size"],moves=lobby_board_copy["moves"],win_by=lobby_board_copy["winBy"],player_making_move=bot_number).scan_moves()
+            bot_move = Bot(board_size=lobby_board_copy["size"],moves=lobby_board_copy["moves"],win_by=lobby_board_copy["winBy"],player_making_move=playerId).scan_moves()
             return JsonResponse(bot_move.to_dict())
 
     def delete(self, request: Request):

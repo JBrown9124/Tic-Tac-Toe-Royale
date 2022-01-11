@@ -3,29 +3,31 @@ import {Lobby} from "../Models/Lobby"
 import {GameStatus} from "../Models/GameStatus"
 import botNewMove from "../creators/APICreators/botNewMove"
 import determineWinner from "../creators/BoardCreators/determineWinner"
+import {Player} from "../Models/Player"
 import {NewMove} from "../Models/NewMove"
 import useSound from "use-sound"
 interface UseMoveHandler{
     botCanMove:boolean,
     lobby:Lobby,
-    gameStatus:GameStatus
+    gameStatus:GameStatus,
+    playerPieces:Player[]
     setGameStatus:(gameStatus:GameStatus)=>void,
     isHost:boolean,
    action:string, 
-    board:number[][],
+    board:(string|number)[][],
     newMove:NewMove
 
 
 
 }
-export default function useMoveHandler({botCanMove, lobby, gameStatus, isHost, action, board, setGameStatus, newMove}:UseMoveHandler){
+export default function useMoveHandler({botCanMove, lobby, gameStatus, isHost, action, board, setGameStatus, newMove, playerPieces}:UseMoveHandler){
     const [startOtherPlayerMoveSound] = useSound(
         process.env.PUBLIC_URL + "static/assets/sounds/otherPlayerMoveSound.mp3"
       );
     useEffect(() => {
         if (botCanMove) {
           const findIfBot = async () => {
-            return lobby.players.find((player) => {
+            return playerPieces.find((player) => {
               return (
                 player.turnNumber === gameStatus.whoTurn &&
                 player.playerId.substring(0, 3) === "BOT"
@@ -51,7 +53,7 @@ export default function useMoveHandler({botCanMove, lobby, gameStatus, isHost, a
                     botNewMoveResponse.tileIdx,
                     board,
                     lobby.board.size,
-                    botNewMoveResponse.turnNumber,
+                    botNewMoveResponse.playerId,
     
                     lobby.board.winBy,
                     lobby.lobbyId,
@@ -67,8 +69,9 @@ export default function useMoveHandler({botCanMove, lobby, gameStatus, isHost, a
         }
       }, [gameStatus, botCanMove]);
       useEffect(() => {
-        if (newMove.turnNumber !== 0) {
-          board[newMove.rowIdx][newMove.tileIdx] = newMove.turnNumber;
+        if (newMove.playerId !== "") {
+          board[newMove.rowIdx][newMove.tileIdx] = newMove.playerId;
+          
           startOtherPlayerMoveSound();
         }
       }, [newMove]);

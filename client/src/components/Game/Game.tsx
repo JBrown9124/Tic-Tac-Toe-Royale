@@ -1,6 +1,6 @@
 import Grid from "@mui/material/Grid";
 import { Player } from "../../Models/Player";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useLayoutEffect } from "react";
 import determineWinner from "../../creators/BoardCreators/determineWinner";
 import createBoard from "../../creators/BoardCreators/createBoard";
 import { useCookies } from "react-cookie";
@@ -16,6 +16,7 @@ import StatusBoardAnimator from "../../animators/StatusBoardAnimator";
 import StatusBoard from "./StatusBoard/StatusBoard";
 import CountDownAnimator from "../../animators/CountDownAnimator";
 import useMoveHandler from "../../hooks/useMoveHandler";
+import sortPlayerPieces from "../../creators/BoardCreators/sortPlayerPieces";
 
 interface GameProps {
   newMove: NewMove;
@@ -30,7 +31,6 @@ interface GameProps {
   isHost: boolean;
   setIsHost: (isHost: boolean) => void;
   playerWhoLeft: string;
-  
 }
 export default function Game({
   newMove,
@@ -57,21 +57,32 @@ export default function Game({
 
   const [piece, setPiece] = useState<JSX.Element | string>("");
 
-  const [board, setBoard] = useState<number[][]>([[]]);
+  const [board, setBoard] = useState<(number | string)[][]>([[]]);
   const [playerPieces, setPlayerPieces] = useState<Player[]>([]);
   const sizeOfBoardPiece = determineSizeOfPiece(lobby?.board?.size);
   useEffect(() => {
-    setPlayerPieces(
-      playerPieces.filter((playerPiece) => {
+    const removePlayerFromPieces = async (): Promise<Player[]> => {
+      const updatedPieces = playerPieces.filter((playerPiece) => {
         return playerPiece.sessionId !== playerWhoLeft;
-      })
-    );
-    playerPieces.map((playerPiece,idx) =>{return playerPiece.turnNumber=idx+1})
-    const whoTurn = gameStatus.whoTurn
-    setGameStatus({
-      win: { whoWon: null, type: null, winningMoves: null },
-      whoTurn: whoTurn >= playerPieces.length ? 1:whoTurn,
-    })
+      });
+      updatedPieces.map(
+        (playerPiece, idx) => (playerPiece.turnNumber = idx + 1)
+      );
+      return updatedPieces;
+    };
+    removePlayerFromPieces().then((updatedPieces) => {
+      setPlayerPieces(updatedPieces);
+      const whoTurn = gameStatus.whoTurn;
+      setGameStatus({
+        win: {
+          whoWon:
+            updatedPieces.length === 1 ? updatedPieces[0].turnNumber : null,
+          type: null,
+          winningMoves: null,
+        },
+        whoTurn: whoTurn >= playerPieces.length ? 1 : whoTurn,
+      });
+    });
   }, [playerWhoLeft]);
   useMoveHandler({
     botCanMove,
@@ -82,6 +93,7 @@ export default function Game({
     board,
     setGameStatus,
     newMove,
+    playerPieces,
   });
   const quitGame = () => {
     playLeaveSound();
@@ -110,6 +122,8 @@ export default function Game({
           setTurnNumber,
           playerPieces
         );
+        // const { whoTurn } = gameStatus;
+        // await sortPlayerPieces({ playerPieces, setPlayerPieces, whoTurn });
         const boardCreated = await createBoard(
           setBoard,
           lobby.board.size,
@@ -124,6 +138,16 @@ export default function Game({
     }
   }, [isLobbyReceived]);
 
+  // useEffect(() => {
+  //   if (isBoardCreated) {
+  //     let lastTurn = playerPieces.pop();
+  //     console.log(lastTurn, "LASTTURN");
+  //     if (lastTurn !== undefined && lastTurn === playerPieces[playerPieces.length - 1]) {
+  //       playerPieces.unshift(lastTurn);
+  //     }
+      
+  //   }
+  // }, [gameStatus.whoTurn]);
   return (
     <>
       <Grid container direction="row" spacing={{ md: 0, xs: 2 }}>
@@ -142,6 +166,9 @@ export default function Game({
             delay={800}
           >
             <StatusBoard
+              isCountDownFinished={isCountDownFinished}
+              isBoardCreated={isBoardCreated}
+              setPlayerPieces={(props) => setPlayerPieces(props)}
               winBy={lobby.board.winBy}
               gameStatus={gameStatus}
               playerPieces={playerPieces}
@@ -158,6 +185,7 @@ export default function Game({
           md={8}
         >
           <Board
+            playerId={playerId}
             isCountDownFinished={isCountDownFinished}
             boardColor={lobby.board.color}
             gameStatus={gameStatus}

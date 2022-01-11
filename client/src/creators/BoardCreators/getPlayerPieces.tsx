@@ -26,6 +26,7 @@ const getPlayerPieces = async (
   setTurnNumber: (turnNumber: number) => void,
   playerPieces: Player[]
 ) => {
+  
   return players.forEach((player: Player) => {
     
     const defaultPieces = createPiece(

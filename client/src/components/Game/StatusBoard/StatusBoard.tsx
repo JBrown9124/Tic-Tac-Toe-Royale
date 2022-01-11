@@ -8,12 +8,16 @@ import { sizeOfPiece } from "../../../creators/BoardCreators/sizeOfPiece";
 import { useEffect, useState } from "react";
 import { useSound } from "use-sound";
 import Button from "@mui/material/Button";
+import PlayerTurnOrderAnimator from "../../../animators/PlayerTurnOrderAnimator";
 interface StatusBoardProps {
   playerPieces: Player[];
   gameStatus: GameStatus;
   winBy: number;
   turnNumber: number;
   quitGame: () => void;
+  isBoardCreated: boolean;
+  isCountDownFinished: boolean;
+  setPlayerPieces: (playerPieces: Player[]) => void;
 }
 export default function StatusBoard({
   playerPieces,
@@ -21,8 +25,10 @@ export default function StatusBoard({
   winBy,
   turnNumber,
   quitGame,
+  setPlayerPieces,
+  isBoardCreated,
+  isCountDownFinished,
 }: StatusBoardProps) {
-  
   const [startWinSound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/winnerSound.mp3"
   );
@@ -32,7 +38,6 @@ export default function StatusBoard({
   const [startTieSound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/tie.mp3"
   );
- 
 
   useEffect(() => {
     if (gameStatus.win.whoWon) {
@@ -50,7 +55,6 @@ export default function StatusBoard({
       <Grid
         container
         sx={{
-         
           borderRadius: "15px",
           padding: "5px",
 
@@ -61,6 +65,7 @@ export default function StatusBoard({
         direction="column"
         textAlign="center"
       >
+        {/* <PlayerTurnOrderAnimator  isCountDownFinished={ isCountDownFinished} isBoardCreated={isBoardCreated} setPlayerPieces={(props)=>{setPlayerPieces(props)}}playerPieces={playerPieces} whoTurn={gameStatus.whoTurn}/> */}
         <Grid container direction="column">
           <Grid item sx={{ p: 1 }}>
             {gameStatus.win.whoWon === "tie" ? (
@@ -89,7 +94,7 @@ export default function StatusBoard({
         <Grid item>
           {playerPieces.map((player, idx) => {
             if (gameStatus.win.whoWon) {
-              if (player.turnNumber === gameStatus.win.whoWon ) {
+              if (player.turnNumber === gameStatus.win.whoWon) {
                 return player.piece;
               }
             } else if (player.turnNumber === gameStatus.whoTurn) {

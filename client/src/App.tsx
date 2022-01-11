@@ -35,9 +35,9 @@ function App() {
   const [hostSize, setHostSize] = useState<number>(3);
   const [pieceSelection, setPieceSelection] = useState("");
   const [isHost, setIsHost] = useState(false);
-  const [playerWhoLeft, setPlayerWhoLeft]=useState("")
+  const [playerWhoLeft, setPlayerWhoLeft] = useState("");
   const [newMove, setNewMove] = useState<NewMove>({
-    turnNumber: 1,
+   playerId:"",
     rowIdx: 0,
     tileIdx: 0,
     win: { whoWon: null, type: null, winningMoves: null },
@@ -98,7 +98,6 @@ function App() {
     setAction,
     isHost,
     setNewMove,
-  
   });
   useSocket({
     lobby,
@@ -144,7 +143,7 @@ function App() {
                 setAction={(props) => setAction(props)}
                 playerId={playerId}
                 isHost={isHost}
-                setIsHost={(props) => setIsHost(props)}               
+                setIsHost={(props) => setIsHost(props)}
               />
             </Grid>
           )}

@@ -13,12 +13,13 @@ interface TileProps {
   chosenPiece: JSX.Element | string | undefined;
   boardColor: RgbaColor;
   newMove: any;
-  value: number | JSX.Element;
+  value: number | JSX.Element | string;
   playerPieces: PlayerPieces[] | undefined;
   turnNumber: number;
   updateBoardCache: () => void;
   gameStatus: GameStatus;
   sizeOfBoardPiece: { mobile: string; desktop: string };
+  playerId: string;
 }
 export const Tile = ({
   boardColor,
@@ -29,6 +30,7 @@ export const Tile = ({
   playerPieces,
   gameStatus,
   turnNumber,
+  playerId,
   sizeOfBoardPiece,
 }: TileProps) => {
   const [tile, setTile] = useState<{
@@ -71,17 +73,19 @@ export const Tile = ({
           border: `solid black 1px`,
           boxShadow: 7,
           borderColor:
-            boardColor?.r * 0.299 + boardColor?.g * 0.587 + boardColor?.b * 0.114 >
+            boardColor?.r * 0.299 +
+              boardColor?.g * 0.587 +
+              boardColor?.b * 0.114 >
             186
               ? "black"
               : "white",
         }}
       >
         <Grid item sx={{}}>
-          {value === turnNumber
+          {value === playerId
             ? chosenPiece
             : playerPieces?.map((playerPiece) => {
-                if (playerPiece.turnNumber === value) return playerPiece.piece;
+                if (playerPiece.playerId === value) return playerPiece.piece;
               })}
         </Grid>
       </Grid>

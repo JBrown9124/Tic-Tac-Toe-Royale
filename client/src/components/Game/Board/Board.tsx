@@ -16,11 +16,11 @@ import { useSound } from "use-sound";
 interface BoardProps {
   newMove: NewMove;
   turnNumber: number;
-
+  playerId:string
   setGameStatus: (status: GameStatus) => void;
   gameStatus: GameStatus;
   sizeOfBoardPiece: { mobile: string; desktop: string };
-  board: number[][];
+  board: (number|string)[][];
   boardColor: RgbaColor;
   playerPieces: PlayerPieces[];
   piece: JSX.Element | string;
@@ -44,13 +44,14 @@ export default function Board({
   lobbyHostSid,
   lobbyId,
   isCountDownFinished,
+  playerId,
   piece,
 }: BoardProps) {
   return (
     <>
-      {board.map((row: number[], rowIdx: number) => (
+      {board.map((row: (string|number)[], rowIdx: number) => (
         <Grid justifyContent="center" container>
-          {row.map((tile: number, tileIdx: number) => (
+          {row.map((tile: number|string, tileIdx: number) => (
             <>
               <BoardAnimator
                 isCountDownFinished={isCountDownFinished}
@@ -62,6 +63,7 @@ export default function Board({
                 boardRenderTime={200 * boardSize}
               >
                 <Tile
+                playerId={playerId}
                   key={rowIdx * tileIdx}
                   gameStatus={gameStatus}
                   turnNumber={turnNumber}
@@ -75,7 +77,7 @@ export default function Board({
                           board,
 
                           boardSize,
-                          turnNumber,
+                         playerId,
                           winBy,
                           lobbyId,
                           lobbyHostSid,

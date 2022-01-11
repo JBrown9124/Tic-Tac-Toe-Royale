@@ -126,7 +126,7 @@ export default function useCommands({
         whoTurn: 1,
       });
       setNewMove({
-        turnNumber: 1,
+        playerId: "",
         rowIdx: 0,
         tileIdx: 0,
         win: { whoWon: null, type: null, winningMoves: null },
