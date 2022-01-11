@@ -4,6 +4,7 @@ import PlayerList from "./PlayerList";
 import Button from "@mui/material/Button";
 import { useState } from "react";
 import playerReady from "../../../creators/APICreators/playerReady";
+import leaveLobby from "../../../creators/APICreators/leaveLobby";
 import joinLobby from "../../../creators/APICreators/joinLobby";
 import Typography from "@mui/material/Typography";
 import { Player } from "../../../Models/Player";
@@ -11,7 +12,7 @@ import { Lobby } from "../../../Models/Lobby";
 import { RgbaColor } from "react-colorful";
 import { useCookies } from "react-cookie";
 import CopyLobbyId from "./CopyLobbyId";
-import useSound from "use-sound"
+import useSound from "use-sound";
 interface PlayerListProps {
   handleLeave: () => void;
   setPiece: (piece: string) => void;
@@ -46,9 +47,8 @@ export default function HostLobby({
   winBy,
   setWinBy,
   playerName,
-  lobbyId
+  lobbyId,
 }: PlayerListProps) {
-
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [playAddBotSound] = useSound(
@@ -88,7 +88,6 @@ export default function HostLobby({
       },
       lobbyId: lobbyId,
       hostSid: hostSid,
-      
     };
     playerReady(reqBody);
   };
@@ -101,7 +100,7 @@ export default function HostLobby({
       const reqBody = {
         lobbyId: lobbyId,
         playerName: "BOTPASSPASS",
-        sessionId:null
+        sessionId: null,
       };
       const response = await joinLobby(reqBody);
       if (typeof response !== "string") {
@@ -112,6 +111,13 @@ export default function HostLobby({
       createBot();
       playAddBotSound();
     }
+  };
+  const handleRemoveBot = () => {
+    const botsInLobby = players.filter((player) => {
+      return player?.playerId?.substring(0, 3) === "BOT";
+    });
+    const lastBotMade = botsInLobby[botsInLobby.length - 1];
+    leaveLobby({ player: lastBotMade, hostSid: hostSid, lobbyId: lobbyId });
   };
   return (
     <>
@@ -131,8 +137,20 @@ export default function HostLobby({
             />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <PlayerList playerId={playerId} playerName={playerName} players={players} playerPiece={playerPiece} />
-            <Button onClick={() => handleAddABot()}> Add a Bot</Button>
+          <Grid container item  justifyContent="center" alignItems="center">
+          <Grid item>
+            <Button onClick={() => handleAddABot()}> Add Bot</Button>
+          </Grid>
+          {/* <Grid item>
+            <Button onClick={() => handleRemoveBot()}> Remove Bot</Button>
+          </Grid> */}
+        </Grid>
+            <PlayerList
+              playerId={playerId}
+              playerName={playerName}
+              players={players}
+              playerPiece={playerPiece}
+            />
           </Grid>
         </Grid>
         {isError && (
@@ -142,6 +160,7 @@ export default function HostLobby({
             </Grid>
           </Grid>
         )}
+       
         <Grid item container justifyContent="center" spacing={2}>
           <Grid item>
             <Button onClick={handleLeave}>Leave</Button>

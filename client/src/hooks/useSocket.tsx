@@ -14,6 +14,7 @@ interface UseSocketProps {
   setGameStatus: (gameStatus: GameStatus) => void;
   setPlayerWhoLeft: (playerWhoLeft: string) => void;
   setAction: (action: string) => void;
+  setIsHost: (isHost: boolean) => void;
   action: string;
   playerId: string;
 }
@@ -26,11 +27,13 @@ export default function useSocket({
   setGameStatus,
   action,
   playerId,
+  setIsHost,
   setAction,
 }: UseSocketProps) {
   const lobbyRef = useRef(lobby);
   const playerIdRef = useRef(playerId);
   const actionRef = useRef(action);
+
   useEffect(() => {
     lobbyRef.current = lobby;
   }, [lobby]);
@@ -44,6 +47,7 @@ export default function useSocket({
   useEffect(() => {
     socket.on("connect", () => {
       console.log("Client Connected");
+
       socket.on("player-leave-lobby", (data) => {
         const lobbyCopy = lobbyRef.current;
         let newPlayerList = lobbyCopy.players.filter((player) => {
@@ -61,6 +65,7 @@ export default function useSocket({
             data.newHost.playerId === playerIdRef.current
           ) {
             setAction("create");
+            setIsHost(true);
           }
         }
 
@@ -69,29 +74,10 @@ export default function useSocket({
         setLobby({ ...lobbyCopy });
         if (actionRef.current === "begin") {
           setPlayerWhoLeft(data.removedPlayer.sessionId);
+          if (data.newHost.playerId === playerIdRef.current) {
+            setIsHost(true);
+          }
         }
-      });
-      socket.on("player-ready", () => {
-        const lobbyCopy = lobbyRef.current;
-
-        setTimeout(() => {
-          getLobby(
-            {
-              lobbyId: lobbyCopy.lobbyId,
-              playerId: playerId,
-              hostSid: lobbyCopy.hostSid,
-            },
-            setLobby,
-            setPieceSelection
-          );
-        }, 500);
-      });
-      socket.on("start-game", (data) => {
-        setAction("begin");
-      });
-      socket.on("new-move", (newMove) => {
-        setNewMove(newMove.newMove);
-        setGameStatus(newMove.gameStatus);
       });
       socket.on("player-disconnected", (playerSessionId) => {
         console.log(playerSessionId);
@@ -120,16 +106,43 @@ export default function useSocket({
             setLobby(response.data.lobby);
             if (actionRef.current === "begin") {
               setPlayerWhoLeft(playerSessionId);
+              if (response.data.newHost.playerId === playerIdRef.current) {
+                setIsHost(true);
+              }
             }
             if (
               actionRef.current !== "begin" &&
               response.data.newHost.playerId === playerIdRef.current
             ) {
               setAction("create");
+              setIsHost(true);
             }
           }
         });
       });
+      socket.on("player-ready", () => {
+        const lobbyCopy = lobbyRef.current;
+
+        setTimeout(() => {
+          getLobby(
+            {
+              lobbyId: lobbyCopy.lobbyId,
+              playerId: playerId,
+              hostSid: lobbyCopy.hostSid,
+            },
+            setLobby,
+            setPieceSelection
+          );
+        }, 500);
+      });
+      socket.on("start-game", (data) => {
+        setAction("begin");
+      });
+      socket.on("new-move", (newMove) => {
+        setNewMove(newMove.newMove);
+        setGameStatus(newMove.gameStatus);
+      });
+
       socket.on("player-join-lobby", (newPlayer: Player) => {
         const lobbyCopy = lobbyRef.current;
         let playerExists = lobbyCopy.players.filter((player: Player) => {
@@ -152,9 +165,11 @@ export default function useSocket({
         }
       });
     });
+
     socket.off("connect_error", () => {
       console.log("socket error");
     });
+
     return () => {
       socket.on("disconnect", () => {
         socket.emit("disconnect", {

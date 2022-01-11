@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { useSound } from "use-sound";
 import Button from "@mui/material/Button";
 import PlayerTurnOrderAnimator from "../../../animators/PlayerTurnOrderAnimator";
+
 interface StatusBoardProps {
   playerPieces: Player[];
   gameStatus: GameStatus;
@@ -38,9 +39,14 @@ export default function StatusBoard({
   const [startTieSound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/tie.mp3"
   );
-
+  const [winner, setWinner] = useState<Player>();
   useEffect(() => {
     if (gameStatus.win.whoWon) {
+      setWinner(
+        playerPieces.find((playerPiece) => {
+          return playerPiece.turnNumber === gameStatus.win.whoWon;
+        })
+      );
       if (turnNumber === gameStatus.win.whoWon) {
         startWinSound();
       } else if (gameStatus.win.whoWon !== "tie") {
@@ -56,7 +62,7 @@ export default function StatusBoard({
         container
         sx={{
           borderRadius: "15px",
-          padding: "5px",
+       
 
           bgcolor: "#dedfe8",
           border: "1px solid #000",
@@ -65,7 +71,42 @@ export default function StatusBoard({
         direction="column"
         textAlign="center"
       >
-        {/* <PlayerTurnOrderAnimator  isCountDownFinished={ isCountDownFinished} isBoardCreated={isBoardCreated} setPlayerPieces={(props)=>{setPlayerPieces(props)}}playerPieces={playerPieces} whoTurn={gameStatus.whoTurn}/> */}
+        {/* {gameStatus.win.whoWon ? (
+          winner?.turnNumber === turnNumber ? (
+            <Grid container item direction="column"  sx={{p:2}}>
+              <Grid item> {winner?.piece}</Grid>
+              <Typography variant="h6">You Win!</Typography>
+            </Grid>
+          ) : (
+            <Grid container item direction="column" sx={{p:2}}>
+              <Grid item> {winner?.piece}</Grid>
+              <Typography variant="h6">{winner?.name} Wins!</Typography>
+            </Grid>
+          ) */}
+        
+          <Grid container direction="row" item textAlign="center" justifyContent="center">
+            <PlayerTurnOrderAnimator
+              gameStatus={gameStatus}
+              turnNumber={turnNumber}
+              isCountDownFinished={isCountDownFinished}
+              isBoardCreated={isBoardCreated}
+              setPlayerPieces={(props) => {
+                setPlayerPieces(props);
+              }}
+              playerPieces={playerPieces}
+              whoTurn={gameStatus.whoTurn}
+            />
+          </Grid>
+      
+        {/* {playerPieces.map((playerPiece, idx) => (
+          <FlipMove>
+            <Grid key={idx} container>
+              <Grid item>{playerPiece.piece}</Grid>
+              <Grid item></Grid>
+            </Grid>
+          </FlipMove>
+        ))}  */}
+
         <Grid container direction="column">
           <Grid item sx={{ p: 1 }}>
             {gameStatus.win.whoWon === "tie" ? (
@@ -90,7 +131,7 @@ export default function StatusBoard({
               </Typography>
             )}
           </Grid>
-        </Grid>
+        </Grid> 
         <Grid item>
           {playerPieces.map((player, idx) => {
             if (gameStatus.win.whoWon) {
@@ -103,7 +144,6 @@ export default function StatusBoard({
           })}
         </Grid>
         <Grid item>
-          {" "}
           <Typography sx={{ p: 1 }}>{`Win by ${winBy}`}</Typography>
         </Grid>
 

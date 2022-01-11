@@ -109,6 +109,7 @@ function App() {
     setGameStatus,
     playerId,
     setPlayerWhoLeft,
+    setIsHost
   });
 
   return (

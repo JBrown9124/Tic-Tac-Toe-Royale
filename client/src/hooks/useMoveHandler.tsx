@@ -15,12 +15,13 @@ interface UseMoveHandler{
     isHost:boolean,
    action:string, 
     board:(string|number)[][],
-    newMove:NewMove
+    newMove:NewMove,
+    playerWhoLeft:string
 
 
 
 }
-export default function useMoveHandler({botCanMove, lobby, gameStatus, isHost, action, board, setGameStatus, newMove, playerPieces}:UseMoveHandler){
+export default function useMoveHandler({botCanMove, lobby, gameStatus, isHost, action, board, setGameStatus, newMove, playerPieces, playerWhoLeft}:UseMoveHandler){
     const [startOtherPlayerMoveSound] = useSound(
         process.env.PUBLIC_URL + "static/assets/sounds/otherPlayerMoveSound.mp3"
       );
@@ -67,7 +68,7 @@ export default function useMoveHandler({botCanMove, lobby, gameStatus, isHost, a
             }
           });
         }
-      }, [gameStatus, botCanMove]);
+      }, [gameStatus, botCanMove, playerWhoLeft]);
       useEffect(() => {
         if (newMove.playerId !== "") {
           board[newMove.rowIdx][newMove.tileIdx] = newMove.playerId;

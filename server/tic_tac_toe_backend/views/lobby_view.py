@@ -123,15 +123,18 @@ class Lobby(APIView):
             for player in lobby_players_copy:
                 if player["playerId"][:3] != "BOT":
                     new_host = player
-                    new_host["piece"]=None
+                    new_host["piece"] = None
                     break
-            
-            
+
         lobby_copy["players"] = lobby_players_copy
+        game_status_copy = lobby_copy["gameStatus"]
+
+        if game_status_copy["whoTurn"] >= len(lobby_players_copy):
+            game_status_copy["whoTurn"] = 1
 
         cache.set(lobby_id, lobby_copy, 3600)
         lobby_response = LobbyResponseModel(
             lobby=lobby_copy, lobby_id=lobby_id
         ).to_dict()
 
-        return JsonResponse({"lobby": lobby_response, "newHost":new_host})
+        return JsonResponse({"lobby": lobby_response, "newHost": new_host})

@@ -17,6 +17,7 @@ import StatusBoard from "./StatusBoard/StatusBoard";
 import CountDownAnimator from "../../animators/CountDownAnimator";
 import useMoveHandler from "../../hooks/useMoveHandler";
 import sortPlayerPieces from "../../creators/BoardCreators/sortPlayerPieces";
+import updateAfterPlayerLeaves from "../../creators/BoardCreators/updateAfterPlayerLeaves";
 
 interface GameProps {
   newMove: NewMove;
@@ -61,27 +62,14 @@ export default function Game({
   const [playerPieces, setPlayerPieces] = useState<Player[]>([]);
   const sizeOfBoardPiece = determineSizeOfPiece(lobby?.board?.size);
   useEffect(() => {
-    const removePlayerFromPieces = async (): Promise<Player[]> => {
-      const updatedPieces = playerPieces.filter((playerPiece) => {
-        return playerPiece.sessionId !== playerWhoLeft;
-      });
-      updatedPieces.map(
-        (playerPiece, idx) => (playerPiece.turnNumber = idx + 1)
-      );
-      return updatedPieces;
-    };
-    removePlayerFromPieces().then((updatedPieces) => {
-      setPlayerPieces(updatedPieces);
-      const whoTurn = gameStatus.whoTurn;
-      setGameStatus({
-        win: {
-          whoWon:
-            updatedPieces.length === 1 ? updatedPieces[0].turnNumber : null,
-          type: null,
-          winningMoves: null,
-        },
-        whoTurn: whoTurn >= playerPieces.length ? 1 : whoTurn,
-      });
+    updateAfterPlayerLeaves({
+      playerPieces,
+      setTurnNumber,
+      setPlayerPieces,
+      setGameStatus,
+      gameStatus,
+      playerWhoLeft,
+      playerId,
     });
   }, [playerWhoLeft]);
   useMoveHandler({
@@ -94,6 +82,7 @@ export default function Game({
     setGameStatus,
     newMove,
     playerPieces,
+    playerWhoLeft,
   });
   const quitGame = () => {
     playLeaveSound();
@@ -122,8 +111,9 @@ export default function Game({
           setTurnNumber,
           playerPieces
         );
-        // const { whoTurn } = gameStatus;
-        // await sortPlayerPieces({ playerPieces, setPlayerPieces, whoTurn });
+        console.log(gameStatus.whoTurn, "GAMESTATUSWHOTURN");
+        const { whoTurn } = gameStatus;
+        await sortPlayerPieces({ playerPieces, setPlayerPieces, whoTurn });
         const boardCreated = await createBoard(
           setBoard,
           lobby.board.size,
@@ -138,16 +128,46 @@ export default function Game({
     }
   }, [isLobbyReceived]);
 
+  useEffect(() => {
+    if (isBoardCreated && gameStatus.win.whoWon === null) {
+      let currentPlayer = playerPieces[playerPieces.length - 1];
+      const poppedPlayer = playerPieces.pop();
+
+      if (poppedPlayer !== undefined) {
+        playerPieces.unshift(poppedPlayer);
+
+        if (currentPlayer.turnNumber !== gameStatus.whoTurn && gameStatus.win.whoWon === null) {
+          const secondPoppedPlayer = playerPieces.pop();
+          if (secondPoppedPlayer !== undefined) {
+            playerPieces.unshift(secondPoppedPlayer);
+          }
+        }
+      }
+      // let currentPlayer = playerPieces[playerPieces.length - 1];
+      // let j = playerPieces.length - 2;
+      // for (let i = playerPieces.length - 1; j >= 0; i--) {
+      //   [playerPieces[j], playerPieces[i]] = [playerPieces[i], playerPieces[j]];
+      //   j -= 1;
+      // }
+
+      // if (currentPlayer.turnNumber !== gameStatus.whoTurn) {
+      //   j = playerPieces.length - 2;
+      //   for (let i = playerPieces.length - 1; j >= 0; i--) {
+      //     [playerPieces[j], playerPieces[i]] = [
+      //       playerPieces[i],
+      //       playerPieces[j],
+      //     ];
+      //     j -= 1;
+      //   }
+      // }
+    }
+  }, [gameStatus]);
   // useEffect(() => {
-  //   if (isBoardCreated) {
-  //     let lastTurn = playerPieces.pop();
-  //     console.log(lastTurn, "LASTTURN");
-  //     if (lastTurn !== undefined && lastTurn === playerPieces[playerPieces.length - 1]) {
-  //       playerPieces.unshift(lastTurn);
-  //     }
-      
+  //   let poppedPlayer = playerPieces.pop();
+  //   if (poppedPlayer) {
+  //     playerPieces.push(poppedPlayer);
   //   }
-  // }, [gameStatus.whoTurn]);
+  // }, [gameStatus.win.whoWon]);
   return (
     <>
       <Grid container direction="row" spacing={{ md: 0, xs: 2 }}>

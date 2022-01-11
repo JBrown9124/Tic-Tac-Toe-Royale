@@ -38,16 +38,22 @@ const sortPlayerPieces = async ({
   let greaterThanCurrentTurn: Player[] = [];
   for (let i = 0; i < playerPieces.length; i++) {
     if (playerPieces[i].turnNumber === whoTurn) {
-      currentTurnPlayer = playerPieces[i];
+      
+      sortedPlayerPieces.push(playerPieces[i]);
     } else if (playerPieces[i].turnNumber < whoTurn) {
-      lessThanCurrentTurn.push(playerPieces[i]);
+      lessThanCurrentTurn.unshift(playerPieces[i]);
     } else if (playerPieces[i].turnNumber > whoTurn)
-      greaterThanCurrentTurn.push(playerPieces[i]);
+      greaterThanCurrentTurn.unshift(playerPieces[i]);
   }
   if (currentTurnPlayer !== undefined) {
-    sortedPlayerPieces.push(currentTurnPlayer);
-    sortedPlayerPieces.unshift(...lessThanCurrentTurn);
+    lessThanCurrentTurn.sort((a, b) => b.turnNumber - a.turnNumber);
+    greaterThanCurrentTurn.sort((a, b) => b.turnNumber - a.turnNumber);
+    console.log(greaterThanCurrentTurn, "GREATERTHANCURRENTTURN");
+    console.log(lessThanCurrentTurn, "LESSTHANCURRENTTURN");
+    console.log(currentTurnPlayer, "CURRENTURNPLAYER");
     sortedPlayerPieces.unshift(...greaterThanCurrentTurn);
+    sortedPlayerPieces.unshift(...lessThanCurrentTurn);
+
     console.log(whoTurn, "WHOTURN");
     console.log(sortedPlayerPieces, "SORTEDPLAYERPIECES");
     setPlayerPieces(sortedPlayerPieces);
