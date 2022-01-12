@@ -166,12 +166,7 @@ export default function Game({
       // }
     }
   }, [gameStatus]);
-  // useEffect(() => {
-  //   let poppedPlayer = playerPieces.pop();
-  //   if (poppedPlayer) {
-  //     playerPieces.push(poppedPlayer);
-  //   }
-  // }, [gameStatus.win.whoWon]);
+ 
   return (
     <>
       <Grid container direction="row" spacing={{ md: 0, xs: 2 }}>
@@ -242,6 +237,7 @@ export default function Game({
             delay={800}
           >
             <TurnOrder
+            playerId={playerId}
               gameStatus={gameStatus}
               turnNumber={turnNumber}
               isCountDownFinished={isCountDownFinished}

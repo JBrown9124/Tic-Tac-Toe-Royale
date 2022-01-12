@@ -24,6 +24,7 @@ interface PlayerTurnOrderAnimatorProps {
   isCountDownFinished: boolean;
   turnNumber: number;
   gameStatus: GameStatus;
+  playerId: string;
 }
 export default function PlayerTurnOrderAnimator({
   delay = 0,
@@ -42,18 +43,9 @@ export default function PlayerTurnOrderAnimator({
   isCountDownFinished,
   turnNumber,
   gameStatus,
+  playerId
 }: PlayerTurnOrderAnimatorProps) {
-  const [fade, setFade] = useState(false);
-  const [turnOrderPlayerPieces, setTurnOrderPlayerPieces] =
-    useState(playerPieces);
-  const [index, setIndex] = useState(0);
-  const [numbers, setNumbers] = useState(["", 3, 2, 1, "Begin", ""]);
-  const [startCountDownSound] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/countDown.mp3"
-  );
-  const [startOpenSound] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/warHorn.mp3"
-  );
+  
 
   let height = 0;
   const transitions = useTransition(
@@ -66,7 +58,6 @@ export default function PlayerTurnOrderAnimator({
     }
   );
   const playerPiecesEndRef = useRef<null | HTMLDivElement>(null);
-
   const scrollToBottom = () => {
     playerPiecesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -79,12 +70,41 @@ export default function PlayerTurnOrderAnimator({
         <animated.div
           style={{
             ...style,
-            padding: "6px",
+            padding:
+              item.playerId === playerPieces[playerPieces.length - 1].playerId
+                ? "20px"
+                : "6px",
+            scale:
+              item.playerId === playerPieces[playerPieces.length - 1].playerId
+                ? 1.3
+                : 1,
           }}
           ref={playerPiecesEndRef}
         >
           <Grid item>{item.piece}</Grid>
-          <Grid item>{item.name}</Grid>
+          <Grid
+            item
+            sx={{
+              color:
+                item.playerId === playerPieces[playerPieces.length - 1].playerId
+                  ? "green"
+                  : item.playerId ===
+                    playerPieces[playerPieces.length - 2].playerId
+                  ? "yellow"
+                  : "black",
+            }}
+          >
+            {" "}
+            {playerId === playerPieces[playerPieces.length - 1].playerId && item.playerId ===playerPieces[playerPieces.length - 1].playerId
+                  ? "You!"
+                  : playerId ===
+                    playerPieces[playerPieces.length - 2].playerId && item.playerId ===playerPieces[playerPieces.length - 2].playerId
+                  ? "You're Next!"
+                  : item.name}
+          </Grid>
+          {/* {item.playerId === playerPieces[playerPieces.length - 2].playerId && (
+            <Grid item> is next!</Grid>
+          )} */}
 
           {/* <Grid container direction="column">
             <Grid item sx={{ p: 1 }}>

@@ -11,6 +11,7 @@ interface TurnOrderProps {
   isCountDownFinished: boolean;
   turnNumber: number;
   gameStatus: GameStatus;
+  playerId:string
 }
 export default function TurnOrder({
   playerPieces,
@@ -20,6 +21,7 @@ export default function TurnOrder({
   isCountDownFinished,
   turnNumber,
   gameStatus,
+  playerId
 }: TurnOrderProps) {
   useEffect(() => {
     window.scrollTo(700, 700);
@@ -37,11 +39,12 @@ export default function TurnOrder({
           p: 1,
           boxShadow: 10,
           overflowY: "auto",
-          overflowX: "auto",
+          overflowX: "hidden",
           maxHeight: { xs: 150, md: 700 },
         }}
       >
         <PlayerTurnOrderAnimator
+        playerId={playerId}
           gameStatus={gameStatus}
           turnNumber={turnNumber}
           isCountDownFinished={isCountDownFinished}

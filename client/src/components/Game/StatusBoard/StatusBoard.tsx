@@ -70,27 +70,7 @@ export default function StatusBoard({
         direction="column"
         textAlign="center"
       >
-        {/* {gameStatus.win.whoWon ? (
-          winner?.turnNumber === turnNumber ? (
-            <Grid container item direction="column"  sx={{p:2}}>
-              <Grid item> {winner?.piece}</Grid>
-              <Typography variant="h6">You Win!</Typography>
-            </Grid>
-          ) : (
-            <Grid container item direction="column" sx={{p:2}}>
-              <Grid item> {winner?.piece}</Grid>
-              <Typography variant="h6">{winner?.name} Wins!</Typography>
-            </Grid>
-          ) */}
-
-        {/* {playerPieces.map((playerPiece, idx) => (
-          <FlipMove>
-            <Grid key={idx} container>
-              <Grid item>{playerPiece.piece}</Grid>
-              <Grid item></Grid>
-            </Grid>
-          </FlipMove>
-        ))}  */}
+        
 
         <Grid container direction="column">
           <Grid item sx={{ p: 1 }}>
