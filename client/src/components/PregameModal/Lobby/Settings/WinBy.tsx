@@ -27,12 +27,13 @@ export default function WinBy({ winBy, setWinBy, size }: WinByProps) {
         </Grid>
         <Grid item>
           <TextField
-            error={winBy > (size === undefined ? 2 : size)}
+            error={winBy > size}
+            value={winBy}
             inputProps={{
-              defaultValue: 2,
+              
               step: 1,
               min: 2,
-              max: size === undefined ? 2 : size,
+              max: size,
               type: "number",
               "aria-labelledby": "winBy",
             }}

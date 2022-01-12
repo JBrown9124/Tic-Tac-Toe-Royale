@@ -2,6 +2,8 @@ import Grid from "@mui/material/Grid";
 import PlayerTurnOrderAnimator from "../../../animators/PlayerTurnOrderAnimator";
 import { Player } from "../../../Models/Player";
 import { GameStatus } from "../../../Models/GameStatus";
+import { RgbaColor } from "react-colorful";
+import { Scrollbars } from "react-custom-scrollbars";
 import { useEffect } from "react";
 interface TurnOrderProps {
   playerPieces: Player[];
@@ -11,7 +13,7 @@ interface TurnOrderProps {
   isCountDownFinished: boolean;
   turnNumber: number;
   gameStatus: GameStatus;
-  playerId:string
+  playerId: string;
 }
 export default function TurnOrder({
   playerPieces,
@@ -21,40 +23,54 @@ export default function TurnOrder({
   isCountDownFinished,
   turnNumber,
   gameStatus,
-  playerId
+  playerId,
 }: TurnOrderProps) {
-  useEffect(() => {
-    window.scrollTo(700, 700);
-  }, []);
   return (
     <>
       <Grid
+        container
         textAlign="center"
-        direction={{ sm: "row", md: "column" }}
-        justifyContent={{ sm: "center", md: "normal" }}
+        direction={{ sm: "column", md: "column" }}
+        justifyContent={{ sm: "", md: "normal" }}
         sx={{
           borderRadius: "15px",
-
-          bgcolor: "#dedfe8",
+          overflowY:"auto",
+          overflowX: "hidden",
+          bgcolor: "#b4cad1",
           p: 1,
           boxShadow: 10,
-          overflowY: "auto",
-          overflowX: "hidden",
+
           maxHeight: { xs: 150, md: 700 },
         }}
       >
-        <PlayerTurnOrderAnimator
-        playerId={playerId}
-          gameStatus={gameStatus}
-          turnNumber={turnNumber}
-          isCountDownFinished={isCountDownFinished}
-          isBoardCreated={isBoardCreated}
-          setPlayerPieces={(props) => {
-            setPlayerPieces(props);
-          }}
-          playerPieces={playerPieces}
-          whoTurn={gameStatus.whoTurn}
-        />
+        <Grid item sx={{ overflowY: {xs:"hidden",md:"auto"}, overflowX: "hidden" }}>
+          {/* <Scrollbars
+          renderTrackHorizontal={(props) => (
+            <div
+              {...props}
+              style={{ display: "none", }}
+              className="track-horizontal"
+            />
+          )}
+          autoHeight
+          style={{height:"auto", width:"auto"}}
+          autoHeightMax={650}
+          autoHeightMin={0}
+        > */}
+          <PlayerTurnOrderAnimator
+            playerId={playerId}
+            gameStatus={gameStatus}
+            turnNumber={turnNumber}
+            isCountDownFinished={isCountDownFinished}
+            isBoardCreated={isBoardCreated}
+            setPlayerPieces={(props) => {
+              setPlayerPieces(props);
+            }}
+            playerPieces={playerPieces}
+            whoTurn={gameStatus.whoTurn}
+          />
+        </Grid>
+        {/* </Scrollbars> */}
       </Grid>
     </>
   );

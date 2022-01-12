@@ -51,6 +51,9 @@ export default function Game({
   const [playLeaveSound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/floorDrumBackButton.mp3"
   );
+  const [playYourTurnSound] = useSound(
+    process.env.PUBLIC_URL + "static/assets/sounds/yourTurnSound.mp3"
+  );
 
   const [isBoardCreated, setIsBoardCreated] = useState(false);
   const [botCanMove, setBotCanMove] = useState(false);
@@ -147,6 +150,9 @@ export default function Game({
           }
         }
       }
+      if (turnNumber === gameStatus.whoTurn){
+        playYourTurnSound()
+      }
       // let currentPlayer = playerPieces[playerPieces.length - 1];
       // let j = playerPieces.length - 2;
       // for (let i = playerPieces.length - 1; j >= 0; i--) {
@@ -177,6 +183,7 @@ export default function Game({
           alignItems="center"
           justifyContent={{ md: "right", xs: "center" }}
           md={2}
+          
         >
           <StatusBoardAnimator
             fromX={-100}

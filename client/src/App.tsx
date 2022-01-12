@@ -21,7 +21,7 @@ import { Player } from "./Models/Player";
 import { socket } from "./socket";
 function App() {
   const [action, setAction] = useState("welcome");
-
+  
   const [lobbyId, setLobbyId] = useState(0);
   const [isLobbyReceived, setIsLobbyReceived] = useState(false);
   const [isLobbyFound, setIsLobbyFound] = useState(true);

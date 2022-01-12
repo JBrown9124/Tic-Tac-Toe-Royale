@@ -43,10 +43,8 @@ export default function PlayerTurnOrderAnimator({
   isCountDownFinished,
   turnNumber,
   gameStatus,
-  playerId
+  playerId,
 }: PlayerTurnOrderAnimatorProps) {
-  
-
   let height = 0;
   const transitions = useTransition(
     playerPieces.map((playerPiece, idx) => ({ ...playerPiece, idx })),
@@ -70,6 +68,7 @@ export default function PlayerTurnOrderAnimator({
         <animated.div
           style={{
             ...style,
+        
             padding:
               item.playerId === playerPieces[playerPieces.length - 1].playerId
                 ? "20px"
@@ -95,40 +94,14 @@ export default function PlayerTurnOrderAnimator({
             }}
           >
             {" "}
-            {playerId === playerPieces[playerPieces.length - 1].playerId && item.playerId ===playerPieces[playerPieces.length - 1].playerId
-                  ? "You!"
-                  : playerId ===
-                    playerPieces[playerPieces.length - 2].playerId && item.playerId ===playerPieces[playerPieces.length - 2].playerId
-                  ? "You're Next!"
-                  : item.name}
+            {playerId === playerPieces[playerPieces.length - 1].playerId &&
+            item.playerId === playerPieces[playerPieces.length - 1].playerId
+              ? "You're Up!"
+              : playerId === playerPieces[playerPieces.length - 2].playerId &&
+                item.playerId === playerPieces[playerPieces.length - 2].playerId
+              ? "You're Next!"
+              : item.name}
           </Grid>
-          {/* {item.playerId === playerPieces[playerPieces.length - 2].playerId && (
-            <Grid item> is next!</Grid>
-          )} */}
-
-          {/* <Grid container direction="column">
-            <Grid item sx={{ p: 1 }}>
-              {gameStatus.win.whoWon === "tie" ? (
-                <Typography variant="h6">Its a tie!</Typography>
-              ) : (
-                item.playerId ===
-                  playerPieces[playerPieces.length - 1].playerId && (
-                  <Typography variant="h6">
-                    {playerPieces.map((player: Player) => {
-                      if (player.turnNumber === gameStatus.whoTurn) {
-                        if (player.turnNumber === turnNumber) {
-                          return "Your Turn";
-                        }
-                        return `${player.name}'s Turn`;
-                      }
-                    })}
-                  </Typography>
-                )
-              )}
-            </Grid>
-          </Grid> */}
-
-          {/* {signedInSlides[3]} */}
         </animated.div>
       ))}
     </>

@@ -19,6 +19,7 @@ interface StatusBoardProps {
   isBoardCreated: boolean;
   isCountDownFinished: boolean;
   setPlayerPieces: (playerPieces: Player[]) => void;
+ 
 }
 export default function StatusBoard({
   playerPieces,
@@ -29,6 +30,7 @@ export default function StatusBoard({
   setPlayerPieces,
   isBoardCreated,
   isCountDownFinished,
+  
 }: StatusBoardProps) {
   const [startWinSound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/winnerSound.mp3"
@@ -63,7 +65,7 @@ export default function StatusBoard({
         sx={{
           borderRadius: "15px",
 
-          bgcolor: "#dedfe8",
+          bgcolor: "#b4cad1",
    
           boxShadow: 10,
         }}
@@ -97,7 +99,7 @@ export default function StatusBoard({
             )}
           </Grid>
         </Grid>
-        <Grid item>
+        <Grid item >
           {playerPieces.map((player, idx) => {
             if (gameStatus.win.whoWon) {
               if (player.turnNumber === gameStatus.win.whoWon) {

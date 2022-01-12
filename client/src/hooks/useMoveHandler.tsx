@@ -6,6 +6,7 @@ import determineWinner from "../creators/BoardCreators/determineWinner";
 import { Player } from "../Models/Player";
 import { NewMove } from "../Models/NewMove";
 import useSound from "use-sound";
+import getRandomInt from "../creators/BoardCreators/getRandomInt"
 interface UseMoveHandler {
   botCanMove: boolean;
   lobby: Lobby;
@@ -55,6 +56,7 @@ export default function useMoveHandler({
             playerId: nextIsBot.playerId,
             turnNumber: nextIsBot.turnNumber,
           };
+          
           const botDelay = setTimeout(() => {
             botNewMove(reqBody).then((botNewMoveResponse) => {
               if (botNewMoveResponse) {
@@ -72,7 +74,7 @@ export default function useMoveHandler({
                 );
               }
             });
-          }, 500);
+          }, getRandomInt(500,1500));
 
           startOtherPlayerMoveSound();
           return () => {
