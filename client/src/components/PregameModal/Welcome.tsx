@@ -38,7 +38,7 @@ export default function Welcome({
          IN DEVELOPMENT
         </Grid>
         <Grid item>
-          <Typography variant="h2">Welcome To Tic Tac Toe Royale!</Typography>
+          <Typography variant="h2">Welcome to Tic-Tac-Toe Royale!</Typography>
         </Grid>
 
         <Grid item>

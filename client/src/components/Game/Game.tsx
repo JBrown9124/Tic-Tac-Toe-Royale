@@ -18,7 +18,8 @@ import CountDownAnimator from "../../animators/CountDownAnimator";
 import useMoveHandler from "../../hooks/useMoveHandler";
 import sortPlayerPieces from "../../creators/BoardCreators/sortPlayerPieces";
 import updateAfterPlayerLeaves from "../../creators/BoardCreators/updateAfterPlayerLeaves";
-
+import PlayerTurnOrderAnimator from "../../animators/PlayerTurnOrderAnimator";
+import TurnOrder from "./TurnOrder/TurnOrder";
 interface GameProps {
   newMove: NewMove;
   lobby: Lobby;
@@ -136,7 +137,10 @@ export default function Game({
       if (poppedPlayer !== undefined) {
         playerPieces.unshift(poppedPlayer);
 
-        if (currentPlayer.turnNumber !== gameStatus.whoTurn && gameStatus.win.whoWon === null) {
+        if (
+          currentPlayer.turnNumber !== gameStatus.whoTurn &&
+          gameStatus.win.whoWon === null
+        ) {
           const secondPoppedPlayer = playerPieces.pop();
           if (secondPoppedPlayer !== undefined) {
             playerPieces.unshift(secondPoppedPlayer);
@@ -173,11 +177,10 @@ export default function Game({
       <Grid container direction="row" spacing={{ md: 0, xs: 2 }}>
         <Grid
           item
-          xs={12}
+          sm={12}
           container
           alignItems="center"
           justifyContent={{ md: "right", xs: "center" }}
-          sx={{ marginTop: "10px" }}
           md={2}
         >
           <StatusBoardAnimator
@@ -197,10 +200,11 @@ export default function Game({
             />
           </StatusBoardAnimator>
         </Grid>
+
         <Grid
           item
-          xs={12}
-          sx={{ marginTop: "120px" }}
+          sm={12}
+          sx={{ marginTop: "40px" }}
           justifyContent="center"
           md={8}
         >
@@ -221,6 +225,34 @@ export default function Game({
             piece={piece}
             boardSize={lobby.board.size}
           />
+        </Grid>
+        <Grid
+          item
+          sm={12}
+          container
+          alignItems="center"
+          textAlign="center"
+          justifyContent={{ md: "center", sm: "center" }}
+          md={1}
+          direction="column"
+        >
+          <StatusBoardAnimator
+            fromX={100}
+            isVisible={isCountDownFinished}
+            delay={800}
+          >
+            <TurnOrder
+              gameStatus={gameStatus}
+              turnNumber={turnNumber}
+              isCountDownFinished={isCountDownFinished}
+              isBoardCreated={isBoardCreated}
+              setPlayerPieces={(props) => {
+                setPlayerPieces(props);
+              }}
+              playerPieces={playerPieces}
+              whoTurn={gameStatus.whoTurn}
+            />
+          </StatusBoardAnimator>
         </Grid>
       </Grid>
       {!isCountDownFinished && isBoardCreated && (

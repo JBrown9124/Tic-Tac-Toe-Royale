@@ -62,10 +62,9 @@ export default function StatusBoard({
         container
         sx={{
           borderRadius: "15px",
-       
 
           bgcolor: "#dedfe8",
-          border: "1px solid #000",
+   
           boxShadow: 10,
         }}
         direction="column"
@@ -83,21 +82,7 @@ export default function StatusBoard({
               <Typography variant="h6">{winner?.name} Wins!</Typography>
             </Grid>
           ) */}
-        
-          <Grid container direction="row" item textAlign="center" justifyContent="center">
-            <PlayerTurnOrderAnimator
-              gameStatus={gameStatus}
-              turnNumber={turnNumber}
-              isCountDownFinished={isCountDownFinished}
-              isBoardCreated={isBoardCreated}
-              setPlayerPieces={(props) => {
-                setPlayerPieces(props);
-              }}
-              playerPieces={playerPieces}
-              whoTurn={gameStatus.whoTurn}
-            />
-          </Grid>
-      
+
         {/* {playerPieces.map((playerPiece, idx) => (
           <FlipMove>
             <Grid key={idx} container>
@@ -131,7 +116,7 @@ export default function StatusBoard({
               </Typography>
             )}
           </Grid>
-        </Grid> 
+        </Grid>
         <Grid item>
           {playerPieces.map((player, idx) => {
             if (gameStatus.win.whoWon) {

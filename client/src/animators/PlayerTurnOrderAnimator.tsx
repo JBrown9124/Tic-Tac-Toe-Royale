@@ -1,10 +1,11 @@
 import { useSpring } from "react-spring";
 import { useTransition, animated, config } from "react-spring";
-import { useState, useEffect, ReactNode } from "react";
+
 import { Player } from "../Models/Player";
 import { GameStatus } from "../Models/GameStatus";
 import useSound from "use-sound";
 import Typography from "@mui/material/Typography";
+import React, { useEffect, useRef, useState } from "react";
 import Grid from "@mui/material/Grid";
 interface PlayerTurnOrderAnimatorProps {
   delay?: number;
@@ -64,22 +65,27 @@ export default function PlayerTurnOrderAnimator({
       leave: { scale: 0 },
     }
   );
+  const playerPiecesEndRef = useRef<null | HTMLDivElement>(null);
 
+  const scrollToBottom = () => {
+    playerPiecesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+  useEffect(() => {
+    scrollToBottom();
+  }, [playerPieces]);
   return (
     <>
       {transitions((style, item, t, i) => (
         <animated.div
           style={{
-            ...style, padding:"6px"
+            ...style,
+            padding: "6px",
           }}
+          ref={playerPiecesEndRef}
         >
-          
-          <Grid item >{item.piece}</Grid>
-          <Grid item >
-            {
-              item.name}
-          </Grid>
-        
+          <Grid item>{item.piece}</Grid>
+          <Grid item>{item.name}</Grid>
+
           {/* <Grid container direction="column">
             <Grid item sx={{ p: 1 }}>
               {gameStatus.win.whoWon === "tie" ? (
