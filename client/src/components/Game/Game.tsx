@@ -150,8 +150,8 @@ export default function Game({
           }
         }
       }
-      if (turnNumber === gameStatus.whoTurn){
-        playYourTurnSound()
+      if (turnNumber === gameStatus.whoTurn) {
+        playYourTurnSound();
       }
       // let currentPlayer = playerPieces[playerPieces.length - 1];
       // let j = playerPieces.length - 2;
@@ -172,18 +172,18 @@ export default function Game({
       // }
     }
   }, [gameStatus]);
- 
+
   return (
     <>
-      <Grid container direction="row" spacing={{ md: 0, xs: 2 }}>
+      <Grid container direction="row" justifyContent={{ lg:"normal", md: "center", xs: "center" }}spacing={{lg:0, md: 0, xs: 2 }}>
         <Grid
           item
           sm={12}
           container
           alignItems="center"
-          justifyContent={{ md: "right", xs: "center" }}
-          md={2}
-          
+          justifyContent={{ lg:"right", md: "center", xs: "center" }}
+          md={12}
+          lg={2}
         >
           <StatusBoardAnimator
             fromX={-100}
@@ -208,7 +208,8 @@ export default function Game({
           sm={12}
           sx={{ marginTop: "40px" }}
           justifyContent="center"
-          md={8}
+          md={12}
+          lg={8}
         >
           <Board
             playerId={playerId}
@@ -235,7 +236,8 @@ export default function Game({
           alignItems="center"
           textAlign="center"
           justifyContent={{ md: "center", sm: "center" }}
-          md={1}
+          md={12}
+          lg={1}
           direction="column"
         >
           <StatusBoardAnimator
@@ -244,7 +246,7 @@ export default function Game({
             delay={800}
           >
             <TurnOrder
-            playerId={playerId}
+              playerId={playerId}
               gameStatus={gameStatus}
               turnNumber={turnNumber}
               isCountDownFinished={isCountDownFinished}

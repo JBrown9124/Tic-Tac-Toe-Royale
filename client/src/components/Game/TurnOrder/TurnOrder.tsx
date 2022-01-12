@@ -3,7 +3,7 @@ import PlayerTurnOrderAnimator from "../../../animators/PlayerTurnOrderAnimator"
 import { Player } from "../../../Models/Player";
 import { GameStatus } from "../../../Models/GameStatus";
 import { RgbaColor } from "react-colorful";
-import { Scrollbars } from "react-custom-scrollbars";
+
 import { useEffect } from "react";
 interface TurnOrderProps {
   playerPieces: Player[];
@@ -40,10 +40,10 @@ export default function TurnOrder({
           p: 1,
           boxShadow: 10,
 
-          maxHeight: { xs: 150, md: 700 },
+          maxHeight: { xs: 150, md:250, lg: 700 },
         }}
       >
-        <Grid item sx={{ overflowY: {xs:"hidden",md:"auto"}, overflowX: "hidden" }}>
+        <Grid item sx={{ overflowY: {xs:"hidden",sm:"auto", md:"auto",lg:"auto"}, overflowX: "hidden" }}>
           {/* <Scrollbars
           renderTrackHorizontal={(props) => (
             <div
