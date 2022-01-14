@@ -11,17 +11,10 @@ import startGame from "./creators/APICreators/startGame";
 import { RgbaColor } from "react-colorful";
 import useCommands from "./hooks/useCommands";
 import useSocket from "./hooks/useSocket";
-import useMoveHandler from "./hooks/useMoveHandler";
-import useSound from "use-sound";
-import getPlayerPieces from "./creators/BoardCreators/getPlayerPieces";
-import createBoard from "./creators/BoardCreators/createBoard";
-import { determineSizeOfPiece } from "./creators/BoardCreators/sizeOfPiece";
-import getGame from "./creators/APICreators/getLobby";
-import { Player } from "./Models/Player";
-import { socket } from "./socket";
+
 function App() {
   const [action, setAction] = useState("welcome");
-  
+
   const [lobbyId, setLobbyId] = useState(0);
   const [isLobbyReceived, setIsLobbyReceived] = useState(false);
   const [isLobbyFound, setIsLobbyFound] = useState(true);
@@ -37,7 +30,7 @@ function App() {
   const [isHost, setIsHost] = useState(false);
   const [playerWhoLeft, setPlayerWhoLeft] = useState("");
   const [newMove, setNewMove] = useState<NewMove>({
-   playerId:"",
+    playerId: "",
     rowIdx: 0,
     tileIdx: 0,
     win: { whoWon: null, type: null, winningMoves: null },
@@ -109,7 +102,7 @@ function App() {
     setGameStatus,
     playerId,
     setPlayerWhoLeft,
-    setIsHost
+    setIsHost,
   });
 
   return (
@@ -130,10 +123,13 @@ function App() {
         <Grid container direction="column" justifyContent="center">
           {(action === "create" ||
             action === "guest" ||
-            action === "begin") && (
+            action === "play again" ||
+            action === "begin"||
+            action === "in game") && (
             <Grid item>
               <Game
                 playerWhoLeft={playerWhoLeft}
+                pieceSelection={pieceSelection}
                 setGameStatus={(props) => setGameStatus(props)}
                 gameStatus={gameStatus}
                 newMove={newMove}
@@ -144,11 +140,13 @@ function App() {
                 setAction={(props) => setAction(props)}
                 playerId={playerId}
                 isHost={isHost}
+                setIsLobbyReceived={(props) => setIsLobbyReceived(props)}
                 setIsHost={(props) => setIsHost(props)}
+                handleStart={() => handleStart()}
               />
             </Grid>
           )}
-          {action !== "begin" && (
+          {action !== "begin" && action !== "play again" && action !== "in game" && (
             <PregameModal
               playerName={playerName}
               setPlayerName={(props) => setPlayerName(props)}

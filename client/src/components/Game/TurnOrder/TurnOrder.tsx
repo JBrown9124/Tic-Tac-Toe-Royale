@@ -44,19 +44,7 @@ export default function TurnOrder({
         }}
       >
         <Grid item sx={{ overflowY: {xs:"hidden",sm:"auto", md:"auto",lg:"auto"}, overflowX: "hidden" }}>
-          {/* <Scrollbars
-          renderTrackHorizontal={(props) => (
-            <div
-              {...props}
-              style={{ display: "none", }}
-              className="track-horizontal"
-            />
-          )}
-          autoHeight
-          style={{height:"auto", width:"auto"}}
-          autoHeightMax={650}
-          autoHeightMin={0}
-        > */}
+        
           <PlayerTurnOrderAnimator
             playerId={playerId}
             gameStatus={gameStatus}
@@ -70,7 +58,7 @@ export default function TurnOrder({
             whoTurn={gameStatus.whoTurn}
           />
         </Grid>
-        {/* </Scrollbars> */}
+   
       </Grid>
     </>
   );

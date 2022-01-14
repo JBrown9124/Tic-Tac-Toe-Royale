@@ -19,6 +19,8 @@ import useMoveHandler from "../../hooks/useMoveHandler";
 import sortPlayerPieces from "../../creators/BoardCreators/sortPlayerPieces";
 import updateAfterPlayerLeaves from "../../creators/BoardCreators/updateAfterPlayerLeaves";
 import PlayerTurnOrderAnimator from "../../animators/PlayerTurnOrderAnimator";
+import playAgain from "../../creators/APICreators/playAgain";
+import { socket } from "../../socket";
 import TurnOrder from "./TurnOrder/TurnOrder";
 interface GameProps {
   newMove: NewMove;
@@ -33,6 +35,9 @@ interface GameProps {
   isHost: boolean;
   setIsHost: (isHost: boolean) => void;
   playerWhoLeft: string;
+  setIsLobbyReceived: (isLobbyReceived: boolean) => void;
+  handleStart: () => void;
+  pieceSelection: string;
 }
 export default function Game({
   newMove,
@@ -47,6 +52,9 @@ export default function Game({
   isHost,
   setIsHost,
   playerWhoLeft,
+  setIsLobbyReceived,
+  pieceSelection,
+  handleStart,
 }: GameProps) {
   const [playLeaveSound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/floorDrumBackButton.mp3"
@@ -100,8 +108,25 @@ export default function Game({
       setAction("leave");
     }, 3500);
   };
+  const handlePlayAgain = () => {
+    const reqBody = {
+      board: lobby.board,
+      lobbyId: lobby.lobbyId,
+      piece: pieceSelection,
+    };
+    playAgain(reqBody, setAction);
+  };
   useEffect(() => {
-    if (action === "begin" && isLobbyReceived) {
+    if (action === "play again") {
+      setBotCanMove(false);
+      setIsCountDownFinished(false);
+      setIsBoardCreated(false);
+      setIsLobbyReceived(false);
+      setPlayerPieces([])
+    }
+  }, [action]);
+  useEffect(() => {
+    if ((action === "begin" || action === "play again") && isLobbyReceived) {
       const setUpGame = async () => {
         await getPlayerPieces(
           turnNumber,
@@ -125,6 +150,7 @@ export default function Game({
         );
 
         setIsBoardCreated(boardCreated);
+        setAction("in game")
       };
       if (lobby.board.color) {
         setUpGame();
@@ -139,7 +165,7 @@ export default function Game({
 
       if (poppedPlayer !== undefined) {
         playerPieces.unshift(poppedPlayer);
-
+        console.log(poppedPlayer, "POPPEDPLAYER");
         if (
           currentPlayer.turnNumber !== gameStatus.whoTurn &&
           gameStatus.win.whoWon === null
@@ -171,17 +197,22 @@ export default function Game({
       //   }
       // }
     }
-  }, [gameStatus]);
+  }, [gameStatus, newMove]);
 
   return (
     <>
-      <Grid container direction="row" justifyContent={{ lg:"normal", md: "center", xs: "center" }}spacing={{lg:0, md: 0, xs: 2 }}>
+      <Grid
+        container
+        direction="row"
+        justifyContent={{ lg: "normal", md: "center", xs: "center" }}
+        spacing={{ lg: 0, md: 0, xs: 2 }}
+      >
         <Grid
           item
           sm={12}
           container
           alignItems="center"
-          justifyContent={{ lg:"right", md: "center", xs: "center" }}
+          justifyContent={{ lg: "right", md: "center", xs: "center" }}
           md={12}
           lg={2}
         >
@@ -191,6 +222,8 @@ export default function Game({
             delay={800}
           >
             <StatusBoard
+              handlePlayAgain={() => handlePlayAgain()}
+              isHost={isHost}
               isCountDownFinished={isCountDownFinished}
               isBoardCreated={isBoardCreated}
               setPlayerPieces={(props) => setPlayerPieces(props)}

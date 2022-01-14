@@ -19,7 +19,8 @@ interface StatusBoardProps {
   isBoardCreated: boolean;
   isCountDownFinished: boolean;
   setPlayerPieces: (playerPieces: Player[]) => void;
- 
+  isHost: boolean;
+  handlePlayAgain:()=>void;
 }
 export default function StatusBoard({
   playerPieces,
@@ -30,7 +31,8 @@ export default function StatusBoard({
   setPlayerPieces,
   isBoardCreated,
   isCountDownFinished,
-  
+  isHost,
+  handlePlayAgain
 }: StatusBoardProps) {
   const [startWinSound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/winnerSound.mp3"
@@ -66,14 +68,12 @@ export default function StatusBoard({
           borderRadius: "15px",
 
           bgcolor: "#b4cad1",
-   
+
           boxShadow: 10,
         }}
         direction="column"
         textAlign="center"
       >
-        
-
         <Grid container direction="column">
           <Grid item sx={{ p: 1 }}>
             {gameStatus.win.whoWon === "tie" ? (
@@ -99,7 +99,7 @@ export default function StatusBoard({
             )}
           </Grid>
         </Grid>
-        <Grid item >
+        <Grid item>
           {playerPieces.map((player, idx) => {
             if (gameStatus.win.whoWon) {
               if (player.turnNumber === gameStatus.win.whoWon) {
@@ -118,6 +118,11 @@ export default function StatusBoard({
           <Grid item>
             <Button onClick={() => quitGame()}>Leave Game</Button>
           </Grid>
+          {(gameStatus.win.whoWon && isHost) && (
+            <Grid item>
+              <Button onClick={() => handlePlayAgain()}>Play Again</Button>
+            </Grid>
+          )}
         </Grid>
       </Grid>
     </>

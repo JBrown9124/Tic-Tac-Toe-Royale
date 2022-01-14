@@ -135,7 +135,7 @@ export default function useCommands({
       setIsLobbyFound(true);
     
       leaveLobby(reqBody);
-    } else if (action === "begin") {
+    } else if (action === "begin" || action === "play again") {
       getStartGame(
         {
           lobbyId: lobbyId,
@@ -147,5 +147,9 @@ export default function useCommands({
         setIsLobbyReceived
       );
     }
+    // else if (action === "play again"){
+    //   setIsLobbyReceived(false);
+
+    // }
   }, [action]);
 }

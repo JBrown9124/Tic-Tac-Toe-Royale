@@ -79,6 +79,7 @@ export default function useSocket({
           }
         }
       });
+      
       socket.on("player-disconnected", (playerSessionId) => {
         console.log(playerSessionId);
         const lobbyCopy = lobbyRef.current;
@@ -120,6 +121,7 @@ export default function useSocket({
           }
         });
       });
+      
       socket.on("player-ready", () => {
         const lobbyCopy = lobbyRef.current;
 
@@ -138,6 +140,10 @@ export default function useSocket({
       socket.on("start-game", (data) => {
         setAction("begin");
       });
+      socket.on("play-again", (data) => {
+        setAction("play again");
+      });
+      
       socket.on("new-move", (newMove) => {
         setNewMove(newMove.newMove);
         setGameStatus(newMove.gameStatus);

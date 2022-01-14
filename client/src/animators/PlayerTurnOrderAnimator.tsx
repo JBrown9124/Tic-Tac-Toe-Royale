@@ -70,11 +70,11 @@ export default function PlayerTurnOrderAnimator({
             ...style,
         
             padding:
-              item.playerId === playerPieces[playerPieces.length - 1].playerId
+              item?.playerId === playerPieces[playerPieces.length - 1]?.playerId
                 ? "20px"
                 : "6px",
             scale:
-              item.playerId === playerPieces[playerPieces.length - 1].playerId
+              item?.playerId === playerPieces[playerPieces.length - 1]?.playerId
                 ? 1.3
                 : 1,
           }}
@@ -85,22 +85,22 @@ export default function PlayerTurnOrderAnimator({
             item
             sx={{
               color:
-                item.playerId === playerPieces[playerPieces.length - 1].playerId
+                item?.playerId === playerPieces[playerPieces.length - 1]?.playerId
                   ? "green"
-                  : item.playerId ===
-                    playerPieces[playerPieces.length - 2].playerId
+                  : item?.playerId ===
+                    playerPieces[playerPieces.length - 2]?.playerId
                   ? "yellow"
                   : "black",
             }}
           >
             {" "}
-            {playerId === playerPieces[playerPieces.length - 1].playerId &&
-            item.playerId === playerPieces[playerPieces.length - 1].playerId
+            {playerId === playerPieces[playerPieces.length - 1]?.playerId &&
+            item?.playerId === playerPieces[playerPieces.length - 1]?.playerId
               ? "You're Up!"
-              : playerId === playerPieces[playerPieces.length - 2].playerId &&
-                item.playerId === playerPieces[playerPieces.length - 2].playerId
+              : playerId === playerPieces[playerPieces.length - 2]?.playerId &&
+                item?.playerId === playerPieces[playerPieces.length - 2]?.playerId
               ? "You're Next!"
-              : item.name}
+              : item?.name}
           </Grid>
         </animated.div>
       ))}
