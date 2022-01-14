@@ -18,7 +18,7 @@ function App() {
   const [lobbyId, setLobbyId] = useState(0);
   const [isLobbyReceived, setIsLobbyReceived] = useState(false);
   const [isLobbyFound, setIsLobbyFound] = useState(true);
-  const [hostWinBy, setHostWinBy] = useState(2);
+  const [hostWinBy, setHostWinBy] = useState(3);
   const [hostColor, setHostColor] = useState<RgbaColor>({
     r: 194,
     g: 42,
@@ -28,7 +28,7 @@ function App() {
   const [hostSize, setHostSize] = useState<number>(3);
   const [pieceSelection, setPieceSelection] = useState("");
   const [isHost, setIsHost] = useState(false);
-  const [playerWhoLeft, setPlayerWhoLeft] = useState("");
+  const [playerWhoLeftSessionId, setPlayerWhoLeft] = useState("");
   const [newMove, setNewMove] = useState<NewMove>({
     playerId: "",
     rowIdx: 0,
@@ -68,6 +68,7 @@ function App() {
         moves: [],
       },
       piece: pieceSelection,
+      playerId: playerId,
     };
     startGame(reqBody, setAction);
   };
@@ -103,6 +104,9 @@ function App() {
     playerId,
     setPlayerWhoLeft,
     setIsHost,
+    setHostWinBy,
+    setHostColor,
+    setHostSize,
   });
 
   return (
@@ -123,12 +127,12 @@ function App() {
         <Grid container direction="column" justifyContent="center">
           {(action === "create" ||
             action === "guest" ||
-            action === "play again" ||
+            
             action === "begin"||
             action === "in game") && (
             <Grid item>
               <Game
-                playerWhoLeft={playerWhoLeft}
+                playerWhoLeftSessionId={playerWhoLeftSessionId}
                 pieceSelection={pieceSelection}
                 setGameStatus={(props) => setGameStatus(props)}
                 gameStatus={gameStatus}
@@ -146,7 +150,7 @@ function App() {
               />
             </Grid>
           )}
-          {action !== "begin" && action !== "play again" && action !== "in game" && (
+          {action !== "begin"  && action !== "in game" && (
             <PregameModal
               playerName={playerName}
               setPlayerName={(props) => setPlayerName(props)}

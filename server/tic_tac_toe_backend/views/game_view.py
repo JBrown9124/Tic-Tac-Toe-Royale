@@ -41,6 +41,7 @@ class Game(APIView):
         lobby_id = body.get("lobbyId")
         board = body.get("board")
         host_piece = body.get("piece")
+        player_id = body.get("playerId")
         board_model = BoardModel(
             size=board["size"], color=board["color"], win_by=board["winBy"]
         ).to_dict()
@@ -56,16 +57,16 @@ class Game(APIView):
         game_status_model = GameStatus(players_amount=len(lobby_players_copy), win=Win().to_dict()).to_dict()
         lobby_copy["gameStatus"] = game_status_model
         for player in lobby_players_copy:
-            if player["isHost"]:
-                player["piece"] = host_piece
-                player["isReady"] = not player["isReady"]
-
-                lobby_copy["players"] = lobby_players_copy
-                cache.set(lobby_id, lobby_copy, 3600)
-                lobby_response = LobbyResponseModel(
-                    lobby=lobby_copy, lobby_id=lobby_id
-                ).to_dict()
-                return JsonResponse({"lobby": lobby_response})
+            if player["playerId"] == player_id:
+                player["isHost"] = True
+            player["piece"] = host_piece
+            player["isReady"] = not player["isReady"]
+            lobby_copy["players"] = lobby_players_copy
+            cache.set(lobby_id, lobby_copy, 3600)
+            lobby_response = LobbyResponseModel(
+                lobby=lobby_copy, lobby_id=lobby_id
+            ).to_dict()
+            return JsonResponse({"lobby": lobby_response})
 
     def put(self, request: Request):
         """takes guests and host player pieces when they hit ready button (guest) or select piece (host) and lobbyId, changes ready status to true"""

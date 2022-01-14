@@ -15,7 +15,7 @@ const createBoard = async (
   }
 
   moves?.map(
-    (move: any) => (board[move.rowIdx][move.tileIdx] = move.turnNumber)
+    (move: any) => (board[move.rowIdx][move.tileIdx] = move.playerId)
   );
 
   setBoard([...board]);

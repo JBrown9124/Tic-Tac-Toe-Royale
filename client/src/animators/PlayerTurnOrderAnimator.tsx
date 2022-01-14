@@ -78,10 +78,11 @@ export default function PlayerTurnOrderAnimator({
                 ? 1.3
                 : 1,
           }}
-          ref={playerPiecesEndRef}
+     
         >
           <Grid item>{item.piece}</Grid>
           <Grid
+               ref={playerPiecesEndRef}
             item
             sx={{
               color:

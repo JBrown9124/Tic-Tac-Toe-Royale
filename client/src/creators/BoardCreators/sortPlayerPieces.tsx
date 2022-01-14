@@ -1,11 +1,11 @@
 import { Player } from "../../Models/Player";
 interface SortPlayerPiecesArgs {
-  playerPieces: Player[];
+
   setPlayerPieces: (playerPieces: Player[]) => void;
   whoTurn: number;
 }
-const sortPlayerPieces = async ({
-  playerPieces,
+const sortPlayerPieces = async (playerPieces:Player[],{
+  
   setPlayerPieces,
   whoTurn,
 }: SortPlayerPiecesArgs) => {

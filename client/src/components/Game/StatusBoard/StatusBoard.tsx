@@ -20,7 +20,7 @@ interface StatusBoardProps {
   isCountDownFinished: boolean;
   setPlayerPieces: (playerPieces: Player[]) => void;
   isHost: boolean;
-  handlePlayAgain:()=>void;
+  handleStart: () => void;
 }
 export default function StatusBoard({
   playerPieces,
@@ -32,7 +32,7 @@ export default function StatusBoard({
   isBoardCreated,
   isCountDownFinished,
   isHost,
-  handlePlayAgain
+  handleStart,
 }: StatusBoardProps) {
   const [startWinSound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/winnerSound.mp3"
@@ -118,9 +118,9 @@ export default function StatusBoard({
           <Grid item>
             <Button onClick={() => quitGame()}>Leave Game</Button>
           </Grid>
-          {(gameStatus.win.whoWon && isHost) && (
+          {gameStatus.win.whoWon && isHost && (
             <Grid item>
-              <Button onClick={() => handlePlayAgain()}>Play Again</Button>
+              <Button onClick={() => handleStart()}>Play Again</Button>
             </Grid>
           )}
         </Grid>

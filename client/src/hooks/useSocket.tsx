@@ -6,15 +6,19 @@ import getLobby from "../creators/APICreators/getLobby";
 import { GameStatus } from "../Models/GameStatus";
 import { Player } from "../Models/Player";
 import leaveLobby from "../creators/APICreators/leaveLobby";
+import { RgbaColor } from "react-colorful";
 interface UseSocketProps {
   lobby: Lobby;
   setLobby: (lobby: Lobby) => void;
   setPieceSelection: (piece: string) => void;
   setNewMove: (newMove: NewMove) => void;
   setGameStatus: (gameStatus: GameStatus) => void;
-  setPlayerWhoLeft: (playerWhoLeft: string) => void;
+  setPlayerWhoLeft: (playerWhoLeftSessionId: string) => void;
   setAction: (action: string) => void;
   setIsHost: (isHost: boolean) => void;
+  setHostWinBy:(winBy: number) => void;
+  setHostColor: (color: RgbaColor) => void
+  setHostSize:(size: number) => void
   action: string;
   playerId: string;
 }
@@ -29,6 +33,9 @@ export default function useSocket({
   playerId,
   setIsHost,
   setAction,
+  setHostColor,
+  setHostWinBy,
+  setHostSize,
 }: UseSocketProps) {
   const lobbyRef = useRef(lobby);
   const playerIdRef = useRef(playerId);
@@ -72,7 +79,7 @@ export default function useSocket({
         lobbyCopy.players = newPlayerList;
 
         setLobby({ ...lobbyCopy });
-        if (actionRef.current === "begin") {
+        if (actionRef.current === "begin" || actionRef.current === "in game") {
           setPlayerWhoLeft(data.removedPlayer.sessionId);
           if (data.newHost.playerId === playerIdRef.current) {
             setIsHost(true);
@@ -100,20 +107,27 @@ export default function useSocket({
             playerLoaded: false,
             sessionId: playerSessionId,
           },
-          hostSid: lobby.hostSid,
+          hostSid: lobbyCopy.hostSid,
         };
         leaveLobby(reqBody).then((response) => {
+          
+        
           if (response) {
-            setLobby(response.data.lobby);
-            if (actionRef.current === "begin") {
+            const {data} = response
+            const {newHost, lobby} = data
+          
+            if (actionRef.current === "begin"|| actionRef.current === "in game") {
               setPlayerWhoLeft(playerSessionId);
-              if (response.data.newHost.playerId === playerIdRef.current) {
+              if (newHost && newHost.playerId === playerIdRef.current) {
                 setIsHost(true);
+                setHostColor(lobby.board.color)
+                setHostWinBy(lobby.board.winBy);
+                setHostSize(lobby.board.size)
               }
             }
             if (
-              actionRef.current !== "begin" &&
-              response.data.newHost.playerId === playerIdRef.current
+              (actionRef.current !== "begin" &&  actionRef.current !== "in game")&&
+              newHost && newHost.playerId === playerIdRef.current
             ) {
               setAction("create");
               setIsHost(true);
@@ -141,7 +155,7 @@ export default function useSocket({
         setAction("begin");
       });
       socket.on("play-again", (data) => {
-        setAction("play again");
+        setAction("begin");
       });
       
       socket.on("new-move", (newMove) => {

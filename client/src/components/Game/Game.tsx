@@ -1,6 +1,6 @@
 import Grid from "@mui/material/Grid";
 import { Player } from "../../Models/Player";
-import { useState, useEffect, useLayoutEffect } from "react";
+import { useState, useEffect, useLayoutEffect, useMemo } from "react";
 import determineWinner from "../../creators/BoardCreators/determineWinner";
 import createBoard from "../../creators/BoardCreators/createBoard";
 import { useCookies } from "react-cookie";
@@ -34,7 +34,7 @@ interface GameProps {
   playerId: string;
   isHost: boolean;
   setIsHost: (isHost: boolean) => void;
-  playerWhoLeft: string;
+  playerWhoLeftSessionId: string;
   setIsLobbyReceived: (isLobbyReceived: boolean) => void;
   handleStart: () => void;
   pieceSelection: string;
@@ -51,7 +51,7 @@ export default function Game({
   playerId,
   isHost,
   setIsHost,
-  playerWhoLeft,
+  playerWhoLeftSessionId,
   setIsLobbyReceived,
   pieceSelection,
   handleStart,
@@ -80,10 +80,10 @@ export default function Game({
       setPlayerPieces,
       setGameStatus,
       gameStatus,
-      playerWhoLeft,
+      playerWhoLeftSessionId,
       playerId,
     });
-  }, [playerWhoLeft]);
+  }, [playerWhoLeftSessionId]);
   useMoveHandler({
     botCanMove,
     lobby,
@@ -94,55 +94,48 @@ export default function Game({
     setGameStatus,
     newMove,
     playerPieces,
-    playerWhoLeft,
+    playerWhoLeftSessionId,
   });
   const quitGame = () => {
     playLeaveSound();
     setBotCanMove(false);
     setIsCountDownFinished(false);
     setIsBoardCreated(false);
-
     setIsHost(false);
 
     setTimeout(() => {
       setAction("leave");
     }, 3500);
   };
-  const handlePlayAgain = () => {
-    const reqBody = {
-      board: lobby.board,
-      lobbyId: lobby.lobbyId,
-      piece: pieceSelection,
-    };
-    playAgain(reqBody, setAction);
-  };
+
   useEffect(() => {
-    if (action === "play again") {
+    if (action === "begin") {
       setBotCanMove(false);
       setIsCountDownFinished(false);
       setIsBoardCreated(false);
       setIsLobbyReceived(false);
-      setPlayerPieces([])
     }
   }, [action]);
   useEffect(() => {
-    if ((action === "begin" || action === "play again") && isLobbyReceived) {
+    if (action === "begin" && isLobbyReceived) {
       const setUpGame = async () => {
-        await getPlayerPieces(
-          turnNumber,
-          lobby.players,
-          setPiece,
-          sizeOfBoardPiece,
-          setPlayerPieces,
-          lobby.board.color,
-          playerId,
-          setIsHost,
-          setTurnNumber,
-          playerPieces
-        );
+        if (playerPieces.length === 0) {
+          await getPlayerPieces(
+            turnNumber,
+            lobby.players,
+            setPiece,
+            sizeOfBoardPiece,
+            setPlayerPieces,
+            lobby.board.color,
+            playerId,
+            setIsHost,
+            setTurnNumber,
+            playerPieces
+          );
+        }
         console.log(gameStatus.whoTurn, "GAMESTATUSWHOTURN");
         const { whoTurn } = gameStatus;
-        await sortPlayerPieces({ playerPieces, setPlayerPieces, whoTurn });
+        await sortPlayerPieces( playerPieces,{ setPlayerPieces, whoTurn });
         const boardCreated = await createBoard(
           setBoard,
           lobby.board.size,
@@ -150,7 +143,7 @@ export default function Game({
         );
 
         setIsBoardCreated(boardCreated);
-        setAction("in game")
+        setAction("in game");
       };
       if (lobby.board.color) {
         setUpGame();
@@ -162,10 +155,10 @@ export default function Game({
     if (isBoardCreated && gameStatus.win.whoWon === null) {
       let currentPlayer = playerPieces[playerPieces.length - 1];
       const poppedPlayer = playerPieces.pop();
-
+      console.log(poppedPlayer, "POPPEDPLAYER");
       if (poppedPlayer !== undefined) {
         playerPieces.unshift(poppedPlayer);
-        console.log(poppedPlayer, "POPPEDPLAYER");
+
         if (
           currentPlayer.turnNumber !== gameStatus.whoTurn &&
           gameStatus.win.whoWon === null
@@ -195,9 +188,10 @@ export default function Game({
       //     ];
       //     j -= 1;
       //   }
-      // }
+      // }c
+      console.log(playerPieces, "AFTERPOP");
     }
-  }, [gameStatus, newMove]);
+  }, [gameStatus]);
 
   return (
     <>
@@ -222,7 +216,7 @@ export default function Game({
             delay={800}
           >
             <StatusBoard
-              handlePlayAgain={() => handlePlayAgain()}
+              handleStart={() => handleStart()}
               isHost={isHost}
               isCountDownFinished={isCountDownFinished}
               isBoardCreated={isBoardCreated}

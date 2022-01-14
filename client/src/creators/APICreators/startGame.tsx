@@ -8,6 +8,7 @@ interface BodyProps {
   board: Board;
   lobbyId: number;
   piece: string;
+  playerId:string
 }
 const saveStartGame = async (body: BodyProps) => {
   const { data } = await axios.post(`${url}/api/game`, body);

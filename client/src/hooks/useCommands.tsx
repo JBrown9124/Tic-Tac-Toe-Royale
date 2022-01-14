@@ -106,6 +106,7 @@ export default function useCommands({
         },
         hostSid: lobby.hostSid,
       };
+      leaveLobby(reqBody);
       setLobby({
         hostSid: 0,
         lobbyId: 0,
@@ -134,8 +135,8 @@ export default function useCommands({
       setIsLobbyReceived(false);
       setIsLobbyFound(true);
     
-      leaveLobby(reqBody);
-    } else if (action === "begin" || action === "play again") {
+  
+    } else if (action === "begin") {
       getStartGame(
         {
           lobbyId: lobbyId,
