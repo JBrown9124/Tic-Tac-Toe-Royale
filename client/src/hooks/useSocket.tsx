@@ -10,10 +10,9 @@ import { RgbaColor } from "react-colorful";
 interface UseSocketProps {
   lobby: Lobby;
   setLobby: (lobby: Lobby) => void;
-  setPieceSelection: (piece: string) => void;
-  setNewMove: (newMove: NewMove) => void;
+  setPieceSelection: (piece: string) => void;  
   setGameStatus: (gameStatus: GameStatus) => void;
-  setPlayerWhoLeft: (playerWhoLeftSessionId: string) => void;
+  setPlayerWhoLeftSessionId: (playerWhoLeftSessionId: string) => void;
   setAction: (action: string) => void;
   setIsHost: (isHost: boolean) => void;
   setHostWinBy: (winBy: number) => void;
@@ -26,8 +25,8 @@ export default function useSocket({
   lobby,
   setLobby,
   setPieceSelection,
-  setPlayerWhoLeft,
-  setNewMove,
+  setPlayerWhoLeftSessionId,
+  
   setGameStatus,
   action,
   playerId,
@@ -81,7 +80,7 @@ export default function useSocket({
           actionRef.current === "begin" ||
           actionRef.current === "in game"
         ) {
-          setPlayerWhoLeft(data.removedPlayer.sessionId);
+          setPlayerWhoLeftSessionId(data.removedPlayer.sessionId);
           if (data.newHost.playerId === playerIdRef.current) {
             setIsHost(true);
           }
@@ -102,7 +101,7 @@ export default function useSocket({
             name: null,
             piece: "Not Needed",
             isHost: false,
-            turnNumber: 0,
+      
             isReady: false,
             playerId: playerId,
             playerLoaded: false,
@@ -119,7 +118,7 @@ export default function useSocket({
               actionRef.current === "begin" ||
               actionRef.current === "in game"
             ) {
-              setPlayerWhoLeft(playerSessionId);
+              setPlayerWhoLeftSessionId(playerSessionId);
               if (newHost && newHost.playerId === playerIdRef.current) {
                 setIsHost(true);
              
@@ -159,14 +158,16 @@ export default function useSocket({
       });
       socket.on("start-game", (data) => {
         setAction("begin");
+        setPlayerWhoLeftSessionId("")
       });
       socket.on("play-again", (data) => {
         setAction("begin");
+        setPlayerWhoLeftSessionId("")
       });
 
-      socket.on("new-move", (newMove) => {
-        setNewMove(newMove.newMove);
-        setGameStatus(newMove.gameStatus);
+      socket.on("new-move", (gameStatus) => {
+        
+        setGameStatus(gameStatus);
       });
 
       socket.on("player-join-lobby", (newPlayer: Player) => {

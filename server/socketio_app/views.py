@@ -105,7 +105,7 @@ def game_status(sid, received_data):
     
     sio.emit(
         "new-move",
-        {"newMove": data["newMove"], "gameStatus": data["gameStatus"]},
+        {"gameStatus": data["gameStatus"]},
         room=host_sid,
         skip_sid=sid,
     )

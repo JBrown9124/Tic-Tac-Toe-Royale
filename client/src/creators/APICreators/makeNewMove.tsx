@@ -4,13 +4,12 @@ import { NewMove } from "../../Models/NewMove";
 import { GameStatus } from "../../Models/GameStatus";
 import url from "../../storage/url";
 interface BodyProps {
-  newMove: NewMove;
+  gameStatus: GameStatus;
   lobbyId: number;
   hostSid: number;
 }
 interface DataProps {
   gameStatus: GameStatus;
-  newMove: NewMove;
 }
 const saveNewMove = async (body: BodyProps) => {
   const { data } = await axios.put(`${url}/api/board`, body);

@@ -4,7 +4,7 @@ import { RgbaColor } from "react-colorful";
 import createPiece from "./createPiece";
 
 interface getPlayerPiecesArguments {
-  turnNumber: number;
+
   players: Player[];
   setPiece: (piece: JSX.Element) => void;
   sizeOfBoardPiece: { mobile: string; desktop: string };

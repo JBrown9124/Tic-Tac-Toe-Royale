@@ -30,7 +30,7 @@ interface UseCommandsProps {
   playerId: string;
   setAction: (action: string) => void;
   isHost: boolean;
-  setNewMove:(newMove:NewMove) => void;
+  
  
 }
 
@@ -54,7 +54,7 @@ export default function useCommands({
   playerName,
   playerId,
   setAction,
-  setNewMove,
+ 
  
 }: UseCommandsProps) {
   const [playJoinOrStart] = useSound(
@@ -98,7 +98,7 @@ export default function useCommands({
           name: playerName,
           piece: "Not Needed",
           isHost: isHost,
-          turnNumber: 0,
+       
           isReady: false,
           playerId: playerId,
           playerLoaded: false,
@@ -119,19 +119,16 @@ export default function useCommands({
         players: [],
         gameStatus: {
           win: { whoWon: null, type: null, winningMoves: null },
-          whoTurn: "",
+      newMove: { playerId: "", rowIdx: 0, tileIdx: 0 },
+      whoTurn: "", 
         },
       })
       setGameStatus({
         win: { whoWon: null, type: null, winningMoves: null },
-        whoTurn: "",
+      newMove: { playerId: "", rowIdx: 0, tileIdx: 0 },
+      whoTurn: "",
       });
-      setNewMove({
-        playerId: "",
-        rowIdx: 0,
-        tileIdx: 0,
-        win: { whoWon: null, type: null, winningMoves: null },
-      });
+     
       setIsLobbyReceived(false);
       setIsLobbyFound(true);
     

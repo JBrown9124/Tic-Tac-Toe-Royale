@@ -23,12 +23,11 @@ import playAgain from "../../creators/APICreators/playAgain";
 import { socket } from "../../socket";
 import TurnOrder from "./TurnOrder/TurnOrder";
 interface GameProps {
-  newMove: NewMove;
   lobby: Lobby;
   gameStatus: GameStatus;
   isLobbyReceived: boolean;
   setGameStatus: (status: GameStatus) => void;
-  setNewMove: (newMoveValue: NewMove) => void;
+
   action: string;
   setAction: (action: string) => void;
   playerId: string;
@@ -40,11 +39,10 @@ interface GameProps {
   pieceSelection: string;
 }
 export default function Game({
-  newMove,
   lobby,
   gameStatus,
   setGameStatus,
-  setNewMove,
+
   isLobbyReceived,
   action,
   setAction,
@@ -66,7 +64,6 @@ export default function Game({
   const [isBoardCreated, setIsBoardCreated] = useState(false);
   const [botCanMove, setBotCanMove] = useState(false);
   const [isCountDownFinished, setIsCountDownFinished] = useState(false);
-  const [turnNumber, setTurnNumber] = useState(0);
 
   const [piece, setPiece] = useState<JSX.Element | string>("");
 
@@ -76,7 +73,7 @@ export default function Game({
   useEffect(() => {
     updateAfterPlayerLeaves({
       playerPieces,
-      setTurnNumber,
+
       setPlayerPieces,
       setGameStatus,
       gameStatus,
@@ -92,7 +89,7 @@ export default function Game({
     action,
     board,
     setGameStatus,
-    newMove,
+
     playerPieces,
     playerWhoLeftSessionId,
   });
@@ -119,7 +116,6 @@ export default function Game({
   useEffect(() => {
     if (action === "begin" && isLobbyReceived) {
       const setUpGame = async () => {
-      
         if (playerPieces.length === 0) {
           await getPlayerPieces(
             playerId,
@@ -143,15 +139,13 @@ export default function Game({
           lobby.board.moves
         );
         let currentPlayer = playerPieces[playerPieces.length - 1];
-      let poppedPlayer = playerPieces.pop();
-      console.log(poppedPlayer, "POPPEDPLAYER");
-      if (poppedPlayer !== undefined) {
-        playerPieces.unshift(poppedPlayer);
-        console.log(playerPieces, "AFTERPOP");
-      }
-      if (playerId === gameStatus.whoTurn) {
-        playYourTurnSound();
-      }
+        let poppedPlayer = playerPieces.pop();
+      
+        if (poppedPlayer !== undefined) {
+          playerPieces.unshift(poppedPlayer);
+          
+        }
+       
         setIsBoardCreated(boardCreated);
         setAction("in game");
       };
@@ -162,7 +156,7 @@ export default function Game({
   }, [isLobbyReceived]);
 
   useEffect(() => {
-    if (isBoardCreated && gameStatus.win.whoWon === null) {
+    if (isBoardCreated) {
       let currentPlayer = playerPieces[playerPieces.length - 1];
       let poppedPlayer = playerPieces.pop();
       console.log(poppedPlayer, "POPPEDPLAYER");
@@ -173,7 +167,7 @@ export default function Game({
       if (playerId === gameStatus.whoTurn) {
         playYourTurnSound();
       }
-      
+
       // let currentPlayer = playerPieces[playerPieces.length - 1];
       // let j = playerPieces.length - 2;
       // for (let i = playerPieces.length - 1; j >= 0; i--) {
@@ -190,10 +184,8 @@ export default function Game({
       //     ];
       //     j -= 1;
       //   }
-      // }
-      
     }
-  }, [gameStatus]);
+  }, [gameStatus.newMove, gameStatus.whoTurn,]);
 
   return (
     <>
@@ -226,7 +218,6 @@ export default function Game({
               winBy={lobby.board.winBy}
               gameStatus={gameStatus}
               playerPieces={playerPieces}
-              turnNumber={turnNumber}
               quitGame={() => quitGame()}
               playerId={playerId}
             />
@@ -250,8 +241,6 @@ export default function Game({
             winBy={lobby.board.winBy}
             lobbyId={lobby.lobbyId}
             lobbyHostSid={lobby.hostSid}
-            newMove={newMove}
-            turnNumber={turnNumber}
             board={board}
             sizeOfBoardPiece={sizeOfBoardPiece}
             playerPieces={playerPieces}
@@ -276,10 +265,10 @@ export default function Game({
             delay={800}
           >
             <TurnOrder
+            playerWhoLeftSessionId={playerWhoLeftSessionId}
               whoTurn={gameStatus.whoTurn}
               playerId={playerId}
               gameStatus={gameStatus}
-              turnNumber={turnNumber}
               isCountDownFinished={isCountDownFinished}
               isBoardCreated={isBoardCreated}
               setPlayerPieces={(props) => {

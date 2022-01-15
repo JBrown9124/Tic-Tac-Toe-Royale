@@ -14,7 +14,7 @@ interface StatusBoardProps {
   playerPieces: Player[];
   gameStatus: GameStatus;
   winBy: number;
-  turnNumber: number;
+
   quitGame: () => void;
   isBoardCreated: boolean;
   isCountDownFinished: boolean;
@@ -27,7 +27,7 @@ export default function StatusBoard({
   playerPieces,
   gameStatus,
   winBy,
-  turnNumber,
+
   quitGame,
   setPlayerPieces,
   isBoardCreated,

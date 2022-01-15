@@ -16,7 +16,7 @@ interface UseMoveHandler {
   isHost: boolean;
   action: string;
   board: (string | number)[][];
-  newMove: NewMove;
+ 
   playerWhoLeftSessionId: string;
 }
 export default function useMoveHandler({
@@ -27,7 +27,7 @@ export default function useMoveHandler({
   action,
   board,
   setGameStatus,
-  newMove,
+ 
   playerPieces,
   playerWhoLeftSessionId,
 }: UseMoveHandler) {
@@ -85,10 +85,10 @@ export default function useMoveHandler({
     }
   }, [gameStatus, botCanMove, playerWhoLeftSessionId]);
   useEffect(() => {
-    if (newMove.playerId !== "") {
-      board[newMove.rowIdx][newMove.tileIdx] = newMove.playerId;
+    if (gameStatus.newMove.playerId !== "") {
+      board[gameStatus.newMove.rowIdx][gameStatus.newMove.tileIdx] =gameStatus.newMove.playerId;
 
       startOtherPlayerMoveSound();
     }
-  }, [newMove]);
+  }, [gameStatus.newMove]);
 }

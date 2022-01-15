@@ -12,10 +12,10 @@ import { useSound } from "use-sound";
 interface TileProps {
   chosenPiece: JSX.Element | string | undefined;
   boardColor: RgbaColor;
-  newMove: any;
+
   value: number | JSX.Element | string;
   playerPieces: PlayerPieces[] | undefined;
-  turnNumber: number;
+
   updateBoardCache: () => void;
   gameStatus: GameStatus;
   sizeOfBoardPiece: { mobile: string; desktop: string };
@@ -26,10 +26,10 @@ export const Tile = ({
   chosenPiece,
   value,
   updateBoardCache,
-  newMove,
+
   playerPieces,
   gameStatus,
-  turnNumber,
+
   playerId,
   sizeOfBoardPiece,
 }: TileProps) => {

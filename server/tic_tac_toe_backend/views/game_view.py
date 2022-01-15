@@ -56,7 +56,7 @@ class Game(APIView):
         lobby_players_copy = lobby_copy["players"]
         shuffle(lobby_players_copy)
         game_status_model = GameStatus(
-            whoTurn=lobby_players_copy[-1]["playerId"], win=Win().to_dict()
+            who_turn=lobby_players_copy[-1]["playerId"], win=Win().to_dict()
         ).to_dict()
         lobby_copy["gameStatus"] = game_status_model
         for player in lobby_players_copy:
