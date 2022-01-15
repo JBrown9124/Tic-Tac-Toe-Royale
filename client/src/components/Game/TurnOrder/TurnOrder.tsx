@@ -11,7 +11,7 @@ interface TurnOrderProps {
   isBoardCreated: boolean;
   whoTurn: string;
   isCountDownFinished: boolean;
-  turnNumber: number;
+
   gameStatus: GameStatus;
   playerId: string;
 }
@@ -21,7 +21,7 @@ export default function TurnOrder({
   isBoardCreated,
   whoTurn,
   isCountDownFinished,
-  turnNumber,
+
   gameStatus,
   playerId,
 }: TurnOrderProps) {

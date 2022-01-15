@@ -10,8 +10,7 @@ import { RgbaColor } from "react-colorful";
 interface UseSocketProps {
   lobby: Lobby;
   setLobby: (lobby: Lobby) => void;
-  setPieceSelection: (piece: string) => void;
-  setNewMove: (newMove: NewMove) => void;
+  setPieceSelection: (piece: string) => void;  
   setGameStatus: (gameStatus: GameStatus) => void;
   setPlayerWhoLeft: (playerWhoLeftSessionId: string) => void;
   setAction: (action: string) => void;
@@ -27,7 +26,7 @@ export default function useSocket({
   setLobby,
   setPieceSelection,
   setPlayerWhoLeft,
-  setNewMove,
+  
   setGameStatus,
   action,
   playerId,
@@ -102,7 +101,7 @@ export default function useSocket({
             name: null,
             piece: "Not Needed",
             isHost: false,
-            turnNumber: 0,
+      
             isReady: false,
             playerId: playerId,
             playerLoaded: false,
@@ -164,9 +163,9 @@ export default function useSocket({
         setAction("begin");
       });
 
-      socket.on("new-move", (newMove) => {
-        setNewMove(newMove.newMove);
-        setGameStatus(newMove.gameStatus);
+      socket.on("new-move", (gameStatus) => {
+        
+        setGameStatus(gameStatus);
       });
 
       socket.on("player-join-lobby", (newPlayer: Player) => {

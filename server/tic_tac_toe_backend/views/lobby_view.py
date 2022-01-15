@@ -119,7 +119,7 @@ class Lobby(APIView):
                     make_new_host = True
 
                 lobby_players_copy.remove(player)
-                player["turnNumber"] = index + 1
+               
         new_host = None
         if make_new_host and len(lobby_players_copy) > 0:
             lobby_players_copy[0]["isHost"] = True

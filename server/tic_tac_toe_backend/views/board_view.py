@@ -22,10 +22,11 @@ class Board(APIView):
         pass
 
     def put(self, request: Request):
-        """takes new move coordinates,lobbyId, turnNumber, and gameStatus. updates lobby board, and returns new move coordinates and update game status(whos move it is, who won)"""
+        """takes new move coordinates,lobbyId, and gameStatus. updates lobby board, and returns new move coordinates and update game status(whos move it is, who won)"""
         body = request.data
-        new_move = body.get("newMove")
-        win = new_move.get("win")
+        game_status = body.get("gameStatus")
+        new_move = game_status.get("newMove")
+        win = game_status.get("win")
         winner = win.get("whoWon")
         winning_moves = win.get("winningMoves")
         win_type = win.get("type")
@@ -63,7 +64,7 @@ class Board(APIView):
         if len(lobby_board_copy["moves"]) == tile_amount and not winner:
             win = Win(who_won="tie", type="tie").to_dict()
             lobby_game_status_copy["win"] = win
-
+        lobby_game_status_copy["newMove"]=new_move
         lobby_copy["board"] = lobby_board_copy
         lobby_copy["gameStatus"] = lobby_game_status_copy
         lobby_copy["players"] = list(lobby_players_copy)
@@ -72,7 +73,7 @@ class Board(APIView):
         board_response = BoardResponseModel(
             new_move=new_move, game_status=lobby_game_status_copy
         ).to_dict()
-        return JsonResponse(board_response)
+        return JsonResponse({"gameStatus":lobby_copy["gameStatus"]})
 
     def delete(self, request: Request):
         pass

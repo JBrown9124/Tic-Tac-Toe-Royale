@@ -29,15 +29,11 @@ function App() {
   const [pieceSelection, setPieceSelection] = useState("");
   const [isHost, setIsHost] = useState(false);
   const [playerWhoLeftSessionId, setPlayerWhoLeft] = useState("");
-  const [newMove, setNewMove] = useState<NewMove>({
-    playerId: "",
-    rowIdx: 0,
-    tileIdx: 0,
-    win: { whoWon: null, type: null, winningMoves: null },
-  });
+
   const [gameStatus, setGameStatus] = useState<GameStatus>({
     win: { whoWon: null, type: null, winningMoves: null },
     whoTurn: "",
+    newMove: { playerId: "", rowIdx: 0, tileIdx: 0 },
   });
   const [lobby, setLobby] = useState<Lobby>({
     hostSid: 0,
@@ -52,6 +48,7 @@ function App() {
     gameStatus: {
       win: { whoWon: null, type: null, winningMoves: null },
       whoTurn: "",
+      newMove: { playerId: "", rowIdx: 0, tileIdx: 0 },
     },
   });
 
@@ -91,7 +88,6 @@ function App() {
     playerId,
     setAction,
     isHost,
-    setNewMove,
   });
   useSocket({
     lobby,
@@ -99,7 +95,7 @@ function App() {
     setPieceSelection,
     action,
     setAction,
-    setNewMove,
+
     setGameStatus,
     playerId,
     setPlayerWhoLeft,
@@ -135,9 +131,7 @@ function App() {
                 pieceSelection={pieceSelection}
                 setGameStatus={(props) => setGameStatus(props)}
                 gameStatus={gameStatus}
-                newMove={newMove}
                 lobby={lobby}
-                setNewMove={(props) => setNewMove(props)}
                 isLobbyReceived={isLobbyReceived}
                 action={action}
                 setAction={(props) => setAction(props)}

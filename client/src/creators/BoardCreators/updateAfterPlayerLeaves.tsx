@@ -3,7 +3,7 @@ import { Player } from "../../Models/Player";
 // import sortPlayerPieces from "./sortPlayerPieces";
 interface UpdateAfterPlayerLeavesArgs {
   playerPieces: Player[];
-  setTurnNumber: (turnNumber: number) => void;
+
   setPlayerPieces: (plyerPieces: Player[]) => void;
   setGameStatus: (gameStatus: GameStatus) => void;
   gameStatus: GameStatus;
@@ -12,7 +12,7 @@ interface UpdateAfterPlayerLeavesArgs {
 }
 const updateAfterPlayerLeaves = ({
   playerPieces,
-  setTurnNumber,
+ 
   setPlayerPieces,
   setGameStatus,
   gameStatus,
@@ -20,21 +20,18 @@ const updateAfterPlayerLeaves = ({
   playerId,
 }: UpdateAfterPlayerLeavesArgs) => {
   const removePlayerFromPieces = async () => {
-    // const updatedPieces = playerPieces.filter((playerPiece) => {
-    //   return playerPiece.sessionId !== playerWhoLeftSessionId;
-    // });
+  
 
     for (var i = playerPieces.length; i--; ) {
       if (playerPieces[i].sessionId === playerWhoLeftSessionId) {
         playerPieces.splice(i, 1);
       }
     }
-    // return updatedPieces;
+    
     return true
   };
-  removePlayerFromPieces().then((updatedPieces) => {
-    // sortPlayerPieces(updatedPieces, { setPlayerPieces, whoTurn });
-    // setPlayerPieces(updatedPieces);
+  removePlayerFromPieces().then((isUpdated) => {
+   
     setTimeout(() => {
       setGameStatus({
         win: {
@@ -44,6 +41,9 @@ const updateAfterPlayerLeaves = ({
           winningMoves: null,
         },
         whoTurn: playerPieces[playerPieces.length - 1]?.playerId,
+        newMove:{ playerId: "",
+        rowIdx: 0,
+        tileIdx: 0,}
       });
     }, 1000);
   });

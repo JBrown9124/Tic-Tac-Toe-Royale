@@ -6,15 +6,14 @@ import { GameStatus } from "../../Models/GameStatus";
 const determineWinner = async (
   rowIdx: number,
   tileIdx: number,
-  board: (number|string)[][],
+  board: (number | string)[][],
   boardSize: number,
   playerId: string,
 
-  winBy:number,
-  lobbyId:number,
+  winBy: number,
+  lobbyId: number,
   lobbyHostSid: number,
-  setGameStatus: (gameStatus:GameStatus)=>void,
-  
+  setGameStatus: (gameStatus: GameStatus) => void
 ) => {
   board[rowIdx][tileIdx] = playerId;
   let winningMoves: WinningMove[] = [];
@@ -135,27 +134,24 @@ const determineWinner = async (
     : checkDiagonalLeft(winBy)
     ? "diagonalLeft"
     : null;
-  let boardMove: NewMove = {
-    rowIdx: rowIdx,
-    tileIdx: tileIdx,
+  let newGameStatus: GameStatus = {
     win: {
       type: typeof win === "string" ? win : null,
       whoWon: typeof win === "string" ? playerId : null,
       winningMoves: typeof win === "string" ? winningMoves : null,
     },
-    playerId: playerId,
+    newMove: { rowIdx: rowIdx, tileIdx: tileIdx, playerId: playerId },
+    whoTurn:playerId
   };
 
   const reqBody = {
     lobbyId: lobbyId,
-    newMove: boardMove,
+    gameStatus: newGameStatus,
     hostSid: lobbyHostSid,
   };
   const gameStatusResponse = await makeNewMove(reqBody);
-  if (gameStatusResponse){
-  setGameStatus({
-    win: gameStatusResponse.win,
-    whoTurn: gameStatusResponse.whoTurn,
-  });}
+  if (gameStatusResponse) {
+    setGameStatus(gameStatusResponse);
+  }
 };
 export default determineWinner;

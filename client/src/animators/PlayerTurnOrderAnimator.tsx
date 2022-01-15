@@ -22,7 +22,7 @@ interface PlayerTurnOrderAnimatorProps {
   isBoardCreated: boolean;
   whoTurn: string;
   isCountDownFinished: boolean;
-  
+
   gameStatus: GameStatus;
   playerId: string;
 }
@@ -59,53 +59,50 @@ export default function PlayerTurnOrderAnimator({
   const scrollToBottom = () => {
     playerPiecesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
-  // useEffect(() => {
-  //   scrollToBottom();
-    
-  // }, [playerPieces]);
+  useEffect(() => {
+    scrollToBottom();
+  }, [isCountDownFinished]);
+  const whoTurnIndex = playerPieces.findIndex(
+    (playerPiece) => playerPiece.playerId === gameStatus.whoTurn
+  );
+  const whoNextIndex =
+    whoTurnIndex - 1 === -1 ? playerPieces.length - 1 : whoTurnIndex - 1;
   return (
     <>
       {transitions((style, item, t, i) => (
         <animated.div
           style={{
             ...style,
-        
-            padding:
-              item?.playerId === playerPieces[playerPieces.length - 1]?.playerId
-                ? "20px"
-                : "6px",
-            scale:
-              item?.playerId === playerPieces[playerPieces.length - 1]?.playerId
-                ? 1.3
-                : 1,
+
+            padding: item?.playerId === gameStatus.whoTurn ? "20px" : "6px",
+            scale: item?.playerId === gameStatus.whoTurn ? 1.3 : 1,
           }}
-     
         >
           <Grid item>{item.piece}</Grid>
           <Grid
-               ref={playerPiecesEndRef}
+            ref={playerPiecesEndRef}
             item
             sx={{
               color:
-                item?.playerId === playerPieces[playerPieces.length - 1]?.playerId
+                item?.playerId === gameStatus.whoTurn
                   ? "green"
-                  : item?.playerId ===
-                    playerPieces[playerPieces.length - 2]?.playerId
+                  : item?.playerId === playerPieces[whoNextIndex]?.playerId
                   ? "yellow"
                   : "black",
             }}
           >
             {" "}
-            {playerId === playerPieces[playerPieces.length - 1]?.playerId &&
-            item?.playerId === playerPieces[playerPieces.length - 1]?.playerId
+            {playerId === gameStatus.whoTurn &&
+            item?.playerId === gameStatus.whoTurn
               ? "You're Up!"
-              : playerId === playerPieces[playerPieces.length - 2]?.playerId &&
-                item?.playerId === playerPieces[playerPieces.length - 2]?.playerId
+              : playerId === playerPieces[whoNextIndex]?.playerId &&
+                item?.playerId === playerPieces[whoNextIndex]?.playerId
               ? "You're Next!"
               : item?.name}
           </Grid>
         </animated.div>
       ))}
+      <div ref={playerPiecesEndRef}></div>
     </>
   );
 }

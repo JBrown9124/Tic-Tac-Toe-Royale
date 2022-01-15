@@ -14,8 +14,8 @@ import { determineSizeOfPiece } from "../../../creators/BoardCreators/sizeOfPiec
 import { useSound } from "use-sound";
 
 interface BoardProps {
-  newMove: NewMove;
-  turnNumber: number;
+  
+ 
   playerId: string;
   setGameStatus: (status: GameStatus) => void;
   gameStatus: GameStatus;
@@ -31,8 +31,8 @@ interface BoardProps {
   isCountDownFinished: boolean;
 }
 export default function Board({
-  newMove,
-  turnNumber,
+ 
+
   setGameStatus,
   gameStatus,
   board,
@@ -66,7 +66,7 @@ export default function Board({
                   playerId={playerId}
                   key={rowIdx * tileIdx}
                   gameStatus={gameStatus}
-                  turnNumber={turnNumber}
+             
                   playerPieces={playerPieces}
                   sizeOfBoardPiece={sizeOfBoardPiece}
                   updateBoardCache={() =>
@@ -87,7 +87,7 @@ export default function Board({
                       : ""
                   }
                   value={tile}
-                  newMove={newMove}
+              
                   chosenPiece={piece}
                   boardColor={boardColor}
                 />
