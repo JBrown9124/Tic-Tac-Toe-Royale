@@ -16,9 +16,9 @@ interface UseSocketProps {
   setPlayerWhoLeft: (playerWhoLeftSessionId: string) => void;
   setAction: (action: string) => void;
   setIsHost: (isHost: boolean) => void;
-  setHostWinBy:(winBy: number) => void;
-  setHostColor: (color: RgbaColor) => void
-  setHostSize:(size: number) => void
+  setHostWinBy: (winBy: number) => void;
+  setHostColor: (color: RgbaColor) => void;
+  setHostSize: (size: number) => void;
   action: string;
   playerId: string;
 }
@@ -56,37 +56,38 @@ export default function useSocket({
       console.log("Client Connected");
 
       socket.on("player-leave-lobby", (data) => {
-        const lobbyCopy = lobbyRef.current;
-        let newPlayerList = lobbyCopy.players.filter((player) => {
-          return player.playerId !== data.removedPlayer.playerId;
-        });
-
-        if (data.newHost) {
-          lobbyCopy.players.map((player) => {
-            if (player.playerId === data.newHost.playerId) {
-              player.isHost = true;
-            }
+        if (actionRef.current !== "begin" && actionRef.current !== "in game") {
+          const lobbyCopy = lobbyRef.current;
+          let newPlayerList = lobbyCopy.players.filter((player) => {
+            return player.playerId !== data.removedPlayer.playerId;
           });
-          if (
-            actionRef.current !== "begin" &&
-            data.newHost.playerId === playerIdRef.current
-          ) {
-            setAction("create");
-            setIsHost(true);
+
+          if (data.newHost) {
+            lobbyCopy.players.forEach((player) => {
+              if (player.playerId === data.newHost.playerId) {
+                player.isHost = true;
+              }
+            });
+            if (data.newHost.playerId === playerIdRef.current) {
+              setAction("create");
+              setIsHost(true);
+            }
           }
-        }
 
-        lobbyCopy.players = newPlayerList;
+          lobbyCopy.players = newPlayerList;
 
-        setLobby({ ...lobbyCopy });
-        if (actionRef.current === "begin" || actionRef.current === "in game") {
+          setLobby({ ...lobbyCopy });
+        } else if (
+          actionRef.current === "begin" ||
+          actionRef.current === "in game"
+        ) {
           setPlayerWhoLeft(data.removedPlayer.sessionId);
           if (data.newHost.playerId === playerIdRef.current) {
             setIsHost(true);
           }
         }
       });
-      
+
       socket.on("player-disconnected", (playerSessionId) => {
         console.log(playerSessionId);
         const lobbyCopy = lobbyRef.current;
@@ -110,32 +111,37 @@ export default function useSocket({
           hostSid: lobbyCopy.hostSid,
         };
         leaveLobby(reqBody).then((response) => {
-          
-        
           if (response) {
-            const {data} = response
-            const {newHost, lobby} = data
-          
-            if (actionRef.current === "begin"|| actionRef.current === "in game") {
+            const { data } = response;
+            const { newHost, lobby } = data;
+
+            if (
+              actionRef.current === "begin" ||
+              actionRef.current === "in game"
+            ) {
               setPlayerWhoLeft(playerSessionId);
               if (newHost && newHost.playerId === playerIdRef.current) {
                 setIsHost(true);
-                setHostColor(lobby.board.color)
+             
+                setHostColor(lobby.board.color);
                 setHostWinBy(lobby.board.winBy);
-                setHostSize(lobby.board.size)
+                setHostSize(lobby.board.size);
               }
             }
             if (
-              (actionRef.current !== "begin" &&  actionRef.current !== "in game")&&
-              newHost && newHost.playerId === playerIdRef.current
+              (actionRef.current !== "begin" &&
+              actionRef.current !== "in game") &&
+              newHost &&
+              newHost.playerId === playerIdRef.current
             ) {
               setAction("create");
+              setLobby(lobby);
               setIsHost(true);
             }
           }
         });
       });
-      
+
       socket.on("player-ready", () => {
         const lobbyCopy = lobbyRef.current;
 
@@ -157,7 +163,7 @@ export default function useSocket({
       socket.on("play-again", (data) => {
         setAction("begin");
       });
-      
+
       socket.on("new-move", (newMove) => {
         setNewMove(newMove.newMove);
         setGameStatus(newMove.gameStatus);
@@ -174,9 +180,9 @@ export default function useSocket({
           lobbyCopy.players.push({
             name: newPlayer.name,
             playerId: newPlayer.playerId,
-            piece: "",
+            piece: isNewPlayerBot ? newPlayer.piece : "",
             isHost: false,
-           
+
             playerLoaded: isNewPlayerBot ? true : false,
             isReady: isNewPlayerBot ? true : false,
             sessionId: newPlayer.sessionId,

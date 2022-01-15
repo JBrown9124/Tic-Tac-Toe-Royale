@@ -19,27 +19,31 @@ const updateAfterPlayerLeaves = ({
   playerWhoLeftSessionId,
   playerId,
 }: UpdateAfterPlayerLeavesArgs) => {
-  const removePlayerFromPieces = async (): Promise<Player[]> => {
-  
-    const updatedPieces = playerPieces.filter((playerPiece) => {
-      return playerPiece.sessionId !== playerWhoLeftSessionId;
-    });
+  const removePlayerFromPieces = async () => {
+    // const updatedPieces = playerPieces.filter((playerPiece) => {
+    //   return playerPiece.sessionId !== playerWhoLeftSessionId;
+    // });
 
-   
-    return updatedPieces;
+    for (var i = playerPieces.length; i--; ) {
+      if (playerPieces[i].sessionId === playerWhoLeftSessionId) {
+        playerPieces.splice(i, 1);
+      }
+    }
+    // return updatedPieces;
+    return true
   };
   removePlayerFromPieces().then((updatedPieces) => {
-   
     // sortPlayerPieces(updatedPieces, { setPlayerPieces, whoTurn });
+    // setPlayerPieces(updatedPieces);
     setTimeout(() => {
       setGameStatus({
         win: {
           whoWon:
-            updatedPieces.length === 1 ? updatedPieces[0]?.playerId : null,
+            playerPieces.length === 1 ? playerPieces[0]?.playerId : null,
           type: null,
           winningMoves: null,
         },
-        whoTurn: updatedPieces[updatedPieces.length - 1]?.playerId,
+        whoTurn: playerPieces[playerPieces.length - 1]?.playerId,
       });
     }, 1000);
   });

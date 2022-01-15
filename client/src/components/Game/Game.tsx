@@ -109,7 +109,7 @@ export default function Game({
   };
 
   useEffect(() => {
-    if (action === "begin") {
+    if (action === "begin" && botCanMove) {
       setBotCanMove(false);
       setIsCountDownFinished(false);
       setIsBoardCreated(false);
@@ -119,6 +119,7 @@ export default function Game({
   useEffect(() => {
     if (action === "begin" && isLobbyReceived) {
       const setUpGame = async () => {
+      
         if (playerPieces.length === 0) {
           await getPlayerPieces(
             playerId,

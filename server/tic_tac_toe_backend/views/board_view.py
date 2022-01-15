@@ -45,7 +45,7 @@ class Board(APIView):
         last_turn_player = lobby_players_copy.pop()
         # ][0]
         lobby_players_copy = deque(lobby_players_copy)
-        
+
         lobby_players_copy.appendleft(last_turn_player)
         next_turn = lobby_players_copy[-1]["playerId"]
 
@@ -66,7 +66,7 @@ class Board(APIView):
 
         lobby_copy["board"] = lobby_board_copy
         lobby_copy["gameStatus"] = lobby_game_status_copy
-        lobby_copy["players"] = lobby_players_copy
+        lobby_copy["players"] = list(lobby_players_copy)
         cache.set(lobby_id, lobby_copy, 3600)
 
         board_response = BoardResponseModel(
