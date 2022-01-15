@@ -1,6 +1,6 @@
 import { GameStatus } from "../../Models/GameStatus";
 import { Player } from "../../Models/Player";
-import sortPlayerPieces from "./sortPlayerPieces";
+// import sortPlayerPieces from "./sortPlayerPieces";
 interface UpdateAfterPlayerLeavesArgs {
   playerPieces: Player[];
   setTurnNumber: (turnNumber: number) => void;
@@ -19,42 +19,31 @@ const updateAfterPlayerLeaves = ({
   playerWhoLeftSessionId,
   playerId,
 }: UpdateAfterPlayerLeavesArgs) => {
-  const removePlayerFromPieces = async (): Promise<Player[]> => {
-    const playerWhoLeft = playerPieces.find((playerPiece) => {
-      return playerPiece.sessionId === playerWhoLeftSessionId;
-    });
+  const removePlayerFromPieces = async () => {
+    // const updatedPieces = playerPieces.filter((playerPiece) => {
+    //   return playerPiece.sessionId !== playerWhoLeftSessionId;
+    // });
 
-    playerPieces.forEach((playerPiece, idx) => {
-      if (
-        playerWhoLeft?.turnNumber &&
-        playerPiece.turnNumber > playerWhoLeft.turnNumber
-      )
-        playerPiece.turnNumber = playerPiece.turnNumber - 1;
-    });
-    const updatedPieces = playerPieces.filter((playerPiece) => {
-      return playerPiece.sessionId !== playerWhoLeftSessionId;
-    });
-
-    updatedPieces.forEach((updatedPiece) => {
-      if (updatedPiece.playerId === playerId) {
-        setTurnNumber(updatedPiece.turnNumber);
+    for (var i = playerPieces.length; i--; ) {
+      if (playerPieces[i].sessionId === playerWhoLeftSessionId) {
+        playerPieces.splice(i, 1);
       }
-    });
-
-    return updatedPieces;
+    }
+    // return updatedPieces;
+    return true
   };
   removePlayerFromPieces().then((updatedPieces) => {
-    const whoTurn = gameStatus.whoTurn;
-    sortPlayerPieces(updatedPieces, { setPlayerPieces, whoTurn });
+    // sortPlayerPieces(updatedPieces, { setPlayerPieces, whoTurn });
+    // setPlayerPieces(updatedPieces);
     setTimeout(() => {
       setGameStatus({
         win: {
           whoWon:
-            updatedPieces.length === 1 ? updatedPieces[0].turnNumber : null,
+            playerPieces.length === 1 ? playerPieces[0]?.playerId : null,
           type: null,
           winningMoves: null,
         },
-        whoTurn: whoTurn > updatedPieces.length ? 1 : whoTurn,
+        whoTurn: playerPieces[playerPieces.length - 1]?.playerId,
       });
     }, 1000);
   });

@@ -61,7 +61,7 @@ export default function useCommands({
     process.env.PUBLIC_URL + "static/assets/sounds/joinOrStartSound.mp3"
   );
   useEffect(() => {
-    if (action === "create") {
+    if (action === "create" && lobby.players.length === 0) {
       
       createLobby(playerName).then((response) => {
         if (response) {
@@ -119,12 +119,12 @@ export default function useCommands({
         players: [],
         gameStatus: {
           win: { whoWon: null, type: null, winningMoves: null },
-          whoTurn: 1,
+          whoTurn: "",
         },
       })
       setGameStatus({
         win: { whoWon: null, type: null, winningMoves: null },
-        whoTurn: 1,
+        whoTurn: "",
       });
       setNewMove({
         playerId: "",

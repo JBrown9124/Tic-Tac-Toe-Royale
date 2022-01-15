@@ -1,6 +1,6 @@
 import {NewMove} from './NewMove';
 export interface Win{
-    whoWon:number|null|string,
+    whoWon:null|string,
     type:string|null,
     winningMoves:WinningMove[]|null
 }

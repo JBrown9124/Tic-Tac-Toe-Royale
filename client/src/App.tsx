@@ -37,7 +37,7 @@ function App() {
   });
   const [gameStatus, setGameStatus] = useState<GameStatus>({
     win: { whoWon: null, type: null, winningMoves: null },
-    whoTurn: 1,
+    whoTurn: "",
   });
   const [lobby, setLobby] = useState<Lobby>({
     hostSid: 0,
@@ -51,7 +51,7 @@ function App() {
     players: [],
     gameStatus: {
       win: { whoWon: null, type: null, winningMoves: null },
-      whoTurn: 1,
+      whoTurn: "",
     },
   });
 
@@ -127,8 +127,7 @@ function App() {
         <Grid container direction="column" justifyContent="center">
           {(action === "create" ||
             action === "guest" ||
-            
-            action === "begin"||
+            action === "begin" ||
             action === "in game") && (
             <Grid item>
               <Game
@@ -150,7 +149,7 @@ function App() {
               />
             </Grid>
           )}
-          {action !== "begin"  && action !== "in game" && (
+          {action !== "begin" && action !== "in game" && (
             <PregameModal
               playerName={playerName}
               setPlayerName={(props) => setPlayerName(props)}

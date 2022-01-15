@@ -20,6 +20,7 @@ interface StatusBoardProps {
   isCountDownFinished: boolean;
   setPlayerPieces: (playerPieces: Player[]) => void;
   isHost: boolean;
+  playerId: string;
   handleStart: () => void;
 }
 export default function StatusBoard({
@@ -32,6 +33,7 @@ export default function StatusBoard({
   isBoardCreated,
   isCountDownFinished,
   isHost,
+  playerId,
   handleStart,
 }: StatusBoardProps) {
   const [startWinSound] = useSound(
@@ -48,10 +50,10 @@ export default function StatusBoard({
     if (gameStatus.win.whoWon) {
       setWinner(
         playerPieces.find((playerPiece) => {
-          return playerPiece.turnNumber === gameStatus.win.whoWon;
+          return playerPiece.playerId === gameStatus.win.whoWon;
         })
       );
-      if (turnNumber === gameStatus.win.whoWon) {
+      if (playerId === gameStatus.win.whoWon) {
         startWinSound();
       } else if (gameStatus.win.whoWon !== "tie") {
         startGameOverSound();
@@ -82,14 +84,14 @@ export default function StatusBoard({
               <Typography variant="h6">
                 {playerPieces.map((player: Player) => {
                   if (gameStatus.win.whoWon) {
-                    if (player.turnNumber === gameStatus.win.whoWon) {
-                      if (player.turnNumber === turnNumber) {
+                    if (player.playerId === gameStatus.win.whoWon) {
+                      if (player.playerId === playerId) {
                         return "You Win!";
                       }
                       return `${player.name} Wins!`;
                     }
-                  } else if (player.turnNumber === gameStatus.whoTurn) {
-                    if (player.turnNumber === turnNumber) {
+                  } else if (player.playerId === gameStatus.whoTurn) {
+                    if (player.playerId === playerId) {
                       return "Your Turn";
                     }
                     return `${player.name}'s Turn`;
@@ -102,10 +104,10 @@ export default function StatusBoard({
         <Grid item>
           {playerPieces.map((player, idx) => {
             if (gameStatus.win.whoWon) {
-              if (player.turnNumber === gameStatus.win.whoWon) {
+              if (player.playerId === gameStatus.win.whoWon) {
                 return player.piece;
               }
-            } else if (player.turnNumber === gameStatus.whoTurn) {
+            } else if (player.playerId === gameStatus.whoTurn) {
               return player.piece;
             }
           })}
