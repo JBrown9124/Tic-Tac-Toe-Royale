@@ -28,7 +28,7 @@ function App() {
   const [hostSize, setHostSize] = useState<number>(3);
   const [pieceSelection, setPieceSelection] = useState("");
   const [isHost, setIsHost] = useState(false);
-  const [playerWhoLeftSessionId, setPlayerWhoLeft] = useState("");
+  const [playerWhoLeftSessionId, setPlayerWhoLeftSessionId] = useState("");
 
   const [gameStatus, setGameStatus] = useState<GameStatus>({
     win: { whoWon: null, type: null, winningMoves: null },
@@ -98,7 +98,7 @@ function App() {
 
     setGameStatus,
     playerId,
-    setPlayerWhoLeft,
+    setPlayerWhoLeftSessionId,
     setIsHost,
     setHostWinBy,
     setHostColor,

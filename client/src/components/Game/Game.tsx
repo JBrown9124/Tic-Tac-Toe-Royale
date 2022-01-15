@@ -265,6 +265,7 @@ export default function Game({
             delay={800}
           >
             <TurnOrder
+            playerWhoLeftSessionId={playerWhoLeftSessionId}
               whoTurn={gameStatus.whoTurn}
               playerId={playerId}
               gameStatus={gameStatus}

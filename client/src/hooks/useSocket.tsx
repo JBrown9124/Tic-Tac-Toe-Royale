@@ -12,7 +12,7 @@ interface UseSocketProps {
   setLobby: (lobby: Lobby) => void;
   setPieceSelection: (piece: string) => void;  
   setGameStatus: (gameStatus: GameStatus) => void;
-  setPlayerWhoLeft: (playerWhoLeftSessionId: string) => void;
+  setPlayerWhoLeftSessionId: (playerWhoLeftSessionId: string) => void;
   setAction: (action: string) => void;
   setIsHost: (isHost: boolean) => void;
   setHostWinBy: (winBy: number) => void;
@@ -25,7 +25,7 @@ export default function useSocket({
   lobby,
   setLobby,
   setPieceSelection,
-  setPlayerWhoLeft,
+  setPlayerWhoLeftSessionId,
   
   setGameStatus,
   action,
@@ -80,7 +80,7 @@ export default function useSocket({
           actionRef.current === "begin" ||
           actionRef.current === "in game"
         ) {
-          setPlayerWhoLeft(data.removedPlayer.sessionId);
+          setPlayerWhoLeftSessionId(data.removedPlayer.sessionId);
           if (data.newHost.playerId === playerIdRef.current) {
             setIsHost(true);
           }
@@ -118,7 +118,7 @@ export default function useSocket({
               actionRef.current === "begin" ||
               actionRef.current === "in game"
             ) {
-              setPlayerWhoLeft(playerSessionId);
+              setPlayerWhoLeftSessionId(playerSessionId);
               if (newHost && newHost.playerId === playerIdRef.current) {
                 setIsHost(true);
              
@@ -158,9 +158,11 @@ export default function useSocket({
       });
       socket.on("start-game", (data) => {
         setAction("begin");
+        setPlayerWhoLeftSessionId("")
       });
       socket.on("play-again", (data) => {
         setAction("begin");
+        setPlayerWhoLeftSessionId("")
       });
 
       socket.on("new-move", (gameStatus) => {

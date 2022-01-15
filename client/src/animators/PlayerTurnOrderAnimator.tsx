@@ -22,7 +22,7 @@ interface PlayerTurnOrderAnimatorProps {
   isBoardCreated: boolean;
   whoTurn: string;
   isCountDownFinished: boolean;
-
+  playerWhoLeftSessionId:string,
   gameStatus: GameStatus;
   playerId: string;
 }
@@ -41,6 +41,7 @@ export default function PlayerTurnOrderAnimator({
   isBoardCreated,
   whoTurn,
   isCountDownFinished,
+  playerWhoLeftSessionId,
 
   gameStatus,
   playerId,
@@ -60,8 +61,9 @@ export default function PlayerTurnOrderAnimator({
     playerPiecesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
   useEffect(() => {
-    scrollToBottom();
-  }, [isCountDownFinished]);
+    if(playerWhoLeftSessionId ===""){
+    scrollToBottom();}
+  }, [playerPieces]);
   const whoTurnIndex = playerPieces.findIndex(
     (playerPiece) => playerPiece.playerId === gameStatus.whoTurn
   );
