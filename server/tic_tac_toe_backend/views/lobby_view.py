@@ -22,7 +22,7 @@ class Lobby(APIView):
         host_sid = body.get("hostSid")
 
         player = Player(
-            name=player_name, is_host=True, turn_number=1, session_id=host_sid
+            name=player_name, is_host=True, session_id=host_sid
         ).to_dict()
         lobby_id = randrange(99999)
         lobby = LobbyModel(lobby_id=lobby_id, host_sid=host_sid)
@@ -55,24 +55,28 @@ class Lobby(APIView):
             lobby = lobby[lobby_id]
         except:
             lobby = lobby
-        turn_number = len(lobby["players"]) + 1
+        
         if player_name == "BOTPASSPASS":
 
             lobby_bot_pieces = set()
+            bot_names = set()
             lobby_players = lobby["players"]
             for player in lobby_players:
                 player_id = player["playerId"]
                 if player_id[:3] == "BOT":
                     lobby_bot_pieces.add(player["piece"])
+                    bot_names.add(player["name"])
             bot_piece = None
             for piece in bot_pieces:
                 if piece not in lobby_bot_pieces:
                     bot_piece = piece
                     break
-            bot_name = "BOT" + str(turn_number)
+            bot_name = "BOT" + str(randrange(1,999))
+            while bot_name in bot_names:
+                bot_name = "BOT" + str(randrange(1,999))
             player = Player(
                 name=bot_name,
-                turn_number=turn_number,
+               
                 is_loaded=True,
                 piece=bot_piece,
                 is_ready=True,
@@ -83,12 +87,11 @@ class Lobby(APIView):
         else:
             player = Player(
                 name=player_name,
-                turn_number=turn_number,
+              
                 session_id=session_id,
             ).to_dict()
         lobby["players"].append(player)
-        for index, player in enumerate(lobby["players"]):
-            player["turnNumber"] = index + 1
+        
         cache.set(lobby_id, lobby, 3600)
         lobby_response = LobbyResponseModel(lobby=lobby, lobby_id=lobby_id).to_dict()
 
@@ -129,8 +132,7 @@ class Lobby(APIView):
         lobby_copy["players"] = lobby_players_copy
         game_status_copy = lobby_copy["gameStatus"]
 
-        if game_status_copy["whoTurn"] >= len(lobby_players_copy):
-            game_status_copy["whoTurn"] = 1
+     
 
         cache.set(lobby_id, lobby_copy, 3600)
         lobby_response = LobbyResponseModel(

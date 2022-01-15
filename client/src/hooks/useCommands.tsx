@@ -119,12 +119,12 @@ export default function useCommands({
         players: [],
         gameStatus: {
           win: { whoWon: null, type: null, winningMoves: null },
-          whoTurn: 1,
+          whoTurn: "",
         },
       })
       setGameStatus({
         win: { whoWon: null, type: null, winningMoves: null },
-        whoTurn: 1,
+        whoTurn: "",
       });
       setNewMove({
         playerId: "",

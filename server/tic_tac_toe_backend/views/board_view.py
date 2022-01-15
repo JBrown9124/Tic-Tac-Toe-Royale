@@ -3,7 +3,7 @@ from django.db.models import Max, Q
 from django.db.models.query import Prefetch
 from django.http import HttpResponse, JsonResponse
 from random import randrange
-
+from collections import deque
 from rest_framework.views import APIView
 from rest_framework.request import Request
 from django.utils import timezone
@@ -26,39 +26,47 @@ class Board(APIView):
         body = request.data
         new_move = body.get("newMove")
         win = new_move.get("win")
-        winner_turn_number = win.get("whoWon")
+        winner = win.get("whoWon")
         winning_moves = win.get("winningMoves")
         win_type = win.get("type")
-       
+
         lobby_id = body.get("lobbyId")
-        
+
         lobby_copy = cache.get(lobby_id)
 
         lobby_players_copy = lobby_copy["players"]
         lobby_board_copy = lobby_copy["board"]
         lobby_game_status_copy = lobby_copy["gameStatus"]
         last_turn = lobby_game_status_copy["whoTurn"]
-        next_turn = 1 if last_turn == len(lobby_players_copy) else last_turn + 1
-
+        # last_turn_players_index = [
+        #     index
+        #     for index, player in enumerate(lobby_players_copy)
+        #     if player["playerId"] == last_turn["playerId"]
+        last_turn_player = lobby_players_copy.pop()
+        # ][0]
+        lobby_players_copy = deque(lobby_players_copy)
         
+        lobby_players_copy.appendleft(last_turn_player)
+        next_turn = lobby_players_copy[-1]["playerId"]
+
         lobby_game_status_copy["whoTurn"] = next_turn
 
-        if winner_turn_number:
+        if winner:
             win = Win(
                 who_won=last_turn, type=win_type, winning_moves=winning_moves
             ).to_dict()
             lobby_game_status_copy["win"] = win
 
-        
         lobby_board_copy["moves"].append(new_move)
         tile_amount = lobby_board_copy["size"] * lobby_board_copy["size"]
 
-        if len(lobby_board_copy["moves"]) == tile_amount and not winner_turn_number:
+        if len(lobby_board_copy["moves"]) == tile_amount and not winner:
             win = Win(who_won="tie", type="tie").to_dict()
             lobby_game_status_copy["win"] = win
 
         lobby_copy["board"] = lobby_board_copy
         lobby_copy["gameStatus"] = lobby_game_status_copy
+        lobby_copy["players"] = lobby_players_copy
         cache.set(lobby_id, lobby_copy, 3600)
 
         board_response = BoardResponseModel(

@@ -3,7 +3,7 @@ from django.db.models import Max, Q
 from django.db.models.query import Prefetch
 from django.http import HttpResponse, JsonResponse
 from random import randrange
-
+from random import shuffle
 from rest_framework.views import APIView
 from rest_framework.request import Request
 from django.utils import timezone
@@ -54,13 +54,16 @@ class Game(APIView):
         lobby_copy["board"] = board_model
 
         lobby_players_copy = lobby_copy["players"]
-        game_status_model = GameStatus(players_amount=len(lobby_players_copy), win=Win().to_dict()).to_dict()
+        shuffle(lobby_players_copy)
+        game_status_model = GameStatus(
+            whoTurn=lobby_players_copy[-1]["playerId"], win=Win().to_dict()
+        ).to_dict()
         lobby_copy["gameStatus"] = game_status_model
         for player in lobby_players_copy:
             if player["playerId"] == player_id:
                 player["isHost"] = True
-            player["piece"] = host_piece
-            player["isReady"] = not player["isReady"]
+                player["piece"] = host_piece
+                player["isReady"] = not player["isReady"]
             lobby_copy["players"] = lobby_players_copy
             cache.set(lobby_id, lobby_copy, 3600)
             lobby_response = LobbyResponseModel(
@@ -78,7 +81,7 @@ class Game(APIView):
         player_id = player.get("playerId")
         lobby = cache.get(lobby_id)
         try:
-            lobby= lobby[lobby_id]
+            lobby = lobby[lobby_id]
         except:
             lobby = lobby
         lobby_players_copy = lobby["players"]

@@ -13,17 +13,13 @@ interface getPlayerPiecesArguments {
 }
 
 const getPlayerPieces = async (
-  turnNumber: number,
 
+  playerId: string,
   players: Player[],
   setPiece: (piece: JSX.Element) => void,
   sizeOfBoardPiece: { mobile: string; desktop: string },
-
-  setPlayerPieces: (playerPieces: Player[]) => void,
   boardColor: RgbaColor,
-  playerId: string,
   setIsHost: (isHost: boolean) => void,
-  setTurnNumber: (turnNumber: number) => void,
   playerPieces: Player[]
 ) => {
   
@@ -52,18 +48,18 @@ const getPlayerPieces = async (
         );
         if (player.playerId === playerId) {
           setPiece(convertedPlayerPiece);
-          setTurnNumber(player.turnNumber);
+        
           setIsHost(player.isHost);
         }
 
         player.piece = convertedPlayerPiece;
         playerPieces.push(player);
       } else {
-        defaultPieces.map((piece) => {
+        defaultPieces.forEach((piece) => {
           if (piece.name === player.piece) {
             if (player.playerId === playerId) {
               setPiece(piece.value);
-              setTurnNumber(player.turnNumber);
+        
               setIsHost(player.isHost);
             }
 

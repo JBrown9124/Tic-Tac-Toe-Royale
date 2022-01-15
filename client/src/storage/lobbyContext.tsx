@@ -7,7 +7,7 @@ const lobby:Lobby = {
     players: [],
     gameStatus: {
       win: { whoWon: null, type: null, winningMoves: null },
-      whoTurn: 0,
+      whoTurn: "",
     },
   };
 

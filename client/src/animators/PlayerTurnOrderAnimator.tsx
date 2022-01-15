@@ -20,9 +20,9 @@ interface PlayerTurnOrderAnimatorProps {
   playerPieces: Player[];
   setPlayerPieces: (playerPieces: Player[]) => void;
   isBoardCreated: boolean;
-  whoTurn: number;
+  whoTurn: string;
   isCountDownFinished: boolean;
-  turnNumber: number;
+  
   gameStatus: GameStatus;
   playerId: string;
 }
@@ -41,7 +41,7 @@ export default function PlayerTurnOrderAnimator({
   isBoardCreated,
   whoTurn,
   isCountDownFinished,
-  turnNumber,
+
   gameStatus,
   playerId,
 }: PlayerTurnOrderAnimatorProps) {
@@ -59,9 +59,10 @@ export default function PlayerTurnOrderAnimator({
   const scrollToBottom = () => {
     playerPiecesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
-  useEffect(() => {
-    scrollToBottom();
-  }, [playerPieces]);
+  // useEffect(() => {
+  //   scrollToBottom();
+    
+  // }, [playerPieces]);
   return (
     <>
       {transitions((style, item, t, i) => (

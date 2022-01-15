@@ -4,7 +4,7 @@ import url from "../../storage/url";
 interface BodyProps {
   playerId: string;
   lobbyId: number;
-  turnNumber: number;
+  
 }
 const saveBotNewMove = async (body: BodyProps) => {
   const { data } = await axios.post(`${url}/api/bot`, body);

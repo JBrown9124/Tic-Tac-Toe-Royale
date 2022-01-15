@@ -16,7 +16,7 @@ import StatusBoardAnimator from "../../animators/StatusBoardAnimator";
 import StatusBoard from "./StatusBoard/StatusBoard";
 import CountDownAnimator from "../../animators/CountDownAnimator";
 import useMoveHandler from "../../hooks/useMoveHandler";
-import sortPlayerPieces from "../../creators/BoardCreators/sortPlayerPieces";
+// import sortPlayerPieces from "../../creators/BoardCreators/sortPlayerPieces";
 import updateAfterPlayerLeaves from "../../creators/BoardCreators/updateAfterPlayerLeaves";
 import PlayerTurnOrderAnimator from "../../animators/PlayerTurnOrderAnimator";
 import playAgain from "../../creators/APICreators/playAgain";
@@ -121,27 +121,36 @@ export default function Game({
       const setUpGame = async () => {
         if (playerPieces.length === 0) {
           await getPlayerPieces(
-            turnNumber,
+            playerId,
             lobby.players,
             setPiece,
             sizeOfBoardPiece,
-            setPlayerPieces,
+
             lobby.board.color,
-            playerId,
+
             setIsHost,
-            setTurnNumber,
+
             playerPieces
           );
         }
         console.log(gameStatus.whoTurn, "GAMESTATUSWHOTURN");
-        const { whoTurn } = gameStatus;
-        await sortPlayerPieces( playerPieces,{ setPlayerPieces, whoTurn });
+        // const { whoTurn } = gameStatus;
+        // await sortPlayerPieces( playerPieces,{ setPlayerPieces, whoTurn });
         const boardCreated = await createBoard(
           setBoard,
           lobby.board.size,
           lobby.board.moves
         );
-
+        let currentPlayer = playerPieces[playerPieces.length - 1];
+      let poppedPlayer = playerPieces.pop();
+      console.log(poppedPlayer, "POPPEDPLAYER");
+      if (poppedPlayer !== undefined) {
+        playerPieces.unshift(poppedPlayer);
+        console.log(playerPieces, "AFTERPOP");
+      }
+      if (playerId === gameStatus.whoTurn) {
+        playYourTurnSound();
+      }
         setIsBoardCreated(boardCreated);
         setAction("in game");
       };
@@ -154,24 +163,16 @@ export default function Game({
   useEffect(() => {
     if (isBoardCreated && gameStatus.win.whoWon === null) {
       let currentPlayer = playerPieces[playerPieces.length - 1];
-      const poppedPlayer = playerPieces.pop();
+      let poppedPlayer = playerPieces.pop();
       console.log(poppedPlayer, "POPPEDPLAYER");
       if (poppedPlayer !== undefined) {
         playerPieces.unshift(poppedPlayer);
-
-        if (
-          currentPlayer.turnNumber !== gameStatus.whoTurn &&
-          gameStatus.win.whoWon === null
-        ) {
-          const secondPoppedPlayer = playerPieces.pop();
-          if (secondPoppedPlayer !== undefined) {
-            playerPieces.unshift(secondPoppedPlayer);
-          }
-        }
+        console.log(playerPieces, "AFTERPOP");
       }
-      if (turnNumber === gameStatus.whoTurn) {
+      if (playerId === gameStatus.whoTurn) {
         playYourTurnSound();
       }
+      
       // let currentPlayer = playerPieces[playerPieces.length - 1];
       // let j = playerPieces.length - 2;
       // for (let i = playerPieces.length - 1; j >= 0; i--) {
@@ -179,7 +180,7 @@ export default function Game({
       //   j -= 1;
       // }
 
-      // if (currentPlayer.turnNumber !== gameStatus.whoTurn) {
+      // if (currentPlayer.playerId !== gameStatus.whoTurn) {
       //   j = playerPieces.length - 2;
       //   for (let i = playerPieces.length - 1; j >= 0; i--) {
       //     [playerPieces[j], playerPieces[i]] = [
@@ -188,8 +189,8 @@ export default function Game({
       //     ];
       //     j -= 1;
       //   }
-      // }c
-      console.log(playerPieces, "AFTERPOP");
+      // }
+      
     }
   }, [gameStatus]);
 
@@ -226,6 +227,7 @@ export default function Game({
               playerPieces={playerPieces}
               turnNumber={turnNumber}
               quitGame={() => quitGame()}
+              playerId={playerId}
             />
           </StatusBoardAnimator>
         </Grid>
@@ -273,6 +275,7 @@ export default function Game({
             delay={800}
           >
             <TurnOrder
+              whoTurn={gameStatus.whoTurn}
               playerId={playerId}
               gameStatus={gameStatus}
               turnNumber={turnNumber}
@@ -282,7 +285,6 @@ export default function Game({
                 setPlayerPieces(props);
               }}
               playerPieces={playerPieces}
-              whoTurn={gameStatus.whoTurn}
             />
           </StatusBoardAnimator>
         </Grid>

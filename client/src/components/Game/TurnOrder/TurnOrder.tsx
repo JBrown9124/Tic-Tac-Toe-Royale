@@ -9,7 +9,7 @@ interface TurnOrderProps {
   playerPieces: Player[];
   setPlayerPieces: (playerPieces: Player[]) => void;
   isBoardCreated: boolean;
-  whoTurn: number;
+  whoTurn: string;
   isCountDownFinished: boolean;
   turnNumber: number;
   gameStatus: GameStatus;
@@ -34,21 +34,57 @@ export default function TurnOrder({
         justifyContent={{ sm: "", md: "normal" }}
         sx={{
           borderRadius: "15px",
-          overflowY:"auto",
+          overflowY: "auto",
           overflowX: "hidden",
           bgcolor: "#b4cad1",
           p: 1,
           boxShadow: 10,
 
-          maxHeight: { xs: 150, md:250, lg: 700 },
+          maxHeight: { xs: 150, md: 250, lg: 700 },
         }}
       >
-        <Grid item sx={{ overflowY: {xs:"hidden",sm:"auto", md:"auto",lg:"auto"}, overflowX: "hidden" }}>
-        
+        <Grid
+          item
+          sx={{
+            overflowY: { xs: "hidden", sm: "auto", md: "auto", lg: "auto" },
+            overflowX: "hidden",
+          }}
+        >
+          {/* {playerPieces.map((item, i) => (
+            <>
+              <Grid item>{playerPieces[i].piece}</Grid>
+              <Grid
+             
+                item
+                sx={{
+                  color:
+                  playerPieces[i].playerId ===
+                    playerPieces[playerPieces.length - 1]?.playerId
+                      ? "green"
+                      : item?.playerId ===
+                        playerPieces[playerPieces.length - 2]?.playerId
+                      ? "yellow"
+                      : "black",
+                }}
+              >
+                {" "}
+                {playerId === playerPieces[playerPieces.length - 1]?.playerId &&
+               playerPieces[i].playerId ===
+                  playerPieces[playerPieces.length - 1]?.playerId
+                  ? "You're Up!"
+                  : playerId ===
+                      playerPieces[playerPieces.length - 2]?.playerId &&
+                      playerPieces[i].playerId ===
+                      playerPieces[playerPieces.length - 2]?.playerId
+                  ? "You're Next!"
+                  : playerPieces[i].name}
+              </Grid>
+            </>
+          ))} */}
+
           <PlayerTurnOrderAnimator
             playerId={playerId}
             gameStatus={gameStatus}
-            turnNumber={turnNumber}
             isCountDownFinished={isCountDownFinished}
             isBoardCreated={isBoardCreated}
             setPlayerPieces={(props) => {
@@ -58,7 +94,6 @@ export default function TurnOrder({
             whoTurn={gameStatus.whoTurn}
           />
         </Grid>
-   
       </Grid>
     </>
   );

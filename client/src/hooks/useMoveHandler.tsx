@@ -39,7 +39,7 @@ export default function useMoveHandler({
       const findIfBot = async () => {
         return playerPieces.find((player) => {
           return (
-            player.turnNumber === gameStatus.whoTurn &&
+            player.playerId === gameStatus.whoTurn &&
             player.playerId.substring(0, 3) === "BOT"
           );
         });
@@ -54,7 +54,7 @@ export default function useMoveHandler({
           const reqBody = {
             lobbyId: lobby.lobbyId,
             playerId: nextIsBot.playerId,
-            turnNumber: nextIsBot.turnNumber,
+          
           };
           
           const botDelay = setTimeout(() => {

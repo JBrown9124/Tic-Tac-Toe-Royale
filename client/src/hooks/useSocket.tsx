@@ -176,7 +176,7 @@ export default function useSocket({
             playerId: newPlayer.playerId,
             piece: "",
             isHost: false,
-            turnNumber: 0,
+           
             playerLoaded: isNewPlayerBot ? true : false,
             isReady: isNewPlayerBot ? true : false,
             sessionId: newPlayer.sessionId,
