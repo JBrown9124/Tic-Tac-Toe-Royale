@@ -5,7 +5,6 @@ import useSound from "use-sound";
 import Typography from "@mui/material/Typography";
 import { RgbaColor } from "react-colorful";
 interface CountDownAnimatorProps {
-
   delay?: number;
   x?: number;
   y?: number;
@@ -18,10 +17,9 @@ interface CountDownAnimatorProps {
   startCountDown: boolean;
   setBotCanMove: (canMove: boolean) => void;
   setIsCountDownFinished: (isFinished: boolean) => void;
-  boardColor:RgbaColor
+  boardColor: RgbaColor;
 }
 export default function CountDownAnimator({
-
   delay = 0,
   x = 0,
   y = 0,
@@ -34,7 +32,7 @@ export default function CountDownAnimator({
   startCountDown,
   setBotCanMove,
   setIsCountDownFinished,
-  boardColor
+  boardColor,
 }: CountDownAnimatorProps) {
   const [fade, setFade] = useState(false);
 
@@ -72,7 +70,6 @@ export default function CountDownAnimator({
     }
   }, [startCountDown, index]);
 
- 
   const transitions = useTransition(index, {
     key: index,
     from: { scale: 0 },
@@ -91,7 +88,7 @@ export default function CountDownAnimator({
             ...style,
             textAlign: "center",
             position: "absolute",
-            
+
             justifyContent: "center",
             width: "100%",
             left: "0px",
@@ -105,10 +102,16 @@ export default function CountDownAnimator({
               // left: "50%",
               // transform: `translate(-50%, -50%)`,
               fontFamily: "Major Mono Display, monospace",
-              fontWeight:"bold",
-              fontStyle:"italic",
+              fontWeight: "bold",
+              fontStyle: "italic",
               fontSize: "6rem",
-              color:`rgba(${boardColor?.r}, ${boardColor?.g}, ${boardColor?.b}, ${boardColor?.a})`,
+              color:
+                boardColor?.r * 0.299 +
+                  boardColor?.g * 0.587 +
+                  boardColor?.b * 0.114 >
+                186
+                  ? "black"
+                  : "white",
             }}
           >
             {numbers[i]}
@@ -120,6 +123,3 @@ export default function CountDownAnimator({
     </>
   );
 }
-
-
-
