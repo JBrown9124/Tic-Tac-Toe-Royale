@@ -3,6 +3,7 @@ import { useTransition, animated, config } from "react-spring";
 import { useState, useEffect, ReactNode } from "react";
 import useSound from "use-sound";
 import Typography from "@mui/material/Typography";
+import { RgbaColor } from "react-colorful";
 interface CountDownAnimatorProps {
 
   delay?: number;
@@ -17,6 +18,7 @@ interface CountDownAnimatorProps {
   startCountDown: boolean;
   setBotCanMove: (canMove: boolean) => void;
   setIsCountDownFinished: (isFinished: boolean) => void;
+  boardColor:RgbaColor
 }
 export default function CountDownAnimator({
 
@@ -32,6 +34,7 @@ export default function CountDownAnimator({
   startCountDown,
   setBotCanMove,
   setIsCountDownFinished,
+  boardColor
 }: CountDownAnimatorProps) {
   const [fade, setFade] = useState(false);
 
@@ -102,7 +105,10 @@ export default function CountDownAnimator({
               // left: "50%",
               // transform: `translate(-50%, -50%)`,
               fontFamily: "Major Mono Display, monospace",
+              fontWeight:"bold",
+              fontStyle:"italic",
               fontSize: "6rem",
+              color:`rgba(${boardColor?.r}, ${boardColor?.g}, ${boardColor?.b}, ${boardColor?.a})`,
             }}
           >
             {numbers[i]}

@@ -259,6 +259,7 @@ export default function Game({
           }}
         >
           <CountDownAnimator
+          boardColor={lobby.board.color}
             startCountDown={isBoardCreated}
             setBotCanMove={(props) => setBotCanMove(props)}
             setIsCountDownFinished={(props) => setIsCountDownFinished(props)}
