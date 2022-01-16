@@ -115,7 +115,7 @@ export default function PregameModal({
             maxWidth: "100%",
             width: 800,
 
-            bgcolor: "#b4cad1",
+            bgcolor: "white",
             border: "2px solid #000",
             boxShadow: 24,
             p: 4,

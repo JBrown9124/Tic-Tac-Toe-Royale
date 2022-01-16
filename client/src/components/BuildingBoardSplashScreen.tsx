@@ -3,7 +3,13 @@ import { css } from "@emotion/react";
 import HashLoader from "react-spinners/HashLoader";
 import Typography from "@mui/material/Typography";
 import BuildingBoardAnimator from "../animators/BuildingBoardAnimator";
-export default function BuildingBoardSplashScreen() {
+import { RgbaColor } from "react-colorful";
+interface BuildingBoardSplashScreenProps {
+  boardColor: RgbaColor;
+}
+export default function BuildingBoardSplashScreen({
+  boardColor,
+}: BuildingBoardSplashScreenProps) {
   const override = css`
     display: block;
     margin: 0 auto;
@@ -21,7 +27,6 @@ export default function BuildingBoardSplashScreen() {
           top: "43%",
           left: "50%",
           transform: "translate(-50%,-50%)",
-        
         }}
       >
         {/* <Grid item>
@@ -29,7 +34,14 @@ export default function BuildingBoardSplashScreen() {
         </Grid> */}
         <Grid item>
           <HashLoader
-            color={"black"}
+            color={
+              boardColor?.r * 0.299 +
+                boardColor?.g * 0.587 +
+                boardColor?.b * 0.114 >
+              186
+                ? "black"
+                : "white"
+            }
             loading={true}
             css={override}
             size={300}

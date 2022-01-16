@@ -134,7 +134,7 @@ export default function PieceSelector({
                   },
                   fontFamily: "Major Mono Display, monospace",
                   fontWeight: 800,
-
+                  boxShadow:'rgba(0, 0, 0, 0.24) 0px 1px 4px',
                   color: "black",
                   fill: "transparent",
                   textTransform: "none",

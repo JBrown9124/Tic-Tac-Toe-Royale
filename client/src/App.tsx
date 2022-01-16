@@ -120,12 +120,7 @@ function App() {
           width: "100%",
           height: "100%",
           background:
-            lobby.board.color.r === 255 &&
-            lobby.board.color.b === 255 &&
-            lobby.board.color.g === 255 &&
-            lobby.board.color.a === 0.9
-              ? "#b4cad1"
-              : `rgba(${lobby.board.color?.r}, ${lobby.board.color?.g}, ${
+             `rgba(${lobby.board.color?.r}, ${lobby.board.color?.g}, ${
                   lobby.board.color?.b
                 }, ${lobby.board.color?.a - 0.5})`,
           overflowY: "auto",
@@ -133,7 +128,7 @@ function App() {
         }}
       >
         {action === "begin" && !isLobbyReceived && (
-          <BuildingBoardSplashScreen />
+          <BuildingBoardSplashScreen boardColor={lobby.board?.color} />
         )}
         {(action === "create" ||
           action === "guest" ||
