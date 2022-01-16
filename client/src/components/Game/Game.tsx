@@ -37,6 +37,7 @@ interface GameProps {
   setIsLobbyReceived: (isLobbyReceived: boolean) => void;
   handleStart: () => void;
   pieceSelection: string;
+  
 }
 export default function Game({
   lobby,
@@ -53,13 +54,12 @@ export default function Game({
   setIsLobbyReceived,
   pieceSelection,
   handleStart,
+ 
 }: GameProps) {
   const [playLeaveSound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/floorDrumBackButton.mp3"
   );
-  const [playYourTurnSound] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/yourTurnSound.mp3"
-  );
+
 
   const [isBoardCreated, setIsBoardCreated] = useState(false);
   const [botCanMove, setBotCanMove] = useState(false);
@@ -92,6 +92,9 @@ export default function Game({
 
     playerPieces,
     playerWhoLeftSessionId,
+    isBoardCreated,
+    playerId,
+   
   });
   const quitGame = () => {
     playLeaveSound();
@@ -106,7 +109,9 @@ export default function Game({
   };
 
   useEffect(() => {
+    /*For when user hits play again */
     if (action === "begin" && botCanMove) {
+      
       setBotCanMove(false);
       setIsCountDownFinished(false);
       setIsBoardCreated(false);
@@ -116,6 +121,7 @@ export default function Game({
   useEffect(() => {
     if (action === "begin" && isLobbyReceived) {
       const setUpGame = async () => {
+        /* When user hits play gain we wont need to convert pieces */
         if (playerPieces.length === 0) {
           await getPlayerPieces(
             playerId,
@@ -131,21 +137,15 @@ export default function Game({
           );
         }
         console.log(gameStatus.whoTurn, "GAMESTATUSWHOTURN");
-        // const { whoTurn } = gameStatus;
-        // await sortPlayerPieces( playerPieces,{ setPlayerPieces, whoTurn });
+      
         const boardCreated = await createBoard(
           setBoard,
           lobby.board.size,
           lobby.board.moves
         );
-        let currentPlayer = playerPieces[playerPieces.length - 1];
-        let poppedPlayer = playerPieces.pop();
-      
-        if (poppedPlayer !== undefined) {
-          playerPieces.unshift(poppedPlayer);
-          
-        }
+
        
+
         setIsBoardCreated(boardCreated);
         setAction("in game");
       };
@@ -155,37 +155,6 @@ export default function Game({
     }
   }, [isLobbyReceived]);
 
-  useEffect(() => {
-    if (isBoardCreated) {
-      let currentPlayer = playerPieces[playerPieces.length - 1];
-      let poppedPlayer = playerPieces.pop();
-      console.log(poppedPlayer, "POPPEDPLAYER");
-      if (poppedPlayer !== undefined) {
-        playerPieces.unshift(poppedPlayer);
-        console.log(playerPieces, "AFTERPOP");
-      }
-      if (playerId === gameStatus.whoTurn) {
-        playYourTurnSound();
-      }
-
-      // let currentPlayer = playerPieces[playerPieces.length - 1];
-      // let j = playerPieces.length - 2;
-      // for (let i = playerPieces.length - 1; j >= 0; i--) {
-      //   [playerPieces[j], playerPieces[i]] = [playerPieces[i], playerPieces[j]];
-      //   j -= 1;
-      // }
-
-      // if (currentPlayer.playerId !== gameStatus.whoTurn) {
-      //   j = playerPieces.length - 2;
-      //   for (let i = playerPieces.length - 1; j >= 0; i--) {
-      //     [playerPieces[j], playerPieces[i]] = [
-      //       playerPieces[i],
-      //       playerPieces[j],
-      //     ];
-      //     j -= 1;
-      //   }
-    }
-  }, [gameStatus.newMove, gameStatus.whoTurn,]);
 
   return (
     <>
@@ -265,7 +234,7 @@ export default function Game({
             delay={800}
           >
             <TurnOrder
-            playerWhoLeftSessionId={playerWhoLeftSessionId}
+              playerWhoLeftSessionId={playerWhoLeftSessionId}
               whoTurn={gameStatus.whoTurn}
               playerId={playerId}
               gameStatus={gameStatus}

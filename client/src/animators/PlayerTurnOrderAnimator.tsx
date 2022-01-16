@@ -22,7 +22,7 @@ interface PlayerTurnOrderAnimatorProps {
   isBoardCreated: boolean;
   whoTurn: string;
   isCountDownFinished: boolean;
-  playerWhoLeftSessionId:string,
+  playerWhoLeftSessionId: string;
   gameStatus: GameStatus;
   playerId: string;
 }
@@ -58,53 +58,105 @@ export default function PlayerTurnOrderAnimator({
   );
   const playerPiecesEndRef = useRef<null | HTMLDivElement>(null);
   const scrollToBottom = () => {
-    playerPiecesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    playerPiecesEndRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+      inline: "start",
+    });
   };
   useEffect(() => {
-    if(playerWhoLeftSessionId ===""){
-    scrollToBottom();}
-  }, [playerPieces]);
-  const whoTurnIndex = playerPieces.findIndex(
-    (playerPiece) => playerPiece.playerId === gameStatus.whoTurn
-  );
-  const whoNextIndex =
-    whoTurnIndex - 1 === -1 ? playerPieces.length - 1 : whoTurnIndex - 1;
+    scrollToBottom();
+  }, [playerPieces.length, playerPieces]);
+  // const whoTurnIndex = playerPieces.findIndex(
+  //   (playerPiece) => playerPiece.playerId === gameStatus.whoTurn
+  // );
+  // const whoNextIndex =
+  //   whoTurnIndex - 1 === -1 ? playerPieces.length - 1 : whoTurnIndex - 1;
   return (
     <>
       {transitions((style, item, t, i) => (
         <animated.div
+        ref={playerPiecesEndRef}
           style={{
             ...style,
 
-            padding: item?.playerId === gameStatus.whoTurn ? "20px" : "6px",
-            scale: item?.playerId === gameStatus.whoTurn ? 1.3 : 1,
+            padding:
+              item?.playerId === playerPieces[playerPieces.length - 1]?.playerId
+                ? "20px"
+                : "6px",
+            scale:
+              item?.playerId === playerPieces[playerPieces.length - 1]?.playerId
+                ? 1.3
+                : 1,
           }}
         >
           <Grid item>{item.piece}</Grid>
           <Grid
-            ref={playerPiecesEndRef}
+         
             item
             sx={{
               color:
-                item?.playerId === gameStatus.whoTurn
+                item?.playerId ===
+                playerPieces[playerPieces.length - 1]?.playerId
                   ? "green"
-                  : item?.playerId === playerPieces[whoNextIndex]?.playerId
+                  : item?.playerId ===
+                    playerPieces[playerPieces.length - 2]?.playerId
                   ? "yellow"
                   : "black",
             }}
           >
             {" "}
-            {playerId === gameStatus.whoTurn &&
-            item?.playerId === gameStatus.whoTurn
+            {playerId === playerPieces[playerPieces.length - 1]?.playerId &&
+            item?.playerId === playerPieces[playerPieces.length - 1]?.playerId
               ? "You're Up!"
-              : playerId === playerPieces[whoNextIndex]?.playerId &&
-                item?.playerId === playerPieces[whoNextIndex]?.playerId
+              : playerId === playerPieces[playerPieces.length - 2]?.playerId &&
+                item?.playerId ===
+                  playerPieces[playerPieces.length - 2]?.playerId
               ? "You're Next!"
               : item?.name}
           </Grid>
         </animated.div>
       ))}
-      <div ref={playerPiecesEndRef}></div>
     </>
+    // <>
+    //   {transitions((style, item, t, i) => (
+    //     <animated.div
+    //       style={{
+    //         ...style,
+
+    //         padding: item?.playerId === gameStatus.whoTurn ? "20px" : "6px",
+    //         scale: item?.playerId === gameStatus.whoTurn ? 1.3 : 1,
+    //       }}
+    //     >
+    //       <Grid item>{item.piece}</Grid>
+    //       <Grid
+    //         item
+    //         sx={{
+    //           color:
+    //             item?.playerId === gameStatus.whoTurn
+    //               ? "green"
+    //               : item?.playerId === playerPieces[whoNextIndex]?.playerId
+    //               ? "yellow"
+    //               : "black",
+    //           fontStyle:item.playerId === gameStatus.win.whoWon? "italic":"normal"
+    //         }}
+    //       >
+    //         {" "}
+    //         {playerId === gameStatus.whoTurn &&
+    //         item?.playerId === gameStatus.whoTurn
+    //           ? "You're Up!"
+    //           : playerId === playerPieces[whoNextIndex]?.playerId &&
+    //             item?.playerId === playerPieces[whoNextIndex]?.playerId
+    //           ? "You're Next!"
+    //           : item.playerId === gameStatus.win.whoWon && playerId === item.playerId
+    //           ? "You Win!"
+    //           : item.playerId === gameStatus.win.whoWon
+    //           ? `${item.name} Wins!`
+    //           : item?.name}
+    //       </Grid>
+    //     </animated.div>
+    //   ))}
+    //   <div ref={playerPiecesEndRef}></div>
+    // </>
   );
 }

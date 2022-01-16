@@ -98,14 +98,14 @@ def play_again(sid, data):
         skip_sid=sid,
     )
 @sio.on("new-move")
-def game_status(sid, received_data):
-    data = received_data["data"]
-    host_sid = received_data["hostSid"]
+def game_status(sid, data):
+    game_status = data["gameStatus"]
+    host_sid = data["hostSid"]
 
     
     sio.emit(
         "new-move",
-        {"gameStatus": data["gameStatus"]},
+        game_status,
         room=host_sid,
         skip_sid=sid,
     )

@@ -36,7 +36,7 @@ class Game(APIView):
         return JsonResponse({"lobby": lobby_response})
 
     def post(self, request: Request):
-        """start game. takes board settings and lobbyId. updates lobby with new board settings. returns lobby with updated board settings."""
+        """start game and play again. takes board settings and lobbyId. updates lobby with new board settings. returns lobby with updated board settings."""
         body = request.data
         lobby_id = body.get("lobbyId")
         board = body.get("board")
@@ -51,10 +51,14 @@ class Game(APIView):
             lobby_copy = lobby_copy[lobby_id]
         except:
             lobby_copy = lobby_copy
+        lobby_players_copy = lobby_copy["players"]
+        # Dont shuffle moves exist in the previos board state. This signifies that user hits playing again button
+        if len(lobby_copy["board"]["moves"]) == 0:
+        
+            shuffle(lobby_players_copy)
         lobby_copy["board"] = board_model
 
-        lobby_players_copy = lobby_copy["players"]
-        shuffle(lobby_players_copy)
+       
         game_status_model = GameStatus(
             who_turn=lobby_players_copy[-1]["playerId"], win=Win().to_dict()
         ).to_dict()

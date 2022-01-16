@@ -10,7 +10,7 @@ import { RgbaColor } from "react-colorful";
 interface UseSocketProps {
   lobby: Lobby;
   setLobby: (lobby: Lobby) => void;
-  setPieceSelection: (piece: string) => void;  
+  setPieceSelection: (piece: string) => void;
   setGameStatus: (gameStatus: GameStatus) => void;
   setPlayerWhoLeftSessionId: (playerWhoLeftSessionId: string) => void;
   setAction: (action: string) => void;
@@ -26,7 +26,7 @@ export default function useSocket({
   setLobby,
   setPieceSelection,
   setPlayerWhoLeftSessionId,
-  
+
   setGameStatus,
   action,
   playerId,
@@ -49,6 +49,7 @@ export default function useSocket({
   useEffect(() => {
     actionRef.current = action;
   }, [action]);
+  useEffect(() => {});
 
   useEffect(() => {
     socket.on("connect", () => {
@@ -101,7 +102,7 @@ export default function useSocket({
             name: null,
             piece: "Not Needed",
             isHost: false,
-      
+
             isReady: false,
             playerId: playerId,
             playerLoaded: false,
@@ -121,15 +122,15 @@ export default function useSocket({
               setPlayerWhoLeftSessionId(playerSessionId);
               if (newHost && newHost.playerId === playerIdRef.current) {
                 setIsHost(true);
-             
+
                 setHostColor(lobby.board.color);
                 setHostWinBy(lobby.board.winBy);
                 setHostSize(lobby.board.size);
               }
             }
             if (
-              (actionRef.current !== "begin" &&
-              actionRef.current !== "in game") &&
+              actionRef.current !== "begin" &&
+              actionRef.current !== "in game" &&
               newHost &&
               newHost.playerId === playerIdRef.current
             ) {
@@ -158,16 +159,14 @@ export default function useSocket({
       });
       socket.on("start-game", (data) => {
         setAction("begin");
-        setPlayerWhoLeftSessionId("")
       });
       socket.on("play-again", (data) => {
         setAction("begin");
-        setPlayerWhoLeftSessionId("")
       });
 
-      socket.on("new-move", (gameStatus) => {
-        
-        setGameStatus(gameStatus);
+      socket.on("new-move", (gameStatusResponse) => {
+        setGameStatus(gameStatusResponse);
+        // setNewMove(gameStatusResponse.newMove);
       });
 
       socket.on("player-join-lobby", (newPlayer: Player) => {

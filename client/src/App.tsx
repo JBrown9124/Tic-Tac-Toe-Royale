@@ -11,7 +11,7 @@ import startGame from "./creators/APICreators/startGame";
 import { RgbaColor } from "react-colorful";
 import useCommands from "./hooks/useCommands";
 import useSocket from "./hooks/useSocket";
-
+import BuildingBoardSplashScreen from "./components/BuildingBoardSplashScreen";
 function App() {
   const [action, setAction] = useState("welcome");
 
@@ -29,12 +29,14 @@ function App() {
   const [pieceSelection, setPieceSelection] = useState("");
   const [isHost, setIsHost] = useState(false);
   const [playerWhoLeftSessionId, setPlayerWhoLeftSessionId] = useState("");
+ 
 
   const [gameStatus, setGameStatus] = useState<GameStatus>({
     win: { whoWon: null, type: null, winningMoves: null },
     whoTurn: "",
     newMove: { playerId: "", rowIdx: 0, tileIdx: 0 },
   });
+  const [newMove, setNewMove] = useState<NewMove>({ playerId: "", rowIdx: 0, tileIdx: 0 })
   const [lobby, setLobby] = useState<Lobby>({
     hostSid: 0,
     lobbyId: 0,
@@ -103,6 +105,7 @@ function App() {
     setHostWinBy,
     setHostColor,
     setHostSize,
+ 
   });
 
   return (
@@ -120,54 +123,56 @@ function App() {
           overflowX: "hidden",
         }}
       >
-        <Grid container direction="column" justifyContent="center">
-          {(action === "create" ||
-            action === "guest" ||
-            action === "begin" ||
-            action === "in game") && (
-            <Grid item>
-              <Game
-                playerWhoLeftSessionId={playerWhoLeftSessionId}
-                pieceSelection={pieceSelection}
-                setGameStatus={(props) => setGameStatus(props)}
-                gameStatus={gameStatus}
-                lobby={lobby}
-                isLobbyReceived={isLobbyReceived}
-                action={action}
-                setAction={(props) => setAction(props)}
-                playerId={playerId}
-                isHost={isHost}
-                setIsLobbyReceived={(props) => setIsLobbyReceived(props)}
-                setIsHost={(props) => setIsHost(props)}
-                handleStart={() => handleStart()}
-              />
-            </Grid>
-          )}
-          {action !== "begin" && action !== "in game" && (
-            <PregameModal
-              playerName={playerName}
-              setPlayerName={(props) => setPlayerName(props)}
-              handleStart={() => handleStart()}
-              action={action}
-              isOpen={true}
-              setLobbyId={(props) => setLobbyId(props)}
-              setLobby={(props) => setLobby(props)}
-              playerId={playerId}
-              setPlayerId={(props) => setPlayerId(props)}
-              playerPiece={pieceSelection}
-              hostSize={hostSize}
-              setHostSize={(props) => setHostSize(props)}
-              hostWinBy={hostWinBy}
-              setHostWinBy={(props) => setHostWinBy(props)}
-              setHostColor={(props) => setHostColor(props)}
-              hostColor={hostColor}
-              setPiece={(props) => setPieceSelection(props)}
+        {action === "begin" && !isLobbyReceived && (
+          <BuildingBoardSplashScreen />
+        )}
+        {(action === "create" ||
+          action === "guest" ||
+          action === "begin" ||
+          action === "in game") && (
+          <Grid item>
+            <Game
+              playerWhoLeftSessionId={playerWhoLeftSessionId}
+              pieceSelection={pieceSelection}
+              setGameStatus={(props) => setGameStatus(props)}
+              gameStatus={gameStatus}
               lobby={lobby}
+              isLobbyReceived={isLobbyReceived}
+              action={action}
               setAction={(props) => setAction(props)}
-              isLobbyFound={isLobbyFound}
+              playerId={playerId}
+              isHost={isHost}
+              setIsLobbyReceived={(props) => setIsLobbyReceived(props)}
+              setIsHost={(props) => setIsHost(props)}
+              handleStart={() => handleStart()}
+            
             />
-          )}
-        </Grid>
+          </Grid>
+        )}
+        {action !== "begin" && action !== "in game" && (
+          <PregameModal
+            playerName={playerName}
+            setPlayerName={(props) => setPlayerName(props)}
+            handleStart={() => handleStart()}
+            action={action}
+            isOpen={true}
+            setLobbyId={(props) => setLobbyId(props)}
+            setLobby={(props) => setLobby(props)}
+            playerId={playerId}
+            setPlayerId={(props) => setPlayerId(props)}
+            playerPiece={pieceSelection}
+            hostSize={hostSize}
+            setHostSize={(props) => setHostSize(props)}
+            hostWinBy={hostWinBy}
+            setHostWinBy={(props) => setHostWinBy(props)}
+            setHostColor={(props) => setHostColor(props)}
+            hostColor={hostColor}
+            setPiece={(props) => setPieceSelection(props)}
+            lobby={lobby}
+            setAction={(props) => setAction(props)}
+            isLobbyFound={isLobbyFound}
+          />
+        )}
       </Grid>
       {/* </LobbyContext.Provider> */}
     </>

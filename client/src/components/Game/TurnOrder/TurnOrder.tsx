@@ -25,6 +25,7 @@ export default function TurnOrder({
   gameStatus,
   playerId,
 }: TurnOrderProps) {
+  
   return (
     <>
       <Grid
@@ -50,37 +51,7 @@ export default function TurnOrder({
             overflowX: "hidden",
           }}
         >
-          {/* {playerPieces.map((item, i) => (
-            <>
-              <Grid item>{playerPieces[i].piece}</Grid>
-              <Grid
-             
-                item
-                sx={{
-                  color:
-                  playerPieces[i].playerId ===
-                    playerPieces[playerPieces.length - 1]?.playerId
-                      ? "green"
-                      : item?.playerId ===
-                        playerPieces[playerPieces.length - 2]?.playerId
-                      ? "yellow"
-                      : "black",
-                }}
-              >
-                {" "}
-                {playerId === playerPieces[playerPieces.length - 1]?.playerId &&
-               playerPieces[i].playerId ===
-                  playerPieces[playerPieces.length - 1]?.playerId
-                  ? "You're Up!"
-                  : playerId ===
-                      playerPieces[playerPieces.length - 2]?.playerId &&
-                      playerPieces[i].playerId ===
-                      playerPieces[playerPieces.length - 2]?.playerId
-                  ? "You're Next!"
-                  : playerPieces[i].name}
-              </Grid>
-            </>
-          ))} */}
+      
 
           <PlayerTurnOrderAnimator
           playerWhoLeftSessionId={playerWhoLeftSessionId}
