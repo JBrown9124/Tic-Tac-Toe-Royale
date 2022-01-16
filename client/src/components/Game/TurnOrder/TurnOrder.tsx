@@ -40,7 +40,7 @@ export default function TurnOrder({
           bgcolor: "#b4cad1",
           p: 1,
           boxShadow: 10,
-
+          border:"solid black 1px",
           maxHeight: { xs: 150, md: 250, lg: 700 },
         }}
       >

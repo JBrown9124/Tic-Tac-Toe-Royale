@@ -76,7 +76,7 @@ export default function PlayerTurnOrderAnimator({
     <>
       {transitions((style, item, t, i) => (
         <animated.div
-        ref={playerPiecesEndRef}
+          ref={playerPiecesEndRef}
           style={{
             ...style,
 
@@ -92,7 +92,6 @@ export default function PlayerTurnOrderAnimator({
         >
           <Grid item>{item.piece}</Grid>
           <Grid
-         
             item
             sx={{
               color:
@@ -103,6 +102,10 @@ export default function PlayerTurnOrderAnimator({
                     playerPieces[playerPieces.length - 2]?.playerId
                   ? "yellow"
                   : "black",
+              fontFamily: "Bungee Hairline, cursive",
+              fontWeight: 800,
+              fontStyle:
+                item.playerId === gameStatus.win.whoWon ? "italic" : "normal",
             }}
           >
             {" "}
@@ -113,7 +116,11 @@ export default function PlayerTurnOrderAnimator({
                 item?.playerId ===
                   playerPieces[playerPieces.length - 2]?.playerId
               ? "You're Next!"
-              : item?.name}
+              :     gameStatus.win.whoWon === playerId && item.playerId === playerId
+              ?"You Win!":item.playerId === gameStatus.win.whoWon
+              ? `${item.name} Wins!`:
+             
+               item?.name}
           </Grid>
         </animated.div>
       ))}

@@ -19,7 +19,7 @@ export default function ColorSelecter({color,setColor}:ColorSelectorProps) {
         textAlign="center"
       >
         <Grid item>
-          <Typography>Select Board Color</Typography>
+          <Typography sx={{fontFamily: "Bungee Hairline, cursive", fontWeight: 800}}>Select Board Color</Typography>
         </Grid>
         <Grid
           item

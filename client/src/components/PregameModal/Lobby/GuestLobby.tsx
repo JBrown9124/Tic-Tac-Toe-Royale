@@ -9,6 +9,7 @@ import playerReady from "../../../creators/APICreators/playerReady";
 import { Lobby } from "../../../Models/Lobby";
 import CopyLobbyId from "./CopyLobbyId";
 import useSound from "use-sound";
+import CustomButton from "../../CustomButton";
 interface GuestLobbyProps {
   setPiece: (piece: string) => void;
   playerPiece: string;
@@ -100,7 +101,7 @@ export default function GuestLobby({
           </Grid>
           <Grid item xs={12} md={6}>
             <PlayerList
-            playerId={playerId}
+              playerId={playerId}
               playerName={playerName}
               players={lobby.players}
               playerPiece={playerPiece}
@@ -109,7 +110,7 @@ export default function GuestLobby({
         </Grid>
         {isError && (
           <Grid container item textAlign="center" justifyContent="center">
-            <Typography sx={{ color: "red", textAlign: "center" }}>
+            <Typography sx={{ color: "red", textAlign: "center",fontFamily: "Bungee Hairline, cursive", fontWeight: 800}}>
               Select a piece.
             </Typography>
           </Grid>
@@ -119,17 +120,18 @@ export default function GuestLobby({
           item
           textAlign="center"
           justifyContent="center"
-          spacing={2}
+          spacing={4}
         >
           <Grid item>
-            <Button onClick={() => handleLeave()}>Leave</Button>
+            <CustomButton onClick={() => handleLeave()} message={"Leave"} />
           </Grid>
 
           <Grid item>
             {" "}
-            <Button onClick={() => handleReadyClick()}>
-              {isReady ? "Cancel" : "Ready"}
-            </Button>
+            <CustomButton
+              onClick={() => handleReadyClick()}
+              message={isReady ? "Cancel" : "Ready"}
+            />
           </Grid>
         </Grid>
       </Grid>

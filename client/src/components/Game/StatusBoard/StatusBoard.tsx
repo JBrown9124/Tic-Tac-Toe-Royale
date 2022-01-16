@@ -8,6 +8,7 @@ import { sizeOfPiece } from "../../../creators/BoardCreators/sizeOfPiece";
 import { useEffect, useState } from "react";
 import { useSound } from "use-sound";
 import Button from "@mui/material/Button";
+import CustomButton from "../../CustomButton"
 import PlayerTurnOrderAnimator from "../../../animators/PlayerTurnOrderAnimator";
 
 interface StatusBoardProps {
@@ -70,7 +71,7 @@ export default function StatusBoard({
           borderRadius: "15px",
 
           bgcolor: "#b4cad1",
-
+          border:"solid black 1px",
           boxShadow: 10,
         }}
         direction="column"
@@ -79,9 +80,10 @@ export default function StatusBoard({
         <Grid container direction="column">
           <Grid item sx={{ p: 1 }}>
             {gameStatus.win.whoWon === "tie" ? (
-              <Typography variant="h6">Its a tie!</Typography>
+              <Typography variant="h6" sx={{fontFamily: "Bungee Hairline, cursive", fontWeight: 800}}>Its a tie!</Typography>
             ) : (
-              <Typography variant="h6">
+              <Typography variant="h6"  sx={{fontFamily: "Bungee Hairline, cursive", fontWeight: 800}}>
+           
                 {playerPieces.map((player: Player) => {
                   if (gameStatus.win.whoWon) {
                     if (player.playerId === gameStatus.win.whoWon) {
@@ -113,16 +115,16 @@ export default function StatusBoard({
           })}
         </Grid>
         <Grid item>
-          <Typography sx={{ p: 1 }}>{`Win by ${winBy}`}</Typography>
+          <Typography sx={{fontFamily: "Bungee Hairline, cursive", fontWeight: 800, p:1}}>{`Win by ${winBy}`}</Typography>
         </Grid>
 
-        <Grid container direction="column">
+        <Grid container direction="column" sx={{p:1}} spacing={2}>
           <Grid item>
-            <Button onClick={() => quitGame()}>Leave Game</Button>
+            <CustomButton onClick={() => quitGame()} message={"Leave Game"}/>
           </Grid>
           {gameStatus.win.whoWon && isHost && (
             <Grid item>
-              <Button onClick={() => handleStart()}>Play Again</Button>
+              <CustomButton message={"Play Again"} onClick={() => handleStart()}/>
             </Grid>
           )}
         </Grid>

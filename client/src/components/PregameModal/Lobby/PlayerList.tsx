@@ -28,13 +28,13 @@ export default function PlayerList({ players, playerPiece,playerName, playerId}:
         textAlign="center"
         direction="column"
         justifyContent="center"
-        sx={{ border: "solid 1px black", borderRadius: "10px" }}
+        sx={{ border: "solid 1px black", borderRadius: "10px", boxShadow: 2, }}
       >
         <Grid item>
-          <Typography> Players </Typography>
+          <Typography sx={{fontFamily: "Bungee Hairline, cursive", fontWeight: 800}}> Players </Typography>
         </Grid>
         <Grid item>
-          <List dense sx={{ justifyContent: "center" }} aria-label="players">
+          <List dense sx={{ justifyContent: "center", }} aria-label="players">
             {players.length === 0 ? (
               <SkeletonPlayers />
             ) : (
@@ -103,6 +103,7 @@ export default function PlayerList({ players, playerPiece,playerName, playerId}:
 
                       <ListItemText
                         sx={{ textAlign: "center" }}
+                        primaryTypographyProps={{style: { fontFamily: "Bungee Hairline, cursive", fontWeight: 800 },}}
                         primary={player.name}
                       />
                     </ListItem>
@@ -170,7 +171,8 @@ export default function PlayerList({ players, playerPiece,playerName, playerId}:
                       )}
 
                       <ListItemText
-                        sx={{ textAlign: "center" }}
+                      primaryTypographyProps={{style: { fontFamily: "Bungee Hairline, cursive", fontWeight: 800 },}}
+                        sx={{ textAlign: "center"}}
                         primary={player.name}
                       />
                     </ListItem>

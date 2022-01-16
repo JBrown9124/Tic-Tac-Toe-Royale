@@ -10,7 +10,7 @@ interface UpdateAfterPlayerLeavesArgs {
   playerWhoLeftSessionId: string;
   playerId: string;
 }
-const updateAfterPlayerLeaves = ({
+const updateAfterPlayerLeaves = async ({
   playerPieces,
 
   setPlayerPieces,
@@ -25,19 +25,16 @@ const updateAfterPlayerLeaves = ({
         playerPieces.splice(i, 1);
       }
     }
-
-    return true;
   };
-  removePlayerFromPieces().then((isUpdated) => {
-    setGameStatus({
-      win: {
-        whoWon: playerPieces.length === 1 ? playerPieces[0]?.playerId : null,
-        type: null,
-        winningMoves: null,
-      },
-      whoTurn: playerPieces[playerPieces.length - 1]?.playerId,
-      newMove: { playerId: "", rowIdx: 0, tileIdx: 0 },
-    });
+  await removePlayerFromPieces();
+  setGameStatus({
+    win: {
+      whoWon: playerPieces.length === 1 ? playerPieces[0]?.playerId : null,
+      type: null,
+      winningMoves: null,
+    },
+    whoTurn: playerPieces[playerPieces.length - 1]?.playerId,
+    newMove: { playerId: "", rowIdx: 0, tileIdx: 0 },
   });
 };
 

@@ -3,7 +3,8 @@ import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
-
+import CustomButton from "../CustomButton";
+import CustomTextField from "../CustomTextField";
 import { useCookies } from "react-cookie";
 
 interface OpenPageProps {
@@ -35,45 +36,71 @@ export default function Welcome({
           textAlign="right"
           sx={{ fontSize: "10px" }}
         >
-         IN DEVELOPMENT
+          IN DEVELOPMENT
         </Grid>
-        <Grid item>
-          <Typography variant="h2">Welcome to Tic-Tac-Toe Royale!</Typography>
+        <Grid container item direction="column">
+          <Grid item>
+            <Typography
+              variant="h2"
+              sx={{
+                fontFamily: "Major Mono Display, monospace",
+                fontSize: "2rem",
+              }}
+            >
+              Welcome to{" "}
+            </Typography>
+          </Grid>
+          <Grid item>
+            {" "}
+            <Typography
+              variant="h2"
+              sx={{ fontFamily: "Major Mono Display, monospace", p: 2 }}
+            >
+              Tic-Tac-Toe Royale
+            </Typography>
+          </Grid>
         </Grid>
 
         <Grid item>
-          <TextField
+          <CustomTextField
+            onClick={() => setIsError(false)}
             error={isError}
             value={playerName}
+            set={setPlayerName}
+            label={"Your Nickname"}
+            variant="standard"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setPlayerName(e.target.value)
             }
-            label="Name"
           />
         </Grid>
 
-        <Grid container item direction="column" sx={{}} justifyContent="center">
-          <Grid item md={12}>
-            <Button
+        <Grid
+          sx={{ marginTop: 3 }}
+          container
+          item
+          direction={{ sm: "row", md: "column" }}
+          justifyContent="center"
+        >
+          <Grid item sm={6} md={12}>
+            <CustomButton
+              message={"Start Game"}
               onClick={() =>
                 playerName.length === 0
                   ? setIsError(true)
                   : createGame(playerName)
               }
-            >
-              Start a game
-            </Button>
+            />
           </Grid>
-          <Grid item md={12}>
-            <Button
+          <Grid item sm={6} md={12}>
+            <CustomButton
+              message={"Join Game"}
               onClick={() =>
                 playerName.length === 0
                   ? setIsError(true)
                   : joinGame(playerName)
               }
-            >
-              Join a game
-            </Button>
+            />
           </Grid>
         </Grid>
       </Grid>

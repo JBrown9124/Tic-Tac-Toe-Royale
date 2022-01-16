@@ -49,15 +49,16 @@ export default function useSocket({
   useEffect(() => {
     actionRef.current = action;
   }, [action]);
-  useEffect(() => {});
+
 
   useEffect(() => {
     socket.on("connect", () => {
       console.log("Client Connected");
 
       socket.on("player-leave-lobby", (data) => {
+        const lobbyCopy = lobbyRef.current;
         if (actionRef.current !== "begin" && actionRef.current !== "in game") {
-          const lobbyCopy = lobbyRef.current;
+          
           let newPlayerList = lobbyCopy.players.filter((player) => {
             return player.playerId !== data.removedPlayer.playerId;
           });
@@ -84,6 +85,9 @@ export default function useSocket({
           setPlayerWhoLeftSessionId(data.removedPlayer.sessionId);
           if (data.newHost.playerId === playerIdRef.current) {
             setIsHost(true);
+            setHostColor(lobbyCopy.board.color);
+            setHostWinBy(lobbyCopy.board.winBy);
+            setHostSize(lobbyCopy.board.size);
           }
         }
       });
@@ -123,9 +127,9 @@ export default function useSocket({
               if (newHost && newHost.playerId === playerIdRef.current) {
                 setIsHost(true);
 
-                setHostColor(lobby.board.color);
-                setHostWinBy(lobby.board.winBy);
-                setHostSize(lobby.board.size);
+                setHostColor(lobbyCopy.board.color);
+                setHostWinBy(lobbyCopy.board.winBy);
+                setHostSize(lobbyCopy.board.size);
               }
             }
             if (

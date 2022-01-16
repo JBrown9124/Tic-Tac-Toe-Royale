@@ -21,6 +21,7 @@ export default function BuildingBoardSplashScreen() {
           top: "43%",
           left: "50%",
           transform: "translate(-50%,-50%)",
+        
         }}
       >
         {/* <Grid item>

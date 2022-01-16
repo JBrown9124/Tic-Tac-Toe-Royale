@@ -2,6 +2,8 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import Button from "@mui/material/Button";
+import CustomTextField from "../CustomTextField";
+import CustomButton from "../CustomButton";
 import React from "react";
 interface JoinProps {
   handleJoinSubmit: (lobbyId: number) => void;
@@ -21,18 +23,16 @@ export default function Join({
         direction="column"
         textAlign="center"
         justifyContent="center"
-        spacing={2}
+        spacing={4}
       >
         <Grid item>
-          <TextField
+          <CustomTextField
             error={isLobbyFound === false}
             helperText={isLobbyFound === false && "Lobby is not found"}
             type="number"
-            label="Lobby Code"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setLobbyId(parseInt(e.target.value))
-            }
-          />
+            label="Lobby ID"
+           value={lobbyId}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLobbyId(parseInt(e.target.value))} variant={"standard"}          />
         </Grid>
 
         <Grid
@@ -43,10 +43,13 @@ export default function Join({
           spacing={2}
         >
           <Grid item>
-            <Button onClick={() => handleJoinBack()}>Back</Button>
+            <CustomButton onClick={() => handleJoinBack()} message={"Back"} />
           </Grid>
           <Grid item>
-            <Button onClick={() => handleJoinSubmit(lobbyId)}>Find</Button>
+            <CustomButton
+              onClick={() => handleJoinSubmit(lobbyId)}
+              message={"Find"}
+            />
           </Grid>
         </Grid>
       </Grid>

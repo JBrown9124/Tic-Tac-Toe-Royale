@@ -6,7 +6,11 @@ import createPiece from "../../../../creators/BoardCreators/createPiece";
 import Input from "@mui/material/Input";
 import useSound from "use-sound";
 import Button from "@mui/material/Button";
-
+import Box from "@mui/material/Box";
+import CustomButton from "../../../CustomButton";
+import Tooltip from "@mui/material/Tooltip";
+import Fade from "@mui/material/Fade";
+import Zoom from "@mui/material/Zoom";
 interface PieceSelectorProps {
   setPiece: (piece: string) => void;
   playerPiece: string;
@@ -43,13 +47,17 @@ export default function PieceSelector({
     <>
       <Grid container direction="column" spacing={2}>
         <Grid item>
-          <Typography>Select your Piece</Typography>
+          <Typography
+            sx={{ fontFamily: "Bungee Hairline, cursive", fontWeight: 800 }}
+          >
+            Select your Piece
+          </Typography>
         </Grid>
         <Grid container item direction="row">
           <Grid xs={12} sm={6} item>
             <List
               sx={{
-                height: "50px",
+                height: "100px",
 
                 overflow: "auto",
               }}
@@ -66,6 +74,15 @@ export default function PieceSelector({
             </List>
           </Grid>
           <Grid item xs={12} sm={6}>
+            <Typography
+              sx={{
+                fontFamily: "Bungee Hairline, cursive",
+                fontWeight: 800,
+                p: 1,
+              }}
+            >
+              {playerPiece.length === 0 ? "No Piece Selected" : "Your Piece"}
+            </Typography>
             {playerPiece?.length > 15 ? (
               <img
                 src={playerPiece}
@@ -82,19 +99,55 @@ export default function PieceSelector({
           </Grid>
         </Grid>
         <Grid item>
-          <label htmlFor="contained-button-file">
-            <Input
-              sx={{ display: "none" }}
-              id="contained-button-file"
-              type="file"
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                handleImageUpload(e.target.files)
-              }
-            />
-            <Button variant="contained" component="span">
-              Upload
-            </Button>
-          </label>
+          <Tooltip
+            placement="right"
+            TransitionComponent={Zoom}
+            title={
+              <Typography
+                sx={{
+                  fontSize: "10px",
+                  fontFamily: "Bungee Hairline, cursive !important",
+                  fontWeight: "800 !important",
+                }}
+              >
+                Upload any image type!
+              </Typography>
+            }
+          >
+            <label htmlFor="contained-button-file">
+              <Input
+                sx={{ display: "none" }}
+                id="contained-button-file"
+                type="file"
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  handleImageUpload(e.target.files)
+                }
+              />
+
+              <Button
+                component="span"
+                sx={{
+                  backgroundColor: "transparent",
+                  "&:hover": {
+                    backgroundColor: "#ede7f6",
+                    boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+                  },
+                  fontFamily: "Major Mono Display, monospace",
+                  fontWeight: 800,
+
+                  color: "black",
+                  fill: "transparent",
+                  textTransform: "none",
+                  border: "solid black 1px",
+                  height: "40px",
+                  width: "%60",
+                  fontSize: "13px",
+                }}
+              >
+                Upload Piece
+              </Button>
+            </label>
+          </Tooltip>
         </Grid>
       </Grid>
     </>

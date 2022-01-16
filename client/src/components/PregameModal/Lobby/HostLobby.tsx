@@ -6,6 +6,7 @@ import { useState } from "react";
 import playerReady from "../../../creators/APICreators/playerReady";
 import leaveLobby from "../../../creators/APICreators/leaveLobby";
 import joinLobby from "../../../creators/APICreators/joinLobby";
+import CustomButton from "../../CustomButton";
 import Typography from "@mui/material/Typography";
 import { Player } from "../../../Models/Player";
 import { Lobby } from "../../../Models/Lobby";
@@ -13,6 +14,9 @@ import { RgbaColor } from "react-colorful";
 import { useCookies } from "react-cookie";
 import CopyLobbyId from "./CopyLobbyId";
 import useSound from "use-sound";
+import Tooltip from "@mui/material/Tooltip";
+import Fade from "@mui/material/Fade";
+import Zoom from "@mui/material/Zoom";
 interface PlayerListProps {
   handleLeave: () => void;
   setPiece: (piece: string) => void;
@@ -137,14 +141,46 @@ export default function HostLobby({
             />
           </Grid>
           <Grid item xs={12} sm={6}>
-          <Grid container item  justifyContent="center" alignItems="center">
-          <Grid item>
-            <Button onClick={() => handleAddABot()}> Add Bot</Button>
-          </Grid>
-          {/* <Grid item>
+            <Grid container item justifyContent="center" alignItems="center">
+              <Grid item sx={{ p: 1 }}>
+                <Tooltip
+                  placement="right"
+                  TransitionComponent={Zoom}
+                  title={
+                    <Typography
+                      sx={{
+                        fontSize: "10px",
+                        fontFamily: "Bungee Hairline, cursive !important",
+                        fontWeight: "800 !important",
+                      }}
+                    >
+                      Add up to 10 bots!
+                    </Typography>
+                  }
+                >
+                  <div>
+                    <CustomButton
+                      onClick={() => handleAddABot()}
+                      message={"+"}
+                      sx={{ fontSize: "2rem", borderRadius: "100px" }}
+                      icon={
+                        <img
+                          style={{ width: "40px", height: "40px" }}
+                          src={
+                            "https://cdn1.iconfinder.com/data/icons/robots-avatars-set/354/Robot_bot___robot_robo_bot_artificial_intelligence-512.png"
+                          }
+                          alt={"bot"}
+                        />
+                      }
+                    />
+                  </div>
+                </Tooltip>
+              </Grid>
+
+              {/* <Grid item>
             <Button onClick={() => handleRemoveBot()}> Remove Bot</Button>
           </Grid> */}
-        </Grid>
+            </Grid>
             <PlayerList
               playerId={playerId}
               playerName={playerName}
@@ -154,26 +190,27 @@ export default function HostLobby({
           </Grid>
         </Grid>
         {isError && (
-          <Grid container direction="column" textAlign="center">
+          <Grid container direction="column"  justifyContent="center" textAlign="center">
             <Grid item>
-              <Typography sx={{ color: "red" }}> {errorMessage}</Typography>
+              <Typography sx={{ color: "red" ,
+                        fontFamily: "Bungee Hairline, cursive",
+                        fontWeight: "800 ", }}> {errorMessage}</Typography>
             </Grid>
           </Grid>
         )}
-       
-        <Grid item container justifyContent="center" spacing={2}>
+
+        <Grid item container justifyContent="center" textAlign="center" spacing={4} >
           <Grid item>
-            <Button onClick={handleLeave}>Leave</Button>
+            <CustomButton onClick={handleLeave} message={"leave"} />
           </Grid>
 
           <Grid item>
-            <Button
+            <CustomButton
               onClick={() =>
                 allPlayersReady() ? handleStart() : setIsError(true)
               }
-            >
-              Start
-            </Button>
+              message={"start"}
+            />
           </Grid>
         </Grid>
       </Grid>

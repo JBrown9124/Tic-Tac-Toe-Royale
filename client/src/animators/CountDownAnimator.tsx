@@ -101,7 +101,7 @@ export default function CountDownAnimator({
               // top: "50%",
               // left: "50%",
               // transform: `translate(-50%, -50%)`,
-             
+              fontFamily: "Major Mono Display, monospace",
               fontSize: "6rem",
             }}
           >

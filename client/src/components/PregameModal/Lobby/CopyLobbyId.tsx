@@ -1,12 +1,13 @@
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
+import CustomButton from "../../CustomButton";
 import { useState } from "react";
 
-interface CopyLobbyIdProps{
-  lobbyId: number
-} 
-const CopyLobbyId = ({lobbyId}:CopyLobbyIdProps) => {
+interface CopyLobbyIdProps {
+  lobbyId: number;
+}
+const CopyLobbyId = ({ lobbyId }: CopyLobbyIdProps) => {
   const [isCopied, setIsCopied] = useState(false);
 
   const handleCopyLobbyId = () => {
@@ -23,16 +24,23 @@ const CopyLobbyId = ({lobbyId}:CopyLobbyIdProps) => {
       item
     >
       <Grid item>
-        <Button
+        <CustomButton
+          sx={{
+            
+            height: "25px",
+          }}
           onClick={() => {
             handleCopyLobbyId();
           }}
-        >
-          {!isCopied ? "Copy ID to clipboard" : "Copied!"}
-        </Button>
+          message={!isCopied ? "Copy ID to clipboard" : "Copied!"}
+        />
       </Grid>
       <Grid item>
-        <Typography>Lobby ID: {lobbyId}</Typography>
+        <Typography
+          sx={{ fontFamily: "Bungee Hairline, cursive", fontWeight: 800 }}
+        >
+          Lobby ID: {lobbyId}
+        </Typography>
       </Grid>
     </Grid>
   );

@@ -12,6 +12,7 @@ import { RgbaColor } from "react-colorful";
 import useCommands from "./hooks/useCommands";
 import useSocket from "./hooks/useSocket";
 import BuildingBoardSplashScreen from "./components/BuildingBoardSplashScreen";
+
 function App() {
   const [action, setAction] = useState("welcome");
 
@@ -29,14 +30,17 @@ function App() {
   const [pieceSelection, setPieceSelection] = useState("");
   const [isHost, setIsHost] = useState(false);
   const [playerWhoLeftSessionId, setPlayerWhoLeftSessionId] = useState("");
- 
 
   const [gameStatus, setGameStatus] = useState<GameStatus>({
     win: { whoWon: null, type: null, winningMoves: null },
     whoTurn: "",
     newMove: { playerId: "", rowIdx: 0, tileIdx: 0 },
   });
-  const [newMove, setNewMove] = useState<NewMove>({ playerId: "", rowIdx: 0, tileIdx: 0 })
+  const [newMove, setNewMove] = useState<NewMove>({
+    playerId: "",
+    rowIdx: 0,
+    tileIdx: 0,
+  });
   const [lobby, setLobby] = useState<Lobby>({
     hostSid: 0,
     lobbyId: 0,
@@ -105,7 +109,6 @@ function App() {
     setHostWinBy,
     setHostColor,
     setHostSize,
- 
   });
 
   return (
@@ -116,9 +119,15 @@ function App() {
           position: "fixed",
           width: "100%",
           height: "100%",
-          background: `rgba(${lobby.board.color?.r}, ${lobby.board.color?.g}, ${
-            lobby.board.color?.b
-          }, ${lobby.board.color?.a - 0.5})`,
+          background:
+            lobby.board.color.r === 255 &&
+            lobby.board.color.b === 255 &&
+            lobby.board.color.g === 255 &&
+            lobby.board.color.a === 0.9
+              ? "#b4cad1"
+              : `rgba(${lobby.board.color?.r}, ${lobby.board.color?.g}, ${
+                  lobby.board.color?.b
+                }, ${lobby.board.color?.a - 0.5})`,
           overflowY: "auto",
           overflowX: "hidden",
         }}
@@ -145,7 +154,6 @@ function App() {
               setIsLobbyReceived={(props) => setIsLobbyReceived(props)}
               setIsHost={(props) => setIsHost(props)}
               handleStart={() => handleStart()}
-            
             />
           </Grid>
         )}
