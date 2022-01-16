@@ -34,14 +34,7 @@ export default function BuildingBoardSplashScreen({
         </Grid> */}
         <Grid item>
           <HashLoader
-            color={
-              boardColor?.r * 0.299 +
-                boardColor?.g * 0.587 +
-                boardColor?.b * 0.114 >
-              186
-                ? "black"
-                : "white"
-            }
+            color={"black"}
             loading={true}
             css={override}
             size={300}

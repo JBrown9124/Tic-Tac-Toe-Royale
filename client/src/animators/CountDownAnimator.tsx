@@ -103,15 +103,10 @@ export default function CountDownAnimator({
               // transform: `translate(-50%, -50%)`,
               fontFamily: "Major Mono Display, monospace",
               fontWeight: "bold",
-              fontStyle: "italic",
+              
               fontSize: "6rem",
-              color:
-                boardColor?.r * 0.299 +
-                  boardColor?.g * 0.587 +
-                  boardColor?.b * 0.114 >
-                186
-                  ? "black"
-                  : "white",
+              color:"black"
+                 
             }}
           >
             {numbers[i]}
