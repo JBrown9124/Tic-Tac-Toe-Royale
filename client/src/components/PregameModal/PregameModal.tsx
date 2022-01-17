@@ -99,7 +99,7 @@ export default function PregameModal({
         open={isOpen}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
-        sx={{ overflow: "auto" }}
+     
       >
         <Grid
           maxHeight="sm"
@@ -109,14 +109,14 @@ export default function PregameModal({
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            overflow: "auto",
+           
             maxHeight: "100%",
 
             maxWidth: "100%",
             width: 800,
-
-            bgcolor: "white",
-            border: "2px solid #000",
+            borderRadius:"15px",
+            bgcolor: "#f3e5f5",
+            overflow:"auto",
             boxShadow: 24,
             p: 4,
           }}

@@ -70,7 +70,7 @@ export default function StatusBoard({
         sx={{
           borderRadius: "15px",
 
-          bgcolor: "#b4cad1",
+          bgcolor: "#f3e5f5",
           border:"solid black 1px",
           boxShadow: 10,
         }}
@@ -120,11 +120,11 @@ export default function StatusBoard({
 
         <Grid container direction="column" sx={{p:1}} spacing={2}>
           <Grid item>
-            <CustomButton onClick={() => quitGame()} message={"Leave Game"}/>
+            <CustomButton sx={{fontSize:"13px", height:"40px"}} onClick={() => quitGame()} message={"Leave Game"}/>
           </Grid>
           {gameStatus.win.whoWon && isHost && (
             <Grid item>
-              <CustomButton message={"Play Again"} onClick={() => handleStart()}/>
+              <CustomButton sx={{fontSize:"13px", height:"40px"}} message={"Play Again"} onClick={() => handleStart()}/>
             </Grid>
           )}
         </Grid>

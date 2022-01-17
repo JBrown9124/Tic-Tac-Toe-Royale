@@ -48,12 +48,12 @@ export default function PieceSelector({
       <Grid container direction="column" spacing={2}>
         <Grid item>
           <Typography
-            sx={{ fontFamily: "Bungee Hairline, cursive", fontWeight: 800 }}
+            sx={{ fontFamily: "Bungee Hairline, cursive", fontWeight: 800, p:1 }}
           >
             Select your Piece
           </Typography>
         </Grid>
-        <Grid container item direction="row">
+        <Grid container item direction="row" sx={{background:"#e8f5e9", borderRadius:"40px"}}>
           <Grid xs={12} sm={6} item>
             <List
               sx={{
@@ -101,6 +101,7 @@ export default function PieceSelector({
         <Grid item>
           <Tooltip
             placement="right"
+         
             TransitionComponent={Zoom}
             title={
               <Typography
@@ -127,21 +128,22 @@ export default function PieceSelector({
               <Button
                 component="span"
                 sx={{
-                  backgroundColor: "transparent",
+                  backgroundColor: "#ffecb3",
+
                   "&:hover": {
-                    backgroundColor: "#ede7f6",
+                    backgroundColor: "#fff8e1",
                     boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
                   },
                   fontFamily: "Major Mono Display, monospace",
-                  fontWeight: 800,
                   boxShadow:'rgba(0, 0, 0, 0.24) 0px 1px 4px',
                   color: "black",
                   fill: "transparent",
                   textTransform: "none",
-                  border: "solid black 1px",
+                  
                   height: "40px",
-                  width: "%60",
-                  fontSize: "13px",
+                  width: "%100",
+                  fontSize: ".8rem",
+                  borderRadius:"60px"
                 }}
               >
                 Upload Piece

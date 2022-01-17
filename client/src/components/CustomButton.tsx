@@ -3,10 +3,10 @@ import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 
 const StyledButton = styled(Button)(({ theme }) => ({
-  backgroundColor: "transparent",
+  backgroundColor: "#ffecb3",
 
   "&:hover": {
-    backgroundColor: "#ede7f6",
+    backgroundColor: "#fff8e1",
     boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
   },
   fontFamily: "Major Mono Display, monospace",
@@ -14,10 +14,11 @@ const StyledButton = styled(Button)(({ theme }) => ({
   color: "black",
   fill: "transparent",
   textTransform: "none",
-  border: "solid black 1px",
+  
   height: "50px",
   width: "%100",
   fontSize: "1.1rem",
+  borderRadius:"60px"
   //   [theme.breakpoints.up("md")]: {
   //     fontSize: "1.1rem",
   //     height: "50px",

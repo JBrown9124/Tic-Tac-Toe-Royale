@@ -37,7 +37,7 @@ export default function TurnOrder({
           borderRadius: "15px",
           overflowY: "auto",
           overflowX: "hidden",
-          bgcolor: "#b4cad1",
+          bgcolor: "#f3e5f5",
           p: 1,
           boxShadow: 10,
           border:"solid black 1px",

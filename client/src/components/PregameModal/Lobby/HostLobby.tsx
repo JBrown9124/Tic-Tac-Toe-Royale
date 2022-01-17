@@ -125,7 +125,7 @@ export default function HostLobby({
   };
   return (
     <>
-      <Grid container direction="column" spacing={2}>
+      <Grid container direction="column" spacing={2} >
         <CopyLobbyId lobbyId={lobbyId} />
         <Grid item container sx={{ textAlign: "center" }} spacing={6}>
           <Grid item xs={12} sm={6}>

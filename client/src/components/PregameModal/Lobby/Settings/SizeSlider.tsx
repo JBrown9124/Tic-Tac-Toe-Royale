@@ -11,14 +11,15 @@ import { useSound } from "use-sound";
 const CustomInput = styled(Input)({
   "& .MuiInput-underline:before": {
     borderBottomColor: "black",
+    borderRadius:"100px",
   },
 
-  //   "& :focus": {
-  //     backgroundColor: "white",
-  //   },
-  //   "&$focused": {
-  //     backgroundColor: "white",
-  //   },
+  // "& :focus": {
+  //   backgroundColor: "white",
+  // },
+  // "&$focused": {
+  //   backgroundColor: "white",
+  // },
   "& label.Mui-focused": {
     // backgroundColor: "white",
 
@@ -34,19 +35,21 @@ const CustomInput = styled(Input)({
     borderBottomColor: "black",
     backgroundColor: "white",
   },
-  //   "& .MuiOutlinedInput-root": {
-  //     "& fieldset": {
-  //       borderColor: "red",
-  //       backgroundColor: "white",
-  //     },
-  //     "&:hover fieldset": {
-  //       borderColor: "yellow",
-  //       backgroundColor: "white",
-  //     },
-  "&.Mui-focused fieldset": {
-    borderColor: "black",
-    backgroundColor: "white",
-    fontFamily: "Major Mono Display, monospace",
+  "& .MuiOutlinedInput-root": {
+    "& fieldset": {
+      borderColor: "#e8f5e9",borderRadius:"100px",
+      
+    },
+    "&:hover fieldset": {
+      borderColor: "#e8f5e9",
+      
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: "#e8f5e9",
+     
+      fontFamily: "Major Mono Display, monospace",
+    },
+    
   },
   // "& .MuiInput-underline:before": {
   //   borderBottomColor: " rgba(191, 189, 206, 0.986)",
@@ -95,6 +98,7 @@ export default function SizeSlider({ setSize, size }: SizeSliderProps) {
             max={20}
             step={1}
             min={3}
+            sx={{color:"#ffecb3",}}
             value={size}
             onChange={(
               e: Event,
@@ -114,7 +118,7 @@ export default function SizeSlider({ setSize, size }: SizeSliderProps) {
               handleInputChange(parseInt(e.target.value));
             }}
             onBlur={handleBlur}
-      
+            
             inputProps={{
               step: 1,
               min: 3,

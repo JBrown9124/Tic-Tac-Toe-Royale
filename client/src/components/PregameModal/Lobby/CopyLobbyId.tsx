@@ -28,6 +28,7 @@ const CopyLobbyId = ({ lobbyId }: CopyLobbyIdProps) => {
           sx={{
             
             height: "25px",
+            fontSize:"12px"
           }}
           onClick={() => {
             handleCopyLobbyId();

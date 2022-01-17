@@ -28,7 +28,7 @@ export default function PlayerList({ players, playerPiece,playerName, playerId}:
         textAlign="center"
         direction="column"
         justifyContent="center"
-        sx={{ border: "solid 1px black", borderRadius: "10px",  }}
+        sx={{  borderRadius: "60px", background:"#e8f5e9" }}
       >
         <Grid item>
           <Typography sx={{fontFamily: "Bungee Hairline, cursive", fontWeight: 800}}> Players </Typography>
