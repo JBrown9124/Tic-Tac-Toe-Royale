@@ -12,6 +12,7 @@ import { RgbaColor } from "react-colorful";
 import useCommands from "./hooks/useCommands";
 import useSocket from "./hooks/useSocket";
 import BuildingBoardSplashScreen from "./components/BuildingBoardSplashScreen";
+import {backgroundColor} from "./themes/theme1"
 
 function App() {
   const [action, setAction] = useState("welcome");
@@ -124,7 +125,7 @@ function App() {
             lobby.board.color?.g === 255 &&
             lobby.board.color?.b === 255 &&
             lobby.board.color?.a === 0.9
-              ? "#f3e5f5"
+              ? backgroundColor
               : `rgba(${lobby.board.color?.r}, ${lobby.board.color?.g}, ${
                   lobby.board.color?.b
                 }, ${lobby.board.color?.a - 0.5})`,

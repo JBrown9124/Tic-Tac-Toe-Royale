@@ -3,16 +3,13 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { CookiesProvider } from "react-cookie";
-import { ThemeProvider } from "@mui/material/styles";
-import theme from "./themes/theme1";
+
+
 
 ReactDOM.render(
   <React.StrictMode>
-    {/* <ThemeProvider theme={theme}> */}
     <App />
-    {/* </ThemeProvider> */}
-  </React.StrictMode>,
+</React.StrictMode>,
   document.getElementById("root")
 );
 

@@ -13,7 +13,7 @@ import startGame from "../../creators/APICreators/startGame";
 import { RgbaColor } from "react-colorful";
 import { Lobby } from "../../Models/Lobby";
 import useSound from "use-sound";
-
+import {backgroundColor} from "../../themes/theme1"
 interface PregameModalProps {
   setPiece: (piece: string) => void;
   playerPiece: string;
@@ -109,13 +109,11 @@ export default function PregameModal({
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-           
             maxHeight: "100%",
-
             maxWidth: "100%",
             width: 800,
             borderRadius:"15px",
-            bgcolor: "#f3e5f5",
+            bgcolor: backgroundColor,
             overflow:"auto",
             boxShadow: 24,
             p: 4,

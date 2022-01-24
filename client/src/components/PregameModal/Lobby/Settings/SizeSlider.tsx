@@ -95,7 +95,7 @@ export default function SizeSlider({ setSize, size }: SizeSliderProps) {
       <Grid container item spacing={2}>
         <Grid item xs={12} md={10}>
           <Slider
-            max={20}
+            max={15}
             step={1}
             min={3}
             sx={{color:"#ffecb3",}}

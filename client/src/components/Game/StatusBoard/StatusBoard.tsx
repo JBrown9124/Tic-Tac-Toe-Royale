@@ -1,15 +1,12 @@
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { useCookies } from "react-cookie";
 import { Player } from "../../../Models/Player";
 import { GameStatus } from "../../../Models/GameStatus";
-import createPiece from "../../../creators/BoardCreators/createPiece";
-import { sizeOfPiece } from "../../../creators/BoardCreators/sizeOfPiece";
 import { useEffect, useState } from "react";
 import { useSound } from "use-sound";
-import Button from "@mui/material/Button";
 import CustomButton from "../../CustomButton"
-import PlayerTurnOrderAnimator from "../../../animators/PlayerTurnOrderAnimator";
+import {backgroundColor} from "../../../themes/theme1"
+
 
 interface StatusBoardProps {
   playerPieces: Player[];
@@ -70,7 +67,7 @@ export default function StatusBoard({
         sx={{
           borderRadius: "15px",
 
-          bgcolor: "#f3e5f5",
+          bgcolor: backgroundColor,
           border:"solid black 1px",
           boxShadow: 10,
         }}

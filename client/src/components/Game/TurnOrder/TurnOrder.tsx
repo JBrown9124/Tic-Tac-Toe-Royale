@@ -2,16 +2,15 @@ import Grid from "@mui/material/Grid";
 import PlayerTurnOrderAnimator from "../../../animators/PlayerTurnOrderAnimator";
 import { Player } from "../../../Models/Player";
 import { GameStatus } from "../../../Models/GameStatus";
-import { RgbaColor } from "react-colorful";
+import { backgroundColor } from "../../../themes/theme1";
 
-import { useEffect } from "react";
 interface TurnOrderProps {
   playerPieces: Player[];
   setPlayerPieces: (playerPieces: Player[]) => void;
   isBoardCreated: boolean;
   whoTurn: string;
   isCountDownFinished: boolean;
-  playerWhoLeftSessionId:string,
+  playerWhoLeftSessionId: string;
   gameStatus: GameStatus;
   playerId: string;
 }
@@ -25,7 +24,6 @@ export default function TurnOrder({
   gameStatus,
   playerId,
 }: TurnOrderProps) {
-  
   return (
     <>
       <Grid
@@ -37,10 +35,10 @@ export default function TurnOrder({
           borderRadius: "15px",
           overflowY: "auto",
           overflowX: "hidden",
-          bgcolor: "#f3e5f5",
+          bgcolor: backgroundColor,
           p: 1,
           boxShadow: 10,
-          border:"solid black 1px",
+          border: "solid black 1px",
           maxHeight: { xs: 150, md: 250, lg: 700 },
         }}
       >
@@ -51,10 +49,8 @@ export default function TurnOrder({
             overflowX: "hidden",
           }}
         >
-      
-
           <PlayerTurnOrderAnimator
-          playerWhoLeftSessionId={playerWhoLeftSessionId}
+            playerWhoLeftSessionId={playerWhoLeftSessionId}
             playerId={playerId}
             gameStatus={gameStatus}
             isCountDownFinished={isCountDownFinished}

@@ -26,6 +26,7 @@ class Board(APIView):
         body = request.data
         game_status = body.get("gameStatus")
         new_move = game_status.get("newMove")
+        
         win = game_status.get("win")
         winner = win.get("whoWon")
         winning_moves = win.get("winningMoves")
@@ -39,12 +40,9 @@ class Board(APIView):
         lobby_board_copy = lobby_copy["board"]
         lobby_game_status_copy = lobby_copy["gameStatus"]
         last_turn = lobby_game_status_copy["whoTurn"]
-        # last_turn_players_index = [
-        #     index
-        #     for index, player in enumerate(lobby_players_copy)
-        #     if player["playerId"] == last_turn["playerId"]
+        
         last_turn_player = lobby_players_copy.pop()
-        # ][0]
+      
         lobby_players_copy = deque(lobby_players_copy)
 
         lobby_players_copy.appendleft(last_turn_player)
@@ -64,15 +62,14 @@ class Board(APIView):
         if len(lobby_board_copy["moves"]) == tile_amount and not winner:
             win = Win(who_won="tie", type="tie").to_dict()
             lobby_game_status_copy["win"] = win
+        
         lobby_game_status_copy["newMove"]=new_move
         lobby_copy["board"] = lobby_board_copy
         lobby_copy["gameStatus"] = lobby_game_status_copy
         lobby_copy["players"] = list(lobby_players_copy)
         cache.set(lobby_id, lobby_copy, 3600)
 
-        board_response = BoardResponseModel(
-            new_move=new_move, game_status=lobby_game_status_copy
-        ).to_dict()
+       
         return JsonResponse({"gameStatus":lobby_copy["gameStatus"]})
 
     def delete(self, request: Request):
