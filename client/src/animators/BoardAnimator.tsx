@@ -41,6 +41,7 @@ const BoardAnimator = ({
   const [isBooped, setIsBooped] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isWinningMove, setIsWinningMove] = useState(false);
+  const [isRendered, setIsRendered] = useState(false);
 
   const [lineDirection, setLineDirection] = useState<string>(
     win.type === null ? "None" : win.type === "tie" ? "horizontal" : win.type
@@ -51,7 +52,7 @@ const BoardAnimator = ({
     friction: 120,
     clamp: false,
   });
-  const [isRendered, setIsRendered] = useState(false);
+  
 
   useEffect(() => {
     if (isCountDownFinished) {
@@ -66,6 +67,7 @@ const BoardAnimator = ({
       setIsWinningMove(false);
       setIsVisible(false);
       setIsRendered(false);
+      setLineDirection("None");
     }
   }, [isCountDownFinished]);
   useEffect(() => {

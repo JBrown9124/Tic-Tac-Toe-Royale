@@ -98,9 +98,6 @@ export default function PlayerTurnOrderAnimator({
                 item?.playerId ===
                 playerPieces[playerPieces.length - 1]?.playerId
                   ? "green"
-                  : item?.playerId ===
-                    playerPieces[playerPieces.length - 2]?.playerId
-                  ? "yellow"
                   : "black",
               fontFamily: "Bungee Hairline, cursive",
               fontWeight: 800,
