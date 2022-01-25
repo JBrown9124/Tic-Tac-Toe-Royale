@@ -1,12 +1,13 @@
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Lobby } from "../Models/Lobby";
 import { GameStatus } from "../Models/GameStatus";
 import botNewMove from "../creators/APICreators/botNewMove";
 import determineWinner from "../creators/BoardCreators/determineWinner";
 import { Player } from "../Models/Player";
-import { NewMove } from "../Models/NewMove";
 import useSound from "use-sound";
 import getRandomInt from "../creators/BoardCreators/getRandomInt";
+
+
 
 interface UseMoveHandler {
   botCanMove: boolean;
@@ -17,11 +18,11 @@ interface UseMoveHandler {
   isHost: boolean;
   action: string;
   board: (string | number)[][];
-
   playerWhoLeftSessionId: string;
   isBoardCreated: boolean;
   playerId: string;
 }
+
 export default function useMoveHandler({
   botCanMove,
   lobby,
@@ -30,7 +31,6 @@ export default function useMoveHandler({
   action,
   board,
   setGameStatus,
-
   playerPieces,
   playerWhoLeftSessionId,
   isBoardCreated,
@@ -43,6 +43,7 @@ export default function useMoveHandler({
     process.env.PUBLIC_URL + "static/assets/sounds/yourTurnSound.mp3"
   );
   const [count, setCount] = useState(1);
+
   useEffect(() => {
     if (!gameStatus.win.whoWon && isHost && botCanMove) {
       const findIfBot = async () => {
@@ -53,8 +54,9 @@ export default function useMoveHandler({
           );
         });
       };
+
       findIfBot().then((nextIsBot) => {
-        if (nextIsBot !== undefined) {
+        if (nextIsBot) {
           const reqBody = {
             lobbyId: lobby.lobbyId,
             playerId: nextIsBot.playerId,
@@ -69,7 +71,6 @@ export default function useMoveHandler({
                   board,
                   lobby.board.size,
                   botNewMoveResponse.playerId,
-
                   lobby.board.winBy,
                   lobby.lobbyId,
                   lobby.hostSid,
@@ -77,7 +78,7 @@ export default function useMoveHandler({
                 );
               }
             });
-          }, getRandomInt(500, 1500));
+          }, 500);
 
           startOtherPlayerMoveSound();
           return () => {
@@ -87,25 +88,22 @@ export default function useMoveHandler({
       });
     }
   }, [gameStatus, botCanMove, playerWhoLeftSessionId]);
+
+  // Handles move order rotation
   useEffect(() => {
     let playerWhosTurnItIs = playerPieces[playerPieces.length - 1];
     if (isBoardCreated && playerWhosTurnItIs.playerId !== gameStatus.whoTurn) {
       let poppedPlayer = playerPieces.pop();
-      console.log(poppedPlayer, "POPPEDPLAYER");
-      if (poppedPlayer !== undefined) {
+
+      if (poppedPlayer) {
         playerPieces.unshift(poppedPlayer);
-        console.log(playerPieces, "AFTERPOP");
       }
     }
-    // if (playerPieces[playerPieces.length - 1].playerId !== gameStatus.whoTurn){
-    //   const poppedSecondPlayer = playerPieces.pop();
-    // if (poppedSecondPlayer !== undefined) {
-    //   playerPieces.unshift(poppedSecondPlayer);
-    // }}
     if (playerId === gameStatus.whoTurn) {
       playYourTurnSound();
     }
   }, [gameStatus.whoTurn]);
+
   useEffect(() => {
     if (gameStatus.newMove.playerId === gameStatus.whoTurn) {
       startOtherPlayerMoveSound();

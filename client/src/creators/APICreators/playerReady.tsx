@@ -14,6 +14,7 @@ const savePlayerReady = async (body: BodyProps) => {
 const sendPlayerReady = (body: BodyProps) => {
   socket.emit("player-ready", {
     hostSid: body.hostSid,
+    lobbyId: body.lobbyId
   });
 };
 const playerReady = async (body: BodyProps): Promise<Lobby | undefined> => {

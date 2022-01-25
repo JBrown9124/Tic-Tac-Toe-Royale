@@ -10,7 +10,7 @@ const saveLobby = async (body: BodyProps) => {
   const { data } = await axios.post(`${url}/api/lobby`, body);
   return data;
 };
-const sendLobby = (data: any) => {
+const sendLobby = (data: Lobby) => {
   socket.emit("new-lobby", data.lobbyId);
 };
 const createLobby = async (

@@ -44,7 +44,7 @@ const BoardAnimator = ({
   const [isRendered, setIsRendered] = useState(false);
 
   const [lineDirection, setLineDirection] = useState<string>(
-    win.type === null ? "None" : win.type === "tie" ? "horizontal" : win.type
+    !win.type ? "None" : win.type === "tie" ? "horizontal" : win.type
   );
   const [config, setConfig] = useState({
     mass: 1,
@@ -52,7 +52,6 @@ const BoardAnimator = ({
     friction: 120,
     clamp: false,
   });
-  
 
   useEffect(() => {
     if (isCountDownFinished) {
@@ -67,35 +66,35 @@ const BoardAnimator = ({
       setIsWinningMove(false);
       setIsVisible(false);
       setIsRendered(false);
-      setLineDirection("None");
     }
   }, [isCountDownFinished]);
   useEffect(() => {
-    setLineDirection(
-      win?.type === null ? "None" : win.type === "tie" ? "horizontal" : win.type
-    );
-  }, [win?.type]);
-  useEffect(() => {
-    setLineDirection(
-      win?.type === null ? "None" : win.type === "tie" ? "horizontal" : win.type
-    );
-
-    const determineWinningMove = () => {
-      return win?.winningMoves?.map((winningMove) => {
-        if (
-          winningMove.rowIdx === move.rowIdx &&
-          winningMove.tileIdx === move.tileIdx
-        ) {
-          setIsWinningMove(true);
-        }
-      });
+    const handleWinningMove = async () => {
+      const setLineDirectionHandler = async () => {
+        setLineDirection(
+          !win.type ? "None" : win.type === "tie" ? "horizontal" : win.type
+        );
+      };
+      const determineWinningMove = () => {
+        return win?.winningMoves?.map((winningMove) => {
+          if (
+            winningMove.rowIdx === move.rowIdx &&
+            winningMove.tileIdx === move.tileIdx
+          ) {
+            setIsWinningMove(true);
+          }
+        });
+      };
+      await setLineDirectionHandler();
+      determineWinningMove();
     };
     if (win?.type === "tie") {
       setIsWinningMove(true);
     } else {
-      determineWinningMove();
+      handleWinningMove();
     }
-  }, [lineDirection]);
+  }, [win?.type]);
+
   const style = useSpring({
     opacity: isVisible ? 1 : 0,
     width: width,
@@ -160,7 +159,6 @@ const BoardAnimator = ({
     width: directionProps[lineDirection]?.width,
     opacity: directionProps[lineDirection]?.opacity,
 
-    
     zIndex: 9999,
 
     delay: delay / 2,
@@ -187,11 +185,14 @@ const BoardAnimator = ({
          scale(${1})`,
           position: "absolute",
           top: directionProps[lineDirection]?.top,
-          left: directionProps[lineDirection]?.left,background:
-          beforeColor?.r * 0.299 + beforeColor?.g * 0.587 + beforeColor?.b * 0.114 >
-          186
-            ? "white"
-            : "black",
+          left: directionProps[lineDirection]?.left,
+          background:
+            beforeColor?.r * 0.299 +
+              beforeColor?.g * 0.587 +
+              beforeColor?.b * 0.114 >
+            186
+              ? "white"
+              : "black",
         }}
       />
       <animated.div

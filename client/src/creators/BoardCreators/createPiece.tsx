@@ -213,22 +213,7 @@ const createPiece = (
         />
       ),
     },
-    {
-      name: "Jon",
-      value: (
-        <img
-          key={getRandomInt(1, 9999)}
-          src={"https://i.imgur.com/gKPsImZ.jpg"}
-          alt={"Jon"}
-          style={{
-            height: sizeOfPiece.mobile,
-            width: sizeOfPiece.mobile,
-            maxHeight: sizeOfPiece.desktop,
-            maxWidth: sizeOfPiece.desktop,
-          }}
-        />
-      ),
-    },
+    
     {
       name: "DonkeyKong",
       value: (

@@ -10,11 +10,12 @@ import getGame from "../creators/APICreators/getLobby";
 import useSound from "use-sound";
 import { RgbaColor } from "react-colorful";
 import { NewMove } from "../Models/NewMove";
+
+
 interface UseCommandsProps {
   action: string;
   lobby: Lobby;
   lobbyId: number;
-
   setLobby: (lobby: Lobby) => void;
   setGameStatus: (gameStatus: GameStatus) => void;
   setHostColor: (color: RgbaColor) => void;
@@ -36,7 +37,6 @@ export default function useCommands({
   action,
   lobbyId,
   lobby,
-
   setLobby,
   setGameStatus,
   setHostColor,
@@ -56,92 +56,101 @@ export default function useCommands({
   const [playJoinOrStart] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/joinOrStartSound.mp3"
   );
+
   useEffect(() => {
-    if (action === "create" && lobby.players.length === 0) {
-      createLobby(playerName).then((response) => {
-        if (response) {
-          setLobbyId(response.lobby.lobbyId);
-          setLobby(response.lobby);
+    switch (action) {
+      case "create":
+        if (lobby.players.length === 0) {
+          createLobby(playerName).then((response) => {
+            if (response) {
+              setLobbyId(response.lobby.lobbyId);
+              setLobby(response.lobby);
 
-          setPlayerId(response.playerId);
+              setPlayerId(response.playerId);
+            }
+          });
         }
-      });
-    } else if (action === "guest") {
-      const reqBody = {
-        lobbyId: lobbyId,
-        playerName: playerName,
-        sessionId: socket.id,
-      };
-      joinLobby(reqBody).then((response) => {
-        if (typeof response === "string") {
-          setAction("join");
-          setIsLobbyFound(false);
-        } else {
-          setIsLobbyFound(true);
-          setLobbyId(response.lobby.lobbyId);
-          setPlayerId(response.player.playerId);
-          setLobby(response.lobby);
+        break;
 
-          playJoinOrStart();
-        }
-      });
-    } else if (action === "leave") {
-      const reqBody = {
-        lobbyId: lobbyId,
-        player: {
-          name: playerName,
-          piece: "Not Needed",
-          isHost: isHost,
-
-          isReady: false,
-          playerId: playerId,
-          playerLoaded: false,
+      case "guest":
+        const joinReqBody = {
+          lobbyId: lobbyId,
+          playerName: playerName,
           sessionId: socket.id,
-        },
-        hostSid: lobby.hostSid,
-      };
-      leaveLobby(reqBody);
-      setLobby({
-        hostSid: 0,
-        lobbyId: 0,
-        board: {
-          size: 3,
-          color: { r: 255, g: 255, b: 255, a: 0.9 },
-          winBy: 3,
-          moves: [],
-        },
-        players: [],
-        gameStatus: {
-          win: { whoWon: null, type: null, winningMoves: null },
-          newMove: { playerId: "", rowIdx: 0, tileIdx: 0 },
-          whoTurn: "",
-        },
-      });
-      setGameStatus({
-        win: { whoWon: null, type: null, winningMoves: null },
-        newMove: { playerId: "", rowIdx: 0, tileIdx: 0 },
-        whoTurn: "",
-      });
+        };
+        
+        joinLobby(joinReqBody).then((response) => {
+          
+          if (typeof response === "string") {
+            setAction("join");
+            setIsLobbyFound(false);
+          } else {
+            setIsLobbyFound(true);
+            setLobbyId(response.lobby.lobbyId);
+            setPlayerId(response.player.playerId);
+            setLobby(response.lobby);
 
-      setIsLobbyReceived(false);
-      setIsLobbyFound(true);
-    } else if (action === "begin") {
-      setTimeout(() => {
-        getStartGame(
-          {
-            lobbyId: lobbyId,
-            playerId: null,
-            hostSid: lobby.hostSid,
+            playJoinOrStart();
+          }
+        });
+        break;
+
+      case "leave":
+        const leaveReqBody = {
+          lobbyId: lobbyId,
+          player: {
+            name: playerName, //Give player's name to signify to function that it should send a socket message
+            piece: "Not Needed",
+            isHost: isHost,
+            isReady: false,
+            playerId: playerId,
+            playerLoaded: false,
+            sessionId: socket.id,
           },
-          setGameStatus,
-          setLobby,
-          setIsLobbyReceived
-        );
-      }, 5000);
-    }
-    // else if (action === "play again"){
-    //   setIsLobbyReceived(false);
+          hostSid: lobby.hostSid,
+        };
+        
+        leaveLobby(leaveReqBody).then(() => {
+          setLobby({
+            hostSid: 0,
+            lobbyId: 0,
+            board: {
+              size: 3,
+              color: { r: 255, g: 255, b: 255, a: 0.9 },
+              winBy: 3,
+              moves: [],
+            },
+            players: [],
+            gameStatus: {
+              win: { whoWon: null, type: null, winningMoves: null },
+              newMove: { playerId: "", rowIdx: 0, tileIdx: 0 },
+              whoTurn: "",
+            },
+          });
+          setGameStatus({
+            win: { whoWon: null, type: null, winningMoves: null },
+            newMove: { playerId: "", rowIdx: 0, tileIdx: 0 },
+            whoTurn: "",
+          });
 
-    // }
+          setIsLobbyReceived(false);
+          setIsLobbyFound(true);
+        });
+        break;
+
+      case "begin":
+        setTimeout(() => {
+          getStartGame(
+            {
+              lobbyId: lobbyId,
+              playerId: null,
+              hostSid: lobby.hostSid,
+            },
+            setGameStatus,
+            setLobby,
+            setIsLobbyReceived
+          );
+        }, 5000);
+    }
   }, [action]);
 }

@@ -24,7 +24,14 @@ class Lobby(APIView):
         player = Player(
             name=player_name, is_host=True, session_id=host_sid
         ).to_dict()
+        
         lobby_id = randrange(99999)
+        lobby_exists = cache.get(lobby_id)
+        # Lobby exists returns None if lobby does not exist in cache
+        while lobby_exists:
+            lobby_id = randrange(99999)
+            lobby_exists = cache.get(lobby_id)
+        
         lobby = LobbyModel(lobby_id=lobby_id, host_sid=host_sid)
 
         lobby.players.append(player)
@@ -105,11 +112,13 @@ class Lobby(APIView):
         lobby_id = int(body.get("lobbyId"))
         player = body.get("player")
         session_id = player.get("sessionId")
+        
         lobby_copy = cache.get(lobby_id)
         try:
             lobby_copy = lobby_copy[lobby_id]
         except:
             lobby_copy = lobby_copy
+        
         lobby_players_copy = lobby_copy["players"]
         make_new_host = False
         for index, player in enumerate(lobby_players_copy):
@@ -131,8 +140,6 @@ class Lobby(APIView):
 
         lobby_copy["players"] = lobby_players_copy
         game_status_copy = lobby_copy["gameStatus"]
-
-     
 
         cache.set(lobby_id, lobby_copy, 3600)
         lobby_response = LobbyResponseModel(

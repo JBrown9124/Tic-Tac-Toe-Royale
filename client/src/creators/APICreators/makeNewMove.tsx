@@ -16,7 +16,7 @@ const saveNewMove = async (body: BodyProps) => {
   return data;
 };
 const sendNewMove = (data: DataProps, body: BodyProps) => {
-  socket.emit("new-move", { gameStatus: data.gameStatus, hostSid: body.hostSid });
+  socket.emit("new-move", { gameStatus: data.gameStatus, hostSid: body.hostSid, lobbyId: body.lobbyId});
 };
 const makeNewMove = async (
   body: BodyProps

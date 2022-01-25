@@ -16,18 +16,14 @@ import StatusBoardAnimator from "../../animators/StatusBoardAnimator";
 import StatusBoard from "./StatusBoard/StatusBoard";
 import CountDownAnimator from "../../animators/CountDownAnimator";
 import useMoveHandler from "../../hooks/useMoveHandler";
-// import sortPlayerPieces from "../../creators/BoardCreators/sortPlayerPieces";
 import updateAfterPlayerLeaves from "../../creators/BoardCreators/updateAfterPlayerLeaves";
-import PlayerTurnOrderAnimator from "../../animators/PlayerTurnOrderAnimator";
-import playAgain from "../../creators/APICreators/playAgain";
-import { socket } from "../../socket";
 import TurnOrder from "./TurnOrder/TurnOrder";
+
 interface GameProps {
   lobby: Lobby;
   gameStatus: GameStatus;
   isLobbyReceived: boolean;
   setGameStatus: (status: GameStatus) => void;
-
   action: string;
   setAction: (action: string) => void;
   playerId: string;
@@ -37,13 +33,12 @@ interface GameProps {
   setIsLobbyReceived: (isLobbyReceived: boolean) => void;
   handleStart: () => void;
   pieceSelection: string;
-  
 }
+
 export default function Game({
   lobby,
   gameStatus,
   setGameStatus,
-
   isLobbyReceived,
   action,
   setAction,
@@ -54,26 +49,21 @@ export default function Game({
   setIsLobbyReceived,
   pieceSelection,
   handleStart,
- 
 }: GameProps) {
   const [playLeaveSound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/floorDrumBackButton.mp3"
   );
-
-
   const [isBoardCreated, setIsBoardCreated] = useState(false);
   const [botCanMove, setBotCanMove] = useState(false);
   const [isCountDownFinished, setIsCountDownFinished] = useState(false);
-
   const [piece, setPiece] = useState<JSX.Element | string>("");
-
   const [board, setBoard] = useState<(number | string)[][]>([[]]);
   const [playerPieces, setPlayerPieces] = useState<Player[]>([]);
   const sizeOfBoardPiece = determineSizeOfPiece(lobby?.board?.size);
+
   useEffect(() => {
     updateAfterPlayerLeaves({
       playerPieces,
-
       setPlayerPieces,
       setGameStatus,
       gameStatus,
@@ -81,6 +71,7 @@ export default function Game({
       playerId,
     });
   }, [playerWhoLeftSessionId]);
+
   useMoveHandler({
     botCanMove,
     lobby,
@@ -94,8 +85,8 @@ export default function Game({
     playerWhoLeftSessionId,
     isBoardCreated,
     playerId,
-   
   });
+
   const quitGame = () => {
     playLeaveSound();
     setBotCanMove(false);
@@ -111,13 +102,13 @@ export default function Game({
   useEffect(() => {
     /*For when user hits play again */
     if (action === "begin" && botCanMove) {
-      
       setBotCanMove(false);
       setIsCountDownFinished(false);
       setIsBoardCreated(false);
       setIsLobbyReceived(false);
     }
   }, [action]);
+
   useEffect(() => {
     if (action === "begin" && isLobbyReceived) {
       const setUpGame = async () => {
@@ -128,23 +119,17 @@ export default function Game({
             lobby.players,
             setPiece,
             sizeOfBoardPiece,
-
             lobby.board.color,
-
             setIsHost,
-
             playerPieces
           );
         }
-        console.log(gameStatus.whoTurn, "GAMESTATUSWHOTURN");
-      
+
         const boardCreated = await createBoard(
           setBoard,
           lobby.board.size,
           lobby.board.moves
         );
-
-       
 
         setIsBoardCreated(boardCreated);
         setAction("in game");
@@ -154,7 +139,6 @@ export default function Game({
       }
     }
   }, [isLobbyReceived]);
-
 
   return (
     <>
@@ -259,7 +243,7 @@ export default function Game({
           }}
         >
           <CountDownAnimator
-          boardColor={lobby.board.color}
+            boardColor={lobby.board.color}
             startCountDown={isBoardCreated}
             setBotCanMove={(props) => setBotCanMove(props)}
             setIsCountDownFinished={(props) => setIsCountDownFinished(props)}

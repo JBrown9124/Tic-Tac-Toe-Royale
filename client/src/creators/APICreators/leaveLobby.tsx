@@ -14,11 +14,12 @@ const saveLeaveLobby = async (body: BodyProps) => {
   });
   return data;
 };
-const sendLeaveLobby = (body: BodyProps, newHost: Player) => {
+const sendLeaveLobby = async(body: BodyProps, newHost: Player) => {
   socket.emit("player-leave-lobby", {
     player: body.player,
     newHost: newHost,
     hostSid: body.hostSid,
+    lobbyId: body.lobbyId,
   });
 };
 const leaveLobby = async (
@@ -26,9 +27,13 @@ const leaveLobby = async (
 ): Promise<{ data: { lobby: Lobby; newHost: Player } } | undefined | void> => {
   try {
     const { lobby, newHost } = await saveLeaveLobby(body);
+    
     if (body.player.name) {
-      await sendLeaveLobby(body, newHost);
+      return sendLeaveLobby(body, newHost);
+      
     }
+    
+    // If host disconnects return new host to all clients in room.
     return { data: { lobby: lobby, newHost: newHost } };
   } catch (e) {
     console.log(
