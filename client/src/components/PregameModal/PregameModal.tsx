@@ -6,9 +6,7 @@ import { useCookies } from "react-cookie";
 import HostLobby from "./Lobby/HostLobby";
 import Join from "./Join";
 import GuestLobby from "./Lobby/GuestLobby";
-import createLobby from "../../creators/APICreators/createLobby";
-import joinLobby from "../../creators/APICreators/joinLobby";
-import leaveLobby from "../../creators/APICreators/leaveLobby";
+
 import startGame from "../../creators/APICreators/startGame";
 import { RgbaColor } from "react-colorful";
 import { Lobby } from "../../Models/Lobby";

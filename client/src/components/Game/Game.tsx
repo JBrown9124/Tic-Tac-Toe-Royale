@@ -18,6 +18,7 @@ import CountDownAnimator from "../../animators/CountDownAnimator";
 import useMoveHandler from "../../hooks/useMoveHandler";
 import updateAfterPlayerLeaves from "../../creators/BoardCreators/updateAfterPlayerLeaves";
 import TurnOrder from "./TurnOrder/TurnOrder";
+import Inventory from "./Inventory/Inventory";
 
 interface GameProps {
   lobby: Lobby;
@@ -156,24 +157,30 @@ export default function Game({
           justifyContent={{ lg: "right", md: "center", xs: "center" }}
           md={12}
           lg={2}
+          spacing={0}
         >
           <StatusBoardAnimator
             fromX={-100}
             isVisible={isCountDownFinished}
             delay={800}
           >
-            <StatusBoard
-              handleStart={() => handleStart()}
-              isHost={isHost}
-              isCountDownFinished={isCountDownFinished}
-              isBoardCreated={isBoardCreated}
-              setPlayerPieces={(props) => setPlayerPieces(props)}
-              winBy={lobby.board.winBy}
-              gameStatus={gameStatus}
-              playerPieces={playerPieces}
-              quitGame={() => quitGame()}
-              playerId={playerId}
-            />
+            <Grid item>
+              <StatusBoard
+                handleStart={() => handleStart()}
+                isHost={isHost}
+                isCountDownFinished={isCountDownFinished}
+                isBoardCreated={isBoardCreated}
+                setPlayerPieces={(props) => setPlayerPieces(props)}
+                winBy={lobby.board.winBy}
+                gameStatus={gameStatus}
+                playerPieces={playerPieces}
+                quitGame={() => quitGame()}
+                playerId={playerId}
+              />
+            </Grid>
+            <Grid item sx={{p:3}}>
+              <Inventory />
+            </Grid>
           </StatusBoardAnimator>
         </Grid>
 

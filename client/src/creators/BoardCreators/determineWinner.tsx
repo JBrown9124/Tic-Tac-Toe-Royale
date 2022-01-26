@@ -3,6 +3,8 @@ import { Lobby } from "../../Models/Lobby";
 import { NewMove } from "../../Models/NewMove";
 import { WinningMove } from "../../Models/Win";
 import { GameStatus } from "../../Models/GameStatus";
+import { PowerUp } from "../../Models/PowerUp";
+import { powerUps } from "../../storage/powerUps";
 const determineWinner = async (
   rowIdx: number,
   tileIdx: number,
@@ -15,7 +17,13 @@ const determineWinner = async (
   lobbyHostSid: number,
   setGameStatus: (gameStatus: GameStatus) => void
 ) => {
+  let newPowerUp = null
+  
   board[rowIdx][tileIdx] = playerId;
+  if (board[rowIdx][tileIdx] > 0) {
+    const powerUpKey: string = String(board[rowIdx][tileIdx]);
+    newPowerUp = powerUps[powerUpKey];
+  }
   let winningMoves: WinningMove[] = [];
   const checkHorizontal = (winBy: number): boolean => {
     let leftIdx = tileIdx;
@@ -141,7 +149,7 @@ const determineWinner = async (
       winningMoves: typeof win === "string" ? winningMoves : null,
     },
     newMove: { rowIdx: rowIdx, tileIdx: tileIdx, playerId: playerId },
-    whoTurn:playerId
+    whoTurn: playerId,
   };
 
   const reqBody = {

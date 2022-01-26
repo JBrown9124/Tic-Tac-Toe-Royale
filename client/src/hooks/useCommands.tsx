@@ -106,6 +106,7 @@ export default function useCommands({
             playerId: playerId,
             playerLoaded: false,
             sessionId: socket.id,
+            inventory:[]
           },
           hostSid: lobby.hostSid,
         };

@@ -41,7 +41,7 @@ export const Tile = ({
   );
 
   const handleClick = () => {
-    if (value === 0) {
+    if (typeof value === "number") {
       // setTile({ value: chosenPiece });
 
       startSnare();
