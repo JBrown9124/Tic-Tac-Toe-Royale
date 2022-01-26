@@ -3,8 +3,10 @@ import { Lobby } from "../../Models/Lobby";
 import { NewMove } from "../../Models/NewMove";
 import { WinningMove } from "../../Models/Win";
 import { GameStatus } from "../../Models/GameStatus";
-import { PowerUp } from "../../Models/PowerUp";
+import { PowerUps, PowerUp } from "../../Models/PowerUp";
+import { Player } from "../../Models/Player";
 import { powerUps } from "../../storage/powerUps";
+import { v4 as uuidv4 } from 'uuid';
 const determineWinner = async (
   rowIdx: number,
   tileIdx: number,
@@ -15,15 +17,18 @@ const determineWinner = async (
   winBy: number,
   lobbyId: number,
   lobbyHostSid: number,
-  setGameStatus: (gameStatus: GameStatus) => void
+  setGameStatus: (gameStatus: GameStatus) => void,
+  inventory: PowerUp[]
 ) => {
-  let newPowerUp = null
-  
-  board[rowIdx][tileIdx] = playerId;
+  let newPowerUp = null;
   if (board[rowIdx][tileIdx] > 0) {
     const powerUpKey: string = String(board[rowIdx][tileIdx]);
-    newPowerUp = powerUps[powerUpKey];
+    newPowerUp = {...powerUps[powerUpKey], id:uuidv4()};
+   
+    console.log("newPowerUp:", newPowerUp);
   }
+  board[rowIdx][tileIdx] = playerId;
+
   let winningMoves: WinningMove[] = [];
   const checkHorizontal = (winBy: number): boolean => {
     let leftIdx = tileIdx;
@@ -153,10 +158,14 @@ const determineWinner = async (
   };
 
   const reqBody = {
+    powerUp: newPowerUp,
     lobbyId: lobbyId,
     gameStatus: newGameStatus,
     hostSid: lobbyHostSid,
   };
+  if (newPowerUp && newGameStatus.whoTurn.substring(0, 3) !== "BOT") {
+    inventory.push(newPowerUp);
+  }
   const gameStatusResponse = await makeNewMove(reqBody);
   if (gameStatusResponse) {
     setGameStatus(gameStatusResponse);

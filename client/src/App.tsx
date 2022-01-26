@@ -12,7 +12,8 @@ import { RgbaColor } from "react-colorful";
 import useCommands from "./hooks/useCommands";
 import useSocket from "./hooks/useSocket";
 import BuildingBoardSplashScreen from "./components/BuildingBoardSplashScreen";
-import {backgroundColor} from "./themes/theme1"
+import { backgroundColor } from "./themes/theme1";
+import fire from "./img/fire.png"
 
 function App() {
   const [action, setAction] = useState("welcome");
@@ -31,7 +32,7 @@ function App() {
   const [pieceSelection, setPieceSelection] = useState("");
   const [isHost, setIsHost] = useState(false);
   const [playerWhoLeftSessionId, setPlayerWhoLeftSessionId] = useState("");
-
+  const [cursor, setCursor] = useState("");
   const [gameStatus, setGameStatus] = useState<GameStatus>({
     win: { whoWon: null, type: null, winningMoves: null },
     whoTurn: "",
@@ -131,6 +132,7 @@ function App() {
                 }, ${lobby.board.color?.a - 0.5})`,
           overflowY: "auto",
           overflowX: "hidden",
+          cursor: `url(./img/fire.png)`,
         }}
       >
         {action === "begin" && !isLobbyReceived && (
@@ -142,6 +144,7 @@ function App() {
           action === "in game") && (
           <Grid item>
             <Game
+              setCursor={(props) => setCursor(props)}
               playerWhoLeftSessionId={playerWhoLeftSessionId}
               pieceSelection={pieceSelection}
               setGameStatus={(props) => setGameStatus(props)}

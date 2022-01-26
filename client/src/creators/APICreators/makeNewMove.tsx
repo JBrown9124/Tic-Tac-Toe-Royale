@@ -2,11 +2,13 @@ import { socket } from "../../socket";
 import axios from "axios";
 import { NewMove } from "../../Models/NewMove";
 import { GameStatus } from "../../Models/GameStatus";
+import { PowerUp } from "../../Models/PowerUp";
 import url from "../../storage/url";
 interface BodyProps {
   gameStatus: GameStatus;
   lobbyId: number;
   hostSid: number;
+  powerUp: PowerUp | null;
 }
 interface DataProps {
   gameStatus: GameStatus;
@@ -16,7 +18,11 @@ const saveNewMove = async (body: BodyProps) => {
   return data;
 };
 const sendNewMove = (data: DataProps, body: BodyProps) => {
-  socket.emit("new-move", { gameStatus: data.gameStatus, hostSid: body.hostSid, lobbyId: body.lobbyId});
+  socket.emit("new-move", {
+    gameStatus: data.gameStatus,
+    hostSid: body.hostSid,
+    lobbyId: body.lobbyId,
+  });
 };
 const makeNewMove = async (
   body: BodyProps
@@ -27,10 +33,7 @@ const makeNewMove = async (
 
     return await data.gameStatus;
   } catch (e) {
-    console.log(
-      "Failed to make a move! Please try refreshing your browser first. If that does not work clear your cookies for this website. Error" +
-        e
-    );
+    console.log("Failed to make a move! Error:" + e);
   }
 };
 

@@ -1,12 +1,11 @@
 import uuid
-
+from typing import List
 
 class Player:
     def __init__(
         self,
         name,
         session_id,
-       
         piece=None,
         is_loaded=False,
         is_host=False,
@@ -17,7 +16,7 @@ class Player:
         self.is_host = is_host
         self.is_loaded = is_loaded
         self.player_id = str(uuid.uuid4())
-       
+        self.inventory: List[str] = []
         self.is_ready = is_ready
         self.session_id = session_id
 
@@ -27,7 +26,7 @@ class Player:
             "piece": self.piece,
             "isHost": self.is_host,
             "playerId": self.player_id,
-            
+            "inventory": self.inventory,
             "isReady": self.is_ready,
             "isLoaded": self.is_loaded,
             "sessionId": self.session_id,
@@ -39,6 +38,7 @@ class Player:
             f"name: {self.name}, \n \
             piece: {self.piece} \n \
             isHost: {self.is_host}, \n \
+                inventory: {self.inventory}, \n \
             playerId: {self.player_id}, \n \
            isReady: {self.is_ready},\n \
                     isLoaded: {self.is_loaded}, \n \

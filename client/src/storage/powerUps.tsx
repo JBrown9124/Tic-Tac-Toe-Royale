@@ -1,6 +1,6 @@
 import fire from "../img/fire.png";
-import {PowerUp} from "../Models/PowerUp"
-export const powerUps:PowerUp = 
+import {PowerUps} from "../Models/PowerUp"
+export const powerUps:PowerUps = 
   {
     "1": {
       name: "fire",

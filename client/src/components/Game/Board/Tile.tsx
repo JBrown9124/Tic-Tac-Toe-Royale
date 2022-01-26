@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { RgbaColor } from "react-colorful";
 import { GameStatus } from "../../../Models/GameStatus";
 import { PlayerPieces } from "../../../Models/PlayerPieces";
+import {Player} from "../../../Models/Player";
 import {
   sizeOfPiece,
   mobileSizeOfPiece,
@@ -14,7 +15,7 @@ interface TileProps {
   boardColor: RgbaColor;
 
   value: number | JSX.Element | string;
-  playerPieces: PlayerPieces[] | undefined;
+  playerPieces: Player[];
 
   updateBoardCache: () => void;
   gameStatus: GameStatus;

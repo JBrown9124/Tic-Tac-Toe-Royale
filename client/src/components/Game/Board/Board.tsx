@@ -5,10 +5,11 @@ import BoardAnimator from "../../../animators/BoardAnimator";
 import { Tile } from "./Tile";
 
 import determineWinner from "../../../creators/BoardCreators/determineWinner";
-
+import {Player} from "../../../Models/Player"
 import { PlayerPieces } from "../../../Models/PlayerPieces";
 import { Lobby } from "../../../Models/Lobby";
 import { NewMove } from "../../../Models/NewMove";
+import {PowerUp } from "../../../Models/PowerUp"
 import { GameStatus } from "../../../Models/GameStatus";
 import { determineSizeOfPiece } from "../../../creators/BoardCreators/sizeOfPiece";
 import { useSound } from "use-sound";
@@ -22,13 +23,14 @@ interface BoardProps {
   sizeOfBoardPiece: { mobile: string; desktop: string };
   board: (number | string)[][];
   boardColor: RgbaColor;
-  playerPieces: PlayerPieces[];
+  playerPieces: Player[];
   piece: JSX.Element | string;
   winBy: number;
   boardSize: number;
   lobbyId: number;
   lobbyHostSid: number;
   isCountDownFinished: boolean;
+  inventory: PowerUp[]
 }
 export default function Board({
  
@@ -46,6 +48,7 @@ export default function Board({
   isCountDownFinished,
   playerId,
   piece,
+  inventory
 }: BoardProps) {
   return (
     <>
@@ -82,7 +85,9 @@ export default function Board({
                           winBy,
                           lobbyId,
                           lobbyHostSid,
-                          setGameStatus
+                          setGameStatus,
+                   
+                          inventory
                         )
                       : ""
                   }

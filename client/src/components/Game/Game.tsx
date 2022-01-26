@@ -19,6 +19,7 @@ import useMoveHandler from "../../hooks/useMoveHandler";
 import updateAfterPlayerLeaves from "../../creators/BoardCreators/updateAfterPlayerLeaves";
 import TurnOrder from "./TurnOrder/TurnOrder";
 import Inventory from "./Inventory/Inventory";
+import { PowerUp } from "../../Models/PowerUp";
 
 interface GameProps {
   lobby: Lobby;
@@ -34,6 +35,7 @@ interface GameProps {
   setIsLobbyReceived: (isLobbyReceived: boolean) => void;
   handleStart: () => void;
   pieceSelection: string;
+  setCursor: (url: string) => void;
 }
 
 export default function Game({
@@ -49,18 +51,28 @@ export default function Game({
   playerWhoLeftSessionId,
   setIsLobbyReceived,
   pieceSelection,
+  setCursor,
   handleStart,
 }: GameProps) {
   const [playLeaveSound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/floorDrumBackButton.mp3"
   );
+  // const [cursor, setCursor] = useState("")
   const [isBoardCreated, setIsBoardCreated] = useState(false);
   const [botCanMove, setBotCanMove] = useState(false);
   const [isCountDownFinished, setIsCountDownFinished] = useState(false);
   const [piece, setPiece] = useState<JSX.Element | string>("");
+  const [inventory, setInventory] = useState<PowerUp[]>([]);
   const [board, setBoard] = useState<(number | string)[][]>([[]]);
   const [playerPieces, setPlayerPieces] = useState<Player[]>([]);
   const sizeOfBoardPiece = determineSizeOfPiece(lobby?.board?.size);
+  const [selectedPowerUp, setSelectedPowerUp] = useState<PowerUp>({
+    value: 0,
+    name: "",
+    description: "",
+    imgUrl: "",
+    id:"",
+  });
 
   useEffect(() => {
     updateAfterPlayerLeaves({
@@ -86,6 +98,7 @@ export default function Game({
     playerWhoLeftSessionId,
     isBoardCreated,
     playerId,
+    inventory,
   });
 
   const quitGame = () => {
@@ -178,8 +191,13 @@ export default function Game({
                 playerId={playerId}
               />
             </Grid>
-            <Grid item sx={{p:3}}>
-              <Inventory />
+            <Grid item sx={{ p: 3 }}>
+              <Inventory
+                selectedPowerUp={selectedPowerUp}
+                inventory={inventory}
+                setCursor={(props) => setCursor(props)}
+                setSelectedPowerUp={(props) => setSelectedPowerUp(props)}
+              />
             </Grid>
           </StatusBoardAnimator>
         </Grid>
@@ -193,6 +211,7 @@ export default function Game({
           lg={8}
         >
           <Board
+            inventory={inventory}
             playerId={playerId}
             isCountDownFinished={isCountDownFinished}
             boardColor={lobby.board.color}

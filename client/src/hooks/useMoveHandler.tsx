@@ -4,6 +4,7 @@ import { GameStatus } from "../Models/GameStatus";
 import botNewMove from "../creators/APICreators/botNewMove";
 import determineWinner from "../creators/BoardCreators/determineWinner";
 import { Player } from "../Models/Player";
+import {PowerUp} from "../Models/PowerUp"
 import useSound from "use-sound";
 import getRandomInt from "../creators/BoardCreators/getRandomInt";
 
@@ -21,6 +22,7 @@ interface UseMoveHandler {
   playerWhoLeftSessionId: string;
   isBoardCreated: boolean;
   playerId: string;
+  inventory: PowerUp[]
 }
 
 export default function useMoveHandler({
@@ -35,6 +37,7 @@ export default function useMoveHandler({
   playerWhoLeftSessionId,
   isBoardCreated,
   playerId,
+  inventory
 }: UseMoveHandler) {
   const [startOtherPlayerMoveSound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/otherPlayerMoveSound.mp3"
@@ -74,7 +77,8 @@ export default function useMoveHandler({
                   lobby.board.winBy,
                   lobby.lobbyId,
                   lobby.hostSid,
-                  setGameStatus
+                  setGameStatus,
+                  inventory
                 );
               }
             });

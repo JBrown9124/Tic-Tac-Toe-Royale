@@ -26,6 +26,7 @@ class Board(APIView):
         body = request.data
         game_status = body.get("gameStatus")
         new_move = game_status.get("newMove")
+        power_up = body.get("powerUp")
         
         win = game_status.get("win")
         winner = win.get("whoWon")
@@ -41,14 +42,20 @@ class Board(APIView):
         lobby_game_status_copy = lobby_copy["gameStatus"]
         last_turn = lobby_game_status_copy["whoTurn"]
         
-        last_turn_player = lobby_players_copy.pop()
-      
+        #Validate that the person who is sending a move is supposed to move in the turn order rotation.
+        if game_status["whoTurn"] != lobby_players_copy[-1]["playerId"]:
+            return HttpResponse("Not this player's turn")
+        
+        #Queue turn order rotation
+        last_turn_player = lobby_players_copy.pop() 
+        if power_up:
+            last_turn_player["inventory"].append(power_up)  
         lobby_players_copy = deque(lobby_players_copy)
-
         lobby_players_copy.appendleft(last_turn_player)
-        next_turn = lobby_players_copy[-1]["playerId"]
+        next_turn_player = lobby_players_copy[-1]["playerId"]
+      
 
-        lobby_game_status_copy["whoTurn"] = next_turn
+        lobby_game_status_copy["whoTurn"] = next_turn_player
 
         if winner:
             win = Win(
