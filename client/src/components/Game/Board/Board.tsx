@@ -72,6 +72,7 @@ export default function Board({
                 boardRenderTime={200 * boardSize}
               >
                 <Tile
+                boardSize={boardSize}
                 board={board}
                 selectedPowerUp={selectedPowerUp}
                 setSelectedPowerUpTiles={(props)=> setSelectedPowerUpTiles(props)}

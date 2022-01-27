@@ -7,6 +7,12 @@ import { Player } from "../../../Models/Player";
 import { PowerUp } from "../../../Models/PowerUp";
 import { NewMove } from "../../../Models/NewMove";
 import {
+  checkHorizontal,
+  checkVertical,
+  checkDiagonalLeft,
+  checkDiagonalRight,
+} from "../../../creators/BoardCreators/checkMoveHelper";
+import {
   sizeOfPiece,
   mobileSizeOfPiece,
   determineSizeOfPiece,
@@ -28,6 +34,7 @@ interface TileProps {
   setSelectedPowerUpTiles: (selectedPowerUpTiles: NewMove[]) => void;
   selectedPowerUp: PowerUp;
   board: (number | string)[][];
+  boardSize: number;
 }
 export const Tile = ({
   boardColor,
@@ -45,6 +52,7 @@ export const Tile = ({
   setSelectedPowerUpTiles,
   selectedPowerUp,
   board,
+  boardSize,
 }: TileProps) => {
   const [tile, setTile] = useState<{
     value: String | JSX.Element | number | undefined;
@@ -54,7 +62,7 @@ export const Tile = ({
   );
   const [count, setCount] = useState(0);
   const [isSelected, setIsSelected] = useState(false);
-  const handleClick = () => {
+  const handleClick = async () => {
     if (typeof value === "number") {
       // setTile({ value: chosenPiece });
 
@@ -66,15 +74,8 @@ export const Tile = ({
     setSelectedPowerUpTiles([]);
 
     if (selectedPowerUpTiles.length < selectedPowerUp.rules.tilesAffected) {
-      if (selectedPowerUp.rules.castAnywhere) {
-        if (selectedPowerUp.rules.areaShape === "square") {
-          //  for (let i=0; i<selectedPowerUp.rules.tilesAffected; i++){
-          //   selectedPowerUpTiles.tiles.push({
-          //     playerId: playerId,
-          //     tileIdx: tileIdx,
-          //     rowIdx: rowIdx,
-          //   });
-          //  }
+      switch (selectedPowerUp.name) {
+        case "bomb":
           selectedPowerUpTiles = [];
           selectedPowerUpTiles.push({
             playerId: playerId,
@@ -97,18 +98,62 @@ export const Tile = ({
             rowIdx: rowIdx + 1,
           });
           setSelectedPowerUpTiles([...selectedPowerUpTiles]);
-        }
-      } else {
-        if (selectedPowerUp.rules.areaShape === "line") {
+          break;
+
+        case "piercing arrow":
           if (
             selectedPowerUpTiles.length > 0 &&
             selectedPowerUpTiles[0].playerId === playerId
           ) {
-            selectedPowerUpTiles.push({
-              playerId: playerId,
-              tileIdx: tileIdx,
-              rowIdx: rowIdx,
-            });
+            const selectedVerticalTiles: NewMove[] = await checkVertical(
+              selectedPowerUp.rules.tilesAffected,
+              rowIdx,
+              tileIdx,
+              boardSize,
+              playerId,
+              board,
+              selectedPowerUpTiles[0]
+            );
+            if (selectedVerticalTiles.length > 0) {
+              selectedPowerUpTiles.push(...selectedVerticalTiles);
+            }
+            const selectedHorizontalTiles = await checkHorizontal(
+              selectedPowerUp.rules.tilesAffected,
+              rowIdx,
+              tileIdx,
+              boardSize,
+              playerId,
+              board,
+              selectedPowerUpTiles[0]
+            );
+            if (selectedHorizontalTiles.length > 0) {
+              selectedPowerUpTiles.push(...selectedHorizontalTiles);
+            }
+            const selectLeftDiagonalTiles = await checkDiagonalLeft(
+              selectedPowerUp.rules.tilesAffected,
+              rowIdx,
+              tileIdx,
+              boardSize,
+              playerId,
+              board,
+              selectedPowerUpTiles[0]
+            );
+            if (selectLeftDiagonalTiles.length > 0) {
+              selectedPowerUpTiles.push(...selectLeftDiagonalTiles);
+            }
+            const selectRightDiagonalTiles = await checkDiagonalRight(
+              selectedPowerUp.rules.tilesAffected,
+              rowIdx,
+              tileIdx,
+              boardSize,
+              playerId,
+              board,
+              selectedPowerUpTiles[0]
+            );
+            if (selectRightDiagonalTiles.length > 0) {
+              selectedPowerUpTiles.push(...selectRightDiagonalTiles);
+            }
+            setSelectedPowerUpTiles([...selectedPowerUpTiles]);
           } else if (
             selectedPowerUpTiles.length === 0 &&
             board[rowIdx][tileIdx] === playerId
@@ -120,20 +165,11 @@ export const Tile = ({
             });
             setSelectedPowerUpTiles([...selectedPowerUpTiles]);
           }
-        }
+          break;
       }
     } else {
       setSelectedPowerUpTiles([]);
     }
-
-    // for (var i = selectedPowerUpTiles.tiles.length; i--; ) {
-    //   if (
-    //     selectedPowerUpTiles.tiles[i].rowIdx === rowIdx &&
-    //     selectedPowerUpTiles.tiles[i].tileIdx === tileIdx
-    //   ) {
-    //     selectedPowerUpTiles.tiles.splice(i, 1);
-    //   }
-    // }
   };
 
   //Clear tiles select status
