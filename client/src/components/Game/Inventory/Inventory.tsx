@@ -3,22 +3,36 @@ import Typography from "@mui/material/Typography";
 import { powerUps } from "../../../storage/powerUps";
 import { useState } from "react";
 import { PowerUp } from "../../../Models/PowerUp";
+import { NewMove } from "../../../Models/NewMove";
 import PowerUpSelect from "../../../animators/PowerUpSelect";
+import Button from "@mui/material/Button";
 interface InventoryProps {
   inventory: PowerUp[];
   setCursor: (url: string) => void;
   setSelectedPowerUp: (powerUp: PowerUp) => void;
   selectedPowerUp: PowerUp;
+  setSelectedPowerUpTiles: (selectedPowerUpTiles: NewMove[]) => void;
+  setIsUsingPowerUp: (isUsingPowerUp: boolean) => void;
+  powerOrMove: string;
+  isUsingPowerUp: boolean;
 }
 export default function Inventory({
   inventory,
   setCursor,
   setSelectedPowerUp,
   selectedPowerUp,
+  setSelectedPowerUpTiles,
+  setIsUsingPowerUp,
+  isUsingPowerUp,
+  powerOrMove,
 }: InventoryProps) {
   const handlePowerUpSelect = (powerUp: PowerUp) => {
-    setCursor(powerUp.imgUrl);
-    setSelectedPowerUp(powerUp);
+    if (powerOrMove === "Power") {
+      setCursor(powerUp.imgUrl);
+      setSelectedPowerUp(powerUp);
+      setSelectedPowerUpTiles([]);
+      setIsUsingPowerUp(true);
+    }
   };
 
   return (
@@ -33,6 +47,7 @@ export default function Inventory({
           border: "solid black 1px",
           boxShadow: 10,
         }}
+        textAlign="center"
       >
         <Grid item textAlign="center" sx={{ p: 1 }}>
           <Typography>Inventory</Typography>
@@ -59,7 +74,18 @@ export default function Inventory({
             </Grid>
           ))}
         </Grid>
-        
+        {isUsingPowerUp && (
+          <Grid item>
+            <Button
+              sx={{ color: "red" }}
+              onClick={() => {
+                setIsUsingPowerUp(false);
+              }}
+            >
+              Finished
+            </Button>
+          </Grid>
+        )}
       </Grid>
     </>
   );

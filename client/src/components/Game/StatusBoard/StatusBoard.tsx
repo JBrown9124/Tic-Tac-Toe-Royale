@@ -4,9 +4,9 @@ import { Player } from "../../../Models/Player";
 import { GameStatus } from "../../../Models/GameStatus";
 import { useEffect, useState } from "react";
 import { useSound } from "use-sound";
-import CustomButton from "../../CustomButton"
-import {backgroundColor} from "../../../themes/theme1"
-
+import { PowerUp } from "../../../Models/PowerUp";
+import CustomButton from "../../CustomButton";
+import { backgroundColor } from "../../../themes/theme1";
 
 interface StatusBoardProps {
   playerPieces: Player[];
@@ -20,6 +20,10 @@ interface StatusBoardProps {
   isHost: boolean;
   playerId: string;
   handleStart: () => void;
+  setPowerOrMove: (decision: "Power" | "Move") => void;
+  setIsUsingPowerUp: (isUsingPowerUp: boolean) => void;
+  powerOrMove: string;
+  setSelectedPowerUp: (powerUp: PowerUp) => void;
 }
 export default function StatusBoard({
   playerPieces,
@@ -33,6 +37,10 @@ export default function StatusBoard({
   isHost,
   playerId,
   handleStart,
+  setPowerOrMove,
+  setIsUsingPowerUp,
+  setSelectedPowerUp,
+  powerOrMove,
 }: StatusBoardProps) {
   const [startWinSound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/winnerSound.mp3"
@@ -60,6 +68,30 @@ export default function StatusBoard({
       }
     }
   }, [gameStatus?.win?.whoWon]);
+  const handleMoveSelect = () => {
+    setPowerOrMove("Move");
+    setIsUsingPowerUp(false);
+    setSelectedPowerUp({
+      value: 0,
+      name: "",
+      description: "",
+      imgUrl: "",
+      id: "",
+      rules: {
+        affectsCaster: false,
+        direction: {
+          isVertical: false,
+          isHorizontal: false,
+          isDiagonal: false,
+        },
+        castAnywhere: false,
+        tilesAffected: 0,
+        mustBeEmptyTile: false,
+        areaShape: "line",
+      },
+      selectColor: "",
+    });
+  };
   return (
     <>
       <Grid
@@ -68,7 +100,7 @@ export default function StatusBoard({
           borderRadius: "15px",
 
           bgcolor: backgroundColor,
-          border:"solid black 1px",
+          border: "solid black 1px",
           boxShadow: 10,
         }}
         direction="column"
@@ -77,10 +109,17 @@ export default function StatusBoard({
         <Grid container direction="column">
           <Grid item sx={{ p: 1 }}>
             {gameStatus.win.whoWon === "tie" ? (
-              <Typography variant="h6" sx={{fontFamily: "Bungee Hairline, cursive", fontWeight: 800}}>Its a tie!</Typography>
+              <Typography
+                variant="h6"
+                sx={{ fontFamily: "Bungee Hairline, cursive", fontWeight: 800 }}
+              >
+                Its a tie!
+              </Typography>
             ) : (
-              <Typography variant="h6"  sx={{fontFamily: "Bungee Hairline, cursive", fontWeight: 800}}>
-           
+              <Typography
+                variant="h6"
+                sx={{ fontFamily: "Bungee Hairline, cursive", fontWeight: 800 }}
+              >
                 {playerPieces.map((player: Player) => {
                   if (gameStatus.win.whoWon) {
                     if (player.playerId === gameStatus.win.whoWon) {
@@ -112,16 +151,51 @@ export default function StatusBoard({
           })}
         </Grid>
         <Grid item>
-          <Typography sx={{fontFamily: "Bungee Hairline, cursive", fontWeight: 800, p:1}}>{`Win by ${winBy}`}</Typography>
+          <Typography
+            sx={{
+              fontFamily: "Bungee Hairline, cursive",
+              fontWeight: 800,
+              p: 1,
+            }}
+          >{`Win by ${winBy}`}</Typography>
         </Grid>
+        <Grid container direction="row" sx={{ p: 1 }} spacing={2}>
+          <Grid item xs={6}>
+            <CustomButton
+              sx={{ fontSize: "13px", height: "40px" }}
+              onClick={() => setPowerOrMove("Power")}
+              message={"Use Power"}
+            />
+          </Grid>
 
-        <Grid container direction="column" sx={{p:1}} spacing={2}>
+          <Grid item xs={6}>
+            <CustomButton
+              sx={{ fontSize: "13px", height: "40px" }}
+              message={"Make Move"}
+              onClick={() => handleMoveSelect()}
+            />
+          </Grid>
+        </Grid>
+        {powerOrMove === "Power" && (
+          <Grid>
+            <Typography>Select a power from your inventory</Typography>
+          </Grid>
+        )}
+        <Grid container direction="column" sx={{ p: 1 }} spacing={2}>
           <Grid item>
-            <CustomButton sx={{fontSize:"13px", height:"40px"}} onClick={() => quitGame()} message={"Leave Game"}/>
+            <CustomButton
+              sx={{ fontSize: "13px", height: "40px" }}
+              onClick={() => quitGame()}
+              message={"Leave Game"}
+            />
           </Grid>
           {gameStatus.win.whoWon && isHost && (
             <Grid item>
-              <CustomButton sx={{fontSize:"13px", height:"40px"}} message={"Play Again"} onClick={() => handleStart()}/>
+              <CustomButton
+                sx={{ fontSize: "13px", height: "40px" }}
+                message={"Play Again"}
+                onClick={() => handleStart()}
+              />
             </Grid>
           )}
         </Grid>

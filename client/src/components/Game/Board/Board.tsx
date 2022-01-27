@@ -34,6 +34,8 @@ interface BoardProps {
   selectedPowerUpTiles:NewMove[]
   setSelectedPowerUpTiles:(selectedPowerUpTiles:NewMove[]) => void,
   selectedPowerUp:PowerUp
+  isUsingPowerUp:boolean,
+  powerOrMove:string
 }
 export default function Board({
  
@@ -54,7 +56,9 @@ export default function Board({
   inventory,
   selectedPowerUpTiles,
   setSelectedPowerUpTiles,
-  selectedPowerUp
+  selectedPowerUp,
+  isUsingPowerUp,
+  powerOrMove
 }: BoardProps) {
   return (
     <>
@@ -72,6 +76,8 @@ export default function Board({
                 boardRenderTime={200 * boardSize}
               >
                 <Tile
+                powerOrMove={powerOrMove}
+                isUsingPowerUp={isUsingPowerUp}
                 boardSize={boardSize}
                 board={board}
                 selectedPowerUp={selectedPowerUp}

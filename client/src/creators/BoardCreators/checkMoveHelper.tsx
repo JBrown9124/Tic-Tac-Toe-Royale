@@ -18,11 +18,7 @@ export const checkHorizontal = async (
     firstSelect.tileIdx === tileIdx - 1 &&
     tileIdx + requiredDistance < boardSize - 1
   ) {
-    for (
-      let i = firstSelect.tileIdx + 1;
-      i < firstSelect.tileIdx + distance + 1;
-      i++
-    ) {
+    for (let i = tileIdx; i <= firstSelect.tileIdx + distance; i++) {
       newSelectedMoves.push({ playerId: playerId, tileIdx: i, rowIdx: rowIdx });
     }
   }
@@ -32,11 +28,7 @@ export const checkHorizontal = async (
     firstSelect.tileIdx === tileIdx + 1 &&
     tileIdx - requiredDistance > 0
   ) {
-    for (
-      let i = firstSelect.tileIdx - 1;
-      i > firstSelect.tileIdx - distance - 1;
-      i--
-    ) {
+    for (let i = tileIdx; i >= firstSelect.tileIdx - distance; i--) {
       newSelectedMoves.push({ playerId: playerId, tileIdx: i, rowIdx: rowIdx });
     }
   }
@@ -82,11 +74,7 @@ export const checkVertical = async (
     firstSelect.tileIdx === tileIdx &&
     rowIdx - requiredDistance > 0
   ) {
-    for (
-      let i = firstSelect.rowIdx - 1;
-      i > firstSelect.rowIdx - distance - 1;
-      i--
-    ) {
+    for (let i = rowIdx; i >= firstSelect.rowIdx - distance; i--) {
       newSelectedMoves.push({
         playerId: playerId,
         tileIdx: tileIdx,
@@ -100,11 +88,7 @@ export const checkVertical = async (
     firstSelect.tileIdx === tileIdx &&
     rowIdx + requiredDistance < boardSize - 1
   ) {
-    for (
-      let i = firstSelect.rowIdx + 1;
-      i < firstSelect.rowIdx + distance + 1;
-      i++
-    ) {
+    for (let i = rowIdx; i <= firstSelect.rowIdx + distance; i++) {
       newSelectedMoves.push({
         playerId: playerId,
         tileIdx: tileIdx,
@@ -135,18 +119,14 @@ export const checkDiagonalLeft = async (
     tileIdx - requiredDistance > 0 &&
     rowIdx - requiredDistance > 0
   ) {
-    let j = firstSelect.tileIdx;
-    for (
-      let i = firstSelect.rowIdx - 1;
-      i > firstSelect.rowIdx - distance - 1;
-      i--
-    ) {
-      j -= 1;
+    let j = tileIdx;
+    for (let i = rowIdx; i >= firstSelect.rowIdx - distance; i--) {
       newSelectedMoves.push({
         playerId: playerId,
         tileIdx: j,
         rowIdx: i,
       });
+      j -= 1;
     }
   }
   if (
@@ -155,18 +135,14 @@ export const checkDiagonalLeft = async (
     tileIdx + requiredDistance < boardSize - 1 &&
     rowIdx + requiredDistance < boardSize - 1
   ) {
-    let j = firstSelect.tileIdx;
-    for (
-      let i = firstSelect.rowIdx + 1;
-      i < firstSelect.rowIdx + distance + 1;
-      i++
-    ) {
-      j += 1;
+    let j = tileIdx;
+    for (let i = rowIdx; i <= firstSelect.rowIdx + distance; i++) {
       newSelectedMoves.push({
         playerId: playerId,
         tileIdx: j,
         rowIdx: i,
       });
+      j += 1;
     }
   }
   return newSelectedMoves;
@@ -198,38 +174,30 @@ export const checkDiagonalRight = async (
     tileIdx + requiredDistance < boardSize - 1 &&
     rowIdx - requiredDistance > 0
   ) {
-    let j = firstSelect.tileIdx;
-    for (
-      let i = firstSelect.rowIdx - 1;
-      i > firstSelect.rowIdx - distance - 1;
-      i--
-    ) {
-      j += 1;
+    let j = tileIdx;
+    for (let i = rowIdx; i >= firstSelect.rowIdx - distance; i--) {
       newSelectedMoves.push({
         playerId: playerId,
         tileIdx: j,
         rowIdx: i,
       });
+      j += 1;
     }
   }
   if (
     firstSelect.rowIdx === rowIdx - 1 &&
     firstSelect.tileIdx === tileIdx + 1 &&
     tileIdx - requiredDistance > 0 &&
-    rowIdx + requiredDistance < boardSize-1
+    rowIdx + requiredDistance < boardSize - 1
   ) {
-    let j = firstSelect.tileIdx;
-    for (
-      let i = firstSelect.rowIdx + 1;
-      i < firstSelect.rowIdx + distance + 1;
-      i++
-    ) {
-      j -= 1;
+    let j = tileIdx;
+    for (let i = rowIdx; i <= firstSelect.rowIdx + distance; i++) {
       newSelectedMoves.push({
         playerId: playerId,
         tileIdx: j,
         rowIdx: i,
       });
+      j -= 1;
     }
   }
   // if (

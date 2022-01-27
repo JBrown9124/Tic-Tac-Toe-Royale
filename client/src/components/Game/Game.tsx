@@ -66,6 +66,8 @@ export default function Game({
   const [board, setBoard] = useState<(number | string)[][]>([[]]);
   const [playerPieces, setPlayerPieces] = useState<Player[]>([]);
   const sizeOfBoardPiece = determineSizeOfPiece(lobby?.board?.size);
+  const [isUsingPowerUp, setIsUsingPowerUp] = useState(false)
+  const [powerOrMove, setPowerOrMove] = useState("")
   const [selectedPowerUp, setSelectedPowerUp] = useState<PowerUp>({
     value: 0,
     name: "",
@@ -188,6 +190,10 @@ export default function Game({
           >
             <Grid item>
               <StatusBoard
+              powerOrMove={powerOrMove}
+              setIsUsingPowerUp={(props)=> setIsUsingPowerUp(props)}
+              setSelectedPowerUp={(props)=> setSelectedPowerUp(props)}
+              setPowerOrMove={(props)=>setPowerOrMove(props)}
                 handleStart={() => handleStart()}
                 isHost={isHost}
                 isCountDownFinished={isCountDownFinished}
@@ -202,6 +208,10 @@ export default function Game({
             </Grid>
             <Grid item sx={{ p: 3 }}>
               <Inventory
+             powerOrMove={powerOrMove}
+              isUsingPowerUp={isUsingPowerUp}
+              setIsUsingPowerUp={(props)=> setIsUsingPowerUp(props)}
+              setSelectedPowerUpTiles={(props)=> setSelectedPowerUpTiles(props)}
                 selectedPowerUp={selectedPowerUp}
                 inventory={inventory}
                 setCursor={(props) => setCursor(props)}
@@ -220,6 +230,8 @@ export default function Game({
           lg={8}
         >
           <Board
+          powerOrMove={powerOrMove}
+          isUsingPowerUp={isUsingPowerUp}
             selectedPowerUp={selectedPowerUp}
             setSelectedPowerUpTiles={(props) => setSelectedPowerUpTiles(props)}
             selectedPowerUpTiles={selectedPowerUpTiles}

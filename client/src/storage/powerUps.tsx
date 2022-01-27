@@ -79,7 +79,7 @@ export const powerUps: PowerUps = {
       affectsCaster: true,
       direction: { isVertical: true, isHorizontal: true, isDiagonal: true },
       castAnywhere: false,
-      tilesAffected: 2,
+      tilesAffected: 1,
       mustBeEmptyTile: false,
       areaShape: "line",
     },

@@ -35,6 +35,8 @@ interface TileProps {
   selectedPowerUp: PowerUp;
   board: (number | string)[][];
   boardSize: number;
+  isUsingPowerUp: boolean;
+  powerOrMove: string;
 }
 export const Tile = ({
   boardColor,
@@ -53,6 +55,8 @@ export const Tile = ({
   selectedPowerUp,
   board,
   boardSize,
+  isUsingPowerUp,
+  powerOrMove,
 }: TileProps) => {
   const [tile, setTile] = useState<{
     value: String | JSX.Element | number | undefined;
@@ -63,7 +67,7 @@ export const Tile = ({
   const [count, setCount] = useState(0);
   const [isSelected, setIsSelected] = useState(false);
   const handleClick = async () => {
-    if (typeof value === "number") {
+    if (typeof value === "number" && powerOrMove === "Move") {
       // setTile({ value: chosenPiece });
 
       startSnare();
@@ -71,9 +75,12 @@ export const Tile = ({
       selectedPowerUpTiles = [];
       setIsSelected(false);
     }
-    setSelectedPowerUpTiles([]);
+    const caster = selectedPowerUp.rules.affectsCaster ? 1 : 0;
 
-    if (selectedPowerUpTiles.length < selectedPowerUp.rules.tilesAffected) {
+    if (
+      selectedPowerUpTiles.length <
+      selectedPowerUp.rules.tilesAffected + caster
+    ) {
       switch (selectedPowerUp.name) {
         case "bomb":
           selectedPowerUpTiles = [];
@@ -166,6 +173,146 @@ export const Tile = ({
             setSelectedPowerUpTiles([...selectedPowerUpTiles]);
           }
           break;
+        case "swap":
+          if (
+            selectedPowerUpTiles.length > 0 &&
+            selectedPowerUpTiles[0].playerId === playerId
+          ) {
+            const selectedVerticalTiles: NewMove[] = await checkVertical(
+              selectedPowerUp.rules.tilesAffected,
+              rowIdx,
+              tileIdx,
+              boardSize,
+              playerId,
+              board,
+              selectedPowerUpTiles[0]
+            );
+            if (selectedVerticalTiles.length > 0) {
+              selectedPowerUpTiles.push(...selectedVerticalTiles);
+            }
+            const selectedHorizontalTiles = await checkHorizontal(
+              selectedPowerUp.rules.tilesAffected,
+              rowIdx,
+              tileIdx,
+              boardSize,
+              playerId,
+              board,
+              selectedPowerUpTiles[0]
+            );
+            if (selectedHorizontalTiles.length > 0) {
+              selectedPowerUpTiles.push(...selectedHorizontalTiles);
+            }
+            const selectLeftDiagonalTiles = await checkDiagonalLeft(
+              selectedPowerUp.rules.tilesAffected,
+              rowIdx,
+              tileIdx,
+              boardSize,
+              playerId,
+              board,
+              selectedPowerUpTiles[0]
+            );
+            if (selectLeftDiagonalTiles.length > 0) {
+              selectedPowerUpTiles.push(...selectLeftDiagonalTiles);
+            }
+            const selectRightDiagonalTiles = await checkDiagonalRight(
+              selectedPowerUp.rules.tilesAffected,
+              rowIdx,
+              tileIdx,
+              boardSize,
+              playerId,
+              board,
+              selectedPowerUpTiles[0]
+            );
+            if (selectRightDiagonalTiles.length > 0) {
+              selectedPowerUpTiles.push(...selectRightDiagonalTiles);
+            }
+            setSelectedPowerUpTiles([...selectedPowerUpTiles]);
+          } else if (
+            selectedPowerUpTiles.length === 0 &&
+            board[rowIdx][tileIdx] === playerId
+          ) {
+            selectedPowerUpTiles.push({
+              playerId: playerId,
+              tileIdx: tileIdx,
+              rowIdx: rowIdx,
+            });
+            setSelectedPowerUpTiles([...selectedPowerUpTiles]);
+          }
+          break;
+        case "fire":
+          if (
+            selectedPowerUpTiles.length === 0 &&
+            typeof board[rowIdx][tileIdx] === "number"
+          ) {
+            selectedPowerUpTiles.push({
+              playerId: playerId,
+              tileIdx: tileIdx,
+              rowIdx: rowIdx,
+            });
+            setSelectedPowerUpTiles([...selectedPowerUpTiles]);
+          }
+          break;
+        case "cleave":
+          if (
+            selectedPowerUpTiles.length === 0 &&
+            board[rowIdx][tileIdx] === playerId
+          ) {
+            selectedPowerUpTiles.push({
+              playerId: playerId,
+              tileIdx: tileIdx,
+              rowIdx: rowIdx,
+            });
+            setSelectedPowerUpTiles([...selectedPowerUpTiles]);
+          }
+          if (selectedPowerUpTiles.length > 0) {
+            //right of player tile
+            if (
+              selectedPowerUpTiles[0].tileIdx === tileIdx - 1 &&
+              selectedPowerUpTiles[0].rowIdx === rowIdx &&
+              rowIdx - 1 > 0 &&
+              rowIdx + 1 < boardSize - 1
+            ) {
+              selectedPowerUpTiles.push({
+                playerId: playerId,
+                tileIdx: tileIdx,
+                rowIdx: rowIdx - 1,
+              });
+              selectedPowerUpTiles.push({
+                playerId: playerId,
+                tileIdx: tileIdx,
+                rowIdx: rowIdx,
+              });
+              selectedPowerUpTiles.push({
+                playerId: playerId,
+                tileIdx: tileIdx,
+                rowIdx: rowIdx + 1,
+              });
+              setSelectedPowerUpTiles([...selectedPowerUpTiles]);
+              // left of player tile
+            } else if (
+              selectedPowerUpTiles[0].tileIdx === tileIdx + 1 &&
+              selectedPowerUpTiles[0].rowIdx === rowIdx &&
+              rowIdx - 1 > 0 &&
+              rowIdx + 1 < boardSize - 1
+            ) {
+              selectedPowerUpTiles.push({
+                playerId: playerId,
+                tileIdx: tileIdx,
+                rowIdx: rowIdx - 1,
+              });
+              selectedPowerUpTiles.push({
+                playerId: playerId,
+                tileIdx: tileIdx,
+                rowIdx: rowIdx,
+              });
+              selectedPowerUpTiles.push({
+                playerId: playerId,
+                tileIdx: tileIdx,
+                rowIdx: rowIdx + 1,
+              });
+              setSelectedPowerUpTiles([...selectedPowerUpTiles]);
+            }
+          }
       }
     } else {
       setSelectedPowerUpTiles([]);
