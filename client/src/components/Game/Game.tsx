@@ -19,7 +19,7 @@ import useMoveHandler from "../../hooks/useMoveHandler";
 import updateAfterPlayerLeaves from "../../creators/BoardCreators/updateAfterPlayerLeaves";
 import TurnOrder from "./TurnOrder/TurnOrder";
 import Inventory from "./Inventory/Inventory";
-import { PowerUp } from "../../Models/PowerUp";
+import { PowerUp, } from "../../Models/PowerUp";
 
 interface GameProps {
   lobby: Lobby;
@@ -71,9 +71,18 @@ export default function Game({
     name: "",
     description: "",
     imgUrl: "",
-    id:"",
+    id: "",
+    rules: {
+      affectsCaster: false,
+      direction: { isVertical: false, isHorizontal: false, isDiagonal: false },
+      castAnywhere: false,
+      tilesAffected: 0,
+      mustBeEmptyTile: false,
+      areaShape: "line",
+    },
+    selectColor: "",
   });
-
+  const [selectedPowerUpTiles, setSelectedPowerUpTiles] = useState<NewMove[]>([]);
   useEffect(() => {
     updateAfterPlayerLeaves({
       playerPieces,
@@ -211,6 +220,9 @@ export default function Game({
           lg={8}
         >
           <Board
+            selectedPowerUp={selectedPowerUp}
+            setSelectedPowerUpTiles={(props) => setSelectedPowerUpTiles(props)}
+            selectedPowerUpTiles={selectedPowerUpTiles}
             inventory={inventory}
             playerId={playerId}
             isCountDownFinished={isCountDownFinished}

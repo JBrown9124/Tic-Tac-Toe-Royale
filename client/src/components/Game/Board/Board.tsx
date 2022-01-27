@@ -31,6 +31,9 @@ interface BoardProps {
   lobbyHostSid: number;
   isCountDownFinished: boolean;
   inventory: PowerUp[]
+  selectedPowerUpTiles:NewMove[]
+  setSelectedPowerUpTiles:(selectedPowerUpTiles:NewMove[]) => void,
+  selectedPowerUp:PowerUp
 }
 export default function Board({
  
@@ -48,7 +51,10 @@ export default function Board({
   isCountDownFinished,
   playerId,
   piece,
-  inventory
+  inventory,
+  selectedPowerUpTiles,
+  setSelectedPowerUpTiles,
+  selectedPowerUp
 }: BoardProps) {
   return (
     <>
@@ -66,10 +72,15 @@ export default function Board({
                 boardRenderTime={200 * boardSize}
               >
                 <Tile
+                board={board}
+                selectedPowerUp={selectedPowerUp}
+                setSelectedPowerUpTiles={(props)=> setSelectedPowerUpTiles(props)}
+                selectedPowerUpTiles={selectedPowerUpTiles}
                   playerId={playerId}
                   key={rowIdx * tileIdx}
                   gameStatus={gameStatus}
-             
+                  rowIdx={rowIdx}
+                  tileIdx={tileIdx}
                   playerPieces={playerPieces}
                   sizeOfBoardPiece={sizeOfBoardPiece}
                   updateBoardCache={() =>
