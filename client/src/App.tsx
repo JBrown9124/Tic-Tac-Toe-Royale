@@ -13,7 +13,7 @@ import useCommands from "./hooks/useCommands";
 import useSocket from "./hooks/useSocket";
 import BuildingBoardSplashScreen from "./components/BuildingBoardSplashScreen";
 import { backgroundColor } from "./themes/theme1";
-import fire from "./img/fire.png"
+import fire from "./img/fire.png";
 
 function App() {
   const [action, setAction] = useState("welcome");
@@ -37,12 +37,31 @@ function App() {
     win: { whoWon: null, type: null, winningMoves: null },
     whoTurn: "",
     newMove: { playerId: "", rowIdx: 0, tileIdx: 0 },
+    newPowerUpUse: {
+      powerUp: {
+        value: 0,
+        name: "",
+        description: "",
+        imgUrl: "",
+        id: "",
+        rules: {
+          affectsCaster: false,
+          direction: {
+            isVertical: false,
+            isHorizontal: false,
+            isDiagonal: false,
+          },
+          castAnywhere: false,
+          tilesAffected: 0,
+          mustBeEmptyTile: false,
+          areaShape: "line",
+        },
+        selectColor: "",
+      },
+      selectedPowerUpTiles: [],
+    },
   });
-  const [newMove, setMove] = useState<Move>({
-    playerId: "",
-    rowIdx: 0,
-    tileIdx: 0,
-  });
+
   const [lobby, setLobby] = useState<Lobby>({
     hostSid: 0,
     lobbyId: 0,
@@ -57,6 +76,29 @@ function App() {
       win: { whoWon: null, type: null, winningMoves: null },
       whoTurn: "",
       newMove: { playerId: "", rowIdx: 0, tileIdx: 0 },
+      newPowerUpUse: {
+        powerUp: {
+          value: 0,
+          name: "",
+          description: "",
+          imgUrl: "",
+          id: "",
+          rules: {
+            affectsCaster: false,
+            direction: {
+              isVertical: false,
+              isHorizontal: false,
+              isDiagonal: false,
+            },
+            castAnywhere: false,
+            tilesAffected: 0,
+            mustBeEmptyTile: false,
+            areaShape: "line",
+          },
+          selectColor: "",
+        },
+        selectedPowerUpTiles: [],
+      },
     },
   });
 

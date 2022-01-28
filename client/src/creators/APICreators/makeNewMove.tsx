@@ -8,7 +8,7 @@ interface BodyProps {
   gameStatus: GameStatus;
   lobbyId: number;
   hostSid: number;
-  powerUp: PowerUp | null;
+
 }
 interface DataProps {
   gameStatus: GameStatus;

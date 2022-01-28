@@ -18,7 +18,9 @@ import useMoveHandler from "../../hooks/useMoveHandler";
 import updateAfterPlayerLeaves from "../../creators/BoardCreators/updateAfterPlayerLeaves";
 import TurnOrder from "./TurnOrder/TurnOrder";
 import Inventory from "./Inventory/Inventory";
-import { PowerUp, } from "../../Models/PowerUp";
+import { PowerUp } from "../../Models/PowerUp";
+import SelectedPower from "./SelectedPower/SelectedPower";
+import makeNewMove from "../../creators/APICreators/makeNewMove";
 
 interface GameProps {
   lobby: Lobby;
@@ -65,8 +67,8 @@ export default function Game({
   const [board, setBoard] = useState<(number | string)[][]>([[]]);
   const [playerPieces, setPlayerPieces] = useState<Player[]>([]);
   const sizeOfBoardPiece = determineSizeOfPiece(lobby?.board?.size);
-  const [isUsingPowerUp, setIsUsingPowerUp] = useState(false)
-  const [powerOrMove, setPowerOrMove] = useState("")
+  const [isUsingPowerUp, setIsUsingPowerUp] = useState(false);
+  const [powerOrMove, setPowerOrMove] = useState("");
   const [selectedPowerUp, setSelectedPowerUp] = useState<PowerUp>({
     value: 0,
     name: "",
@@ -110,7 +112,27 @@ export default function Game({
     playerId,
     inventory,
   });
-
+  const onFinish = async() => {
+    if (
+      selectedPowerUp.name === "cleave" ||
+      selectedPowerUp.name === "piercing arrow"
+    ) {
+      selectedPowerUpTiles.shift();
+    }
+    gameStatus.newPowerUpUse.powerUp = selectedPowerUp;
+    gameStatus.newPowerUpUse.selectedPowerUpTiles = selectedPowerUpTiles;
+    
+    const reqBody = {
+      lobbyId: lobby.lobbyId,
+      hostSid: lobby.hostSid,
+      gameStatus: gameStatus,
+    };
+    console.log(gameStatus,"ONFINISHGAMESTATUS")
+    const gameStatusResponse = await makeNewMove(reqBody);
+    if (gameStatusResponse) {
+    setGameStatus(gameStatusResponse);
+  }
+  };
   const quitGame = () => {
     playLeaveSound();
     setBotCanMove(false);
@@ -187,13 +209,16 @@ export default function Game({
             isVisible={isCountDownFinished}
             delay={800}
           >
-            <Grid item>
+            <Grid item sx={{ p: 1 }}>
               <StatusBoard
-              isUsingPowerUp={isUsingPowerUp}
-              powerOrMove={powerOrMove}
-              setIsUsingPowerUp={(props)=> setIsUsingPowerUp(props)}
-              setSelectedPowerUp={(props)=> setSelectedPowerUp(props)}
-              setPowerOrMove={(props)=>setPowerOrMove(props)}
+                setSelectedPowerUpTiles={(props) => {
+                  setSelectedPowerUpTiles(props);
+                }}
+                isUsingPowerUp={isUsingPowerUp}
+                powerOrMove={powerOrMove}
+                setIsUsingPowerUp={(props) => setIsUsingPowerUp(props)}
+                setSelectedPowerUp={(props) => setSelectedPowerUp(props)}
+                setPowerOrMove={(props) => setPowerOrMove(props)}
                 handleStart={() => handleStart()}
                 isHost={isHost}
                 isCountDownFinished={isCountDownFinished}
@@ -206,18 +231,31 @@ export default function Game({
                 playerId={playerId}
               />
             </Grid>
-            <Grid item sx={{ p: 3 }}>
-              <Inventory
-             powerOrMove={powerOrMove}
-              isUsingPowerUp={isUsingPowerUp}
-              setIsUsingPowerUp={(props)=> setIsUsingPowerUp(props)}
-              setSelectedPowerUpTiles={(props)=> setSelectedPowerUpTiles(props)}
-                selectedPowerUp={selectedPowerUp}
-                inventory={inventory}
-                setCursor={(props) => setCursor(props)}
-                setSelectedPowerUp={(props) => setSelectedPowerUp(props)}
-              />
-            </Grid>
+            {isUsingPowerUp && (
+              <Grid item sx={{ p: 1 }}>
+                <SelectedPower
+                  onFinish={() => onFinish()}
+                  selectedPowerUpTiles={selectedPowerUpTiles}
+                  selectedPowerUp={selectedPowerUp}
+                />
+              </Grid>
+            )}
+            {inventory.length > 0 && (
+              <Grid item sx={{ p: 1 }}>
+                <Inventory
+                  powerOrMove={powerOrMove}
+                  isUsingPowerUp={isUsingPowerUp}
+                  setIsUsingPowerUp={(props) => setIsUsingPowerUp(props)}
+                  setSelectedPowerUpTiles={(props) =>
+                    setSelectedPowerUpTiles(props)
+                  }
+                  selectedPowerUp={selectedPowerUp}
+                  inventory={inventory}
+                  setCursor={(props) => setCursor(props)}
+                  setSelectedPowerUp={(props) => setSelectedPowerUp(props)}
+                />
+              </Grid>
+            )}
           </StatusBoardAnimator>
         </Grid>
 
@@ -230,8 +268,8 @@ export default function Game({
           lg={8}
         >
           <Board
-          powerOrMove={powerOrMove}
-          isUsingPowerUp={isUsingPowerUp}
+            powerOrMove={powerOrMove}
+            isUsingPowerUp={isUsingPowerUp}
             selectedPowerUp={selectedPowerUp}
             setSelectedPowerUpTiles={(props) => setSelectedPowerUpTiles(props)}
             selectedPowerUpTiles={selectedPowerUpTiles}

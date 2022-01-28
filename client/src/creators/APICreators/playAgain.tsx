@@ -24,10 +24,12 @@ const playAgain = async (
     const { lobby } = await savePlayAgain(body);
 
     sendPlayAgain(lobby);
-    setAction("begin")
+    setAction("begin");
   } catch (e) {
-
-    console.log("Failed to play again. Please try refreshing your browser first. If that does not work clear your cookies for this website. Error"+e);
+    console.log(
+      "Failed to play again. Please try refreshing your browser first. If that does not work clear your cookies for this website. Error" +
+        e
+    );
   }
 };
 

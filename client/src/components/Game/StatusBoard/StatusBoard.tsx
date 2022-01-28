@@ -2,6 +2,7 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { Player } from "../../../Models/Player";
 import { GameStatus } from "../../../Models/GameStatus";
+import {Move} from "../../../Models/Move";
 import { useEffect, useState } from "react";
 import { useSound } from "use-sound";
 import { PowerUp } from "../../../Models/PowerUp";
@@ -24,6 +25,7 @@ interface StatusBoardProps {
   setIsUsingPowerUp: (isUsingPowerUp: boolean) => void;
   powerOrMove: string;
   setSelectedPowerUp: (powerUp: PowerUp) => void;
+  setSelectedPowerUpTiles: (powerUpTiles:Move[])=>void;
   isUsingPowerUp: boolean;
 }
 export default function StatusBoard({
@@ -41,6 +43,7 @@ export default function StatusBoard({
   setPowerOrMove,
   setIsUsingPowerUp,
   setSelectedPowerUp,
+  setSelectedPowerUpTiles,
   powerOrMove,
   isUsingPowerUp,
 }: StatusBoardProps) {
@@ -93,6 +96,7 @@ export default function StatusBoard({
       },
       selectColor: "",
     });
+    setSelectedPowerUpTiles([])
   };
   return (
     <>
@@ -161,42 +165,48 @@ export default function StatusBoard({
             }}
           >{`Win by ${winBy}`}</Typography>
         </Grid>
-        <Grid container direction="row" sx={{ p: 1 }} spacing={2}>
+
+        <Grid container direction="row" sx={{ p: 3 }} spacing={2}>
           <Grid item xs={6}>
             <CustomButton
-              sx={{ fontSize: "13px", height: "40px" }}
+              sx={{
+                fontSize: "13px",
+                height: "50px",
+                border: powerOrMove === "Power" ? "solid 2px blue" : "none",
+              }}
               onClick={() => setPowerOrMove("Power")}
-              message={"Use Power"}
+              message={"Power"}
             />
           </Grid>
 
           <Grid item xs={6}>
             <CustomButton
-              sx={{ fontSize: "13px", height: "40px" }}
-              message={"Make Move"}
+              sx={{
+                fontSize: "13px",
+                height: "50px",
+                border: powerOrMove === "Move" ? "solid 2px blue" : "none",
+              }}
+              message={"Move"}
               onClick={() => handleMoveSelect()}
             />
           </Grid>
         </Grid>
         {powerOrMove === "Power" && (
-          <Grid>
-            <Typography>Select a power from your inventory</Typography>
-          </Grid>
-        )}
-        {isUsingPowerUp && (
-          <Grid item>
-            <CustomButton
-              onClick={() => {
-                setIsUsingPowerUp(false);
+          <Grid item >
+            <Typography
+              sx={{
+                fontFamily: "Bungee Hairline, cursive",
+                fontWeight: 800, p: 1 
               }}
-              message="Finished"
-            />
+            >
+              Select a power from below!
+            </Typography>
           </Grid>
         )}
         <Grid container direction="column" sx={{ p: 1 }} spacing={2}>
           <Grid item>
             <CustomButton
-              sx={{ fontSize: "13px", height: "40px" }}
+              sx={{ fontSize: "13px", height: "30px" }}
               onClick={() => quitGame()}
               message={"Leave Game"}
             />
@@ -204,7 +214,7 @@ export default function StatusBoard({
           {gameStatus.win.whoWon && isHost && (
             <Grid item>
               <CustomButton
-                sx={{ fontSize: "13px", height: "40px" }}
+                sx={{ fontSize: "13px", height: "30px" }}
                 message={"Play Again"}
                 onClick={() => handleStart()}
               />

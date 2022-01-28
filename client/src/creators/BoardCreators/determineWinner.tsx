@@ -155,6 +155,29 @@ const determineWinner = async (
     },
     newMove: { rowIdx: rowIdx, tileIdx: tileIdx, playerId: playerId },
     whoTurn: playerId,
+    newPowerUpUse: {
+      powerUp: {
+        value: 0,
+        name: "",
+        description: "",
+        imgUrl: "",
+        id: "",
+        rules: {
+          affectsCaster: false,
+          direction: {
+            isVertical: false,
+            isHorizontal: false,
+            isDiagonal: false,
+          },
+          castAnywhere: false,
+          tilesAffected: 0,
+          mustBeEmptyTile: false,
+          areaShape: "line",
+        },
+        selectColor: "",
+      },
+      selectedPowerUpTiles: [],
+    },
   };
 
   const reqBody = {

@@ -11,7 +11,6 @@ import useSound from "use-sound";
 import { RgbaColor } from "react-colorful";
 import { Move } from "../Models/Move";
 
-
 interface UseCommandsProps {
   action: string;
   lobby: Lobby;
@@ -78,9 +77,8 @@ export default function useCommands({
           playerName: playerName,
           sessionId: socket.id,
         };
-        
+
         joinLobby(joinReqBody).then((response) => {
-          
           if (typeof response === "string") {
             setAction("join");
             setIsLobbyFound(false);
@@ -106,11 +104,11 @@ export default function useCommands({
             playerId: playerId,
             playerLoaded: false,
             sessionId: socket.id,
-            inventory:[]
+            inventory: [],
           },
           hostSid: lobby.hostSid,
         };
-        
+
         leaveLobby(leaveReqBody).then(() => {
           setLobby({
             hostSid: 0,
@@ -126,12 +124,58 @@ export default function useCommands({
               win: { whoWon: null, type: null, winningMoves: null },
               newMove: { playerId: "", rowIdx: 0, tileIdx: 0 },
               whoTurn: "",
+              newPowerUpUse: {
+                powerUp: {
+                  value: 0,
+                  name: "",
+                  description: "",
+                  imgUrl: "",
+                  id: "",
+                  rules: {
+                    affectsCaster: false,
+                    direction: {
+                      isVertical: false,
+                      isHorizontal: false,
+                      isDiagonal: false,
+                    },
+                    castAnywhere: false,
+                    tilesAffected: 0,
+                    mustBeEmptyTile: false,
+                    areaShape: "line",
+                  },
+                  selectColor: "",
+                },
+                selectedPowerUpTiles: [],
+              },
             },
           });
           setGameStatus({
             win: { whoWon: null, type: null, winningMoves: null },
             newMove: { playerId: "", rowIdx: 0, tileIdx: 0 },
             whoTurn: "",
+            newPowerUpUse: {
+              powerUp: {
+                value: 0,
+                name: "",
+                description: "",
+                imgUrl: "",
+                id: "",
+                rules: {
+                  affectsCaster: false,
+                  direction: {
+                    isVertical: false,
+                    isHorizontal: false,
+                    isDiagonal: false,
+                  },
+                  castAnywhere: false,
+                  tilesAffected: 0,
+                  mustBeEmptyTile: false,
+                  areaShape: "line",
+                },
+                selectColor: "",
+              },
+              selectedPowerUpTiles: [],
+            },
           });
 
           setIsLobbyReceived(false);

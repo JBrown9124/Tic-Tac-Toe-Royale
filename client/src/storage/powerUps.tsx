@@ -21,7 +21,7 @@ export const powerUps: PowerUps = {
   "2": {
     name: "cleave",
     description:
-      "Slash 3 spaces vertically or horizontally. Any moves in the slashes path will be destroyed!",
+      "Slash 3 spaces in any direction from a tile you own. Any moves in the slashes path will be destroyed!",
     imgUrl:
       "https://i1.wp.com/st-central.net/wp-content/uploads/2020/08/icon_global_skill_p_cleave.png?ssl=1",
     value: 2,

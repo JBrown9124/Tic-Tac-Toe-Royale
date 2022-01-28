@@ -50,7 +50,7 @@ export default function Inventory({
         textAlign="center"
       >
         <Grid item textAlign="center" sx={{ p: 1 }}>
-          <Typography>Inventory</Typography>
+          <Typography>Your Powers</Typography>
         </Grid>
         <Grid container direction="row" spacing={2} justifyContent="center">
           {inventory.map((powerUp, idx) => (

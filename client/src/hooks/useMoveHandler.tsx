@@ -107,6 +107,7 @@ export default function useMoveHandler({
   }, [gameStatus.whoTurn]);
 
   useEffect(() => {
+  
     if (gameStatus.newMove.playerId === gameStatus.whoTurn) {
       startOtherPlayerMoveSound();
     }
@@ -114,7 +115,66 @@ export default function useMoveHandler({
     if (gameStatus.newMove.playerId !== "") {
       board[gameStatus.newMove.rowIdx][gameStatus.newMove.tileIdx] =
         gameStatus.newMove.playerId;
-      setCount((state: number) => state + 1);
     }
-  }, [gameStatus.newMove]);
+  
+
+    switch (gameStatus?.newPowerUpUse?.powerUp?.name) {
+      case "fire":
+        board[gameStatus.newPowerUpUse.selectedPowerUpTiles[0].rowIdx][
+          gameStatus.newPowerUpUse.selectedPowerUpTiles[0].tileIdx
+        ] = "FIRE";
+        break;
+      case "piercing arrow":
+        for (
+          let i = 0;
+          i < gameStatus.newPowerUpUse.selectedPowerUpTiles.length;
+          i++
+        ) {
+          board[gameStatus.newPowerUpUse.selectedPowerUpTiles[0].rowIdx][
+            gameStatus.newPowerUpUse.selectedPowerUpTiles[0].tileIdx
+          ] = getRandomInt(1, 6);
+        }
+        break;
+      case "cleave":
+        for (
+          let i = 0;
+          i < gameStatus.newPowerUpUse.selectedPowerUpTiles.length;
+          i++
+        ) {
+          board[gameStatus.newPowerUpUse.selectedPowerUpTiles[0].rowIdx][
+            gameStatus.newPowerUpUse.selectedPowerUpTiles[0].tileIdx
+          ] = getRandomInt(1, 6);
+        }
+        break;
+      case "bomb":
+        for (
+          let i = 0;
+          i < gameStatus.newPowerUpUse.selectedPowerUpTiles.length;
+          i++
+        ) {
+          board[gameStatus.newPowerUpUse.selectedPowerUpTiles[0].rowIdx][
+            gameStatus.newPowerUpUse.selectedPowerUpTiles[0].tileIdx
+          ] = getRandomInt(1, 6);
+        }
+        break;
+      case "swap":
+        [
+          board[gameStatus.newPowerUpUse.selectedPowerUpTiles[0].rowIdx][
+            gameStatus.newPowerUpUse.selectedPowerUpTiles[0].tileIdx
+          ],
+          board[gameStatus.newPowerUpUse.selectedPowerUpTiles[1].rowIdx][
+            gameStatus.newPowerUpUse.selectedPowerUpTiles[1].tileIdx
+          ],
+        ] = [
+          board[gameStatus.newPowerUpUse.selectedPowerUpTiles[1].rowIdx][
+            gameStatus.newPowerUpUse.selectedPowerUpTiles[1].tileIdx
+          ],
+          board[gameStatus.newPowerUpUse.selectedPowerUpTiles[0].rowIdx][
+            gameStatus.newPowerUpUse.selectedPowerUpTiles[0].tileIdx
+          ],
+        ];
+    }
+        setCount((state: number) => state + 1);
+    
+  }, [gameStatus.newMove, gameStatus.newPowerUpUse]);
 }
