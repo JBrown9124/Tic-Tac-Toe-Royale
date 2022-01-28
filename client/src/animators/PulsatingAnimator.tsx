@@ -15,11 +15,10 @@ interface Props {
   beforeColor?: RgbaColor;
   afterColor?: RgbaColor;
   width?: string;
-  delay: number;
-  isClicked:boolean
- 
+  delay?: number;
+  isClicked?: boolean;
 }
-const PowerUpSelect = ({
+const PulsatingAnimator = ({
   x = 0,
   y = 0,
   rotation = 0,
@@ -31,30 +30,33 @@ const PowerUpSelect = ({
   width,
   delay,
   children,
- isClicked
+  isClicked,
 }: Props) => {
   const [isBooped, setIsBooped] = useState(false);
- 
 
- 
-
+  useEffect(() => {
+    const t = setTimeout(() => {
+      setIsBooped(!isBooped);
+    }, 500);
+    return () => {
+      clearTimeout(t);
+    };
+  });
   const style = useSpring({
-    
- opacity:1,
+    opacity: 1,
 
-
-    transform:  isClicked
-    ? `translate(${x}px, ${y}px)
+    transform: isBooped
+      ? `translate(${x}px, ${y}px)
     rotate(${rotation}deg)
-    scale(${scale})`
- : `translate(0px, 0px)
+    scale(${1.1})`
+      : `translate(0px, 0px)
     rotate(0deg)
     
     scale(1)`,
-    
+
     config: { mass: 1, tension: 170, friction: 26 },
   });
- 
+
   const trigger = () => {
     setIsBooped(true);
   };
@@ -63,17 +65,14 @@ const PowerUpSelect = ({
   };
 
   return (
-    
-    
-      <animated.div
-        // onMouseEnter={trigger}
-        // onMouseLeave={triggerLeave}
-        style={style as any}
-      >
-        {children}
-      </animated.div>
-     
+    <animated.div
+      // onMouseEnter={trigger}
+      // onMouseLeave={triggerLeave}
+      style={style as any}
+    >
+      {children}
+    </animated.div>
   );
 };
 
-export default PowerUpSelect;
+export default PulsatingAnimator;

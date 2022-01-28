@@ -67,12 +67,12 @@ class Board(APIView):
             ).to_dict()
             lobby_game_status_copy["win"] = win
 
-        if not new_power_up_use:
+        if len(new_power_up_use["selectedPowerUpTiles"])==0:
             lobby_board_copy["moves"].append(new_move)
         else:
             
             if (
-                new_power_up_use["powerUp"]["name"] == "piercing arrow"
+                new_power_up_use["powerUp"]["name"] == "arrow"
                 or new_power_up_use["powerUp"]["name"] == "cleave" or new_power_up_use["powerUp"]["name"] == "bomb"
             ):
                 for affected_tile in new_power_up_use["selectedPowerUpTiles"]:
@@ -83,7 +83,7 @@ class Board(APIView):
                             and move["tileIdx"] == affected_tile["tileIdx"]
                         ):
                             lobby_board_copy["moves"].remove(move)
-            if new_power_up_use["name"] == "swap":
+            if new_power_up_use["powerUp"]["name"] == "swap":
                 swapped_moves = set()
                 for affected_tile in new_power_up_use["selectedPowerUpTiles"]:
                     for move in lobby_board_copy["moves"]:

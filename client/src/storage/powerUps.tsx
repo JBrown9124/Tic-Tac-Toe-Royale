@@ -15,7 +15,7 @@ export const powerUps: PowerUps = {
       mustBeEmptyTile: true,
       areaShape: "line",
     },
-    selectColor: "red",
+    selectColor: "#f8bbd0",
   },
 
   "2": {
@@ -33,11 +33,11 @@ export const powerUps: PowerUps = {
       mustBeEmptyTile: false,
       areaShape: "line",
     },
-    selectColor: "green",
+    selectColor: "#c8e6c9",
   },
 
   "3": {
-    name: "piercing arrow",
+    name: "arrow",
     description:
       "Shoot an arrow in any direction from a tile you own. Any moves in the arrows path will be destroyed!",
     imgUrl: "https://cdn.newworldfans.com/db_images/db/items_hires/arrowt4.png",
@@ -50,7 +50,7 @@ export const powerUps: PowerUps = {
       mustBeEmptyTile: false,
       areaShape: "line",
     },
-    selectColor: "blue",
+    selectColor: "#b2ebf2",
   },
 
   "4": {
@@ -67,7 +67,7 @@ export const powerUps: PowerUps = {
       mustBeEmptyTile: false,
       areaShape: "square",
     },
-    selectColor: "yellow",
+    selectColor: "#ffe0b2",
   },
 
   "5": {
@@ -83,6 +83,6 @@ export const powerUps: PowerUps = {
       mustBeEmptyTile: false,
       areaShape: "line",
     },
-    selectColor: "purple",
+    selectColor: "#e1bee7",
   },
 };

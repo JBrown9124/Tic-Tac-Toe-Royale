@@ -43,22 +43,23 @@ export default function Inventory({
         sx={{
           borderRadius: "15px",
           p: 1,
-          bgcolor: "green",
+          background:"#e8f5e9",
           border: "solid black 1px",
           boxShadow: 10,
         }}
         textAlign="center"
       >
-        <Grid item textAlign="center" sx={{ p: 1 }}>
-          <Typography>Your Powers</Typography>
+        <Grid item textAlign="center" sx={{  }}>
+          <Typography    sx={{ fontFamily: "Bungee Hairline, cursive", fontWeight: 800, p:1 }}>Your Powers</Typography>
         </Grid>
-        <Grid container direction="row" spacing={2} justifyContent="center">
+        <Grid container direction="row" spacing={2} justifyContent="center" sx={{p:1}}>
           {inventory.map((powerUp, idx) => (
             <Grid
               item
               onClick={() => {
                 handlePowerUpSelect(powerUp);
               }}
+           
             >
               <PowerUpSelect
                 delay={0}

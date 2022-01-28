@@ -51,7 +51,7 @@ const handlePowerUps = async ({
         );
         break;
 
-      case "piercing arrow":
+      case "arrow":
         handlePiercingArrow(
           selectedPowerUpTiles,
           playerId,

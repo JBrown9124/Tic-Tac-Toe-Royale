@@ -117,21 +117,21 @@ export default function useMoveHandler({
         gameStatus.newMove.playerId;
     }
   
-
+    if (gameStatus?.newPowerUpUse?.selectedPowerUpTiles?.length!==0)
     switch (gameStatus?.newPowerUpUse?.powerUp?.name) {
       case "fire":
         board[gameStatus.newPowerUpUse.selectedPowerUpTiles[0].rowIdx][
           gameStatus.newPowerUpUse.selectedPowerUpTiles[0].tileIdx
         ] = "FIRE";
         break;
-      case "piercing arrow":
+      case "arrow":
         for (
           let i = 0;
           i < gameStatus.newPowerUpUse.selectedPowerUpTiles.length;
           i++
         ) {
-          board[gameStatus.newPowerUpUse.selectedPowerUpTiles[0].rowIdx][
-            gameStatus.newPowerUpUse.selectedPowerUpTiles[0].tileIdx
+          board[gameStatus.newPowerUpUse.selectedPowerUpTiles[i].rowIdx][
+            gameStatus.newPowerUpUse.selectedPowerUpTiles[i].tileIdx
           ] = getRandomInt(1, 6);
         }
         break;
@@ -141,8 +141,8 @@ export default function useMoveHandler({
           i < gameStatus.newPowerUpUse.selectedPowerUpTiles.length;
           i++
         ) {
-          board[gameStatus.newPowerUpUse.selectedPowerUpTiles[0].rowIdx][
-            gameStatus.newPowerUpUse.selectedPowerUpTiles[0].tileIdx
+          board[gameStatus.newPowerUpUse.selectedPowerUpTiles[i].rowIdx][
+            gameStatus.newPowerUpUse.selectedPowerUpTiles[i].tileIdx
           ] = getRandomInt(1, 6);
         }
         break;
@@ -152,8 +152,8 @@ export default function useMoveHandler({
           i < gameStatus.newPowerUpUse.selectedPowerUpTiles.length;
           i++
         ) {
-          board[gameStatus.newPowerUpUse.selectedPowerUpTiles[0].rowIdx][
-            gameStatus.newPowerUpUse.selectedPowerUpTiles[0].tileIdx
+          board[gameStatus.newPowerUpUse.selectedPowerUpTiles[i].rowIdx][
+            gameStatus.newPowerUpUse.selectedPowerUpTiles[i].tileIdx
           ] = getRandomInt(1, 6);
         }
         break;

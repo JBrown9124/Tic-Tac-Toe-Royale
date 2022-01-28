@@ -68,7 +68,7 @@ export default function Game({
   const [playerPieces, setPlayerPieces] = useState<Player[]>([]);
   const sizeOfBoardPiece = determineSizeOfPiece(lobby?.board?.size);
   const [isUsingPowerUp, setIsUsingPowerUp] = useState(false);
-  const [powerOrMove, setPowerOrMove] = useState("");
+  const [powerOrMove, setPowerOrMove] = useState("Move");
   const [selectedPowerUp, setSelectedPowerUp] = useState<PowerUp>({
     value: 0,
     name: "",
@@ -112,26 +112,53 @@ export default function Game({
     playerId,
     inventory,
   });
-  const onFinish = async() => {
+  const onFinish = async () => {
     if (
       selectedPowerUp.name === "cleave" ||
-      selectedPowerUp.name === "piercing arrow"
+      selectedPowerUp.name === "arrow"
     ) {
       selectedPowerUpTiles.shift();
     }
     gameStatus.newPowerUpUse.powerUp = selectedPowerUp;
     gameStatus.newPowerUpUse.selectedPowerUpTiles = selectedPowerUpTiles;
-    
+    gameStatus.newMove.playerId = "";
     const reqBody = {
       lobbyId: lobby.lobbyId,
       hostSid: lobby.hostSid,
       gameStatus: gameStatus,
     };
-    console.log(gameStatus,"ONFINISHGAMESTATUS")
+    console.log(gameStatus, "ONFINISHGAMESTATUS");
     const gameStatusResponse = await makeNewMove(reqBody);
     if (gameStatusResponse) {
-    setGameStatus(gameStatusResponse);
-  }
+      setInventory(
+        inventory.filter((item) => {
+          return item.id !== selectedPowerUp.id;
+        })
+      );
+      setSelectedPowerUpTiles([]);
+      setSelectedPowerUp({
+        value: 0,
+        name: "",
+        description: "",
+        imgUrl: "",
+        id: "",
+        rules: {
+          affectsCaster: false,
+          direction: {
+            isVertical: false,
+            isHorizontal: false,
+            isDiagonal: false,
+          },
+          castAnywhere: false,
+          tilesAffected: 0,
+          mustBeEmptyTile: false,
+          areaShape: "line",
+        },
+        selectColor: "",
+      });
+      setIsUsingPowerUp(false);
+      setGameStatus(gameStatusResponse);
+    }
   };
   const quitGame = () => {
     playLeaveSound();
@@ -152,6 +179,28 @@ export default function Game({
       setIsCountDownFinished(false);
       setIsBoardCreated(false);
       setIsLobbyReceived(false);
+      setSelectedPowerUpTiles([]);
+      setSelectedPowerUp({
+        value: 0,
+        name: "",
+        description: "",
+        imgUrl: "",
+        id: "",
+        rules: {
+          affectsCaster: false,
+          direction: {
+            isVertical: false,
+            isHorizontal: false,
+            isDiagonal: false,
+          },
+          castAnywhere: false,
+          tilesAffected: 0,
+          mustBeEmptyTile: false,
+          areaShape: "line",
+        },
+        selectColor: "",
+      });
+      setIsUsingPowerUp(false);
     }
   }, [action]);
 
@@ -211,6 +260,7 @@ export default function Game({
           >
             <Grid item sx={{ p: 1 }}>
               <StatusBoard
+                inventory={inventory}
                 setSelectedPowerUpTiles={(props) => {
                   setSelectedPowerUpTiles(props);
                 }}

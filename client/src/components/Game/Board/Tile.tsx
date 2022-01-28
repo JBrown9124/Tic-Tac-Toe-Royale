@@ -85,7 +85,7 @@ export const Tile = ({
       setSelectedPowerUpTiles,
       boardSize,
       board,
-      setIsSelected
+      setIsSelected,
     });
   };
 
@@ -148,8 +148,16 @@ export const Tile = ({
                 width: sizeOfBoardPiece.mobile,
                 maxHeight: sizeOfBoardPiece.desktop,
                 maxWidth: sizeOfBoardPiece.desktop,
-           
               }}
+            />
+          ) : value === "FIRE" ? (
+            <img
+            style={{ height: sizeOfBoardPiece.mobile,
+              width: sizeOfBoardPiece.mobile,
+              maxHeight: sizeOfBoardPiece.desktop,
+              maxWidth: sizeOfBoardPiece.desktop, }}
+              src={"https://c.tenor.com/VbezPY1TRaMAAAAC/fire-flames.gif"}
+              alt={"fire"}
             />
           ) : value === playerId ? (
             chosenPiece

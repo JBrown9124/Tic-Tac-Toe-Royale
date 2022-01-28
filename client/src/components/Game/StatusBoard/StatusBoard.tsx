@@ -2,7 +2,7 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { Player } from "../../../Models/Player";
 import { GameStatus } from "../../../Models/GameStatus";
-import {Move} from "../../../Models/Move";
+import { Move } from "../../../Models/Move";
 import { useEffect, useState } from "react";
 import { useSound } from "use-sound";
 import { PowerUp } from "../../../Models/PowerUp";
@@ -25,8 +25,9 @@ interface StatusBoardProps {
   setIsUsingPowerUp: (isUsingPowerUp: boolean) => void;
   powerOrMove: string;
   setSelectedPowerUp: (powerUp: PowerUp) => void;
-  setSelectedPowerUpTiles: (powerUpTiles:Move[])=>void;
+  setSelectedPowerUpTiles: (powerUpTiles: Move[]) => void;
   isUsingPowerUp: boolean;
+  inventory: PowerUp[]
 }
 export default function StatusBoard({
   playerPieces,
@@ -46,6 +47,7 @@ export default function StatusBoard({
   setSelectedPowerUpTiles,
   powerOrMove,
   isUsingPowerUp,
+  inventory
 }: StatusBoardProps) {
   const [startWinSound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/winnerSound.mp3"
@@ -96,7 +98,7 @@ export default function StatusBoard({
       },
       selectColor: "",
     });
-    setSelectedPowerUpTiles([])
+    setSelectedPowerUpTiles([]);
   };
   return (
     <>
@@ -191,15 +193,28 @@ export default function StatusBoard({
             />
           </Grid>
         </Grid>
-        {powerOrMove === "Power" && (
-          <Grid item >
+        {powerOrMove === "Power" && inventory.length>0 ? (
+          <Grid item>
             <Typography
               sx={{
                 fontFamily: "Bungee Hairline, cursive",
-                fontWeight: 800, p: 1 
+                fontWeight: 800,
+                p: 1,
               }}
             >
               Select a power from below!
+            </Typography>
+          </Grid>
+        ) : (
+          <Grid item>
+            <Typography
+              sx={{
+                fontFamily: "Bungee Hairline, cursive",
+                fontWeight: 800,
+                p: 1,
+              }}
+            >
+              Make a move to aquire more powers!
             </Typography>
           </Grid>
         )}

@@ -66,6 +66,14 @@ const BoardAnimator = ({
       setIsWinningMove(false);
       setIsVisible(false);
       setIsRendered(false);
+      const t = setTimeout(() => {
+        setLineDirection(
+          !win.type ? "None" : win.type === "tie" ? "horizontal" : win.type
+        );
+      }, 1000);
+      return () => {
+        clearTimeout(t);
+      };
     }
   }, [isCountDownFinished]);
   useEffect(() => {
