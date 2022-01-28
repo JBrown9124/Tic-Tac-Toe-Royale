@@ -1,4 +1,4 @@
-import { NewMove } from "./NewMove";
+import { Move } from "./Move";
 export interface PowerUps {
   [key: string]: {
     name: string;

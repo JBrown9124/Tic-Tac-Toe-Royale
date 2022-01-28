@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react";
 import { Lobby } from "../Models/Lobby";
 import { GameStatus } from "../Models/GameStatus";
-import botNewMove from "../creators/APICreators/botNewMove";
+import botMove from "../creators/APICreators/botNewMove";
 import determineWinner from "../creators/BoardCreators/determineWinner";
 import { Player } from "../Models/Player";
-import {PowerUp} from "../Models/PowerUp"
+import { PowerUp } from "../Models/PowerUp";
 import useSound from "use-sound";
 import getRandomInt from "../creators/BoardCreators/getRandomInt";
-
-
 
 interface UseMoveHandler {
   botCanMove: boolean;
@@ -22,7 +20,7 @@ interface UseMoveHandler {
   playerWhoLeftSessionId: string;
   isBoardCreated: boolean;
   playerId: string;
-  inventory: PowerUp[]
+  inventory: PowerUp[];
 }
 
 export default function useMoveHandler({
@@ -37,7 +35,7 @@ export default function useMoveHandler({
   playerWhoLeftSessionId,
   isBoardCreated,
   playerId,
-  inventory
+  inventory,
 }: UseMoveHandler) {
   const [startOtherPlayerMoveSound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/otherPlayerMoveSound.mp3"
@@ -66,14 +64,14 @@ export default function useMoveHandler({
           };
 
           const botDelay = setTimeout(() => {
-            botNewMove(reqBody).then((botNewMoveResponse) => {
-              if (botNewMoveResponse) {
+            botMove(reqBody).then((botMoveResponse) => {
+              if (botMoveResponse) {
                 determineWinner(
-                  botNewMoveResponse.rowIdx,
-                  botNewMoveResponse.tileIdx,
+                  botMoveResponse.rowIdx,
+                  botMoveResponse.tileIdx,
                   board,
                   lobby.board.size,
-                  botNewMoveResponse.playerId,
+                  botMoveResponse.playerId,
                   lobby.board.winBy,
                   lobby.lobbyId,
                   lobby.hostSid,

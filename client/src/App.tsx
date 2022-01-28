@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import PregameModal from "./components/PregameModal/PregameModal";
 import { useCookies } from "react-cookie";
 import Game from "./components/Game/Game";
-import { NewMove } from "./Models/NewMove";
+import { Move } from "./Models/Move";
 import { Lobby } from "./Models/Lobby";
 import { GameStatus } from "./Models/GameStatus";
 import startGame from "./creators/APICreators/startGame";
@@ -38,7 +38,7 @@ function App() {
     whoTurn: "",
     newMove: { playerId: "", rowIdx: 0, tileIdx: 0 },
   });
-  const [newMove, setNewMove] = useState<NewMove>({
+  const [newMove, setMove] = useState<Move>({
     playerId: "",
     rowIdx: 0,
     tileIdx: 0,

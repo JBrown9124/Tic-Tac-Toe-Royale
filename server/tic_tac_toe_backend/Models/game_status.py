@@ -1,14 +1,14 @@
 from random import randrange
 from typing import Dict, List, Union
 from .win import Win
-from .new_move import NewMove
+from .new_move import Move
 
 class GameStatus:
     def __init__(
         self,
         who_turn:str = "",
         win: Dict[str, Union[str, int, List[dict]]] = Win().to_dict(),
-        new_move = NewMove().to_dict(),
+        new_move = Move().to_dict(),
     ):
         self.who_turn = who_turn
         self.win = win,

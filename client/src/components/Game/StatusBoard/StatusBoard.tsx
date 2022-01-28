@@ -24,6 +24,7 @@ interface StatusBoardProps {
   setIsUsingPowerUp: (isUsingPowerUp: boolean) => void;
   powerOrMove: string;
   setSelectedPowerUp: (powerUp: PowerUp) => void;
+  isUsingPowerUp: boolean;
 }
 export default function StatusBoard({
   playerPieces,
@@ -41,6 +42,7 @@ export default function StatusBoard({
   setIsUsingPowerUp,
   setSelectedPowerUp,
   powerOrMove,
+  isUsingPowerUp,
 }: StatusBoardProps) {
   const [startWinSound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/winnerSound.mp3"
@@ -179,6 +181,16 @@ export default function StatusBoard({
         {powerOrMove === "Power" && (
           <Grid>
             <Typography>Select a power from your inventory</Typography>
+          </Grid>
+        )}
+        {isUsingPowerUp && (
+          <Grid item>
+            <CustomButton
+              onClick={() => {
+                setIsUsingPowerUp(false);
+              }}
+              message="Finished"
+            />
           </Grid>
         )}
         <Grid container direction="column" sx={{ p: 1 }} spacing={2}>

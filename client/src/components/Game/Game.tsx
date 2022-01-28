@@ -5,9 +5,8 @@ import determineWinner from "../../creators/BoardCreators/determineWinner";
 import createBoard from "../../creators/BoardCreators/createBoard";
 import { useCookies } from "react-cookie";
 import getPlayerPieces from "../../creators/BoardCreators/getPlayerPieces";
-import botNewMove from "../../creators/APICreators/botNewMove";
 import { Lobby } from "../../Models/Lobby";
-import { NewMove } from "../../Models/NewMove";
+import { Move } from "../../Models/Move";
 import { GameStatus } from "../../Models/GameStatus";
 import { determineSizeOfPiece } from "../../creators/BoardCreators/sizeOfPiece";
 import { useSound } from "use-sound";
@@ -84,7 +83,7 @@ export default function Game({
     },
     selectColor: "",
   });
-  const [selectedPowerUpTiles, setSelectedPowerUpTiles] = useState<NewMove[]>([]);
+  const [selectedPowerUpTiles, setSelectedPowerUpTiles] = useState<Move[]>([]);
   useEffect(() => {
     updateAfterPlayerLeaves({
       playerPieces,
@@ -190,6 +189,7 @@ export default function Game({
           >
             <Grid item>
               <StatusBoard
+              isUsingPowerUp={isUsingPowerUp}
               powerOrMove={powerOrMove}
               setIsUsingPowerUp={(props)=> setIsUsingPowerUp(props)}
               setSelectedPowerUp={(props)=> setSelectedPowerUp(props)}

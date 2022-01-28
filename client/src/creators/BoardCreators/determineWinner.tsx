@@ -1,12 +1,12 @@
-import makeNewMove from "../APICreators/makeNewMove";
+import makeMove from "../APICreators/makeNewMove";
 import { Lobby } from "../../Models/Lobby";
-import { NewMove } from "../../Models/NewMove";
+import { Move } from "../../Models/Move";
 import { WinningMove } from "../../Models/Win";
 import { GameStatus } from "../../Models/GameStatus";
 import { PowerUps, PowerUp } from "../../Models/PowerUp";
 import { Player } from "../../Models/Player";
 import { powerUps } from "../../storage/powerUps";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 const determineWinner = async (
   rowIdx: number,
   tileIdx: number,
@@ -23,8 +23,8 @@ const determineWinner = async (
   let newPowerUp = null;
   if (board[rowIdx][tileIdx] > 0) {
     const powerUpKey: string = String(board[rowIdx][tileIdx]);
-    newPowerUp = {...powerUps[powerUpKey], id:uuidv4()};
-   
+    newPowerUp = { ...powerUps[powerUpKey], id: uuidv4() };
+
     console.log("newPowerUp:", newPowerUp);
   }
   board[rowIdx][tileIdx] = playerId;
@@ -166,7 +166,7 @@ const determineWinner = async (
   if (newPowerUp && newGameStatus.whoTurn.substring(0, 3) !== "BOT") {
     inventory.push(newPowerUp);
   }
-  const gameStatusResponse = await makeNewMove(reqBody);
+  const gameStatusResponse = await makeMove(reqBody);
   if (gameStatusResponse) {
     setGameStatus(gameStatusResponse);
   }

@@ -1,7 +1,7 @@
 import { socket } from "../socket";
 import { useEffect, useRef, useState } from "react";
 import { Lobby } from "../Models/Lobby";
-import { NewMove } from "../Models/NewMove";
+import { Move } from "../Models/Move";
 import getLobby from "../creators/APICreators/getLobby";
 import { GameStatus } from "../Models/GameStatus";
 import { Player } from "../Models/Player";

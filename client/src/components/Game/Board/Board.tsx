@@ -8,7 +8,7 @@ import determineWinner from "../../../creators/BoardCreators/determineWinner";
 import {Player} from "../../../Models/Player"
 import { PlayerPieces } from "../../../Models/PlayerPieces";
 import { Lobby } from "../../../Models/Lobby";
-import { NewMove } from "../../../Models/NewMove";
+import { Move } from "../../../Models/Move";
 import {PowerUp } from "../../../Models/PowerUp"
 import { GameStatus } from "../../../Models/GameStatus";
 import { determineSizeOfPiece } from "../../../creators/BoardCreators/sizeOfPiece";
@@ -31,8 +31,8 @@ interface BoardProps {
   lobbyHostSid: number;
   isCountDownFinished: boolean;
   inventory: PowerUp[]
-  selectedPowerUpTiles:NewMove[]
-  setSelectedPowerUpTiles:(selectedPowerUpTiles:NewMove[]) => void,
+  selectedPowerUpTiles:Move[]
+  setSelectedPowerUpTiles:(selectedPowerUpTiles:Move[]) => void,
   selectedPowerUp:PowerUp
   isUsingPowerUp:boolean,
   powerOrMove:string

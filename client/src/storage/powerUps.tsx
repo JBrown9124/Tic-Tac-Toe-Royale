@@ -60,7 +60,7 @@ export const powerUps: PowerUps = {
       "https://cdn.pixabay.com/photo/2017/01/31/16/59/bomb-2025548_960_720.png",
     value: 4,
     rules: {
-      affectsCaster: true,
+      affectsCaster: false,
       direction: { isVertical: true, isHorizontal: true, isDiagonal: true },
       castAnywhere: true,
       tilesAffected: 4,

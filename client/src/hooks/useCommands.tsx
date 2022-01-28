@@ -9,7 +9,7 @@ import getStartGame from "../creators/APICreators/getStartGame";
 import getGame from "../creators/APICreators/getLobby";
 import useSound from "use-sound";
 import { RgbaColor } from "react-colorful";
-import { NewMove } from "../Models/NewMove";
+import { Move } from "../Models/Move";
 
 
 interface UseCommandsProps {

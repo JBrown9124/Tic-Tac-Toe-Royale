@@ -1,7 +1,7 @@
 import { Win } from "./Win";
-import {NewMove} from "./NewMove"
+import {Move} from "./Move"
 export interface GameStatus {
   win: Win;
   whoTurn: string;
-  newMove: NewMove;
+  newMove: Move;
 }
