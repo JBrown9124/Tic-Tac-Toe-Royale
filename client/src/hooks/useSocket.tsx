@@ -6,6 +6,7 @@ import getLobby from "../creators/APICreators/getLobby";
 import { GameStatus } from "../Models/GameStatus";
 import { Player } from "../Models/Player";
 import leaveLobby from "../creators/APICreators/leaveLobby";
+import {powerUps} from "../storage/powerUps"
 import { RgbaColor } from "react-colorful";
 interface UseSocketProps {
   lobby: Lobby;
@@ -102,11 +103,12 @@ export default function useSocket({
             name: null,
             piece: "Not Needed",
             isHost: false,
-            inventory: [],
+            inventory: {},
             isReady: false,
             playerId: playerId,
             playerLoaded: false,
             sessionId: playerSessionId,
+            
           },
           hostSid: lobbyCopy.hostSid,
         };
@@ -184,7 +186,7 @@ export default function useSocket({
             playerId: newPlayer.playerId,
             piece: isNewPlayerBot ? newPlayer.piece : "",
             isHost: false,
-            inventory: [],
+            inventory: powerUps,
             playerLoaded: isNewPlayerBot ? true : false,
             isReady: isNewPlayerBot ? true : false,
             sessionId: newPlayer.sessionId,

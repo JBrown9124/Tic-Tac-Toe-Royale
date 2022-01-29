@@ -43,7 +43,7 @@ function App() {
         name: "",
         description: "",
         imgUrl: "",
-        id: "",
+     
         rules: {
           affectsCaster: false,
           direction: {
@@ -57,6 +57,7 @@ function App() {
           areaShape: "line",
         },
         selectColor: "",
+        quantity: 0
       },
       selectedPowerUpTiles: [],
     },
@@ -82,7 +83,7 @@ function App() {
           name: "",
           description: "",
           imgUrl: "",
-          id: "",
+        
           rules: {
             affectsCaster: false,
             direction: {
@@ -96,6 +97,7 @@ function App() {
             areaShape: "line",
           },
           selectColor: "",
+          quantity: 0
         },
         selectedPowerUpTiles: [],
       },

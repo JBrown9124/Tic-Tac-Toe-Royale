@@ -18,14 +18,16 @@ const determineWinner = async (
   lobbyId: number,
   lobbyHostSid: number,
   setGameStatus: (gameStatus: GameStatus) => void,
-  inventory: PowerUp[]
+  inventory: PowerUps
 ) => {
   let newPowerUp = null;
+  let newPowerUpKey = null;
   if (board[rowIdx][tileIdx] > 0) {
     const powerUpKey: string = String(board[rowIdx][tileIdx]);
-    newPowerUp = { ...powerUps[powerUpKey], id: uuidv4() };
-
-    console.log("newPowerUp:", newPowerUp);
+    // newPowerUp = { ...powerUps[powerUpKey], id: uuidv4() };
+    newPowerUp = powerUps[powerUpKey];
+    newPowerUpKey = powerUpKey;
+    // console.log("newPowerUp:", newPowerUp);
   }
   board[rowIdx][tileIdx] = playerId;
 
@@ -161,7 +163,7 @@ const determineWinner = async (
         name: "",
         description: "",
         imgUrl: "",
-        id: "",
+        
         rules: {
           affectsCaster: false,
           direction: {
@@ -175,6 +177,7 @@ const determineWinner = async (
           areaShape: "line",
         },
         selectColor: "",
+        quantity:0,
       },
       selectedPowerUpTiles: [],
     },
@@ -186,8 +189,8 @@ const determineWinner = async (
     gameStatus: newGameStatus,
     hostSid: lobbyHostSid,
   };
-  if (newPowerUp && newGameStatus.whoTurn.substring(0, 3) !== "BOT") {
-    inventory.push(newPowerUp);
+  if (newPowerUpKey && newGameStatus.whoTurn.substring(0, 3) !== "BOT") {
+    inventory[newPowerUpKey].quantity += 1;
   }
   const gameStatusResponse = await makeMove(reqBody);
   if (gameStatusResponse) {

@@ -4,7 +4,7 @@ import { GameStatus } from "../Models/GameStatus";
 import botMove from "../creators/APICreators/botNewMove";
 import determineWinner from "../creators/BoardCreators/determineWinner";
 import { Player } from "../Models/Player";
-import { PowerUp } from "../Models/PowerUp";
+import { PowerUp, PowerUps } from "../Models/PowerUp";
 import useSound from "use-sound";
 import getRandomInt from "../creators/BoardCreators/getRandomInt";
 
@@ -20,7 +20,7 @@ interface UseMoveHandler {
   playerWhoLeftSessionId: string;
   isBoardCreated: boolean;
   playerId: string;
-  inventory: PowerUp[];
+  inventory: PowerUps;
 }
 
 export default function useMoveHandler({

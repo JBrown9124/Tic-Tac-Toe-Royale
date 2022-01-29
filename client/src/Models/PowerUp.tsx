@@ -7,6 +7,7 @@ export interface PowerUps {
     description: string;
     rules: PowerUpRules;
     selectColor: string;
+    quantity: number;
   };
 }
 export interface PowerUpRules {
@@ -22,13 +23,16 @@ export interface PowerUpRules {
   areaShape:"line"|"square"
 }
 export interface PowerUp {
-  id: string;
+  
   name: string;
   imgUrl: string;
   value: number;
   description: string;
   rules: PowerUpRules;
   selectColor: string;
+  quantity:number
 }
+export interface PowerUps{
 
+}
 

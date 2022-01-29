@@ -13,6 +13,7 @@ from ..Models.board import BoardModel
 from ..Models.player import Player
 from ..Models.win import Win
 from ..ResponseModels.response_board import BoardResponseModel
+from ..Models.new_move import Move
 from django.core.cache import cache
 
 
@@ -27,12 +28,12 @@ class Board(APIView):
         game_status = body.get("gameStatus")
         new_move = game_status.get("newMove")
         new_power_up_use = game_status.get("newPowerUpUse")
-        
+
         power_up = body.get("powerUp")
 
         win = game_status.get("win")
         if type(win) == list:
-            win=win[0]
+            win = win[0]
         winner = win.get("whoWon")
         winning_moves = win.get("winningMoves")
         win_type = win.get("type")
@@ -67,17 +68,18 @@ class Board(APIView):
             ).to_dict()
             lobby_game_status_copy["win"] = win
 
-        if len(new_power_up_use["selectedPowerUpTiles"])==0:
+        if len(new_power_up_use["selectedPowerUpTiles"]) == 0:
             lobby_board_copy["moves"].append(new_move)
         else:
-            
+
             if (
                 new_power_up_use["powerUp"]["name"] == "arrow"
-                or new_power_up_use["powerUp"]["name"] == "cleave" or new_power_up_use["powerUp"]["name"] == "bomb"
+                or new_power_up_use["powerUp"]["name"] == "cleave"
+                or new_power_up_use["powerUp"]["name"] == "bomb"
             ):
                 for affected_tile in new_power_up_use["selectedPowerUpTiles"]:
                     for move in lobby_board_copy["moves"]:
-                    
+
                         if (
                             move["rowIdx"] == affected_tile["rowIdx"]
                             and move["tileIdx"] == affected_tile["tileIdx"]
@@ -87,23 +89,32 @@ class Board(APIView):
                 swapped_moves = set()
                 for affected_tile in new_power_up_use["selectedPowerUpTiles"]:
                     for move in lobby_board_copy["moves"]:
-                       
+
                         if (
                             move["rowIdx"] == affected_tile["rowIdx"]
                             and move["tileIdx"] == affected_tile["tileIdx"]
-                            and move["playerId"] != affected_tile["playerId"] and affected_tile["playerId"] not in swapped_moves
-                        ):  
-                            
+                            and move["playerId"] != affected_tile["playerId"]
+                            and affected_tile["playerId"] not in swapped_moves
+                        ):
+
                             move["playerId"] = affected_tile["playerId"]
                             swapped_moves.add(move["playerId"])
                             break
+            if new_power_up_use["powerUp"]["name"] == "fire":
+                affected_tile = new_power_up_use["selectedPowerUpTiles"][0]
+                fire_move = Move(
+                    row_idx=affected_tile["rowIdx"],
+                    tile_idx=affected_tile["tileIdx"],
+                    player_id="FIRE",
+                ).to_dict()
+                lobby_board_copy["moves"].append(fire_move)
 
         tile_amount = lobby_board_copy["size"] * lobby_board_copy["size"]
 
         if len(lobby_board_copy["moves"]) == tile_amount and not winner:
             win = Win(who_won="tie", type="tie").to_dict()
             lobby_game_status_copy["win"] = win
-        
+
         lobby_game_status_copy["newPowerUpUse"] = new_power_up_use
         lobby_game_status_copy["newMove"] = new_move
         lobby_copy["board"] = lobby_board_copy

@@ -104,7 +104,7 @@ export default function useCommands({
             playerId: playerId,
             playerLoaded: false,
             sessionId: socket.id,
-            inventory: [],
+            inventory: {},
           },
           hostSid: lobby.hostSid,
         };
@@ -130,7 +130,7 @@ export default function useCommands({
                   name: "",
                   description: "",
                   imgUrl: "",
-                  id: "",
+              
                   rules: {
                     affectsCaster: false,
                     direction: {
@@ -144,6 +144,7 @@ export default function useCommands({
                     areaShape: "line",
                   },
                   selectColor: "",
+                  quantity: 0
                 },
                 selectedPowerUpTiles: [],
               },
@@ -159,7 +160,7 @@ export default function useCommands({
                 name: "",
                 description: "",
                 imgUrl: "",
-                id: "",
+             
                 rules: {
                   affectsCaster: false,
                   direction: {
@@ -173,6 +174,7 @@ export default function useCommands({
                   areaShape: "line",
                 },
                 selectColor: "",
+                quantity: 0
               },
               selectedPowerUpTiles: [],
             },

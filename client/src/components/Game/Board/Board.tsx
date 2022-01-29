@@ -9,7 +9,7 @@ import {Player} from "../../../Models/Player"
 import { PlayerPieces } from "../../../Models/PlayerPieces";
 import { Lobby } from "../../../Models/Lobby";
 import { Move } from "../../../Models/Move";
-import {PowerUp } from "../../../Models/PowerUp"
+import {PowerUp, PowerUps } from "../../../Models/PowerUp"
 import { GameStatus } from "../../../Models/GameStatus";
 import { determineSizeOfPiece } from "../../../creators/BoardCreators/sizeOfPiece";
 import { useSound } from "use-sound";
@@ -30,7 +30,7 @@ interface BoardProps {
   lobbyId: number;
   lobbyHostSid: number;
   isCountDownFinished: boolean;
-  inventory: PowerUp[]
+  inventory: PowerUps
   selectedPowerUpTiles:Move[]
   setSelectedPowerUpTiles:(selectedPowerUpTiles:Move[]) => void,
   selectedPowerUp:PowerUp

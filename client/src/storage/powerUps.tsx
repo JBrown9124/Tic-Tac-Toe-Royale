@@ -1,4 +1,6 @@
 import fire from "../img/fire.png";
+import bomb from "../img/bomb.jpg"
+import mcolbomb from "../img/mcol-bomb.svg"
 import { PowerUps } from "../Models/PowerUp";
 export const powerUps: PowerUps = {
   "1": {
@@ -16,6 +18,7 @@ export const powerUps: PowerUps = {
       areaShape: "line",
     },
     selectColor: "#f8bbd0",
+    quantity: 0
   },
 
   "2": {
@@ -34,6 +37,7 @@ export const powerUps: PowerUps = {
       areaShape: "line",
     },
     selectColor: "#c8e6c9",
+    quantity: 0
   },
 
   "3": {
@@ -51,14 +55,15 @@ export const powerUps: PowerUps = {
       areaShape: "line",
     },
     selectColor: "#b2ebf2",
+    quantity: 0
   },
 
   "4": {
     name: "bomb",
     description: "Blow up a 4 square radius on any spot of the board",
     imgUrl:
-      "https://cdn.pixabay.com/photo/2017/01/31/16/59/bomb-2025548_960_720.png",
-    value: 4,
+    mcolbomb,
+        value: 4,
     rules: {
       affectsCaster: false,
       direction: { isVertical: true, isHorizontal: true, isDiagonal: true },
@@ -68,6 +73,7 @@ export const powerUps: PowerUps = {
       areaShape: "square",
     },
     selectColor: "#ffe0b2",
+    quantity: 0
   },
 
   "5": {
@@ -84,5 +90,6 @@ export const powerUps: PowerUps = {
       areaShape: "line",
     },
     selectColor: "#e1bee7",
+    quantity: 0
   },
 };

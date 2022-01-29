@@ -18,7 +18,8 @@ import useMoveHandler from "../../hooks/useMoveHandler";
 import updateAfterPlayerLeaves from "../../creators/BoardCreators/updateAfterPlayerLeaves";
 import TurnOrder from "./TurnOrder/TurnOrder";
 import Inventory from "./Inventory/Inventory";
-import { PowerUp } from "../../Models/PowerUp";
+import { PowerUp, PowerUps } from "../../Models/PowerUp";
+import { powerUps } from "../../storage/powerUps";
 import SelectedPower from "./SelectedPower/SelectedPower";
 import makeNewMove from "../../creators/APICreators/makeNewMove";
 
@@ -63,7 +64,7 @@ export default function Game({
   const [botCanMove, setBotCanMove] = useState(false);
   const [isCountDownFinished, setIsCountDownFinished] = useState(false);
   const [piece, setPiece] = useState<JSX.Element | string>("");
-  const [inventory, setInventory] = useState<PowerUp[]>([]);
+  const [inventory, setInventory] = useState<PowerUps>(powerUps);
   const [board, setBoard] = useState<(number | string)[][]>([[]]);
   const [playerPieces, setPlayerPieces] = useState<Player[]>([]);
   const sizeOfBoardPiece = determineSizeOfPiece(lobby?.board?.size);
@@ -74,7 +75,7 @@ export default function Game({
     name: "",
     description: "",
     imgUrl: "",
-    id: "",
+
     rules: {
       affectsCaster: false,
       direction: { isVertical: false, isHorizontal: false, isDiagonal: false },
@@ -84,6 +85,7 @@ export default function Game({
       areaShape: "line",
     },
     selectColor: "",
+    quantity: 0,
   });
   const [selectedPowerUpTiles, setSelectedPowerUpTiles] = useState<Move[]>([]);
   useEffect(() => {
@@ -113,10 +115,7 @@ export default function Game({
     inventory,
   });
   const onFinish = async () => {
-    if (
-      selectedPowerUp.name === "cleave" ||
-      selectedPowerUp.name === "arrow"
-    ) {
+    if (selectedPowerUp.name === "cleave" || selectedPowerUp.name === "arrow") {
       selectedPowerUpTiles.shift();
     }
     gameStatus.newPowerUpUse.powerUp = selectedPowerUp;
@@ -130,18 +129,20 @@ export default function Game({
     console.log(gameStatus, "ONFINISHGAMESTATUS");
     const gameStatusResponse = await makeNewMove(reqBody);
     if (gameStatusResponse) {
-      setInventory(
-        inventory.filter((item) => {
-          return item.id !== selectedPowerUp.id;
-        })
-      );
+      const powerUpKey = String(selectedPowerUp.value);
+      inventory[powerUpKey].quantity -= 1;
+      // setInventory(
+      //   inventory.filter((item) => {
+      //     return item.id !== selectedPowerUp.id;
+      //   })
+      // );
       setSelectedPowerUpTiles([]);
       setSelectedPowerUp({
         value: 0,
         name: "",
         description: "",
         imgUrl: "",
-        id: "",
+
         rules: {
           affectsCaster: false,
           direction: {
@@ -155,6 +156,7 @@ export default function Game({
           areaShape: "line",
         },
         selectColor: "",
+        quantity: 0,
       });
       setIsUsingPowerUp(false);
       setGameStatus(gameStatusResponse);
@@ -180,12 +182,13 @@ export default function Game({
       setIsBoardCreated(false);
       setIsLobbyReceived(false);
       setSelectedPowerUpTiles([]);
+      setInventory(powerUps);
       setSelectedPowerUp({
         value: 0,
         name: "",
         description: "",
         imgUrl: "",
-        id: "",
+
         rules: {
           affectsCaster: false,
           direction: {
@@ -199,6 +202,7 @@ export default function Game({
           areaShape: "line",
         },
         selectColor: "",
+        quantity: 0,
       });
       setIsUsingPowerUp(false);
     }
@@ -290,22 +294,22 @@ export default function Game({
                 />
               </Grid>
             )}
-            {inventory.length > 0 && (
-              <Grid item sx={{ p: 1 }}>
-                <Inventory
-                  powerOrMove={powerOrMove}
-                  isUsingPowerUp={isUsingPowerUp}
-                  setIsUsingPowerUp={(props) => setIsUsingPowerUp(props)}
-                  setSelectedPowerUpTiles={(props) =>
-                    setSelectedPowerUpTiles(props)
-                  }
-                  selectedPowerUp={selectedPowerUp}
-                  inventory={inventory}
-                  setCursor={(props) => setCursor(props)}
-                  setSelectedPowerUp={(props) => setSelectedPowerUp(props)}
-                />
-              </Grid>
-            )}
+
+            <Grid item sx={{ p: 1 }}>
+              <Inventory
+              isBoardCreated={isBoardCreated}
+                powerOrMove={powerOrMove}
+                isUsingPowerUp={isUsingPowerUp}
+                setIsUsingPowerUp={(props) => setIsUsingPowerUp(props)}
+                setSelectedPowerUpTiles={(props) =>
+                  setSelectedPowerUpTiles(props)
+                }
+                selectedPowerUp={selectedPowerUp}
+                inventory={inventory}
+                setCursor={(props) => setCursor(props)}
+                setSelectedPowerUp={(props) => setSelectedPowerUp(props)}
+              />
+            </Grid>
           </StatusBoardAnimator>
         </Grid>
 

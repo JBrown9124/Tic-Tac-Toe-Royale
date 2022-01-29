@@ -67,10 +67,8 @@ const BoardAnimator = ({
       setIsVisible(false);
       setIsRendered(false);
       const t = setTimeout(() => {
-        setLineDirection(
-          !win.type ? "None" : win.type === "tie" ? "horizontal" : win.type
-        );
-      }, 1000);
+        setLineDirection("None");
+      }, 10000);
       return () => {
         clearTimeout(t);
       };
@@ -96,10 +94,12 @@ const BoardAnimator = ({
       await setLineDirectionHandler();
       determineWinningMove();
     };
-    if (win?.type === "tie") {
-      setIsWinningMove(true);
-    } else {
-      handleWinningMove();
+    if (win.type) {
+      if (win?.type === "tie") {
+        setIsWinningMove(true);
+      } else {
+        handleWinningMove();
+      }
     }
   }, [win?.type]);
 

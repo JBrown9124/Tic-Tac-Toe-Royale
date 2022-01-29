@@ -5,7 +5,7 @@ import { GameStatus } from "../../../Models/GameStatus";
 import { Move } from "../../../Models/Move";
 import { useEffect, useState } from "react";
 import { useSound } from "use-sound";
-import { PowerUp } from "../../../Models/PowerUp";
+import { PowerUp, PowerUps } from "../../../Models/PowerUp";
 import CustomButton from "../../CustomButton";
 import { backgroundColor } from "../../../themes/theme1";
 
@@ -27,7 +27,7 @@ interface StatusBoardProps {
   setSelectedPowerUp: (powerUp: PowerUp) => void;
   setSelectedPowerUpTiles: (powerUpTiles: Move[]) => void;
   isUsingPowerUp: boolean;
-  inventory: PowerUp[]
+  inventory: PowerUps
 }
 export default function StatusBoard({
   playerPieces,
@@ -83,7 +83,7 @@ export default function StatusBoard({
       name: "",
       description: "",
       imgUrl: "",
-      id: "",
+  
       rules: {
         affectsCaster: false,
         direction: {
@@ -97,6 +97,7 @@ export default function StatusBoard({
         areaShape: "line",
       },
       selectColor: "",
+      quantity: 0
     });
     setSelectedPowerUpTiles([]);
   };
@@ -193,7 +194,7 @@ export default function StatusBoard({
             />
           </Grid>
         </Grid>
-        {powerOrMove === "Power" && inventory.length>0 ? (
+        {powerOrMove === "Power"? (
           <Grid item>
             <Typography
               sx={{

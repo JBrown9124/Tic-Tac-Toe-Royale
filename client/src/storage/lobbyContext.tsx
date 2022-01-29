@@ -14,7 +14,7 @@ const lobby: Lobby = {
         name: "",
         description: "",
         imgUrl: "",
-        id: "",
+      quantity:0,
         rules: {
           affectsCaster: false,
           direction: {

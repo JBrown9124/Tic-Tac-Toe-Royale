@@ -14,6 +14,7 @@ export default function SelectedPower({
   selectedPowerUpTiles,
   onFinish,
 }: SelectedPowerProps) {
+  const caster = selectedPowerUp.rules.affectsCaster ? 1 : 0;
   return (
     <>
       <Grid
@@ -54,7 +55,7 @@ export default function SelectedPower({
             {selectedPowerUp.description}
           </Typography>
         </Grid>
-        {selectedPowerUpTiles.length >= selectedPowerUp.rules.tilesAffected && (
+        {selectedPowerUpTiles.length >= selectedPowerUp.rules.tilesAffected+caster && (
           <Grid item sx={{ p: 1 }}>
             <PulsatingAnimator>
             <CustomButton
