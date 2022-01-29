@@ -35,6 +35,29 @@ const updateAfterPlayerLeaves = async ({
     },
     whoTurn: playerPieces[playerPieces.length - 1]?.playerId,
     newMove: { playerId: "", rowIdx: 0, tileIdx: 0 },
+    newPowerUpUse: {
+      powerUp: {
+        value: 0,
+        name: "",
+        description: "",
+        imgUrl: "",
+        quantity: 0,
+        rules: {
+          affectsCaster: false,
+          direction: {
+            isVertical: false,
+            isHorizontal: false,
+            isDiagonal: false,
+          },
+          castAnywhere: false,
+          tilesAffected: 0,
+          mustBeEmptyTile: false,
+          areaShape: "line",
+        },
+        selectColor: "",
+      },
+      selectedPowerUpTiles: [],
+    },
   });
 };
 

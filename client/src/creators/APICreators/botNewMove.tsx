@@ -1,19 +1,19 @@
 import axios from "axios";
-import { NewMove } from "../../Models/NewMove";
+import { Move } from "../../Models/Move";
 import url from "../../storage/url";
 interface BodyProps {
   playerId: string;
   lobbyId: number;
   
 }
-const saveBotNewMove = async (body: BodyProps) => {
+const saveBotMove = async (body: BodyProps) => {
   const { data } = await axios.post(`${url}/api/bot`, body);
   return data;
 };
 
-const botNewMove = async (body: BodyProps): Promise<NewMove | undefined> => {
+const botMove = async (body: BodyProps): Promise<Move | undefined> => {
   try {
-    const newMove = await saveBotNewMove(body);
+    const newMove = await saveBotMove(body);
 
     return newMove;
   } catch (e) {
@@ -22,4 +22,4 @@ const botNewMove = async (body: BodyProps): Promise<NewMove | undefined> => {
   }
 };
 
-export default botNewMove;
+export default botMove;

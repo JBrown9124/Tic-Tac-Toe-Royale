@@ -1,4 +1,3 @@
-
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
@@ -16,12 +15,17 @@ export default function SkeletonPlayers() {
           key={1}
           primary={
             <ListItemIcon>
-              <Skeleton animation="wave" sx={{ width: "40px", height: "40px" }} />
+              <Skeleton
+                animation="wave"
+                sx={{ width: "40px", height: "40px" }}
+              />
             </ListItemIcon>
           }
         />
 
-        <ListItemText primary={<Skeleton animation="wave" sx={{ textAlign: "center" }} />} />
+        <ListItemText
+          primary={<Skeleton animation="wave" sx={{ textAlign: "center" }} />}
+        />
       </ListItem>{" "}
       <ListItem>
         <ListItemIcon>
@@ -32,12 +36,17 @@ export default function SkeletonPlayers() {
           key={2}
           primary={
             <ListItemIcon>
-              <Skeleton animation="wave" sx={{ width: "40px", height: "40px" }} />
+              <Skeleton
+                animation="wave"
+                sx={{ width: "40px", height: "40px" }}
+              />
             </ListItemIcon>
           }
         />
 
-        <ListItemText primary={<Skeleton animation="wave" sx={{ textAlign: "center" }} />} />
+        <ListItemText
+          primary={<Skeleton animation="wave" sx={{ textAlign: "center" }} />}
+        />
       </ListItem>{" "}
       <ListItem>
         <ListItemIcon>
@@ -48,7 +57,10 @@ export default function SkeletonPlayers() {
           key={3}
           primary={
             <ListItemIcon>
-              <Skeleton animation="wave" sx={{ width: "40px", height: "40px" }} />
+              <Skeleton
+                animation="wave"
+                sx={{ width: "40px", height: "40px" }}
+              />
             </ListItemIcon>
           }
         />
@@ -57,19 +69,24 @@ export default function SkeletonPlayers() {
       </ListItem>{" "}
       <ListItem>
         <ListItemIcon>
-          <Skeleton animation="wave"  sx={{ width: "40px", height: "40px" }} />
+          <Skeleton animation="wave" sx={{ width: "40px", height: "40px" }} />
         </ListItemIcon>
         <ListItemText
           inset
           key={4}
           primary={
             <ListItemIcon>
-              <Skeleton animation="wave"  sx={{ width: "40px", height: "40px" }} />
+              <Skeleton
+                animation="wave"
+                sx={{ width: "40px", height: "40px" }}
+              />
             </ListItemIcon>
           }
         />
 
-        <ListItemText primary={<Skeleton animation="wave" sx={{ textAlign: "center" }} />} />
+        <ListItemText
+          primary={<Skeleton animation="wave" sx={{ textAlign: "center" }} />}
+        />
       </ListItem>
     </>
   );

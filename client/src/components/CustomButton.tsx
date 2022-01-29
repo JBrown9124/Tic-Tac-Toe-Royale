@@ -16,18 +16,18 @@ const StyledButton = styled(Button)(({ theme }) => ({
   textTransform: "none",
   
   height: "50px",
-  width: "%100",
-  fontSize: "1.1rem",
-  borderRadius:"60px"
+  
+  // fontSize: "1.1rem",
+  borderRadius:"60px",
   //   [theme.breakpoints.up("md")]: {
   //     fontSize: "1.1rem",
   //     height: "50px",
-  //     width: "130px",
+      
   //   },
   //   [theme.breakpoints.down("md")]: {
-  //     fontSize: ".6rem",
-  //     height: "30px",
-  //     width: "70px",
+  //     fontSize: ".8rem",
+  //     height: "50px",
+      
   //   },
 }));
 interface CustomButtonProps {

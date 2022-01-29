@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import { Lobby } from "../Models/Lobby";
 import { GameStatus } from "../Models/GameStatus";
-import botNewMove from "../creators/APICreators/botNewMove";
-import determineWinner from "../creators/BoardCreators/determineWinner";
+import botMove from "../creators/APICreators/botNewMove";
+import determineWinner from "../creators/BoardCreators/determineWinner/determineWinner";
 import { Player } from "../Models/Player";
+import { PowerUp, PowerUps } from "../Models/PowerUp";
 import useSound from "use-sound";
 import getRandomInt from "../creators/BoardCreators/getRandomInt";
-
-
 
 interface UseMoveHandler {
   botCanMove: boolean;
@@ -21,6 +20,7 @@ interface UseMoveHandler {
   playerWhoLeftSessionId: string;
   isBoardCreated: boolean;
   playerId: string;
+  inventory: PowerUps;
 }
 
 export default function useMoveHandler({
@@ -35,12 +35,28 @@ export default function useMoveHandler({
   playerWhoLeftSessionId,
   isBoardCreated,
   playerId,
+  inventory,
 }: UseMoveHandler) {
   const [startOtherPlayerMoveSound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/otherPlayerMoveSound.mp3"
   );
   const [playYourTurnSound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/yourTurnSound.mp3"
+  );
+  const [playFireSound] = useSound(
+    process.env.PUBLIC_URL + "static/assets/sounds/fireSound.mp3"
+  );
+  const [playArrowSound] = useSound(
+    process.env.PUBLIC_URL + "static/assets/sounds/arrowSound.mp3"
+  );
+  const [playBombSound] = useSound(
+    process.env.PUBLIC_URL + "static/assets/sounds/bombSound.mp3"
+  );
+  const [playCleaveSound] = useSound(
+    process.env.PUBLIC_URL + "static/assets/sounds/cleaveSound.mp3"
+  );
+  const [playSwapSound] = useSound(
+    process.env.PUBLIC_URL + "static/assets/sounds/swapSound.mp3"
   );
   const [count, setCount] = useState(1);
 
@@ -63,18 +79,19 @@ export default function useMoveHandler({
           };
 
           const botDelay = setTimeout(() => {
-            botNewMove(reqBody).then((botNewMoveResponse) => {
-              if (botNewMoveResponse) {
+            botMove(reqBody).then((botMoveResponse) => {
+              if (botMoveResponse) {
                 determineWinner(
-                  botNewMoveResponse.rowIdx,
-                  botNewMoveResponse.tileIdx,
+                  botMoveResponse.rowIdx,
+                  botMoveResponse.tileIdx,
                   board,
                   lobby.board.size,
-                  botNewMoveResponse.playerId,
+                  botMoveResponse.playerId,
                   lobby.board.winBy,
                   lobby.lobbyId,
                   lobby.hostSid,
-                  setGameStatus
+                  setGameStatus,
+                  inventory
                 );
               }
             });
@@ -105,6 +122,7 @@ export default function useMoveHandler({
   }, [gameStatus.whoTurn]);
 
   useEffect(() => {
+  
     if (gameStatus.newMove.playerId === gameStatus.whoTurn) {
       startOtherPlayerMoveSound();
     }
@@ -112,7 +130,71 @@ export default function useMoveHandler({
     if (gameStatus.newMove.playerId !== "") {
       board[gameStatus.newMove.rowIdx][gameStatus.newMove.tileIdx] =
         gameStatus.newMove.playerId;
-      setCount((state: number) => state + 1);
     }
-  }, [gameStatus.newMove]);
+  
+    if (gameStatus?.newPowerUpUse?.selectedPowerUpTiles?.length!==0)
+    switch (gameStatus?.newPowerUpUse?.powerUp?.name) {
+      case "fire":
+        board[gameStatus.newPowerUpUse.selectedPowerUpTiles[0].rowIdx][
+          gameStatus.newPowerUpUse.selectedPowerUpTiles[0].tileIdx
+        ] = "FIRE";
+        playFireSound();
+        break;
+      case "arrow":
+        for (
+          let i = 0;
+          i < gameStatus.newPowerUpUse.selectedPowerUpTiles.length;
+          i++
+        ) {
+          board[gameStatus.newPowerUpUse.selectedPowerUpTiles[i].rowIdx][
+            gameStatus.newPowerUpUse.selectedPowerUpTiles[i].tileIdx
+          ] = getRandomInt(1, 6);
+        }
+        playArrowSound();
+        break;
+      case "cleave":
+        for (
+          let i = 0;
+          i < gameStatus.newPowerUpUse.selectedPowerUpTiles.length;
+          i++
+        ) {
+          board[gameStatus.newPowerUpUse.selectedPowerUpTiles[i].rowIdx][
+            gameStatus.newPowerUpUse.selectedPowerUpTiles[i].tileIdx
+          ] = getRandomInt(1, 6);
+        }
+        playCleaveSound();
+        break;
+      case "bomb":
+        for (
+          let i = 0;
+          i < gameStatus.newPowerUpUse.selectedPowerUpTiles.length;
+          i++
+        ) {
+          board[gameStatus.newPowerUpUse.selectedPowerUpTiles[i].rowIdx][
+            gameStatus.newPowerUpUse.selectedPowerUpTiles[i].tileIdx
+          ] = getRandomInt(1, 6);
+        }
+        playBombSound();
+        break;
+      case "swap":
+        [
+          board[gameStatus.newPowerUpUse.selectedPowerUpTiles[0].rowIdx][
+            gameStatus.newPowerUpUse.selectedPowerUpTiles[0].tileIdx
+          ],
+          board[gameStatus.newPowerUpUse.selectedPowerUpTiles[1].rowIdx][
+            gameStatus.newPowerUpUse.selectedPowerUpTiles[1].tileIdx
+          ],
+        ] = [
+          board[gameStatus.newPowerUpUse.selectedPowerUpTiles[1].rowIdx][
+            gameStatus.newPowerUpUse.selectedPowerUpTiles[1].tileIdx
+          ],
+          board[gameStatus.newPowerUpUse.selectedPowerUpTiles[0].rowIdx][
+            gameStatus.newPowerUpUse.selectedPowerUpTiles[0].tileIdx
+          ],
+        ];
+        playSwapSound();
+    }
+        setCount((state: number) => state + 1);
+    
+  }, [gameStatus.newMove, gameStatus.newPowerUpUse]);
 }

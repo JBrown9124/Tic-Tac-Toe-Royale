@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import PregameModal from "./components/PregameModal/PregameModal";
 import { useCookies } from "react-cookie";
 import Game from "./components/Game/Game";
-import { NewMove } from "./Models/NewMove";
+import { Move } from "./Models/Move";
 import { Lobby } from "./Models/Lobby";
 import { GameStatus } from "./Models/GameStatus";
 import startGame from "./creators/APICreators/startGame";
@@ -12,7 +12,8 @@ import { RgbaColor } from "react-colorful";
 import useCommands from "./hooks/useCommands";
 import useSocket from "./hooks/useSocket";
 import BuildingBoardSplashScreen from "./components/BuildingBoardSplashScreen";
-import {backgroundColor} from "./themes/theme1"
+import { backgroundColor } from "./themes/theme1";
+import fire from "./img/fire.png";
 
 function App() {
   const [action, setAction] = useState("welcome");
@@ -31,17 +32,37 @@ function App() {
   const [pieceSelection, setPieceSelection] = useState("");
   const [isHost, setIsHost] = useState(false);
   const [playerWhoLeftSessionId, setPlayerWhoLeftSessionId] = useState("");
-
+  const [cursor, setCursor] = useState("");
   const [gameStatus, setGameStatus] = useState<GameStatus>({
     win: { whoWon: null, type: null, winningMoves: null },
     whoTurn: "",
     newMove: { playerId: "", rowIdx: 0, tileIdx: 0 },
+    newPowerUpUse: {
+      powerUp: {
+        value: 0,
+        name: "",
+        description: "",
+        imgUrl: "",
+     
+        rules: {
+          affectsCaster: false,
+          direction: {
+            isVertical: false,
+            isHorizontal: false,
+            isDiagonal: false,
+          },
+          castAnywhere: false,
+          tilesAffected: 0,
+          mustBeEmptyTile: false,
+          areaShape: "line",
+        },
+        selectColor: "",
+        quantity: 0
+      },
+      selectedPowerUpTiles: [],
+    },
   });
-  const [newMove, setNewMove] = useState<NewMove>({
-    playerId: "",
-    rowIdx: 0,
-    tileIdx: 0,
-  });
+
   const [lobby, setLobby] = useState<Lobby>({
     hostSid: 0,
     lobbyId: 0,
@@ -56,6 +77,30 @@ function App() {
       win: { whoWon: null, type: null, winningMoves: null },
       whoTurn: "",
       newMove: { playerId: "", rowIdx: 0, tileIdx: 0 },
+      newPowerUpUse: {
+        powerUp: {
+          value: 0,
+          name: "",
+          description: "",
+          imgUrl: "",
+        
+          rules: {
+            affectsCaster: false,
+            direction: {
+              isVertical: false,
+              isHorizontal: false,
+              isDiagonal: false,
+            },
+            castAnywhere: false,
+            tilesAffected: 0,
+            mustBeEmptyTile: false,
+            areaShape: "line",
+          },
+          selectColor: "",
+          quantity: 0
+        },
+        selectedPowerUpTiles: [],
+      },
     },
   });
 
@@ -131,6 +176,7 @@ function App() {
                 }, ${lobby.board.color?.a - 0.5})`,
           overflowY: "auto",
           overflowX: "hidden",
+          cursor: `url(./img/fire.png)`,
         }}
       >
         {action === "begin" && !isLobbyReceived && (
@@ -142,6 +188,7 @@ function App() {
           action === "in game") && (
           <Grid item>
             <Game
+              setCursor={(props) => setCursor(props)}
               playerWhoLeftSessionId={playerWhoLeftSessionId}
               pieceSelection={pieceSelection}
               setGameStatus={(props) => setGameStatus(props)}

@@ -4,6 +4,9 @@ import { useState, useEffect, ReactNode } from "react";
 import useSound from "use-sound";
 import Typography from "@mui/material/Typography";
 import { RgbaColor } from "react-colorful";
+import {createTheme} from "@mui/material/styles";
+
+
 interface CountDownAnimatorProps {
   delay?: number;
   x?: number;
@@ -35,7 +38,7 @@ export default function CountDownAnimator({
   boardColor,
 }: CountDownAnimatorProps) {
   const [fade, setFade] = useState(false);
-
+  let theme = createTheme();
   const [index, setIndex] = useState(0);
   const [numbers, setNumbers] = useState(["", 3, 2, 1, "Begin", ""]);
   const [startCountDownSound] = useSound(
@@ -103,10 +106,14 @@ export default function CountDownAnimator({
               // transform: `translate(-50%, -50%)`,
               fontFamily: "Major Mono Display, monospace",
               fontWeight: "bold",
-              
-              fontSize: "6rem",
-              color:"black"
-                 
+
+              [theme.breakpoints.up("sm")]: {
+                fontSize: "6rem",
+              },
+              [theme.breakpoints.down("sm")]: {
+                fontSize: "3rem",
+              },
+              color: "black",
             }}
           >
             {numbers[i]}

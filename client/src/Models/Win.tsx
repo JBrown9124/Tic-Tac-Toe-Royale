@@ -1,4 +1,4 @@
-import {NewMove} from './NewMove';
+import {Move} from './Move';
 export interface Win{
     whoWon:null|string,
     type:string|null,

@@ -66,12 +66,19 @@ const BoardAnimator = ({
       setIsWinningMove(false);
       setIsVisible(false);
       setIsRendered(false);
+    
+      const t = setTimeout(() => {
+        setLineDirection("None");
+      }, 5000);
+      return () => {
+        clearTimeout(t);
+      };
     }
   }, [isCountDownFinished]);
   useEffect(() => {
     const handleWinningMove = async () => {
       const setLineDirectionHandler = async () => {
-        setLineDirection(
+        return setLineDirection(
           !win.type ? "None" : win.type === "tie" ? "horizontal" : win.type
         );
       };
@@ -88,12 +95,14 @@ const BoardAnimator = ({
       await setLineDirectionHandler();
       determineWinningMove();
     };
-    if (win?.type === "tie") {
-      setIsWinningMove(true);
-    } else {
-      handleWinningMove();
+    if (win.type) {
+      if (win?.type === "tie") {
+        setIsWinningMove(true);
+      } else {
+        handleWinningMove();
+      }
     }
-  }, [win?.type]);
+  }, [win.type]);
 
   const style = useSpring({
     opacity: isVisible ? 1 : 0,
@@ -125,6 +134,7 @@ const BoardAnimator = ({
       left: "50%",
       delay: move.rowIdx,
       rotate: 0,
+      opacity: isWinningMove ? 1 : 0,
     },
     horizontal: {
       height: "4px",
@@ -133,6 +143,7 @@ const BoardAnimator = ({
       left: "0%",
       delay: move.tileIdx,
       rotate: 0,
+      opacity: isWinningMove ? 1 : 0,
     },
     diagonalRight: {
       rotate: 45,
@@ -153,12 +164,26 @@ const BoardAnimator = ({
       rotate: -45,
       opacity: isWinningMove ? 1 : 0,
     },
+    None: {
+      height: "0px",
+      width: "0%",
+      top: "0%",
+      left: "0%",
+      delay: 0,
+      rotate: 0,
+      opacity: 0,
+    },
   };
   const lineStyle = useSpring({
     height: directionProps[lineDirection]?.height,
     width: directionProps[lineDirection]?.width,
-    opacity: directionProps[lineDirection]?.opacity,
-
+    opacity: 1,
+    transform: `translate(${0}px, ${0}px)
+    rotate(${directionProps[lineDirection]?.rotate}deg)
+    scale(${1})`,
+    position: "absolute",
+    top: directionProps[lineDirection]?.top,
+    left: directionProps[lineDirection]?.left,
     zIndex: 9999,
 
     delay: delay / 2,
@@ -180,12 +205,7 @@ const BoardAnimator = ({
       <animated.div
         style={{
           ...(lineStyle as any),
-          transform: `translate(${0}px, ${0}px)
-         rotate(${directionProps[lineDirection]?.rotate}deg)
-         scale(${1})`,
-          position: "absolute",
-          top: directionProps[lineDirection]?.top,
-          left: directionProps[lineDirection]?.left,
+
           background:
             beforeColor?.r * 0.299 +
               beforeColor?.g * 0.587 +

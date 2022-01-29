@@ -1,3 +1,4 @@
+import getRandomInt from './getRandomInt'
 const createBoard = async (
   setBoard: (boardValue: number[][]) => void,
   boardSize: number,
@@ -9,7 +10,7 @@ const createBoard = async (
     let row: number[] = [];
 
     for (let j = 0; j < boardSize; j++) {
-      row.push(0);
+      row.push(getRandomInt(0,5));
     }
     board.push(row);
   }

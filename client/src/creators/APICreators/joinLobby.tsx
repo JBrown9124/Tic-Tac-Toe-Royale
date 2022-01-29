@@ -6,7 +6,7 @@ import { Player } from "../../Models/Player";
 interface BodyProps {
   lobbyId: number;
   playerName: string;
-  sessionId:string|null;
+  sessionId: string | null;
 }
 interface DataProps {
   lobby: Lobby;
@@ -26,7 +26,6 @@ const sendLobbyInfo = (data: DataProps) => {
 const joinLobby = async (body: BodyProps): Promise<DataProps | string> => {
   try {
     const data = await saveLobby(body);
-
     sendLobbyInfo(data);
 
     return await data;

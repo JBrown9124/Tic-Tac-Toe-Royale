@@ -1,4 +1,4 @@
-class NewMove:
+class Move:
     def __init__(self, row_idx=0, tile_idx=0, player_id=""):
         self.row_idx = row_idx
         self.tile_idx = tile_idx

@@ -1,7 +1,9 @@
 import { Win } from "./Win";
-import {NewMove} from "./NewMove"
+import {Move} from "./Move"
+import {PowerUp} from "./PowerUp"
 export interface GameStatus {
   win: Win;
   whoTurn: string;
-  newMove: NewMove;
+  newMove: Move;
+  newPowerUpUse:{powerUp: PowerUp, selectedPowerUpTiles:Move[]}
 }

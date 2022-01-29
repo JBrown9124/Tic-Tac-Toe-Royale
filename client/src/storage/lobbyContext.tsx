@@ -8,7 +8,29 @@ const lobby: Lobby = {
   gameStatus: {
     win: { whoWon: null, type: null, winningMoves: null },
     whoTurn: "",
-    newMove: { rowIdx: 0, tileIdx: 0, playerId: "" },
+    newMove: { rowIdx: 0, tileIdx: 0, playerId: "" }, newPowerUpUse: {
+      powerUp: {
+        value: 0,
+        name: "",
+        description: "",
+        imgUrl: "",
+      quantity:0,
+        rules: {
+          affectsCaster: false,
+          direction: {
+            isVertical: false,
+            isHorizontal: false,
+            isDiagonal: false,
+          },
+          castAnywhere: false,
+          tilesAffected: 0,
+          mustBeEmptyTile: false,
+          areaShape: "line",
+        },
+        selectColor: "",
+      },
+      selectedPowerUpTiles: [],
+    },
   },
 };
 

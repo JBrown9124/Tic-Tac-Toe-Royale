@@ -1,8 +1,8 @@
 import { RgbaColor } from "react-colorful";
-import {NewMove} from './NewMove'
+import {Move} from './Move'
 export interface Board{
     color:RgbaColor,
     size:number,
     winBy:number,
-    moves:NewMove[]
+    moves:Move[]
 }

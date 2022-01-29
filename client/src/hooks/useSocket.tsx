@@ -1,11 +1,12 @@
 import { socket } from "../socket";
 import { useEffect, useRef, useState } from "react";
 import { Lobby } from "../Models/Lobby";
-import { NewMove } from "../Models/NewMove";
+import { Move } from "../Models/Move";
 import getLobby from "../creators/APICreators/getLobby";
 import { GameStatus } from "../Models/GameStatus";
 import { Player } from "../Models/Player";
 import leaveLobby from "../creators/APICreators/leaveLobby";
+import {powerUps} from "../storage/powerUps"
 import { RgbaColor } from "react-colorful";
 interface UseSocketProps {
   lobby: Lobby;
@@ -56,7 +57,7 @@ export default function useSocket({
 
       socket.on("player-leave-lobby", (data) => {
         const lobbyCopy = lobbyRef.current;
-        
+
         if (actionRef.current !== "begin" && actionRef.current !== "in game") {
           let newPlayerList = lobbyCopy.players.filter((player) => {
             return player.playerId !== data.removedPlayer.playerId;
@@ -68,7 +69,7 @@ export default function useSocket({
                 player.isHost = true;
               }
             });
-            
+
             if (data.newHost.playerId === playerIdRef.current) {
               setAction("create");
               setIsHost(true);
@@ -78,7 +79,6 @@ export default function useSocket({
           lobbyCopy.players = newPlayerList;
 
           setLobby({ ...lobbyCopy });
-        
         } else if (
           actionRef.current === "begin" ||
           actionRef.current === "in game"
@@ -95,7 +95,6 @@ export default function useSocket({
       });
 
       socket.on("player-disconnected", (playerSessionId) => {
-       
         const lobbyCopy = lobbyRef.current;
 
         const reqBody = {
@@ -104,16 +103,16 @@ export default function useSocket({
             name: null,
             piece: "Not Needed",
             isHost: false,
-
+            inventory: {},
             isReady: false,
             playerId: playerId,
             playerLoaded: false,
             sessionId: playerSessionId,
+            
           },
           hostSid: lobbyCopy.hostSid,
         };
         leaveLobby(reqBody).then((response) => {
-          
           if (response) {
             const { data } = response;
             const { newHost, lobby } = data;
@@ -131,7 +130,7 @@ export default function useSocket({
                 setHostSize(lobbyCopy.board.size);
               }
             }
-            
+
             if (
               actionRef.current !== "begin" &&
               actionRef.current !== "in game" &&
@@ -161,11 +160,11 @@ export default function useSocket({
           );
         }, 500);
       });
-      
+
       socket.on("start-game", (data) => {
         setAction("begin");
       });
-      
+
       socket.on("play-again", (data) => {
         setAction("begin");
       });
@@ -187,7 +186,7 @@ export default function useSocket({
             playerId: newPlayer.playerId,
             piece: isNewPlayerBot ? newPlayer.piece : "",
             isHost: false,
-
+            inventory: powerUps,
             playerLoaded: isNewPlayerBot ? true : false,
             isReady: isNewPlayerBot ? true : false,
             sessionId: newPlayer.sessionId,
