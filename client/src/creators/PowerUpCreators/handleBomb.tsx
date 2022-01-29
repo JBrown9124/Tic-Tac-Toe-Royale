@@ -5,29 +5,32 @@ const handleBomb = (
   playerId: string,
   tileIdx: number,
   rowIdx: number,
-  setSelectedPowerUpTiles: (selectedPowerUpTiles: Move[]) => void
+  setSelectedPowerUpTiles: (selectedPowerUpTiles: Move[]) => void,
+  boardSize: number
 ) => {
   selectedPowerUpTiles = [];
-  selectedPowerUpTiles.push({
-    playerId: playerId,
-    tileIdx: tileIdx,
-    rowIdx: rowIdx,
-  });
-  selectedPowerUpTiles.push({
-    playerId: playerId,
-    tileIdx: tileIdx + 1,
-    rowIdx: rowIdx,
-  });
-  selectedPowerUpTiles.push({
-    playerId: playerId,
-    tileIdx: tileIdx,
-    rowIdx: rowIdx + 1,
-  });
-  selectedPowerUpTiles.push({
-    playerId: playerId,
-    tileIdx: tileIdx + 1,
-    rowIdx: rowIdx + 1,
-  });
-  setSelectedPowerUpTiles([...selectedPowerUpTiles]);
+  if (tileIdx + 1 < boardSize && rowIdx + 1 < boardSize) {
+    selectedPowerUpTiles.push({
+      playerId: playerId,
+      tileIdx: tileIdx,
+      rowIdx: rowIdx,
+    });
+    selectedPowerUpTiles.push({
+      playerId: playerId,
+      tileIdx: tileIdx + 1,
+      rowIdx: rowIdx,
+    });
+    selectedPowerUpTiles.push({
+      playerId: playerId,
+      tileIdx: tileIdx,
+      rowIdx: rowIdx + 1,
+    });
+    selectedPowerUpTiles.push({
+      playerId: playerId,
+      tileIdx: tileIdx + 1,
+      rowIdx: rowIdx + 1,
+    });
+    setSelectedPowerUpTiles([...selectedPowerUpTiles]);
+  }
 };
 export default handleBomb;

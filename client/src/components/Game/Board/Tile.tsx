@@ -67,26 +67,33 @@ export const Tile = ({
   );
   const [count, setCount] = useState(0);
   const [isSelected, setIsSelected] = useState(false);
+  const playerAttackPieceSelected =
+    selectedPowerUpTiles.length > 1 &&
+    (selectedPowerUp.name === "cleave" ||
+      selectedPowerUp.name === "swap" ||
+      selectedPowerUp.name === "arrow") &&
+    tileIdx === selectedPowerUpTiles[0].tileIdx &&
+    rowIdx === selectedPowerUpTiles[0].rowIdx;
   const handleClick = async () => {
     if (typeof value === "number" && powerOrMove === "Move") {
-      // setTile({ value: chosenPiece });
-
       startSnare();
       updateBoardCache();
       selectedPowerUpTiles = [];
       setIsSelected(false);
     }
-    handlePowerUps({
-      selectedPowerUp,
-      selectedPowerUpTiles,
-      playerId,
-      tileIdx,
-      rowIdx,
-      setSelectedPowerUpTiles,
-      boardSize,
-      board,
-      setIsSelected,
-    });
+    if (selectedPowerUp.quantity > 0) {
+      handlePowerUps({
+        selectedPowerUp,
+        selectedPowerUpTiles,
+        playerId,
+        tileIdx,
+        rowIdx,
+        setSelectedPowerUpTiles,
+        boardSize,
+        board,
+        setIsSelected,
+      });
+    }
   };
 
   //Clear tiles select status
@@ -97,6 +104,9 @@ export const Tile = ({
       }
     });
     if (selectedPowerUpTiles.length === 0) {
+      setIsSelected(false);
+    }
+    if (playerAttackPieceSelected) {
       setIsSelected(false);
     }
   }, [rowIdx, selectedPowerUpTiles.length, tileIdx]);
@@ -152,10 +162,12 @@ export const Tile = ({
             />
           ) : value === "FIRE" ? (
             <img
-            style={{ height: sizeOfBoardPiece.mobile,
-              width: sizeOfBoardPiece.mobile,
-              maxHeight: sizeOfBoardPiece.desktop,
-              maxWidth: sizeOfBoardPiece.desktop, }}
+              style={{
+                height: sizeOfBoardPiece.mobile,
+                width: sizeOfBoardPiece.mobile,
+                maxHeight: sizeOfBoardPiece.desktop,
+                maxWidth: sizeOfBoardPiece.desktop,
+              }}
               src={"https://c.tenor.com/VbezPY1TRaMAAAAC/fire-flames.gif"}
               alt={"fire"}
             />

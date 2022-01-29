@@ -1,7 +1,7 @@
 import Grid from "@mui/material/Grid";
 import { Player } from "../../Models/Player";
 import { useState, useEffect, useLayoutEffect, useMemo } from "react";
-import determineWinner from "../../creators/BoardCreators/determineWinner";
+import determineWinner from "../../creators/BoardCreators/determineWinner/determineWinner";
 import createBoard from "../../creators/BoardCreators/createBoard";
 import { useCookies } from "react-cookie";
 import getPlayerPieces from "../../creators/BoardCreators/getPlayerPieces";
@@ -22,7 +22,7 @@ import { PowerUp, PowerUps } from "../../Models/PowerUp";
 import { powerUps } from "../../storage/powerUps";
 import SelectedPower from "./SelectedPower/SelectedPower";
 import makeNewMove from "../../creators/APICreators/makeNewMove";
-
+import onFinish from "../../creators/BoardCreators/onFinish";
 interface GameProps {
   lobby: Lobby;
   gameStatus: GameStatus;
@@ -114,54 +114,7 @@ export default function Game({
     playerId,
     inventory,
   });
-  const onFinish = async () => {
-    if (selectedPowerUp.name === "cleave" || selectedPowerUp.name === "arrow") {
-      selectedPowerUpTiles.shift();
-    }
-    gameStatus.newPowerUpUse.powerUp = selectedPowerUp;
-    gameStatus.newPowerUpUse.selectedPowerUpTiles = selectedPowerUpTiles;
-    gameStatus.newMove.playerId = "";
-    const reqBody = {
-      lobbyId: lobby.lobbyId,
-      hostSid: lobby.hostSid,
-      gameStatus: gameStatus,
-    };
-    console.log(gameStatus, "ONFINISHGAMESTATUS");
-    const gameStatusResponse = await makeNewMove(reqBody);
-    if (gameStatusResponse) {
-      const powerUpKey = String(selectedPowerUp.value);
-      inventory[powerUpKey].quantity -= 1;
-      // setInventory(
-      //   inventory.filter((item) => {
-      //     return item.id !== selectedPowerUp.id;
-      //   })
-      // );
-      setSelectedPowerUpTiles([]);
-      setSelectedPowerUp({
-        value: 0,
-        name: "",
-        description: "",
-        imgUrl: "",
 
-        rules: {
-          affectsCaster: false,
-          direction: {
-            isVertical: false,
-            isHorizontal: false,
-            isDiagonal: false,
-          },
-          castAnywhere: false,
-          tilesAffected: 0,
-          mustBeEmptyTile: false,
-          areaShape: "line",
-        },
-        selectColor: "",
-        quantity: 0,
-      });
-      setIsUsingPowerUp(false);
-      setGameStatus(gameStatusResponse);
-    }
-  };
   const quitGame = () => {
     playLeaveSound();
     setBotCanMove(false);
@@ -182,7 +135,7 @@ export default function Game({
       setIsBoardCreated(false);
       setIsLobbyReceived(false);
       setSelectedPowerUpTiles([]);
-      setInventory(powerUps);
+
       setSelectedPowerUp({
         value: 0,
         name: "",
@@ -288,7 +241,21 @@ export default function Game({
             {isUsingPowerUp && (
               <Grid item sx={{ p: 1 }}>
                 <SelectedPower
-                  onFinish={() => onFinish()}
+                  onFinish={() =>
+                    onFinish(
+                      selectedPowerUp,
+                      gameStatus,
+                      selectedPowerUpTiles,
+                      lobby,
+                      inventory,
+                      setSelectedPowerUpTiles,
+                      setSelectedPowerUp,
+                      setIsUsingPowerUp,
+                      setGameStatus,
+                      board,
+                    
+                    )
+                  }
                   selectedPowerUpTiles={selectedPowerUpTiles}
                   selectedPowerUp={selectedPowerUp}
                 />
@@ -297,7 +264,7 @@ export default function Game({
 
             <Grid item sx={{ p: 1 }}>
               <Inventory
-              isBoardCreated={isBoardCreated}
+                isBoardCreated={isBoardCreated}
                 powerOrMove={powerOrMove}
                 isUsingPowerUp={isUsingPowerUp}
                 setIsUsingPowerUp={(props) => setIsUsingPowerUp(props)}

@@ -76,10 +76,11 @@ export default function Welcome({
         </Grid>
 
         <Grid
-          sx={{ marginTop: 3 }}
+          sx={{ marginTop: 3,  }}
           container
           item
-          direction={{ sm: "row", md: "column" }}
+          direction={{ xs:"row",sm: "row", md: "column", lg: "column" }}
+          
           justifyContent="center"
         >
           <Grid item sm={6} md={12}>
@@ -92,7 +93,7 @@ export default function Welcome({
               }
             />
           </Grid>
-          <Grid item sm={6} md={12}>
+          <Grid item sm={6} md={12}  sx={{marginLeft:{ xs: 4, sm:4,md:0,lg:0,xl:0 }}}>
             <CustomButton
               message={"Join Game"}
               onClick={() =>

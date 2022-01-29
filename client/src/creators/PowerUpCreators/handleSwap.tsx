@@ -18,7 +18,7 @@ const handleSwap = async (
 ) => {
   if (
     selectedPowerUpTiles.length > 0 &&
-    selectedPowerUpTiles[0].playerId === playerId
+    selectedPowerUpTiles[0].playerId === playerId && board[rowIdx][tileIdx] !== "FIRE" && typeof board[rowIdx][tileIdx] !== "number"
   ) {
     const selectedVerticalTiles: Move[] = await checkVertical(
       selectedPowerUp.rules.tilesAffected,
@@ -32,6 +32,7 @@ const handleSwap = async (
     if (selectedVerticalTiles.length > 0) {
       selectedPowerUpTiles.push(...selectedVerticalTiles);
     }
+    
     const selectedHorizontalTiles = await checkHorizontal(
       selectedPowerUp.rules.tilesAffected,
       rowIdx,
@@ -44,6 +45,7 @@ const handleSwap = async (
     if (selectedHorizontalTiles.length > 0) {
       selectedPowerUpTiles.push(...selectedHorizontalTiles);
     }
+    
     const selectLeftDiagonalTiles = await checkDiagonalLeft(
       selectedPowerUp.rules.tilesAffected,
       rowIdx,
@@ -56,6 +58,7 @@ const handleSwap = async (
     if (selectLeftDiagonalTiles.length > 0) {
       selectedPowerUpTiles.push(...selectLeftDiagonalTiles);
     }
+    
     const selectRightDiagonalTiles = await checkDiagonalRight(
       selectedPowerUp.rules.tilesAffected,
       rowIdx,
@@ -68,6 +71,7 @@ const handleSwap = async (
     if (selectRightDiagonalTiles.length > 0) {
       selectedPowerUpTiles.push(...selectRightDiagonalTiles);
     }
+    
     setSelectedPowerUpTiles([...selectedPowerUpTiles]);
   } else if (
     selectedPowerUpTiles.length === 0 &&

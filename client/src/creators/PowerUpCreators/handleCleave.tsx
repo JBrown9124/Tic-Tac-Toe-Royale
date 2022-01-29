@@ -25,8 +25,8 @@ const handleCleave = (selectedPowerUpTiles: Move[],
         if (
             selectedPlayerTile.tileIdx === tileIdx - 1 &&
             selectedPlayerTile.rowIdx === rowIdx &&
-          rowIdx - 1 > 0 &&
-          rowIdx + 1 < boardSize - 1
+          rowIdx  > 0 &&
+          rowIdx  < boardSize - 1
         ) {
           selectedPowerUpTiles.push({
             playerId: playerId,
@@ -48,8 +48,8 @@ const handleCleave = (selectedPowerUpTiles: Move[],
         } else if (
             selectedPlayerTile.tileIdx === tileIdx + 1 &&
             selectedPlayerTile.rowIdx === rowIdx &&
-          rowIdx - 1 > 0 &&
-          rowIdx + 1 < boardSize - 1
+          rowIdx  > 0 &&
+          rowIdx  < boardSize - 1
         ) {
           selectedPowerUpTiles.push({
             playerId: playerId,
@@ -72,8 +72,8 @@ const handleCleave = (selectedPowerUpTiles: Move[],
         else if (
             selectedPlayerTile.tileIdx === tileIdx &&
             selectedPlayerTile.rowIdx === rowIdx+1 &&
-            tileIdx - 1 > 0 &&
-            tileIdx + 1 < boardSize - 1
+            tileIdx  > 0 &&
+            tileIdx  < boardSize - 1
           ) {
             selectedPowerUpTiles.push({
               playerId: playerId,
@@ -96,8 +96,8 @@ const handleCleave = (selectedPowerUpTiles: Move[],
           else if (
             selectedPlayerTile.tileIdx === tileIdx &&
             selectedPlayerTile.rowIdx === rowIdx-1 &&
-            tileIdx - 1 > 0 &&
-            tileIdx + 1 < boardSize - 1
+            tileIdx > 0 &&
+            tileIdx < boardSize - 1
           ) {
             selectedPowerUpTiles.push({
               playerId: playerId,

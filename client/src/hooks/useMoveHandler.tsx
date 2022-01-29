@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Lobby } from "../Models/Lobby";
 import { GameStatus } from "../Models/GameStatus";
 import botMove from "../creators/APICreators/botNewMove";
-import determineWinner from "../creators/BoardCreators/determineWinner";
+import determineWinner from "../creators/BoardCreators/determineWinner/determineWinner";
 import { Player } from "../Models/Player";
 import { PowerUp, PowerUps } from "../Models/PowerUp";
 import useSound from "use-sound";
@@ -42,6 +42,21 @@ export default function useMoveHandler({
   );
   const [playYourTurnSound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/yourTurnSound.mp3"
+  );
+  const [playFireSound] = useSound(
+    process.env.PUBLIC_URL + "static/assets/sounds/fireSound.mp3"
+  );
+  const [playArrowSound] = useSound(
+    process.env.PUBLIC_URL + "static/assets/sounds/arrowSound.mp3"
+  );
+  const [playBombSound] = useSound(
+    process.env.PUBLIC_URL + "static/assets/sounds/bombSound.mp3"
+  );
+  const [playCleaveSound] = useSound(
+    process.env.PUBLIC_URL + "static/assets/sounds/cleaveSound.mp3"
+  );
+  const [playSwapSound] = useSound(
+    process.env.PUBLIC_URL + "static/assets/sounds/swapSound.mp3"
   );
   const [count, setCount] = useState(1);
 
@@ -123,6 +138,7 @@ export default function useMoveHandler({
         board[gameStatus.newPowerUpUse.selectedPowerUpTiles[0].rowIdx][
           gameStatus.newPowerUpUse.selectedPowerUpTiles[0].tileIdx
         ] = "FIRE";
+        playFireSound();
         break;
       case "arrow":
         for (
@@ -134,6 +150,7 @@ export default function useMoveHandler({
             gameStatus.newPowerUpUse.selectedPowerUpTiles[i].tileIdx
           ] = getRandomInt(1, 6);
         }
+        playArrowSound();
         break;
       case "cleave":
         for (
@@ -145,6 +162,7 @@ export default function useMoveHandler({
             gameStatus.newPowerUpUse.selectedPowerUpTiles[i].tileIdx
           ] = getRandomInt(1, 6);
         }
+        playCleaveSound();
         break;
       case "bomb":
         for (
@@ -156,6 +174,7 @@ export default function useMoveHandler({
             gameStatus.newPowerUpUse.selectedPowerUpTiles[i].tileIdx
           ] = getRandomInt(1, 6);
         }
+        playBombSound();
         break;
       case "swap":
         [
@@ -173,6 +192,7 @@ export default function useMoveHandler({
             gameStatus.newPowerUpUse.selectedPowerUpTiles[0].tileIdx
           ],
         ];
+        playSwapSound();
     }
         setCount((state: number) => state + 1);
     

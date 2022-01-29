@@ -47,7 +47,8 @@ const handlePowerUps = async ({
           playerId,
           tileIdx,
           rowIdx,
-          setSelectedPowerUpTiles
+          setSelectedPowerUpTiles,
+          boardSize
         );
         break;
 

@@ -31,20 +31,29 @@ export default function Inventory({
   const [inventoryList, setInventoryList] = useState<PowerUp[]>([]);
   const handlePowerUpSelect = (powerUp: PowerUp) => {
     if (powerOrMove === "Power") {
-      setCursor(powerUp.imgUrl);
+      
       setSelectedPowerUp(powerUp);
       setSelectedPowerUpTiles([]);
       setIsUsingPowerUp(true);
     }
   };
   useEffect(() => {
-    for (let i = 1; i <= Object.keys(inventory).length; i++) {
-      const inventoryKey = String(i);
-      const powerUpItem = inventory[inventoryKey];
-      powerUpItem.quantity = 0;
-      inventoryList.push(powerUpItem);
+    if (inventoryList.length === 0) {
+      for (let i = 1; i <= Object.keys(inventory).length; i++) {
+        const inventoryKey = String(i);
+        const powerUpItem = inventory[inventoryKey];
+        powerUpItem.quantity = 0;
+
+        inventoryList.push(powerUpItem);
+      }
+    } else {
+      for (let i = 1; i <= Object.keys(inventory).length; i++) {
+        const inventoryKey = String(i);
+        const powerUpItem = inventory[inventoryKey];
+        powerUpItem.quantity = 0;
+      }
     }
-  }, [inventory]);
+  }, [inventory, isBoardCreated]);
   return (
     <>
       <Grid
@@ -84,18 +93,19 @@ export default function Inventory({
                 handlePowerUpSelect(powerUp);
               }}
             >
-              <PowerUpSelect
-                delay={0}
-                isClicked={powerUp.value === selectedPowerUp.value}
-                scale={1.5}
-              >
+            
                 <Grid
                   container
                   direction="column"
                   textAlign="center"
                   justifyContent="center"
                 >
-                  <Grid item>
+                  <Grid item sx={{p:1}}>
+                  <PowerUpSelect
+                delay={0}
+                isClicked={powerUp.value === selectedPowerUp.value}
+                scale={1.5}
+              >
                     <img
                       style={{
                         width: "40px",
@@ -105,6 +115,7 @@ export default function Inventory({
                       src={powerUp.imgUrl}
                       alt={powerUp.name}
                     />
+                      </PowerUpSelect>
                   </Grid>
                   <Grid item>
                     <Typography
@@ -118,7 +129,7 @@ export default function Inventory({
                     </Typography>
                   </Grid>
                 </Grid>
-              </PowerUpSelect>
+            
             </Grid>
           ))}
         </Grid>

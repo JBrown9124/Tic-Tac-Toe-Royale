@@ -4,19 +4,17 @@ import { RgbaColor } from "react-colorful";
 import BoardAnimator from "../../../animators/BoardAnimator";
 import { Tile } from "./Tile";
 
-import determineWinner from "../../../creators/BoardCreators/determineWinner";
-import {Player} from "../../../Models/Player"
+import determineWinner from "../../../creators/BoardCreators/determineWinner/determineWinner";
+import { Player } from "../../../Models/Player";
 import { PlayerPieces } from "../../../Models/PlayerPieces";
 import { Lobby } from "../../../Models/Lobby";
 import { Move } from "../../../Models/Move";
-import {PowerUp, PowerUps } from "../../../Models/PowerUp"
+import { PowerUp, PowerUps } from "../../../Models/PowerUp";
 import { GameStatus } from "../../../Models/GameStatus";
 import { determineSizeOfPiece } from "../../../creators/BoardCreators/sizeOfPiece";
 import { useSound } from "use-sound";
 
 interface BoardProps {
-  
- 
   playerId: string;
   setGameStatus: (status: GameStatus) => void;
   gameStatus: GameStatus;
@@ -30,16 +28,14 @@ interface BoardProps {
   lobbyId: number;
   lobbyHostSid: number;
   isCountDownFinished: boolean;
-  inventory: PowerUps
-  selectedPowerUpTiles:Move[]
-  setSelectedPowerUpTiles:(selectedPowerUpTiles:Move[]) => void,
-  selectedPowerUp:PowerUp
-  isUsingPowerUp:boolean,
-  powerOrMove:string
+  inventory: PowerUps;
+  selectedPowerUpTiles: Move[];
+  setSelectedPowerUpTiles: (selectedPowerUpTiles: Move[]) => void;
+  selectedPowerUp: PowerUp;
+  isUsingPowerUp: boolean;
+  powerOrMove: string;
 }
 export default function Board({
- 
-
   setGameStatus,
   gameStatus,
   board,
@@ -58,7 +54,7 @@ export default function Board({
   setSelectedPowerUpTiles,
   selectedPowerUp,
   isUsingPowerUp,
-  powerOrMove
+  powerOrMove,
 }: BoardProps) {
   return (
     <>
@@ -76,13 +72,15 @@ export default function Board({
                 boardRenderTime={200 * boardSize}
               >
                 <Tile
-                powerOrMove={powerOrMove}
-                isUsingPowerUp={isUsingPowerUp}
-                boardSize={boardSize}
-                board={board}
-                selectedPowerUp={selectedPowerUp}
-                setSelectedPowerUpTiles={(props)=> setSelectedPowerUpTiles(props)}
-                selectedPowerUpTiles={selectedPowerUpTiles}
+                  powerOrMove={powerOrMove}
+                  isUsingPowerUp={isUsingPowerUp}
+                  boardSize={boardSize}
+                  board={board}
+                  selectedPowerUp={selectedPowerUp}
+                  setSelectedPowerUpTiles={(props) =>
+                    setSelectedPowerUpTiles(props)
+                  }
+                  selectedPowerUpTiles={selectedPowerUpTiles}
                   playerId={playerId}
                   key={rowIdx * tileIdx}
                   gameStatus={gameStatus}
@@ -91,8 +89,7 @@ export default function Board({
                   playerPieces={playerPieces}
                   sizeOfBoardPiece={sizeOfBoardPiece}
                   updateBoardCache={() =>
-                    gameStatus.whoTurn ===
-                    playerId
+                    gameStatus.whoTurn === playerId
                       ? determineWinner(
                           rowIdx,
                           tileIdx,
@@ -104,13 +101,12 @@ export default function Board({
                           lobbyId,
                           lobbyHostSid,
                           setGameStatus,
-                   
+
                           inventory
                         )
                       : ""
                   }
                   value={tile}
-              
                   chosenPiece={piece}
                   boardColor={boardColor}
                 />
