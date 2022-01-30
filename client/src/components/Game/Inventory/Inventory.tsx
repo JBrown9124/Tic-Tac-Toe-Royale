@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { PowerUp, PowerUps } from "../../../Models/PowerUp";
 import { Move } from "../../../Models/Move";
 import PowerUpSelect from "../../../animators/PowerUpSelect";
+import PowerUpAquired from "../../../animators/PowerUpAquired";
 import Button from "@mui/material/Button";
 interface InventoryProps {
   inventory: PowerUps;
@@ -29,9 +30,11 @@ export default function Inventory({
   isBoardCreated,
 }: InventoryProps) {
   const [inventoryList, setInventoryList] = useState<PowerUp[]>([]);
+  const powerUpsWithQuantity = inventoryList.filter((item) => {
+    return item.quantity !== 0;
+  });
   const handlePowerUpSelect = (powerUp: PowerUp) => {
     if (powerOrMove === "Power") {
-      
       setSelectedPowerUp(powerUp);
       setSelectedPowerUpTiles([]);
       setIsUsingPowerUp(true);
@@ -74,6 +77,7 @@ export default function Inventory({
               fontFamily: "Bungee Hairline, cursive",
               fontWeight: 800,
               p: 1,
+              marginBottom:2
             }}
           >
             Your Powers
@@ -87,51 +91,76 @@ export default function Inventory({
           sx={{ p: 1 }}
         >
           {inventoryList.map((powerUp, idx) => (
+            <PowerUpAquired
+              isAquired={powerUp.quantity > 0}
+              fromY={80}
+              x={0}
+              delay={0}
+            >
+              <Grid
+                item
+                onClick={() => {
+                  handlePowerUpSelect(powerUp);
+                }}
+              >
+                {powerUp.quantity !== 0 && (
+                  <Grid
+                    container
+                    direction="column"
+                    textAlign="center"
+                    justifyContent="center"
+                  >
+                    <Grid item sx={{ p: 1 }}>
+                      <PowerUpSelect
+                      quantity={powerUp.quantity}
+                        delay={0}
+                        isClicked={powerUp.value === selectedPowerUp.value}
+                        scale={1.5}
+                      >
+                        <img
+                          style={{
+                            width: "40px",
+                            height: "40px",
+                            cursor: "pointer",
+                          }}
+                          src={powerUp.imgUrl}
+                          alt={powerUp.name}
+                        />
+                      </PowerUpSelect>
+                    </Grid>
+                    <Grid item>
+                      <Typography
+                        sx={{
+                          fontFamily: "Bungee Hairline, cursive",
+                          fontWeight: 800,
+                          p: 0,
+                        }}
+                      >
+                        {powerUp.quantity === 1 ? "" : powerUp.quantity}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                )}
+              </Grid>
+            </PowerUpAquired>
+          ))}
+          {powerUpsWithQuantity.length === 0 && (
             <Grid
-              item
-              onClick={() => {
-                handlePowerUpSelect(powerUp);
+              container
+              direction="column"
+              sx={{
+                p: 1,
               }}
             >
-            
-                <Grid
-                  container
-                  direction="column"
-                  textAlign="center"
-                  justifyContent="center"
-                >
-                  <Grid item sx={{p:1}}>
-                  <PowerUpSelect
-                delay={0}
-                isClicked={powerUp.value === selectedPowerUp.value}
-                scale={1.5}
+              <Typography
+                sx={{  fontFamily: "Bungee Hairline, cursive",
+                fontWeight: 800, }}
               >
-                    <img
-                      style={{
-                        width: "40px",
-                        height: "40px",
-                        cursor: "pointer",
-                      }}
-                      src={powerUp.imgUrl}
-                      alt={powerUp.name}
-                    />
-                      </PowerUpSelect>
-                  </Grid>
-                  <Grid item>
-                    <Typography
-                      sx={{
-                        fontFamily: "Bungee Hairline, cursive",
-                        fontWeight: 800,
-                        p: 0,
-                      }}
-                    >
-                      {powerUp.quantity}
-                    </Typography>
-                  </Grid>
-                </Grid>
-            
+                {" "}
+               Go Here
+              </Typography>
             </Grid>
-          ))}
+          )}
         </Grid>
       </Grid>
     </>

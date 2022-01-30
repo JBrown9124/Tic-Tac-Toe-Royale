@@ -70,7 +70,7 @@ export const Tile = ({
   const playerAttackPieceSelected =
     selectedPowerUpTiles.length > 1 &&
     (selectedPowerUp.name === "cleave" ||
-      selectedPowerUp.name === "swap" ||
+      
       selectedPowerUp.name === "arrow") &&
     tileIdx === selectedPowerUpTiles[0].tileIdx &&
     rowIdx === selectedPowerUpTiles[0].rowIdx;

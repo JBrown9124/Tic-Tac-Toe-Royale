@@ -77,7 +77,7 @@ export const powerUps: PowerUps = {
 
   "5": {
     name: "swap",
-    description: "Select a tile you own. Swap places with any tile in any direction from that tile.",
+    description: "Select two other player's tiles. The placements of these two tiles will be swapped.",
     imgUrl: "https://icon-library.com/images/swap-icon/swap-icon-15.jpg",
     value: 5,
     rules: {

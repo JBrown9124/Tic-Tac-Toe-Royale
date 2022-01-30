@@ -22,6 +22,7 @@ import { PowerUp, PowerUps } from "../../Models/PowerUp";
 import { powerUps } from "../../storage/powerUps";
 import SelectedPower from "./SelectedPower/SelectedPower";
 import makeNewMove from "../../creators/APICreators/makeNewMove";
+import SelectedPowerComponentAnimator from "../../animators/SelectedPowerComponentAnimator"
 import onFinish from "../../creators/BoardCreators/onFinish";
 interface GameProps {
   lobby: Lobby;
@@ -239,6 +240,7 @@ export default function Game({
               />
             </Grid>
             {isUsingPowerUp && (
+              <SelectedPowerComponentAnimator delay={0} isUsingPowerUp={isUsingPowerUp}>
               <Grid item sx={{ p: 1 }}>
                 <SelectedPower
                   onFinish={() =>
@@ -260,6 +262,7 @@ export default function Game({
                   selectedPowerUp={selectedPowerUp}
                 />
               </Grid>
+              </SelectedPowerComponentAnimator>
             )}
 
             <Grid item sx={{ p: 1 }}>

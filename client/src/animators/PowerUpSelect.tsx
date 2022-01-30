@@ -16,8 +16,8 @@ interface Props {
   afterColor?: RgbaColor;
   width?: string;
   delay: number;
-  isClicked:boolean
- 
+  isClicked: boolean;
+  quantity: number;
 }
 const PowerUpSelect = ({
   x = 0,
@@ -31,30 +31,64 @@ const PowerUpSelect = ({
   width,
   delay,
   children,
- isClicked
+  isClicked,
+  quantity,
 }: Props) => {
   const [isBooped, setIsBooped] = useState(false);
- 
-
- 
-
+  const [isQuantityChanged, setIsQuantityChanged] = useState(false);
   const style = useSpring({
-    
- opacity:1,
+    opacity: 1,
 
-
-    transform:  isClicked
-    ? `translate(${x}px, ${y}px)
+    transform: isClicked
+      ? `translate(${x}px, ${y}px)
     rotate(${rotation}deg)
     scale(${scale})`
- : `translate(0px, 0px)
+      : `translate(0px, 0px)
     rotate(0deg)
     
     scale(1)`,
-    
+
     config: { mass: 1, tension: 170, friction: 26 },
   });
- 
+  const quantityChanged = useSpring({
+    opacity: 1,
+
+    transform: isQuantityChanged
+      ? `translate(${x}px, ${y}px)
+    rotate(${rotation}deg)
+    scale(${scale})`
+      : `translate(0px, 0px)
+    rotate(0deg)
+    
+    scale(1)`,
+
+    config: { mass: 1, tension: 180, friction: 12 },
+  });
+  const hover = useSpring({
+    opacity: 1,
+
+    transform: isBooped
+      ? `translate(${x}px, ${y}px)
+    rotate(${rotation}deg)
+    scale(${1.2})`
+      : `translate(0px, 0px)
+    rotate(0deg)
+    
+    scale(1)`,
+
+    config: { mass: 1, tension: 170, friction: 26 },
+  });
+  useEffect(() => {
+    if (quantity > 1) {
+      setIsQuantityChanged(true);
+      const t = setTimeout(() => {
+        setIsQuantityChanged(false);
+      }, 200);
+      return () => {
+        clearTimeout(t);
+      };
+    }
+  }, [quantity]);
   const trigger = () => {
     setIsBooped(true);
   };
@@ -63,16 +97,13 @@ const PowerUpSelect = ({
   };
 
   return (
-    
-    
-      <animated.div
-        // onMouseEnter={trigger}
-        // onMouseLeave={triggerLeave}
-        style={style as any}
-      >
-        {children}
+    <animated.div style={style as any}>
+      <animated.div style={quantityChanged as any}>
+        <animated.div  style={hover as any} onMouseEnter={trigger} onMouseLeave={triggerLeave}>
+          {children}
+        </animated.div>
       </animated.div>
-     
+    </animated.div>
   );
 };
 
