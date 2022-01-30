@@ -17,6 +17,7 @@ interface Props {
   width?: string;
   delay: number;
   isUsingPowerUp: boolean;
+  fromScale?:number
 }
 const PowerUpSelect = ({
   x = 0,
@@ -25,6 +26,7 @@ const PowerUpSelect = ({
   scale = 1.0,
   fromY = 0,
   fromX = 0,
+  fromScale=1,
   beforeColor,
   afterColor,
   width,
@@ -46,11 +48,11 @@ const PowerUpSelect = ({
     transform: isBooped
       ? `translate(${x}px, ${y}px)
     rotate(${rotation}deg)
-    scale(${1})`
+    scale(${scale})`
       : `translate(${fromX}px, ${fromY}px)
     rotate(0deg)
     
-    scale(0)`,
+    scale(${fromScale})`,
 
     config: { mass: 1, tension: 170, friction: 26 },
   });

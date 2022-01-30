@@ -240,7 +240,7 @@ export default function Game({
               />
             </Grid>
             {isUsingPowerUp && (
-              <SelectedPowerComponentAnimator delay={0} isUsingPowerUp={isUsingPowerUp}>
+              <SelectedPowerComponentAnimator delay={0} isUsingPowerUp={isUsingPowerUp} fromScale={0}>
               <Grid item sx={{ p: 1 }}>
                 <SelectedPower
                   onFinish={() =>
