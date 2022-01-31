@@ -130,7 +130,7 @@ export default function useCommands({
                   name: "",
                   description: "",
                   imgUrl: "",
-              
+
                   rules: {
                     affectsCaster: false,
                     direction: {
@@ -144,10 +144,11 @@ export default function useCommands({
                     areaShape: "line",
                   },
                   selectColor: "",
-                  quantity: 0
+                  quantity: 0,
                 },
                 selectedPowerUpTiles: [],
               },
+              fireTiles: [],
             },
           });
           setGameStatus({
@@ -160,7 +161,7 @@ export default function useCommands({
                 name: "",
                 description: "",
                 imgUrl: "",
-             
+
                 rules: {
                   affectsCaster: false,
                   direction: {
@@ -174,10 +175,11 @@ export default function useCommands({
                   areaShape: "line",
                 },
                 selectColor: "",
-                quantity: 0
+                quantity: 0,
               },
               selectedPowerUpTiles: [],
             },
+            fireTiles: [],
           });
 
           setIsLobbyReceived(false);

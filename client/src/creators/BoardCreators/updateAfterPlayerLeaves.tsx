@@ -57,7 +57,7 @@ const updateAfterPlayerLeaves = async ({
         selectColor: "",
       },
       selectedPowerUpTiles: [],
-    },
+    },  fireTiles:[]
   });
 };
 

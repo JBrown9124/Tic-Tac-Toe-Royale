@@ -14,8 +14,10 @@ from ..Models.player import Player
 from ..Models.win import Win
 from ..ResponseModels.response_board import BoardResponseModel
 from ..Models.new_move import Move
+from ..Providers.FireProvider.fire import Fire
+from ..Providers.FireProvider.FireModels.fire_move import FireMove
 from django.core.cache import cache
-
+import uuid
 
 # Create your views here.
 class Board(APIView):
@@ -28,7 +30,7 @@ class Board(APIView):
         game_status = body.get("gameStatus")
         new_move = game_status.get("newMove")
         new_power_up_use = game_status.get("newPowerUpUse")
-
+        # fire_tiles = game_status.get("fireTiles")
         power_up = body.get("powerUp")
 
         win = game_status.get("win")
@@ -47,9 +49,46 @@ class Board(APIView):
         lobby_game_status_copy = lobby_copy["gameStatus"]
         last_turn = lobby_game_status_copy["whoTurn"]
 
+        # if len(lobby_game_status_copy["fireTiles"]) > 0:
+        #     for i, tile in enumerate(lobby_game_status_copy["fireTiles"]):
+        #         if last_turn == tile["playerIdWhoCast"]:
+        #             new_fire_position = Fire(
+        #                 board_size=lobby_board_copy["size"],
+        #                 moves=lobby_board_copy["moves"],
+        #                 current_location=FireMove(
+        #                     row_idx=tile["rowIdx"],
+        #                     tile_idx=tile["tileIdx"],
+        #                     player_id=tile["playerId"],
+        #                     player_id_who_cast=tile["playerIdWhoCast"],
+        #                 ),
+        #             ).spread()
+
+        #             lobby_game_status_copy["fireTiles"][i] = new_fire_position
+        #             new_fire_move = Move(
+        #                 row_idx=new_fire_position["rowIdx"],
+        #                 tile_idx=new_fire_position["tileIdx"],
+        #                 player_id=new_fire_position["playerId"],
+        #             ).to_dict()
+        #             replaced_move = False
+        #             last_fire_move = tile
+        #             for i, move in enumerate(lobby_board_copy["moves"]):
+        #                 if (
+        #                     move["rowIdx"] == new_fire_position["rowIdx"]
+        #                     and new_fire_position["tileIdx"] == tile["tileIdx"]
+        #                 ):
+        #                     lobby_board_copy["moves"][i] = new_fire_move
+        #                     lobby_board_copy["moves"][i]["isFireRoot"] = True
+        #                     replaced_move = True
+        #                 if (
+        #                     move["rowIdx"] == last_fire_move["rowIdx"]
+        #                     and move["tileIdx"] == last_fire_move["tileIdx"]
+        #                 ):
+        #                     move["isFireRoot"] = False
+        #             if not replaced_move:
+        #                 lobby_board_copy["moves"].append(new_fire_move)
         # Validate that the person who is sending a move is supposed to move in the turn order rotation.
         if game_status["whoTurn"] != lobby_players_copy[-1]["playerId"]:
-            return HttpResponse("Not this player's turn")
+            return HttpResponse("Not your turn!", status=404)
 
         # Queue turn order rotation
         last_turn_player = lobby_players_copy.pop()
@@ -64,7 +103,7 @@ class Board(APIView):
 
         if winner:
             win = Win(
-                who_won=last_turn, type=win_type, winning_moves=winning_moves
+                who_won=winner, type=win_type, winning_moves=winning_moves
             ).to_dict()
             lobby_game_status_copy["win"] = win
 
@@ -85,6 +124,13 @@ class Board(APIView):
                             and move["tileIdx"] == affected_tile["tileIdx"]
                         ):
                             lobby_board_copy["moves"].remove(move)
+                            for i, fire_tile in enumerate(lobby_game_status_copy["fireTiles"]):
+                                if (
+                                    fire_tile["tileIdx"] == move["tileIdx"]
+                                    and fire_tile["rowIdx"] == move["rowIdx"]
+                                ):
+                                    lobby_game_status_copy["fireTiles"].remove(fire_tile)
+
             if new_power_up_use["powerUp"]["name"] == "swap":
                 swapped_moves = set()
                 for affected_tile in new_power_up_use["selectedPowerUpTiles"]:
@@ -102,13 +148,57 @@ class Board(APIView):
                             break
             if new_power_up_use["powerUp"]["name"] == "fire":
                 affected_tile = new_power_up_use["selectedPowerUpTiles"][0]
-                fire_move = Move(
+                fire_move = FireMove(
                     row_idx=affected_tile["rowIdx"],
                     tile_idx=affected_tile["tileIdx"],
-                    player_id="FIRE",
+                    player_id="FIRE" + str(uuid.uuid4()),
+                    player_id_who_cast=last_turn,
                 ).to_dict()
-                lobby_board_copy["moves"].append(fire_move)
+                lobby_board_copy["moves"].append(
+                    Move(
+                        affected_tile["rowIdx"],
+                        tile_idx=affected_tile["tileIdx"],
+                        player_id=fire_move["playerId"],
+                    ).to_dict()
+                )
+                lobby_game_status_copy["fireTiles"].append(fire_move)
+        if len(lobby_game_status_copy["fireTiles"]) > 0:
+            for i, tile in enumerate(lobby_game_status_copy["fireTiles"]):
+                if last_turn == tile["playerIdWhoCast"]:
+                    new_fire_position = Fire(
+                        board_size=lobby_board_copy["size"],
+                        moves=lobby_board_copy["moves"],
+                        current_location=FireMove(
+                            row_idx=tile["rowIdx"],
+                            tile_idx=tile["tileIdx"],
+                            player_id=tile["playerId"],
+                            player_id_who_cast=tile["playerIdWhoCast"],
+                        ),
+                    ).spread()
 
+                    lobby_game_status_copy["fireTiles"][i] = new_fire_position
+                    new_fire_move = Move(
+                        row_idx=new_fire_position["rowIdx"],
+                        tile_idx=new_fire_position["tileIdx"],
+                        player_id=new_fire_position["playerId"],
+                    ).to_dict()
+                    replaced_move = False
+                    last_fire_move = tile
+                    for i, move in enumerate(lobby_board_copy["moves"]):
+                        if (
+                            move["rowIdx"] == new_fire_position["rowIdx"]
+                            and new_fire_position["tileIdx"] == tile["tileIdx"]
+                        ):
+                            lobby_board_copy["moves"][i] = new_fire_move
+                            lobby_board_copy["moves"][i]["isFireRoot"] = True
+                            replaced_move = True
+                        if (
+                            move["rowIdx"] == last_fire_move["rowIdx"]
+                            and move["tileIdx"] == last_fire_move["tileIdx"]
+                        ):
+                            move["isFireRoot"] = False
+                    if not replaced_move:
+                        lobby_board_copy["moves"].append(new_fire_move)
         tile_amount = lobby_board_copy["size"] * lobby_board_copy["size"]
 
         if len(lobby_board_copy["moves"]) == tile_amount and not winner:

@@ -20,7 +20,8 @@ const onFinish = async (
   setSelectedPowerUp: (selectedPowerUp: PowerUp) => void,
   setIsUsingPowerUp: (isUsingPowerUp: boolean) => void,
   setGameStatus: (gameStatus: GameStatus) => void,
-  board: (number | string)[][]
+  board: (number | string)[][],
+  playerId: string
 ) => {
   let newGameStatus = gameStatus;
 
@@ -29,72 +30,82 @@ const onFinish = async (
   }
 
   if (selectedPowerUp.name === "swap") {
-    const playerMoveUsingSwap: Move = selectedPowerUpTiles[0];
-    const selectedPlayerSwapMove: Move = selectedPowerUpTiles[1];
+    const firstSelectedPlayer: Move = selectedPowerUpTiles[0];
+    const secondSelectedPlayer: Move = selectedPowerUpTiles[1];
     let boardClone: (string | number)[][] = [...board];
     [
-      boardClone[playerMoveUsingSwap.rowIdx][playerMoveUsingSwap.tileIdx],
-      boardClone[selectedPlayerSwapMove.rowIdx][selectedPlayerSwapMove.tileIdx],
+      boardClone[firstSelectedPlayer.rowIdx][firstSelectedPlayer.tileIdx],
+      boardClone[secondSelectedPlayer.rowIdx][secondSelectedPlayer.tileIdx],
     ] = [
-      boardClone[selectedPlayerSwapMove.rowIdx][selectedPlayerSwapMove.tileIdx],
-      boardClone[playerMoveUsingSwap.rowIdx][playerMoveUsingSwap.tileIdx],
+      boardClone[secondSelectedPlayer.rowIdx][secondSelectedPlayer.tileIdx],
+      boardClone[firstSelectedPlayer.rowIdx][firstSelectedPlayer.tileIdx],
     ];
-
+    let selectedPowerUpTilesClone = [...selectedPowerUpTiles];
+    let firstPlayerIdClone = selectedPowerUpTilesClone[0].playerId;
+    selectedPowerUpTilesClone[0].playerId = selectedPowerUpTiles[1].playerId;
+    selectedPowerUpTilesClone[1].playerId = firstPlayerIdClone;
+    let win = null;
     let winningMoves: WinningMove[] = [];
-
-    const win = isHorizontalWin(
-      lobby.board.winBy,
-      selectedPlayerSwapMove.tileIdx,
-      selectedPlayerSwapMove.rowIdx,
-      playerMoveUsingSwap.playerId,
-      boardClone,
-      lobby.board.size,
-      winningMoves
-    )
-      ? "horizontal"
-      : isVerticalWin(
-          lobby.board.winBy,
-          selectedPlayerSwapMove.tileIdx,
-          selectedPlayerSwapMove.rowIdx,
-          playerMoveUsingSwap.playerId,
-          boardClone,
-          lobby.board.size,
-          winningMoves
-        )
-      ? "vertical"
-      : isDiagonalRightWin(
-          lobby.board.winBy,
-          selectedPlayerSwapMove.tileIdx,
-          selectedPlayerSwapMove.rowIdx,
-          playerMoveUsingSwap.playerId,
-          boardClone,
-          lobby.board.size,
-          winningMoves
-        )
-      ? "diagonalRight"
-      : isDiagonalLeftWin(
-          lobby.board.winBy,
-          selectedPlayerSwapMove.tileIdx,
-          selectedPlayerSwapMove.rowIdx,
-          playerMoveUsingSwap.playerId,
-          boardClone,
-          lobby.board.size,
-          winningMoves
-        )
-      ? "diagonalLeft"
-      : null;
+    let whoWon = null;
+    selectedPowerUpTilesClone.forEach((tile) => {
+      win = isHorizontalWin(
+        lobby.board.winBy,
+        tile.tileIdx,
+        tile.rowIdx,
+        tile.playerId,
+        boardClone,
+        lobby.board.size,
+        winningMoves
+      )
+        ? "horizontal"
+        : isVerticalWin(
+            lobby.board.winBy,
+            tile.tileIdx,
+            tile.rowIdx,
+            tile.playerId,
+            boardClone,
+            lobby.board.size,
+            winningMoves
+          )
+        ? "vertical"
+        : isDiagonalRightWin(
+            lobby.board.winBy,
+            tile.tileIdx,
+            tile.rowIdx,
+            tile.playerId,
+            boardClone,
+            lobby.board.size,
+            winningMoves
+          )
+        ? "diagonalRight"
+        : isDiagonalLeftWin(
+            lobby.board.winBy,
+            tile.tileIdx,
+            tile.rowIdx,
+            tile.playerId,
+            boardClone,
+            lobby.board.size,
+            winningMoves
+          )
+        ? "diagonalLeft"
+        : null;
+      if (win) {
+        whoWon = tile.playerId;
+      }
+    });
     newGameStatus = {
       win: {
         type: typeof win === "string" ? win : null,
-        whoWon: typeof win === "string" ? playerMoveUsingSwap.playerId : null,
+        whoWon: typeof win === "string" ? whoWon : null,
         winningMoves: typeof win === "string" ? winningMoves : null,
       },
       newMove: { rowIdx: 0, tileIdx: 0, playerId: "" },
-      whoTurn: playerMoveUsingSwap.playerId,
+      whoTurn: playerId,
       newPowerUpUse: {
         powerUp: selectedPowerUp,
         selectedPowerUpTiles: selectedPowerUpTiles,
       },
+      fireTiles: [],
     };
   }
   newGameStatus.newPowerUpUse.powerUp = selectedPowerUp;

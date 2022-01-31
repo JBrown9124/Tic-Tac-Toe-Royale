@@ -111,7 +111,7 @@ const determineWinner = async (
         quantity: 0,
       },
       selectedPowerUpTiles: [],
-    },
+    },  fireTiles:[]
   };
 
   const reqBody = {

@@ -69,9 +69,7 @@ export const Tile = ({
   const [isSelected, setIsSelected] = useState(false);
   const playerAttackPieceSelected =
     selectedPowerUpTiles.length > 1 &&
-    (selectedPowerUp.name === "cleave" ||
-      
-      selectedPowerUp.name === "arrow") &&
+    (selectedPowerUp.name === "cleave" || selectedPowerUp.name === "arrow") &&
     tileIdx === selectedPowerUpTiles[0].tileIdx &&
     rowIdx === selectedPowerUpTiles[0].rowIdx;
   const handleClick = async () => {
@@ -160,7 +158,7 @@ export const Tile = ({
                 maxWidth: sizeOfBoardPiece.desktop,
               }}
             />
-          ) : value === "FIRE" ? (
+          ) : typeof value === "string" && value.substring(0, 4) === "FIRE" ? (
             <img
               style={{
                 height: sizeOfBoardPiece.mobile,

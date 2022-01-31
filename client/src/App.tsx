@@ -60,7 +60,8 @@ function App() {
         quantity: 0
       },
       selectedPowerUpTiles: [],
-    },
+    
+    },  fireTiles:[]
   });
 
   const [lobby, setLobby] = useState<Lobby>({
@@ -100,7 +101,7 @@ function App() {
           quantity: 0
         },
         selectedPowerUpTiles: [],
-      },
+      },  fireTiles:[]
     },
   });
 

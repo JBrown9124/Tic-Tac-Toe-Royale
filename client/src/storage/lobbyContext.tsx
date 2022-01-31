@@ -8,13 +8,14 @@ const lobby: Lobby = {
   gameStatus: {
     win: { whoWon: null, type: null, winningMoves: null },
     whoTurn: "",
-    newMove: { rowIdx: 0, tileIdx: 0, playerId: "" }, newPowerUpUse: {
+    newMove: { rowIdx: 0, tileIdx: 0, playerId: "" },
+    newPowerUpUse: {
       powerUp: {
         value: 0,
         name: "",
         description: "",
         imgUrl: "",
-      quantity:0,
+        quantity: 0,
         rules: {
           affectsCaster: false,
           direction: {
@@ -31,6 +32,7 @@ const lobby: Lobby = {
       },
       selectedPowerUpTiles: [],
     },
+    fireTiles: [],
   },
 };
 

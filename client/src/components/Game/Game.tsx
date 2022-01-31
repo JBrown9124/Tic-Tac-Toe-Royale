@@ -255,6 +255,7 @@ export default function Game({
                       setIsUsingPowerUp,
                       setGameStatus,
                       board,
+                      playerId
                     
                     )
                   }

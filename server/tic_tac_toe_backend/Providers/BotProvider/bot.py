@@ -42,15 +42,15 @@ class Bot(object):
                 tile_idx=move["tileIdx"],
                  player_id=move["playerId"],
             )
-            if move. player_id == self.player_making_move:
+            if move.player_id == self.player_making_move:
                 possible_best_move = self.best_move(
                     move.row_idx, move.tile_idx, self.player_making_move
                 )
                 if possible_best_move:
                     best_offense_moves.append(possible_best_move)
-            else:
+            elif move.player_id != self.player_making_move and move.player_id[:4] != "FIRE":
                 possible_best_move = self.best_move(
-                    move.row_idx, move.tile_idx, move. player_id
+                    move.row_idx, move.tile_idx, move.player_id
                 )
                 if possible_best_move:
                     best_defense_moves.append(possible_best_move)

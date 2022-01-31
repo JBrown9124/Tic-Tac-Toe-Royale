@@ -66,7 +66,7 @@ const BoardAnimator = ({
       setIsWinningMove(false);
       setIsVisible(false);
       setIsRendered(false);
-    
+
       const t = setTimeout(() => {
         setLineDirection("None");
       }, 5000);
@@ -76,7 +76,7 @@ const BoardAnimator = ({
     }
   }, [isCountDownFinished]);
   useEffect(() => {
-    const handleWinningMove = async () => {
+    const handleWinningMove = async (isTie: boolean) => {
       const setLineDirectionHandler = async () => {
         return setLineDirection(
           !win.type ? "None" : win.type === "tie" ? "horizontal" : win.type
@@ -93,13 +93,17 @@ const BoardAnimator = ({
         });
       };
       await setLineDirectionHandler();
-      determineWinningMove();
+      if (isTie) {
+        setIsWinningMove(true);
+      } else {
+        determineWinningMove();
+      }
     };
     if (win.type) {
       if (win?.type === "tie") {
-        setIsWinningMove(true);
+        handleWinningMove(true);
       } else {
-        handleWinningMove();
+        handleWinningMove(false);
       }
     }
   }, [win.type]);

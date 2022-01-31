@@ -6,7 +6,7 @@ export const powerUps: PowerUps = {
   "1": {
     name: "fire",
     description:
-      "Place on an any empty tile. You and other players are not able to move onto this tile. Lasts until it is destroyed.",
+      "Place on an any empty tile. Spreads and destroys player owned tiles until the root of it is destroyed.",
     imgUrl: fire,
     value: 1,
     rules: {
@@ -43,7 +43,7 @@ export const powerUps: PowerUps = {
   "3": {
     name: "arrow",
     description:
-      "Select a tile you own. Shoot an arrow in any direction from that tile. Any tiles in the arrows path will be destroyed!",
+      "Select a tile you own. Shoot an arrow in any direction from that tile. Any tiles in the arrows 2 tile range will be destroyed!",
     imgUrl: "https://cdn.newworldfans.com/db_images/db/items_hires/arrowt4.png",
     value: 3,
     rules: {
