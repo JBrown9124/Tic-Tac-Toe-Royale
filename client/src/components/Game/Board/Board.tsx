@@ -33,7 +33,7 @@ interface BoardProps {
   setSelectedPowerUpTiles: (selectedPowerUpTiles: Move[]) => void;
   selectedPowerUp: PowerUp;
   isUsingPowerUp: boolean;
-  powerOrMove: string;
+  // powerOrMove: string;
 }
 export default function Board({
   setGameStatus,
@@ -54,7 +54,7 @@ export default function Board({
   setSelectedPowerUpTiles,
   selectedPowerUp,
   isUsingPowerUp,
-  powerOrMove,
+  // powerOrMove,
 }: BoardProps) {
   return (
     <>
@@ -72,7 +72,7 @@ export default function Board({
                 boardRenderTime={200 * boardSize}
               >
                 <Tile
-                  powerOrMove={powerOrMove}
+                  // powerOrMove={powerOrMove}
                   isUsingPowerUp={isUsingPowerUp}
                   boardSize={boardSize}
                   board={board}

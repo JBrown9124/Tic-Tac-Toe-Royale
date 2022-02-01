@@ -14,7 +14,7 @@ interface InventoryProps {
   selectedPowerUp: PowerUp;
   setSelectedPowerUpTiles: (selectedPowerUpTiles: Move[]) => void;
   setIsUsingPowerUp: (isUsingPowerUp: boolean) => void;
-  powerOrMove: string;
+  // powerOrMove: string;
   isUsingPowerUp: boolean;
   isBoardCreated: boolean;
 }
@@ -26,19 +26,42 @@ export default function Inventory({
   setSelectedPowerUpTiles,
   setIsUsingPowerUp,
   isUsingPowerUp,
-  powerOrMove,
+  // powerOrMove,
   isBoardCreated,
 }: InventoryProps) {
   const [inventoryList, setInventoryList] = useState<PowerUp[]>([]);
   const powerUpsWithQuantity = inventoryList.filter((item) => {
     return item.quantity !== 0;
   });
-  const handlePowerUpSelect = (powerUp: PowerUp) => {
-    if (powerOrMove === "Power") {
+  const handlePowerUpSelect = (powerUp: PowerUp, isSameId:boolean) => {
+    
+    // if (powerOrMove === "Power") {
+      if (!isSameId){
       setSelectedPowerUp(powerUp);
       setSelectedPowerUpTiles([]);
-      setIsUsingPowerUp(true);
-    }
+      setIsUsingPowerUp(true);}
+      else{
+        setSelectedPowerUp({
+          value: 0,
+          name: "",
+          description: "",
+          imgUrl: "",
+      
+          rules: {
+            affectsCaster: false,
+            direction: { isVertical: false, isHorizontal: false, isDiagonal: false },
+            castAnywhere: false,
+            tilesAffected: 0,
+            mustBeEmptyTile: false,
+            areaShape: "line",
+          },
+          selectColor: "",
+          quantity: 0,
+        });
+      setSelectedPowerUpTiles([]);
+      setIsUsingPowerUp(false);
+      }
+    
   };
   useEffect(() => {
     if (inventoryList.length === 0) {
@@ -100,7 +123,7 @@ export default function Inventory({
               <Grid
                 item
                 onClick={() => {
-                  handlePowerUpSelect(powerUp);
+                  handlePowerUpSelect(powerUp, powerUp.value === selectedPowerUp.value);
                 }}
               >
                 {powerUp.quantity !== 0 && (

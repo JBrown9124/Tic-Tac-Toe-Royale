@@ -1,4 +1,5 @@
 import getRandomInt from './getRandomInt'
+import {powerUps} from "../../storage/powerUps"
 const createBoard = async (
   setBoard: (boardValue: number[][]) => void,
   boardSize: number,
@@ -10,7 +11,7 @@ const createBoard = async (
     let row: number[] = [];
 
     for (let j = 0; j < boardSize; j++) {
-      row.push(getRandomInt(0,5));
+      row.push(getRandomInt(1,Object.keys(powerUps).length));
     }
     board.push(row);
   }

@@ -21,9 +21,9 @@ interface StatusBoardProps {
   isHost: boolean;
   playerId: string;
   handleStart: () => void;
-  setPowerOrMove: (decision: "Power" | "Move") => void;
+  // setPowerOrMove: (decision: "Power" | "Move") => void;
   setIsUsingPowerUp: (isUsingPowerUp: boolean) => void;
-  powerOrMove: string;
+  // powerOrMove: string;
   setSelectedPowerUp: (powerUp: PowerUp) => void;
   setSelectedPowerUpTiles: (powerUpTiles: Move[]) => void;
   isUsingPowerUp: boolean;
@@ -41,11 +41,11 @@ export default function StatusBoard({
   isHost,
   playerId,
   handleStart,
-  setPowerOrMove,
+  // setPowerOrMove,
   setIsUsingPowerUp,
   setSelectedPowerUp,
   setSelectedPowerUpTiles,
-  powerOrMove,
+  // powerOrMove,
   isUsingPowerUp,
   inventory
 }: StatusBoardProps) {
@@ -76,7 +76,7 @@ export default function StatusBoard({
     }
   }, [gameStatus?.win?.whoWon]);
   const handleMoveSelect = () => {
-    setPowerOrMove("Move");
+    // setPowerOrMove("Move");
     setIsUsingPowerUp(false);
     setSelectedPowerUp({
       value: 0,
@@ -159,7 +159,7 @@ export default function StatusBoard({
             }
           })}
         </Grid>
-        <Grid item>
+        {/* <Grid item>
           <Typography
             sx={{
               fontFamily: "Bungee Hairline, cursive",
@@ -193,32 +193,30 @@ export default function StatusBoard({
               onClick={() => handleMoveSelect()}
             />
           </Grid>
-        </Grid>
-        {powerOrMove === "Power"? (
+        </Grid> */}
+        {isUsingPowerUp? (
           <Grid item>
             <Typography
               sx={{
-                fontFamily: "Bungee Hairline, cursive",
-                fontWeight: 800,
+              fontFamily: "Roboto, sans-serif", fontWeight: 300 ,
                 p: 1,
               }}
             >
-              Select a power from below!
+              Select the currently selected power to make a move instead!
             </Typography>
           </Grid>
         ) : (
           <Grid item>
             <Typography
               sx={{
-                fontFamily: "Bungee Hairline, cursive",
-                fontWeight: 800,
+                fontFamily: "Roboto, sans-serif", fontWeight: 300 ,
                 p: 1,
               }}
             >
-              Make a move to aquire more powers!
+              Make a move or select a power from below!
             </Typography>
           </Grid>
-        )}
+        )} 
         <Grid container direction="column" sx={{ p: 1 }} spacing={2}>
           <Grid item>
             <CustomButton

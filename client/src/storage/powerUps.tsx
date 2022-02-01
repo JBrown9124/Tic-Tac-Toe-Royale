@@ -24,7 +24,7 @@ export const powerUps: PowerUps = {
   "2": {
     name: "cleave",
     description:
-      "Select a tile you own. Slash 3 spaces in any direction from that tile. Any moves in the slashes path will be destroyed!",
+      "Select a tile you own. Then select a tile in any direction next to your currently selected tile. Any tiles in the cleaves 3 tile range will be destroyed!",
     imgUrl:
       "https://i1.wp.com/st-central.net/wp-content/uploads/2020/08/icon_global_skill_p_cleave.png?ssl=1",
     value: 2,
@@ -43,7 +43,7 @@ export const powerUps: PowerUps = {
   "3": {
     name: "arrow",
     description:
-      "Select a tile you own. Shoot an arrow in any direction from that tile. Any tiles in the arrows 2 tile range will be destroyed!",
+      "Select a tile you own. Then select a tile in any direction next to your currently selected tile. Any tiles in the arrows 2 tile range will be destroyed!",
     imgUrl: "https://cdn.newworldfans.com/db_images/db/items_hires/arrowt4.png",
     value: 3,
     rules: {
@@ -60,7 +60,7 @@ export const powerUps: PowerUps = {
 
   "4": {
     name: "bomb",
-    description: "Destroy a 4 square radius on any spot of the board",
+    description: "Destroy a 4 square radius on any spot of the board.",
     imgUrl: mcolbomb,
     value: 4,
     rules: {
@@ -75,20 +75,20 @@ export const powerUps: PowerUps = {
     quantity: 0,
   },
 
-  "5": {
-    name: "swap",
-    description: "Select two other player's tiles. The selected tiles placements will be swapped.",
-    imgUrl: "https://icon-library.com/images/swap-icon/swap-icon-15.jpg",
-    value: 5,
-    rules: {
-      affectsCaster: true,
-      direction: { isVertical: true, isHorizontal: true, isDiagonal: true },
-      castAnywhere: false,
-      tilesAffected: 1,
-      mustBeEmptyTile: false,
-      areaShape: "line",
-    },
-    selectColor: "#e1bee7",
-    quantity: 0,
-  },
+  // "5": {
+  //   name: "swap",
+  //   description: "Select two other player's tiles. The selected tiles placements will be swapped.",
+  //   imgUrl: "https://icon-library.com/images/swap-icon/swap-icon-15.jpg",
+  //   value: 5,
+  //   rules: {
+  //     affectsCaster: true,
+  //     direction: { isVertical: true, isHorizontal: true, isDiagonal: true },
+  //     castAnywhere: false,
+  //     tilesAffected: 1,
+  //     mustBeEmptyTile: false,
+  //     areaShape: "line",
+  //   },
+  //   selectColor: "#e1bee7",
+  //   quantity: 0,
+  // },
 };

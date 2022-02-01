@@ -37,7 +37,7 @@ interface TileProps {
   board: (number | string)[][];
   boardSize: number;
   isUsingPowerUp: boolean;
-  powerOrMove: string;
+  // powerOrMove: string;
 }
 export const Tile = ({
   boardColor,
@@ -57,8 +57,8 @@ export const Tile = ({
   board,
   boardSize,
   isUsingPowerUp,
-  powerOrMove,
-}: TileProps) => {
+}: // powerOrMove,
+TileProps) => {
   const [tile, setTile] = useState<{
     value: String | JSX.Element | number | undefined;
   }>({ value: value });
@@ -73,13 +73,13 @@ export const Tile = ({
     tileIdx === selectedPowerUpTiles[0].tileIdx &&
     rowIdx === selectedPowerUpTiles[0].rowIdx;
   const handleClick = async () => {
-    if (typeof value === "number" && powerOrMove === "Move") {
+    if (typeof value === "number" && !isUsingPowerUp) {
       startSnare();
       updateBoardCache();
-      selectedPowerUpTiles = [];
+      setSelectedPowerUpTiles([]);
       setIsSelected(false);
     }
-    if (selectedPowerUp.quantity > 0) {
+    if (selectedPowerUp.quantity > 0 && isUsingPowerUp) {
       handlePowerUps({
         selectedPowerUp,
         selectedPowerUpTiles,
