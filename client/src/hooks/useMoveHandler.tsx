@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useLayoutEffect, useMemo } from "react";
 import { Lobby } from "../Models/Lobby";
 import { GameStatus } from "../Models/GameStatus";
 import botMove from "../creators/APICreators/botNewMove";
@@ -7,6 +7,7 @@ import { Player } from "../Models/Player";
 import { PowerUp, PowerUps } from "../Models/PowerUp";
 import useSound from "use-sound";
 import getRandomInt from "../creators/BoardCreators/getRandomInt";
+import { powerUps } from "../storage/powerUps";
 
 interface UseMoveHandler {
   botCanMove: boolean;
@@ -104,10 +105,10 @@ export default function useMoveHandler({
         }
       });
     }
-  }, [gameStatus, botCanMove, playerWhoLeftSessionId]);
+  }, [gameStatus.whoTurn, botCanMove, playerWhoLeftSessionId]);
 
   // Handles move order rotation
-  useEffect(() => {
+  useMemo(() => {
     let playerWhosTurnItIs = playerPieces[playerPieces.length - 1];
     if (isBoardCreated && playerWhosTurnItIs.playerId !== gameStatus.whoTurn) {
       let poppedPlayer = playerPieces.pop();
@@ -121,7 +122,8 @@ export default function useMoveHandler({
     }
   }, [gameStatus.whoTurn]);
 
-  useEffect(() => {
+  const powerUpsAmount = Object.keys(powerUps).length;
+  useMemo(() => {
     if (gameStatus.newMove.playerId === gameStatus.whoTurn) {
       startOtherPlayerMoveSound();
     }
@@ -151,7 +153,7 @@ export default function useMoveHandler({
           ) {
             board[gameStatus.newPowerUpUse.selectedPowerUpTiles[i].rowIdx][
               gameStatus.newPowerUpUse.selectedPowerUpTiles[i].tileIdx
-            ] = getRandomInt(1, 6);
+            ] = getRandomInt(1, powerUpsAmount);
           }
           playArrowSound();
           break;
@@ -163,7 +165,7 @@ export default function useMoveHandler({
           ) {
             board[gameStatus.newPowerUpUse.selectedPowerUpTiles[i].rowIdx][
               gameStatus.newPowerUpUse.selectedPowerUpTiles[i].tileIdx
-            ] = getRandomInt(1, 6);
+            ] = getRandomInt(1, powerUpsAmount);
           }
           playCleaveSound();
           break;
@@ -175,7 +177,7 @@ export default function useMoveHandler({
           ) {
             board[gameStatus.newPowerUpUse.selectedPowerUpTiles[i].rowIdx][
               gameStatus.newPowerUpUse.selectedPowerUpTiles[i].tileIdx
-            ] = getRandomInt(1, 6);
+            ] = getRandomInt(1, powerUpsAmount);
           }
           playBombSound();
           break;

@@ -119,8 +119,10 @@ export default function Inventory({
               fromY={80}
               x={0}
               delay={0}
+              key={idx}
             >
               <Grid
+              
                 item
                 onClick={() => {
                   handlePowerUpSelect(powerUp, powerUp.value === selectedPowerUp.value);
@@ -132,6 +134,7 @@ export default function Inventory({
                     direction="column"
                     textAlign="center"
                     justifyContent="center"
+                   
                   >
                     <Grid item sx={{ p: 1 }}>
                       <PowerUpSelect

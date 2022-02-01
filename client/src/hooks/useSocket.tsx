@@ -19,6 +19,7 @@ interface UseSocketProps {
   setHostWinBy: (winBy: number) => void;
   setHostColor: (color: RgbaColor) => void;
   setHostSize: (size: number) => void;
+  gameStatus: GameStatus;
   action: string;
   playerId: string;
 }
@@ -35,11 +36,13 @@ export default function useSocket({
   setAction,
   setHostColor,
   setHostWinBy,
+  gameStatus,
   setHostSize,
 }: UseSocketProps) {
   const lobbyRef = useRef(lobby);
   const playerIdRef = useRef(playerId);
   const actionRef = useRef(action);
+  const gameStatusRef = useRef(gameStatus);
 
   useEffect(() => {
     lobbyRef.current = lobby;
@@ -50,6 +53,7 @@ export default function useSocket({
   useEffect(() => {
     actionRef.current = action;
   }, [action]);
+ 
 
   useEffect(() => {
     socket.on("connect", () => {
@@ -171,6 +175,7 @@ export default function useSocket({
 
       socket.on("new-move", (gameStatusResponse) => {
         setGameStatus(gameStatusResponse);
+        // gameStatusRef.current=gameStatusResponse
       });
 
       socket.on("player-join-lobby", (newPlayer: Player) => {

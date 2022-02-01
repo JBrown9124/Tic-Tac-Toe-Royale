@@ -102,7 +102,8 @@ export default function Board({
                           lobbyHostSid,
                           setGameStatus,
 
-                          inventory
+                          inventory,
+                       
                         )
                       : ""
                   }

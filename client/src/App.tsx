@@ -156,6 +156,7 @@ function App() {
     setHostWinBy,
     setHostColor,
     setHostSize,
+    gameStatus
   });
 
   return (

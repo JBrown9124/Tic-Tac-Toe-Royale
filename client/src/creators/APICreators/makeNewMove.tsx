@@ -17,7 +17,7 @@ const saveMove = async (body: BodyProps) => {
   return data;
 };
 const sendMove = (data: DataProps, body: BodyProps) => {
-  console.log(data.gameStatus,"DATAGAMESTATUS")
+ 
   socket.emit("new-move", {
     gameStatus: data.gameStatus,
     hostSid: body.hostSid,
