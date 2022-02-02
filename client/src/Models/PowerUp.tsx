@@ -20,7 +20,7 @@ export interface PowerUpRules {
   castAnywhere: boolean;
   tilesAffected: number;
   mustBeEmptyTile: boolean;
-  areaShape:"line"|"square"
+  areaShape:string
 }
 export interface PowerUp {
   

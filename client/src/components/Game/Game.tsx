@@ -1,9 +1,8 @@
 import Grid from "@mui/material/Grid";
 import { Player } from "../../Models/Player";
 import { useState, useEffect, useLayoutEffect, useMemo } from "react";
-import determineWinner from "../../creators/BoardCreators/determineWinner/determineWinner";
 import createBoard from "../../creators/BoardCreators/createBoard";
-import { useCookies } from "react-cookie";
+import { defaultPowerUp } from "../../storage/defaultPowerUp";
 import getPlayerPieces from "../../creators/BoardCreators/getPlayerPieces";
 import { Lobby } from "../../Models/Lobby";
 import { Move } from "../../Models/Move";
@@ -14,31 +13,32 @@ import Board from "./Board/Board";
 import StatusBoardAnimator from "../../animators/StatusBoardAnimator";
 import StatusBoard from "./StatusBoard/StatusBoard";
 import CountDownAnimator from "../../animators/CountDownAnimator";
-import useMoveHandler from "../../hooks/useMoveHandler";
+import useMoveHandler from "../../hooks/useMoveHandler/useMoveHandler";
+import useBoardCreator from "../../hooks/useBoardCreator";
 import updateAfterPlayerLeaves from "../../creators/BoardCreators/updateAfterPlayerLeaves";
 import TurnOrder from "./TurnOrder/TurnOrder";
 import Inventory from "./Inventory/Inventory";
 import { PowerUp, PowerUps } from "../../Models/PowerUp";
 import { powerUps } from "../../storage/powerUps";
 import SelectedPower from "./SelectedPower/SelectedPower";
-import makeNewMove from "../../creators/APICreators/makeNewMove";
-import SelectedPowerComponentAnimator from "../../animators/SelectedPowerComponentAnimator";
 import onFinish from "../../creators/BoardCreators/onFinish";
+
 interface GameProps {
   lobby: Lobby;
   gameStatus: GameStatus;
   isLobbyReceived: boolean;
-  setGameStatus: (status: GameStatus) => void;
   action: string;
-  setAction: (action: string) => void;
   playerId: string;
   isHost: boolean;
-  setIsHost: (isHost: boolean) => void;
   playerWhoLeftSessionId: string;
+  pieceSelection: string;
+
+  setGameStatus: (status: GameStatus) => void;
+  setAction: (action: string) => void;
+  setIsHost: (isHost: boolean) => void;
+  setCursor: (url: string) => void;
   setIsLobbyReceived: (isLobbyReceived: boolean) => void;
   handleStart: () => void;
-  pieceSelection: string;
-  setCursor: (url: string) => void;
 }
 
 export default function Game({
@@ -60,35 +60,67 @@ export default function Game({
   const [playLeaveSound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/floorDrumBackButton.mp3"
   );
-  // const [cursor, setCursor] = useState("")
+
   const [isBoardCreated, setIsBoardCreated] = useState(false);
   const [botCanMove, setBotCanMove] = useState(false);
   const [isCountDownFinished, setIsCountDownFinished] = useState(false);
+
   const [piece, setPiece] = useState<JSX.Element | string>("");
   const [inventory, setInventory] = useState<PowerUps>(powerUps);
+  
   const [board, setBoard] = useState<(number | string)[][]>([[]]);
   const [playerPieces, setPlayerPieces] = useState<Player[]>([]);
-  const sizeOfBoardPiece = determineSizeOfPiece(lobby?.board?.size);
-  const [isUsingPowerUp, setIsUsingPowerUp] = useState(false);
-  // const [powerOrMove, setPowerOrMove] = useState("Move");
-  const [selectedPowerUp, setSelectedPowerUp] = useState<PowerUp>({
-    value: 0,
-    name: "",
-    description: "",
-    imgUrl: "",
 
-    rules: {
-      affectsCaster: false,
-      direction: { isVertical: false, isHorizontal: false, isDiagonal: false },
-      castAnywhere: false,
-      tilesAffected: 0,
-      mustBeEmptyTile: false,
-      areaShape: "line",
-    },
-    selectColor: "",
-    quantity: 0,
-  });
+  const [isUsingPowerUp, setIsUsingPowerUp] = useState(false);
+  const [selectedPowerUp, setSelectedPowerUp] =
+    useState<PowerUp>(defaultPowerUp);
   const [selectedPowerUpTiles, setSelectedPowerUpTiles] = useState<Move[]>([]);
+
+  const sizeOfBoardPiece = determineSizeOfPiece(lobby?.board?.size);
+
+  useMoveHandler({
+    botCanMove,
+    lobby,
+    gameStatus,
+    isHost,
+    action,
+    board,
+    setGameStatus,
+    playerPieces,
+    playerWhoLeftSessionId,
+    isBoardCreated,
+    playerId,
+    inventory,
+  });
+
+  useBoardCreator({
+    action,
+    isLobbyReceived,
+    playerPieces,
+    playerId,
+    lobby,
+    setPiece,
+    setBoard,
+    setAction,
+    setIsHost,
+    setIsBoardCreated,
+    sizeOfBoardPiece,
+  });
+
+  /*For when user hits play again */
+  useEffect(() => {
+    if (action === "begin" && botCanMove) {
+      setBotCanMove(false);
+      setIsCountDownFinished(false);
+      setIsBoardCreated(false);
+      setIsLobbyReceived(false);
+      setIsUsingPowerUp(false);
+
+      setSelectedPowerUpTiles([]);
+      setSelectedPowerUp(defaultPowerUp);
+    }
+  }, [action]);
+
   useEffect(() => {
     updateAfterPlayerLeaves({
       playerPieces,
@@ -100,99 +132,19 @@ export default function Game({
     });
   }, [playerWhoLeftSessionId]);
 
-  useMoveHandler({
-    botCanMove,
-    lobby,
-    gameStatus,
-    isHost,
-    action,
-    board,
-    setGameStatus,
-
-    playerPieces,
-    playerWhoLeftSessionId,
-    isBoardCreated,
-    playerId,
-    inventory,
-  });
-
   const quitGame = () => {
     playLeaveSound();
+
     setBotCanMove(false);
     setIsCountDownFinished(false);
     setIsBoardCreated(false);
     setIsHost(false);
 
+    // Lets board destructure animation do its thing
     setTimeout(() => {
       setAction("leave");
     }, 3500);
   };
-
-  useEffect(() => {
-    /*For when user hits play again */
-    if (action === "begin" && botCanMove) {
-      setBotCanMove(false);
-      setIsCountDownFinished(false);
-      setIsBoardCreated(false);
-      setIsLobbyReceived(false);
-      setSelectedPowerUpTiles([]);
-
-      setSelectedPowerUp({
-        value: 0,
-        name: "",
-        description: "",
-        imgUrl: "",
-
-        rules: {
-          affectsCaster: false,
-          direction: {
-            isVertical: false,
-            isHorizontal: false,
-            isDiagonal: false,
-          },
-          castAnywhere: false,
-          tilesAffected: 0,
-          mustBeEmptyTile: false,
-          areaShape: "line",
-        },
-        selectColor: "",
-        quantity: 0,
-      });
-      setIsUsingPowerUp(false);
-    }
-  }, [action]);
-
-  useEffect(() => {
-    if (action === "begin" && isLobbyReceived) {
-      const setUpGame = async () => {
-        /* When user hits play gain we wont need to convert pieces */
-        if (playerPieces.length === 0) {
-          await getPlayerPieces(
-            playerId,
-            lobby.players,
-            setPiece,
-            sizeOfBoardPiece,
-            lobby.board.color,
-            setIsHost,
-            playerPieces
-          );
-        }
-
-        const boardCreated = await createBoard(
-          setBoard,
-          lobby.board.size,
-          lobby.board.moves
-        );
-
-        setIsBoardCreated(boardCreated);
-        setAction("in game");
-      };
-      if (lobby.board.color) {
-        setUpGame();
-      }
-    }
-  }, [isLobbyReceived]);
-
   return (
     <>
       <Grid

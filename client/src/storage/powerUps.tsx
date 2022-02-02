@@ -74,6 +74,23 @@ export const powerUps: PowerUps = {
     selectColor: "#ffe0b2",
     quantity: 0,
   },
+  "5": {
+    name: "blind",
+    description:
+      "Blind all players until your next turn.",
+    imgUrl: "https://static.thenounproject.com/png/18405-200.png",
+    value: 5,
+    rules: {
+      affectsCaster: false,
+      direction: { isVertical: false, isHorizontal: false, isDiagonal: false },
+      castAnywhere: true,
+      tilesAffected: 0,
+      mustBeEmptyTile: false,
+      areaShape: "debuff",
+    },
+    selectColor: "#ffe0b2",
+    quantity: 0,
+  },
 
   // "5": {
   //   name: "swap",

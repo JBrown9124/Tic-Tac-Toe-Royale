@@ -1,13 +1,13 @@
 import { useEffect, useState, useLayoutEffect, useMemo } from "react";
-import { Lobby } from "../Models/Lobby";
-import { GameStatus } from "../Models/GameStatus";
-import botMove from "../creators/APICreators/botNewMove";
-import determineWinner from "../creators/BoardCreators/determineWinner/determineWinner";
-import { Player } from "../Models/Player";
-import { PowerUp, PowerUps } from "../Models/PowerUp";
+import { Lobby } from "../../Models/Lobby";
+import { GameStatus } from "../../Models/GameStatus";
+import botMove from "../../creators/APICreators/botNewMove";
+import determineWinner from "../../creators/BoardCreators/determineWinner/determineWinner";
+import { Player } from "../../Models/Player";
+import { PowerUp, PowerUps } from "../../Models/PowerUp";
 import useSound from "use-sound";
-import getRandomInt from "../creators/BoardCreators/getRandomInt";
-import { powerUps } from "../storage/powerUps";
+import getRandomInt from "../../creators/BoardCreators/getRandomInt";
+import { powerUps } from "../../storage/powerUps";
 
 interface UseMoveHandler {
   botCanMove: boolean;
