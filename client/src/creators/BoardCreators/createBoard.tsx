@@ -1,4 +1,4 @@
-import getRandomInt from './getRandomInt'
+import getRandomInt from '../../utilities/getRandomInt'
 import {powerUps} from "../../storage/powerUps"
 const createBoard = async (
   setBoard: (boardValue: number[][]) => void,

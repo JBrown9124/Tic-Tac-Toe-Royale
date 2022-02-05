@@ -67,7 +67,7 @@ export default function Game({
 
   const [piece, setPiece] = useState<JSX.Element | string>("");
   const [inventory, setInventory] = useState<PowerUps>(powerUps);
-  
+
   const [board, setBoard] = useState<(number | string)[][]>([[]]);
   const [playerPieces, setPlayerPieces] = useState<Player[]>([]);
 
@@ -83,7 +83,6 @@ export default function Game({
     lobby,
     gameStatus,
     isHost,
-    action,
     board,
     setGameStatus,
     playerPieces,
