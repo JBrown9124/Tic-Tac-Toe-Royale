@@ -98,11 +98,11 @@ class Bot(object):
             left_chance = 0
             right_chance = 0
             while left_idx > 0 and (
-                self.board[row_idx][left_idx - 1] == 0
+                type(self.board[row_idx][left_idx - 1]) == int 
                 or self.board[row_idx][left_idx - 1] == player_id
             ):
 
-                if self.board[row_idx][left_idx - 1] == 0 and not best_left_move:
+                if type(self.board[row_idx][left_idx - 1]) == int and not best_left_move:
                     best_left_move = BestMove(
                         row_idx, left_idx - 1, left_chance, self.player_making_move
                     )
@@ -113,14 +113,14 @@ class Bot(object):
                 left_idx -= 1
 
             while right_idx < self.board_size - 1 and (
-                self.board[row_idx][right_idx + 1] == 0
+                type(self.board[row_idx][right_idx + 1]) == int 
                 or self.board[row_idx][right_idx + 1] == player_id
             ):
                 if self.board[row_idx][right_idx + 1] == player_id:
                     right_chance += 1
                     if best_right_move:
                         best_right_move.chance = right_chance
-                if self.board[row_idx][right_idx + 1] == 0 and not best_right_move:
+                if type(self.board[row_idx][right_idx + 1]) == int and not best_right_move:
                     best_right_move = BestMove(
                         row_idx, right_idx + 1, right_chance, self.player_making_move
                     )
@@ -145,11 +145,11 @@ class Bot(object):
             top_chance = 0
             bottom_chance = 0
             while top_idx > 0 and (
-                self.board[top_idx - 1][tile_idx] == 0
+                type(self.board[top_idx - 1][tile_idx]) == int
                 or self.board[top_idx - 1][tile_idx] == player_id
             ):
 
-                if self.board[top_idx - 1][tile_idx] == 0 and not best_top_move:
+                if type(self.board[top_idx - 1][tile_idx]) == int and not best_top_move:
                     best_top_move = BestMove(
                         top_idx - 1, tile_idx, top_chance, self.player_making_move
                     )
@@ -160,11 +160,11 @@ class Bot(object):
                 top_idx -= 1
 
             while bottom_idx < self.board_size - 1 and (
-                self.board[bottom_idx + 1][tile_idx] == 0
+                type(self.board[bottom_idx + 1][tile_idx]) == int
                 or self.board[bottom_idx + 1][tile_idx] == player_id
             ):
 
-                if self.board[bottom_idx + 1][tile_idx] == 0 and not best_bottom_move:
+                if type(self.board[bottom_idx + 1][tile_idx]) == int and not best_bottom_move:
                     best_bottom_move = BestMove(
                         bottom_idx + 1, tile_idx, bottom_chance, self.player_making_move
                     )
@@ -196,12 +196,12 @@ class Bot(object):
                 left[0] < self.board_size - 1
                 and left[1] > 0
                 and (
-                    self.board[left[0] + 1][left[1] - 1] == 0
+                    type(self.board[left[0] + 1][left[1] - 1]) == int
                     or self.board[left[0] + 1][left[1] - 1] == player_id
                 )
             ):
 
-                if self.board[left[0] + 1][left[1] - 1] == 0 and not best_left_move:
+                if type(self.board[left[0] + 1][left[1] - 1]) == int and not best_left_move:
                     best_left_move = BestMove(
                         left[0] + 1, left[1] - 1, left_chance, self.player_making_move
                     )
@@ -216,12 +216,12 @@ class Bot(object):
                 right[0] > 0
                 and right[1] < self.board_size - 1
                 and (
-                    self.board[right[0] - 1][right[1] + 1] == 0
+                    type(self.board[right[0] - 1][right[1] + 1]) == int
                     or self.board[right[0] - 1][right[1] + 1] == player_id
                 )
             ):
 
-                if self.board[right[0] - 1][right[1] + 1] == 0 and not best_right_move:
+                if type(self.board[right[0] - 1][right[1] + 1]) == int and not best_right_move:
                     best_right_move = BestMove(
                         right[0] - 1,
                         right[1] + 1,
@@ -258,12 +258,12 @@ class Bot(object):
                 right[0] < self.board_size - 1
                 and right[1] < self.board_size - 1
                 and (
-                    self.board[right[0] + 1][right[1] + 1] == 0
+                    type(self.board[right[0] + 1][right[1] + 1]) == int
                     or self.board[right[0] + 1][right[1] + 1] == player_id
                 )
             ):
 
-                if self.board[right[0] + 1][right[1] + 1] == 0 and not best_right_move:
+                if type(self.board[right[0] + 1][right[1] + 1]) == int and not best_right_move:
                     best_right_move = BestMove(
                         right[0] + 1,
                         right[1] + 1,
@@ -281,12 +281,12 @@ class Bot(object):
                 left[0] > 0
                 and left[1] > 0
                 and (
-                    self.board[left[0] - 1][left[1] - 1] == 0
+                    type(self.board[left[0] - 1][left[1] - 1]) == int
                     or self.board[left[0] - 1][left[1] - 1] == player_id
                 )
             ):
 
-                if self.board[left[0] - 1][left[1] - 1] == 0 and not best_left_move:
+                if type(self.board[left[0] - 1][left[1] - 1]) == int and not best_left_move:
                     best_left_move = BestMove(
                         left[0] - 1, left[1] - 1, left_chance, self.player_making_move
                     )
