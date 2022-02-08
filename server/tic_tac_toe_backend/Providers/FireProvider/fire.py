@@ -10,7 +10,7 @@ class Fire:
         self.current_location = current_location
         self.moves = moves
         self.fire_id = (
-            "FIRE" + uuid.uuid4()
+            "FIRE" + str(uuid.uuid4())
             if len(current_location.player_id) == 0
             else current_location.player_id
         )

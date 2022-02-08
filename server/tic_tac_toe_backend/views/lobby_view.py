@@ -12,6 +12,7 @@ from ..ResponseModels.response_lobby import LobbyResponseModel
 from ..Models.player import Player
 from django.core.cache import cache
 from ..Providers.BotProvider.bot_pieces import bot_pieces
+from ..Providers.BotProvider.create_bot import create_bot
 
 # Create your views here.
 class Lobby(APIView):
@@ -65,31 +66,7 @@ class Lobby(APIView):
         
         if player_name == "BOTPASSPASS":
 
-            lobby_bot_pieces = set()
-            bot_names = set()
-            lobby_players = lobby["players"]
-            for player in lobby_players:
-                player_id = player["playerId"]
-                if player_id[:3] == "BOT":
-                    lobby_bot_pieces.add(player["piece"])
-                    bot_names.add(player["name"])
-            bot_piece = None
-            for piece in bot_pieces:
-                if piece not in lobby_bot_pieces:
-                    bot_piece = piece
-                    break
-            bot_name = "BOT" + str(randrange(1,999))
-            while bot_name in bot_names:
-                bot_name = "BOT" + str(randrange(1,999))
-            player = Player(
-                name=bot_name,
-               
-                is_loaded=True,
-                piece=bot_piece,
-                is_ready=True,
-                session_id=None,
-            ).to_dict()
-            player["playerId"] = bot_name
+            player = create_bot(lobby)
 
         else:
             player = Player(
