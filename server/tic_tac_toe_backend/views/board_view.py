@@ -17,16 +17,13 @@ from ..Models.new_move import Move
 from ..Providers.FireProvider.fire import Fire
 from ..Providers.FireProvider.FireModels.fire_move import FireMove
 from django.core.cache import cache
-from ..Providers.CacheProvider.add_fire import add_fire
-from ..Providers.CacheProvider.destroy_move import destroy_move
-from ..Providers.CacheProvider.spread_fire import spread_fire
+from ..Providers.PowerUpProvider.add_fire import add_fire
+from ..Providers.PowerUpProvider.destroy_move import destroy_move
+from ..Providers.PowerUpProvider.spread_fire import spread_fire
 import uuid
 
 # Create your views here.
 class Board(APIView):
-    def post(self, request: Request):
-        pass
-
     def put(self, request: Request):
         """takes new move coordinates,lobbyId, and gameStatus. updates lobby board, and returns new move coordinates and update game status(whos move it is, who won)"""
         body = request.data
@@ -56,15 +53,18 @@ class Board(APIView):
         if game_status["whoTurn"] != lobby_players_copy[-1]["playerId"]:
             return HttpResponse("Not your turn!", status=404)
 
-        # Queue turn order rotation
         last_turn_player = lobby_players_copy.pop()
+
+        # if player aquired a power up
         if power_up:
             last_turn_player["inventory"].append(power_up)
 
+        # queue turn order rotation
         lobby_players_copy = deque(lobby_players_copy)
         lobby_players_copy.appendleft(last_turn_player)
         next_turn_player = lobby_players_copy[-1]["playerId"]
 
+        # set next persons turn in rotation
         lobby_game_status_copy["whoTurn"] = next_turn_player
 
         if winner:
@@ -73,18 +73,20 @@ class Board(APIView):
             ).to_dict()
             lobby_game_status_copy["win"] = win
 
-        if len(new_power_up_use["selectedPowerUpTiles"]) == 0:
+        is_move = len(new_power_up_use["selectedPowerUpTiles"]) == 0
+        if is_move:
             lobby_board_copy["moves"].append(new_move)
         else:
-
-            if (
+            is_destroying_power = (
                 new_power_up_use["powerUp"]["name"] == "arrow"
                 or new_power_up_use["powerUp"]["name"] == "cleave"
                 or new_power_up_use["powerUp"]["name"] == "bomb"
-            ):
+            )
+            if is_destroying_power:
                 destroy_move(new_power_up_use, lobby_board_copy, lobby_game_status_copy)
 
-            if new_power_up_use["powerUp"]["name"] == "fire":
+            is_new_fire_placement = new_power_up_use["powerUp"]["name"] == "fire"
+            if is_new_fire_placement:
                 add_fire(
                     new_power_up_use,
                     last_turn,
@@ -92,12 +94,13 @@ class Board(APIView):
                     lobby_game_status_copy,
                 )
 
-        if len(lobby_game_status_copy["fireTiles"]) > 0:
+        fire_tiles_exist = len(lobby_game_status_copy["fireTiles"]) > 0
+        if fire_tiles_exist:
             spread_fire(lobby_game_status_copy, last_turn, lobby_board_copy)
 
         tile_amount = lobby_board_copy["size"] * lobby_board_copy["size"]
-
-        if len(lobby_board_copy["moves"]) == tile_amount and not winner:
+        no_open_tiles = len(lobby_board_copy["moves"]) == tile_amount
+        if no_open_tiles and not winner:
             win = Win(who_won="tie", type="tie").to_dict()
             lobby_game_status_copy["win"] = win
 
@@ -109,6 +112,3 @@ class Board(APIView):
         cache.set(lobby_id, lobby_copy, 3600)
 
         return JsonResponse({"gameStatus": lobby_copy["gameStatus"]})
-
-    def delete(self, request: Request):
-        pass
