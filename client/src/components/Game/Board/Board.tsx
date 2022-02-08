@@ -1,18 +1,13 @@
 import Grid from "@mui/material/Grid";
 import { RgbaColor } from "react-colorful";
-
 import BoardAnimator from "../../../animators/BoardAnimator";
 import { Tile } from "./Tile";
-
 import determineWinner from "../../../creators/BoardCreators/determineWinner/determineWinner";
 import { Player } from "../../../Models/Player";
-import { PlayerPieces } from "../../../Models/PlayerPieces";
-import { Lobby } from "../../../Models/Lobby";
 import { Move } from "../../../Models/Move";
 import { PowerUp, PowerUps } from "../../../Models/PowerUp";
 import { GameStatus } from "../../../Models/GameStatus";
-import { determineSizeOfPiece } from "../../../creators/BoardCreators/sizeOfPiece";
-import { useSound } from "use-sound";
+
 
 interface BoardProps {
   playerId: string;
@@ -72,7 +67,6 @@ export default function Board({
                 boardRenderTime={200 * boardSize}
               >
                 <Tile
-                  // powerOrMove={powerOrMove}
                   isUsingPowerUp={isUsingPowerUp}
                   boardSize={boardSize}
                   board={board}
@@ -94,14 +88,12 @@ export default function Board({
                           rowIdx,
                           tileIdx,
                           board,
-
                           boardSize,
                           playerId,
                           winBy,
                           lobbyId,
                           lobbyHostSid,
                           setGameStatus,
-
                           inventory,
                        
                         )

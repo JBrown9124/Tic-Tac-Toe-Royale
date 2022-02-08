@@ -1,19 +1,9 @@
-import { PlayerPieces } from "../../Models/PlayerPieces";
 import { Player } from "../../Models/Player";
 import { RgbaColor } from "react-colorful";
 import createPiece from "./createPiece";
 
-interface getPlayerPiecesArguments {
-
-  players: Player[];
-  setPiece: (piece: JSX.Element) => void;
-  sizeOfBoardPiece: { mobile: string; desktop: string };
-  setPlayerPieces: (playerPieces: Player[]) => void;
-  boardColor: RgbaColor;
-}
 
 const getPlayerPieces = async (
-
   playerId: string,
   players: Player[],
   setPiece: (piece: JSX.Element) => void,
@@ -22,9 +12,7 @@ const getPlayerPieces = async (
   setIsHost: (isHost: boolean) => void,
   playerPieces: Player[]
 ) => {
-  
   return players.forEach((player: Player) => {
-    
     const defaultPieces = createPiece(
       boardColor.r * 0.299 + boardColor.g * 0.587 + boardColor.b * 0.114 > 186
         ? "black"
@@ -48,7 +36,7 @@ const getPlayerPieces = async (
         );
         if (player.playerId === playerId) {
           setPiece(convertedPlayerPiece);
-        
+
           setIsHost(player.isHost);
         }
 
@@ -59,7 +47,7 @@ const getPlayerPieces = async (
           if (piece.name === player.piece) {
             if (player.playerId === playerId) {
               setPiece(piece.value);
-        
+
               setIsHost(player.isHost);
             }
 

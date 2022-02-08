@@ -1,9 +1,7 @@
 import Grid from "@mui/material/Grid";
 import { Player } from "../../Models/Player";
-import { useState, useEffect, useLayoutEffect, useMemo } from "react";
-import createBoard from "../../creators/BoardCreators/createBoard";
+import { useState, useEffect} from "react";
 import { defaultPowerUp } from "../../storage/defaultPowerUp";
-import getPlayerPieces from "../../creators/BoardCreators/getPlayerPieces";
 import { Lobby } from "../../Models/Lobby";
 import { Move } from "../../Models/Move";
 import { GameStatus } from "../../Models/GameStatus";
@@ -66,7 +64,7 @@ export default function Game({
   const [isCountDownFinished, setIsCountDownFinished] = useState(false);
 
   const [piece, setPiece] = useState<JSX.Element | string>("");
-  const [inventory, setInventory] = useState<PowerUps>(powerUps);
+  const [inventory] = useState<PowerUps>(powerUps);
 
   const [board, setBoard] = useState<(number | string)[][]>([[]]);
   const [playerPieces, setPlayerPieces] = useState<Player[]>([]);

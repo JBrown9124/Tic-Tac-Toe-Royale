@@ -1,13 +1,11 @@
 import Grid from "@mui/material/Grid";
-import { useCookies } from "react-cookie";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { useState, useEffect } from "react";
 import Tooltip from '@mui/material/Tooltip';
 import { styled } from "@mui/material/styles";
-
 import Zoom from '@mui/material/Zoom';
 import { useSound } from "use-sound";
+
 const StyledTextField = styled(TextField)({
   borderRadius:"100px",
   background: "#e8f5e9",
@@ -16,21 +14,9 @@ const StyledTextField = styled(TextField)({
     borderRadius:"100px",
   },
 
-  // "& :focus": {
-  //   backgroundColor: "white",
-  // },
-  // "&$focused": {
-  //   backgroundColor: "white",
-  // },
+  
   "& label.Mui-focused": {
-    // backgroundColor: "white",
-
-    // "& :focus": {
-    //   backgroundColor: "white",
-    // },
-    // "&$focused": {
-    //   backgroundColor: "white",
-    // },
+   
     color: "black",
   },
   "& .MuiInput-underline:after": {
@@ -53,10 +39,7 @@ const StyledTextField = styled(TextField)({
     },
     
   },
-  // "& .MuiInput-underline:before": {
-  //   borderBottomColor: " rgba(191, 189, 206, 0.986)",
-  // },
-  //   },
+ 
 });
 interface WinByProps {
   winBy: number;

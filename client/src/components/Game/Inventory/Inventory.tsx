@@ -1,12 +1,12 @@
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { powerUps } from "../../../storage/powerUps";
 import { useEffect, useState } from "react";
 import { PowerUp, PowerUps } from "../../../Models/PowerUp";
 import { Move } from "../../../Models/Move";
+import { defaultPowerUp } from "../../../storage/defaultPowerUp";
 import PowerUpSelect from "../../../animators/PowerUpSelect";
 import PowerUpAquired from "../../../animators/PowerUpAquired";
-import Button from "@mui/material/Button";
+
 interface InventoryProps {
   inventory: PowerUps;
   setCursor: (url: string) => void;
@@ -29,39 +29,20 @@ export default function Inventory({
   // powerOrMove,
   isBoardCreated,
 }: InventoryProps) {
-  const [inventoryList, setInventoryList] = useState<PowerUp[]>([]);
+  const [inventoryList] = useState<PowerUp[]>([]);
   const powerUpsWithQuantity = inventoryList.filter((item) => {
     return item.quantity !== 0;
   });
-  const handlePowerUpSelect = (powerUp: PowerUp, isSameId:boolean) => {
-    
-    // if (powerOrMove === "Power") {
-      if (!isSameId){
+  const handlePowerUpSelect = (powerUp: PowerUp, isSameId: boolean) => {
+    if (!isSameId) {
       setSelectedPowerUp(powerUp);
       setSelectedPowerUpTiles([]);
-      setIsUsingPowerUp(true);}
-      else{
-        setSelectedPowerUp({
-          value: 0,
-          name: "",
-          description: "",
-          imgUrl: "",
-      
-          rules: {
-            affectsCaster: false,
-            direction: { isVertical: false, isHorizontal: false, isDiagonal: false },
-            castAnywhere: false,
-            tilesAffected: 0,
-            mustBeEmptyTile: false,
-            areaShape: "line",
-          },
-          selectColor: "",
-          quantity: 0,
-        });
+      setIsUsingPowerUp(true);
+    } else {
+      setSelectedPowerUp(defaultPowerUp);
       setSelectedPowerUpTiles([]);
       setIsUsingPowerUp(false);
-      }
-    
+    }
   };
   useEffect(() => {
     if (inventoryList.length === 0) {
@@ -100,7 +81,7 @@ export default function Inventory({
               fontFamily: "Bungee Hairline, cursive",
               fontWeight: 800,
               p: 1,
-              marginBottom:2
+              marginBottom: 2,
             }}
           >
             Your Powers
@@ -122,10 +103,12 @@ export default function Inventory({
               key={idx}
             >
               <Grid
-              
                 item
                 onClick={() => {
-                  handlePowerUpSelect(powerUp, powerUp.value === selectedPowerUp.value);
+                  handlePowerUpSelect(
+                    powerUp,
+                    powerUp.value === selectedPowerUp.value
+                  );
                 }}
               >
                 {powerUp.quantity !== 0 && (
@@ -134,11 +117,10 @@ export default function Inventory({
                     direction="column"
                     textAlign="center"
                     justifyContent="center"
-                   
                   >
                     <Grid item sx={{ p: 1 }}>
                       <PowerUpSelect
-                      quantity={powerUp.quantity}
+                        quantity={powerUp.quantity}
                         delay={0}
                         isClicked={powerUp.value === selectedPowerUp.value}
                         scale={1.5}
@@ -179,11 +161,10 @@ export default function Inventory({
               }}
             >
               <Typography
-                sx={{  fontFamily: "Bungee Hairline, cursive",
-                fontWeight: 800, }}
+                sx={{ fontFamily: "Bungee Hairline, cursive", fontWeight: 800 }}
               >
                 {" "}
-               Go Here
+                Go Here
               </Typography>
             </Grid>
           )}

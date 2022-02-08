@@ -9,17 +9,19 @@ import { Player } from "../../../Models/Player";
 import createPiece from "../../../creators/BoardCreators/createPiece";
 import CheckIcon from "@mui/icons-material/Check";
 import ClearIcon from "@mui/icons-material/Clear";
-import { useCookies } from "react-cookie";
-import Skeleton from "@mui/material/Skeleton";
 import SkeletonPlayers from "./SkeletonPlayers";
 interface PlayerListProps {
   players: Player[];
   playerPiece: string;
-  playerName:string
-  playerId:string
+  playerName: string;
+  playerId: string;
 }
-export default function PlayerList({ players, playerPiece,playerName, playerId}: PlayerListProps) {
-
+export default function PlayerList({
+  players,
+  playerPiece,
+  playerName,
+  playerId,
+}: PlayerListProps) {
   const pieces = createPiece("black");
   return (
     <>
@@ -28,13 +30,18 @@ export default function PlayerList({ players, playerPiece,playerName, playerId}:
         textAlign="center"
         direction="column"
         justifyContent="center"
-        sx={{  borderRadius: "60px", background:"#e8f5e9" }}
+        sx={{ borderRadius: "60px", background: "#e8f5e9" }}
       >
         <Grid item>
-          <Typography sx={{fontFamily: "Bungee Hairline, cursive", fontWeight: 800}}> Players </Typography>
+          <Typography
+            sx={{ fontFamily: "Bungee Hairline, cursive", fontWeight: 800 }}
+          >
+            {" "}
+            Players{" "}
+          </Typography>
         </Grid>
         <Grid item>
-          <List dense sx={{ justifyContent: "center", }} aria-label="players">
+          <List dense sx={{ justifyContent: "center" }} aria-label="players">
             {players.length === 0 ? (
               <SkeletonPlayers />
             ) : (
@@ -103,7 +110,12 @@ export default function PlayerList({ players, playerPiece,playerName, playerId}:
 
                       <ListItemText
                         sx={{ textAlign: "center" }}
-                        primaryTypographyProps={{style: { fontFamily: "Bungee Hairline, cursive", fontWeight: 800 },}}
+                        primaryTypographyProps={{
+                          style: {
+                            fontFamily: "Bungee Hairline, cursive",
+                            fontWeight: 800,
+                          },
+                        }}
                         primary={player.name}
                       />
                     </ListItem>
@@ -171,8 +183,13 @@ export default function PlayerList({ players, playerPiece,playerName, playerId}:
                       )}
 
                       <ListItemText
-                      primaryTypographyProps={{style: { fontFamily: "Bungee Hairline, cursive", fontWeight: 800 },}}
-                        sx={{ textAlign: "center"}}
+                        primaryTypographyProps={{
+                          style: {
+                            fontFamily: "Bungee Hairline, cursive",
+                            fontWeight: 800,
+                          },
+                        }}
+                        sx={{ textAlign: "center" }}
                         primary={player.name}
                       />
                     </ListItem>

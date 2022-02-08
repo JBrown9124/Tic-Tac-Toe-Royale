@@ -1,10 +1,8 @@
 import Grid from "@mui/material/Grid";
 import "./App.css";
-import { useState, useEffect, useRef } from "react";
+import { useState} from "react";
 import PregameModal from "./components/PregameModal/PregameModal";
-import { useCookies } from "react-cookie";
 import Game from "./components/Game/Game";
-import { Move } from "./Models/Move";
 import { Lobby } from "./Models/Lobby";
 import { GameStatus } from "./Models/GameStatus";
 import startGame from "./creators/APICreators/startGame";
@@ -13,11 +11,10 @@ import useCommands from "./hooks/useCommands";
 import useSocket from "./hooks/useSocket";
 import BuildingBoardSplashScreen from "./components/BuildingBoardSplashScreen";
 import { backgroundColor } from "./themes/theme1";
-import fire from "./img/fire.png";
-
+import defaultGameStatus from "./storage/defaultGameStatus"
+import defaultLobby from "./storage/defaultLobby"
 function App() {
   const [action, setAction] = useState("welcome");
-
   const [lobbyId, setLobbyId] = useState(0);
   const [isLobbyReceived, setIsLobbyReceived] = useState(false);
   const [isLobbyFound, setIsLobbyFound] = useState(true);
@@ -33,78 +30,8 @@ function App() {
   const [isHost, setIsHost] = useState(false);
   const [playerWhoLeftSessionId, setPlayerWhoLeftSessionId] = useState("");
   const [cursor, setCursor] = useState("");
-  const [gameStatus, setGameStatus] = useState<GameStatus>({
-    win: { whoWon: null, type: null, winningMoves: null },
-    whoTurn: "",
-    newMove: { playerId: "", rowIdx: 0, tileIdx: 0 },
-    newPowerUpUse: {
-      powerUp: {
-        value: 0,
-        name: "",
-        description: "",
-        imgUrl: "",
-     
-        rules: {
-          affectsCaster: false,
-          direction: {
-            isVertical: false,
-            isHorizontal: false,
-            isDiagonal: false,
-          },
-          castAnywhere: false,
-          tilesAffected: 0,
-          mustBeEmptyTile: false,
-          areaShape: "line",
-        },
-        selectColor: "",
-        quantity: 0
-      },
-      selectedPowerUpTiles: [],
-    
-    },  fireTiles:[]
-  });
-
-  const [lobby, setLobby] = useState<Lobby>({
-    hostSid: 0,
-    lobbyId: 0,
-    board: {
-      size: 3,
-      color: { r: 255, g: 255, b: 255, a: 0.9 },
-      winBy: 3,
-      moves: [],
-    },
-    players: [],
-    gameStatus: {
-      win: { whoWon: null, type: null, winningMoves: null },
-      whoTurn: "",
-      newMove: { playerId: "", rowIdx: 0, tileIdx: 0 },
-      newPowerUpUse: {
-        powerUp: {
-          value: 0,
-          name: "",
-          description: "",
-          imgUrl: "",
-        
-          rules: {
-            affectsCaster: false,
-            direction: {
-              isVertical: false,
-              isHorizontal: false,
-              isDiagonal: false,
-            },
-            castAnywhere: false,
-            tilesAffected: 0,
-            mustBeEmptyTile: false,
-            areaShape: "line",
-          },
-          selectColor: "",
-          quantity: 0
-        },
-        selectedPowerUpTiles: [],
-      },  fireTiles:[]
-    },
-  });
-
+  const [gameStatus, setGameStatus] = useState<GameStatus>(defaultGameStatus);
+  const [lobby, setLobby] = useState<Lobby>(defaultLobby);
   const [playerId, setPlayerId] = useState("");
   const [playerName, setPlayerName] = useState("");
 
@@ -161,7 +88,6 @@ function App() {
 
   return (
     <>
-      {/* <LobbyContext.Provider value={lobby}> */}
       <Grid
         sx={{
           position: "fixed",

@@ -1,21 +1,18 @@
 import Settings from "./Settings/Settings";
 import Grid from "@mui/material/Grid";
 import PlayerList from "./PlayerList";
-import Button from "@mui/material/Button";
 import { useState } from "react";
-import playerReady from "../../../creators/APICreators/playerReady";
-import leaveLobby from "../../../creators/APICreators/leaveLobby";
-import joinLobby from "../../../creators/APICreators/joinLobby";
+import arePlayersReady from "../../../creators/HostLobbyCreators/arePlayersReady";
+import handleAddBot from "../../../creators/HostLobbyCreators/handleAddBot";
+import sendHostPiece from "../../../creators/HostLobbyCreators/sendHostPiece";
 import CustomButton from "../../CustomButton";
 import Typography from "@mui/material/Typography";
 import { Player } from "../../../Models/Player";
 import { Lobby } from "../../../Models/Lobby";
 import { RgbaColor } from "react-colorful";
-import { useCookies } from "react-cookie";
 import CopyLobbyId from "./CopyLobbyId";
 import useSound from "use-sound";
 import Tooltip from "@mui/material/Tooltip";
-import Fade from "@mui/material/Fade";
 import Zoom from "@mui/material/Zoom";
 interface PlayerListProps {
   handleLeave: () => void;
@@ -58,74 +55,10 @@ export default function HostLobby({
   const [playAddBotSound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/addBotSound.mp3"
   );
-  const handleError = (message: string) => {
-    setErrorMessage(message);
-    setIsError(true);
-    return false;
-  };
-  const allPlayersReady = () => {
-    const playersNotReady = players.filter((player) => {
-      return !player.isReady && !player.isHost;
-    });
-    if (playersNotReady.length > 0) {
-      return handleError("Players not ready.");
-    }
-    if (players.length <= 1) {
-      return handleError("Need at least 2 players.");
-    }
-    if (!playerPiece) {
-      return handleError("Select a piece.");
-    }
-    if (winBy > size) {
-      return handleError("Win By must be less than or equal to board size.");
-    }
-    setIsError(false);
-    return true;
-  };
-  const sendHostPiece = (pieceValue: string) => {
-    setPiece(pieceValue);
-    const reqBody = {
-      player: {
-        name: playerName,
-        piece: pieceValue,
-        playerId: playerId,
-      },
-      lobbyId: lobbyId,
-      hostSid: hostSid,
-    };
-    playerReady(reqBody);
-  };
-  const handleAddABot = () => {
-    const botsInLobby = players.filter((player) => {
-      return player?.playerId?.substring(0, 3) === "BOT";
-    });
 
-    const createBot = async () => {
-      const reqBody = {
-        lobbyId: lobbyId,
-        playerName: "BOTPASSPASS",
-        sessionId: null,
-      };
-      const response = await joinLobby(reqBody);
-      if (typeof response !== "string") {
-        setLobby(response.lobby);
-      }
-    };
-    if (botsInLobby.length < 10) {
-      createBot();
-      playAddBotSound();
-    }
-  };
-  const handleRemoveBot = () => {
-    const botsInLobby = players.filter((player) => {
-      return player?.playerId?.substring(0, 3) === "BOT";
-    });
-    const lastBotMade = botsInLobby[botsInLobby.length - 1];
-    leaveLobby({ player: lastBotMade, hostSid: hostSid, lobbyId: lobbyId });
-  };
   return (
     <>
-      <Grid container direction="column" spacing={2} >
+      <Grid container direction="column" spacing={2}>
         <CopyLobbyId lobbyId={lobbyId} />
         <Grid item container sx={{ textAlign: "center" }} spacing={6}>
           <Grid item xs={12} sm={6}>
@@ -137,7 +70,16 @@ export default function HostLobby({
               size={size}
               setSize={(props) => setSize(props)}
               playerPiece={playerPiece}
-              setPiece={(props) => sendHostPiece(props)}
+              setPiece={(props) =>
+                sendHostPiece(
+                  setPiece,
+                  props,
+                  playerName,
+                  playerId,
+                  lobbyId,
+                  hostSid
+                )
+              }
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -160,7 +102,14 @@ export default function HostLobby({
                 >
                   <div>
                     <CustomButton
-                      onClick={() => handleAddABot()}
+                      onClick={() =>
+                        handleAddBot(
+                          players,
+                          lobbyId,
+                          setLobby,
+                          playAddBotSound
+                        )
+                      }
                       message={"+"}
                       sx={{ fontSize: "2rem", borderRadius: "100px" }}
                       icon={
@@ -190,16 +139,34 @@ export default function HostLobby({
           </Grid>
         </Grid>
         {isError && (
-          <Grid container direction="column"  justifyContent="center" textAlign="center">
+          <Grid
+            container
+            direction="column"
+            justifyContent="center"
+            textAlign="center"
+          >
             <Grid item>
-              <Typography sx={{ color: "red" ,
-                        fontFamily: "Bungee Hairline, cursive",
-                        fontWeight: "800 ", }}> {errorMessage}</Typography>
+              <Typography
+                sx={{
+                  color: "red",
+                  fontFamily: "Bungee Hairline, cursive",
+                  fontWeight: "800 ",
+                }}
+              >
+                {" "}
+                {errorMessage}
+              </Typography>
             </Grid>
           </Grid>
         )}
 
-        <Grid item container justifyContent="center" textAlign="center" spacing={4} >
+        <Grid
+          item
+          container
+          justifyContent="center"
+          textAlign="center"
+          spacing={4}
+        >
           <Grid item>
             <CustomButton onClick={handleLeave} message={"leave"} />
           </Grid>
@@ -207,7 +174,16 @@ export default function HostLobby({
           <Grid item>
             <CustomButton
               onClick={() =>
-                allPlayersReady() ? handleStart() : setIsError(true)
+                arePlayersReady(
+                  setErrorMessage,
+                  setIsError,
+                  players,
+                  playerPiece,
+                  winBy,
+                  size
+                )
+                  ? handleStart()
+                  : setIsError(true)
               }
               message={"start"}
             />

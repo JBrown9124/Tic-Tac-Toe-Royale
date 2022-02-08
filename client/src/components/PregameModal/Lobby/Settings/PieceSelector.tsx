@@ -6,10 +6,7 @@ import createPiece from "../../../../creators/BoardCreators/createPiece";
 import Input from "@mui/material/Input";
 import useSound from "use-sound";
 import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
-import CustomButton from "../../../CustomButton";
 import Tooltip from "@mui/material/Tooltip";
-import Fade from "@mui/material/Fade";
 import Zoom from "@mui/material/Zoom";
 interface PieceSelectorProps {
   setPiece: (piece: string) => void;

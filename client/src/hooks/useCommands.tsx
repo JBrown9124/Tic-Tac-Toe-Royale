@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect} from "react";
 import { Lobby } from "../Models/Lobby";
 import { GameStatus } from "../Models/GameStatus";
 import { socket } from "../socket";
@@ -6,10 +6,10 @@ import createLobby from "../creators/APICreators/createLobby";
 import joinLobby from "../creators/APICreators/joinLobby";
 import leaveLobby from "../creators/APICreators/leaveLobby";
 import getStartGame from "../creators/APICreators/getStartGame";
-import getGame from "../creators/APICreators/getLobby";
 import useSound from "use-sound";
 import { RgbaColor } from "react-colorful";
-import { Move } from "../Models/Move";
+import defaultLobby from "../storage/defaultLobby"
+import defaultGameStatus from "../storage/defaultGameStatus"
 
 interface UseCommandsProps {
   action: string;
@@ -110,77 +110,8 @@ export default function useCommands({
         };
 
         leaveLobby(leaveReqBody).then(() => {
-          setLobby({
-            hostSid: 0,
-            lobbyId: 0,
-            board: {
-              size: 3,
-              color: { r: 255, g: 255, b: 255, a: 0.9 },
-              winBy: 3,
-              moves: [],
-            },
-            players: [],
-            gameStatus: {
-              win: { whoWon: null, type: null, winningMoves: null },
-              newMove: { playerId: "", rowIdx: 0, tileIdx: 0 },
-              whoTurn: "",
-              newPowerUpUse: {
-                powerUp: {
-                  value: 0,
-                  name: "",
-                  description: "",
-                  imgUrl: "",
-
-                  rules: {
-                    affectsCaster: false,
-                    direction: {
-                      isVertical: false,
-                      isHorizontal: false,
-                      isDiagonal: false,
-                    },
-                    castAnywhere: false,
-                    tilesAffected: 0,
-                    mustBeEmptyTile: false,
-                    areaShape: "line",
-                  },
-                  selectColor: "",
-                  quantity: 0,
-                },
-                selectedPowerUpTiles: [],
-              },
-              fireTiles: [],
-            },
-          });
-          setGameStatus({
-            win: { whoWon: null, type: null, winningMoves: null },
-            newMove: { playerId: "", rowIdx: 0, tileIdx: 0 },
-            whoTurn: "",
-            newPowerUpUse: {
-              powerUp: {
-                value: 0,
-                name: "",
-                description: "",
-                imgUrl: "",
-
-                rules: {
-                  affectsCaster: false,
-                  direction: {
-                    isVertical: false,
-                    isHorizontal: false,
-                    isDiagonal: false,
-                  },
-                  castAnywhere: false,
-                  tilesAffected: 0,
-                  mustBeEmptyTile: false,
-                  areaShape: "line",
-                },
-                selectColor: "",
-                quantity: 0,
-              },
-              selectedPowerUpTiles: [],
-            },
-            fireTiles: [],
-          });
+          setLobby(defaultLobby);
+          setGameStatus(defaultGameStatus);
 
           setIsLobbyReceived(false);
           setIsLobbyFound(true);

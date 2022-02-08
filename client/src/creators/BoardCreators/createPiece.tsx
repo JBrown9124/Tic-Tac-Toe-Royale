@@ -6,8 +6,6 @@ import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ChildCareIcon from "@mui/icons-material/ChildCare";
 import getRandomInt from "../../utilities/getRandomInt";
-import { RgbaColor } from "react-colorful";
-import { mobileSizeOfPiece } from "./sizeOfPiece";
 interface PieceProps {
   name: string;
   value: JSX.Element;

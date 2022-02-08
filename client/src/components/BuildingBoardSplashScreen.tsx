@@ -1,8 +1,6 @@
 import Grid from "@mui/material/Grid";
 import { css } from "@emotion/react";
 import HashLoader from "react-spinners/HashLoader";
-import Typography from "@mui/material/Typography";
-import BuildingBoardAnimator from "../animators/BuildingBoardAnimator";
 import { RgbaColor } from "react-colorful";
 interface BuildingBoardSplashScreenProps {
   boardColor: RgbaColor;

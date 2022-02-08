@@ -1,17 +1,14 @@
 import Grid from "@mui/material/Grid";
 import Modal from "@mui/material/Modal";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Welcome from "./Welcome";
-import { useCookies } from "react-cookie";
 import HostLobby from "./Lobby/HostLobby";
 import Join from "./Join";
 import GuestLobby from "./Lobby/GuestLobby";
-
-import startGame from "../../creators/APICreators/startGame";
 import { RgbaColor } from "react-colorful";
 import { Lobby } from "../../Models/Lobby";
 import useSound from "use-sound";
-import {backgroundColor} from "../../themes/theme1"
+import { backgroundColor } from "../../themes/theme1";
 interface PregameModalProps {
   setPiece: (piece: string) => void;
   playerPiece: string;
@@ -97,7 +94,6 @@ export default function PregameModal({
         open={isOpen}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
-     
       >
         <Grid
           maxHeight="sm"
@@ -110,9 +106,9 @@ export default function PregameModal({
             maxHeight: "100%",
             maxWidth: "100%",
             width: 800,
-            borderRadius:"15px",
+            borderRadius: "15px",
             bgcolor: backgroundColor,
-            overflow:"auto",
+            overflow: "auto",
             boxShadow: 24,
             p: 4,
           }}
@@ -136,7 +132,7 @@ export default function PregameModal({
           )}
           {action === "guest" && isLobbyFound && (
             <GuestLobby
-            playerName={playerName}
+              playerName={playerName}
               playerId={playerId}
               lobby={lobby}
               setPiece={(props) => setPiece(props)}

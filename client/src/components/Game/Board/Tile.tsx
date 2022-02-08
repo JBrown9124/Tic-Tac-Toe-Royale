@@ -59,13 +59,9 @@ export const Tile = ({
   isUsingPowerUp,
 }: // powerOrMove,
 TileProps) => {
-  const [tile, setTile] = useState<{
-    value: String | JSX.Element | number | undefined;
-  }>({ value: value });
   const [startSnare] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/yourMoveSound.mp3"
   );
-  const [count, setCount] = useState(0);
   const [isSelected, setIsSelected] = useState(false);
   const playerAttackPieceSelected =
     selectedPowerUpTiles.length > 1 &&
@@ -73,12 +69,14 @@ TileProps) => {
     tileIdx === selectedPowerUpTiles[0].tileIdx &&
     rowIdx === selectedPowerUpTiles[0].rowIdx;
   const handleClick = async () => {
+    
     if (typeof value === "number" && !isUsingPowerUp) {
       startSnare();
       updateBoardCache();
       setSelectedPowerUpTiles([]);
       setIsSelected(false);
     }
+    
     if (selectedPowerUp.quantity > 0 && isUsingPowerUp) {
       handlePowerUps({
         selectedPowerUp,
@@ -124,7 +122,6 @@ TileProps) => {
         container
         maxWidth="sm"
         maxHeight="sm"
-        // justifyContent={{ xs: "center", md: "normal" }}
         textAlign="center"
         direction="column"
         sx={{

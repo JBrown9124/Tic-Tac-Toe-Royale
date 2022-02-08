@@ -12,13 +12,9 @@ interface UpdateAfterPlayerLeavesArgs {
 }
 const updateAfterPlayerLeaves = async ({
   playerPieces,
-
-  setPlayerPieces,
   setGameStatus,
-  gameStatus,
   playerWhoLeftSessionId,
-  playerId,
-}: UpdateAfterPlayerLeavesArgs) => {
+  }: UpdateAfterPlayerLeavesArgs) => {
   const removePlayerFromPieces = async () => {
     for (var i = playerPieces.length; i--; ) {
       if (playerPieces[i].sessionId === playerWhoLeftSessionId) {
@@ -57,7 +53,8 @@ const updateAfterPlayerLeaves = async ({
         selectColor: "",
       },
       selectedPowerUpTiles: [],
-    },  fireTiles:[]
+    },
+    fireTiles: [],
   });
 };
 

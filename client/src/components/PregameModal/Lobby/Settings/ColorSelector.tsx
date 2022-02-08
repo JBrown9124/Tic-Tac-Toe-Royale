@@ -1,8 +1,6 @@
 import Grid from "@mui/material/Grid";
 import { RgbaColor, RgbaColorPicker } from "react-colorful";
 import Typography from "@mui/material/Typography";
-import React, { useState, useEffect } from "react";
-import { useCookies } from "react-cookie";
 interface ColorSelectorProps{
   setColor: (value: RgbaColor) =>void;
   color:RgbaColor

@@ -1,6 +1,4 @@
-import getRandomInt from "../../../../utilities/getRandomInt"
 import {GameStatus} from "../../../../Models/GameStatus"
-import {powerUps} from "../../../../storage/powerUps"
 import {useMemo, useState} from "react"
 import useSound from "use-sound"
 import fireUpdater from "../../updaters/usePowerUpMoveUpdater/fireUpdater";

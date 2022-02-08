@@ -29,7 +29,7 @@ export default function useBoardCreator({action,
     useEffect(() => {
         if (action === "begin" && isLobbyReceived) {
           const setUpGame = async () => {
-            /* When user hits play gain we wont need to convert pieces */
+            /* When user hits play again we wont need to convert pieces */
             if (playerPieces.length === 0) {
               await getPlayerPieces(
                 playerId,
