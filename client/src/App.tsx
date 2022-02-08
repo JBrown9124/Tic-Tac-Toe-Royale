@@ -8,11 +8,13 @@ import { GameStatus } from "./Models/GameStatus";
 import startGame from "./creators/APICreators/startGame";
 import { RgbaColor } from "react-colorful";
 import useCommands from "./hooks/useCommands";
-import useSocket from "./hooks/useSocket";
+import useSocket from "./hooks/useSocket/useSocket";
 import BuildingBoardSplashScreen from "./components/BuildingBoardSplashScreen";
 import { backgroundColor } from "./themes/theme1";
 import defaultGameStatus from "./storage/defaultGameStatus"
 import defaultLobby from "./storage/defaultLobby"
+
+
 function App() {
   const [action, setAction] = useState("welcome");
   const [lobbyId, setLobbyId] = useState(0);
