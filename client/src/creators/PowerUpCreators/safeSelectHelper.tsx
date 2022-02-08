@@ -2,7 +2,7 @@ import { Move } from "../../Models/Move";
 export const checkHorizontal = async (
   distance: number,
   rowIdx: number,
-  tileIdx: number,
+  columnIdx: number,
   boardSize: number,
   playerId: string,
   board: (number | string)[][],
@@ -13,21 +13,21 @@ export const checkHorizontal = async (
   //right side
   if (
     firstSelect.rowIdx === rowIdx &&
-    firstSelect.tileIdx === tileIdx - 1 &&
-    tileIdx + requiredDistance - 1 < boardSize - 1
+    firstSelect.columnIdx === columnIdx - 1 &&
+    columnIdx + requiredDistance - 1 < boardSize - 1
   ) {
-    for (let i = tileIdx; i <= firstSelect.tileIdx + distance; i++) {
-      newSelectedMoves.push({ playerId: playerId, tileIdx: i, rowIdx: rowIdx });
+    for (let i = columnIdx; i <= firstSelect.columnIdx + distance; i++) {
+      newSelectedMoves.push({ playerId: playerId, columnIdx: i, rowIdx: rowIdx });
     }
   }
   //left side
   if (
     firstSelect.rowIdx === rowIdx &&
-    firstSelect.tileIdx === tileIdx + 1 &&
-    tileIdx - requiredDistance + 1 > 0
+    firstSelect.columnIdx === columnIdx + 1 &&
+    columnIdx - requiredDistance + 1 > 0
   ) {
-    for (let i = tileIdx; i >= firstSelect.tileIdx - distance; i--) {
-      newSelectedMoves.push({ playerId: playerId, tileIdx: i, rowIdx: rowIdx });
+    for (let i = columnIdx; i >= firstSelect.columnIdx - distance; i--) {
+      newSelectedMoves.push({ playerId: playerId, columnIdx: i, rowIdx: rowIdx });
     }
   }
 
@@ -37,7 +37,7 @@ export const checkHorizontal = async (
 export const checkVertical = async (
   distance: number,
   rowIdx: number,
-  tileIdx: number,
+  columnIdx: number,
   boardSize: number,
   playerId: string,
   board: (number | string)[][],
@@ -48,13 +48,13 @@ export const checkVertical = async (
   //top side
   if (
     firstSelect.rowIdx === rowIdx + 1 &&
-    firstSelect.tileIdx === tileIdx &&
+    firstSelect.columnIdx === columnIdx &&
     rowIdx - requiredDistance + 1 > 0
   ) {
     for (let i = rowIdx; i >= firstSelect.rowIdx - distance; i--) {
       newSelectedMoves.push({
         playerId: playerId,
-        tileIdx: tileIdx,
+        columnIdx: columnIdx,
         rowIdx: i,
       });
     }
@@ -62,13 +62,13 @@ export const checkVertical = async (
   //bottom side
   if (
     firstSelect.rowIdx === rowIdx - 1 &&
-    firstSelect.tileIdx === tileIdx &&
+    firstSelect.columnIdx === columnIdx &&
     rowIdx + requiredDistance - 1 < boardSize - 1
   ) {
     for (let i = rowIdx; i <= firstSelect.rowIdx + distance; i++) {
       newSelectedMoves.push({
         playerId: playerId,
-        tileIdx: tileIdx,
+        columnIdx: columnIdx,
         rowIdx: i,
       });
     }
@@ -80,27 +80,27 @@ export const checkVertical = async (
 export const checkDiagonalLeft = async (
   distance: number,
   rowIdx: number,
-  tileIdx: number,
+  columnIdx: number,
   boardSize: number,
   playerId: string,
   board: (number | string)[][],
   firstSelect: Move
 ): Promise<Move[]> => {
-  let left = [rowIdx, tileIdx];
-  let right = [rowIdx, tileIdx];
+  let left = [rowIdx, columnIdx];
+  let right = [rowIdx, columnIdx];
   const requiredDistance = Math.ceil(distance / 2);
   let newSelectedMoves = [];
   if (
     firstSelect.rowIdx === rowIdx + 1 &&
-    firstSelect.tileIdx === tileIdx + 1 &&
-    tileIdx - requiredDistance + 1 > 0 &&
+    firstSelect.columnIdx === columnIdx + 1 &&
+    columnIdx - requiredDistance + 1 > 0 &&
     rowIdx - requiredDistance + 1 > 0
   ) {
-    let j = tileIdx;
+    let j = columnIdx;
     for (let i = rowIdx; i >= firstSelect.rowIdx - distance; i--) {
       newSelectedMoves.push({
         playerId: playerId,
-        tileIdx: j,
+        columnIdx: j,
         rowIdx: i,
       });
       j -= 1;
@@ -108,15 +108,15 @@ export const checkDiagonalLeft = async (
   }
   if (
     firstSelect.rowIdx === rowIdx - 1 &&
-    firstSelect.tileIdx === tileIdx - 1 &&
-    tileIdx + requiredDistance - 1 < boardSize - 1 &&
+    firstSelect.columnIdx === columnIdx - 1 &&
+    columnIdx + requiredDistance - 1 < boardSize - 1 &&
     rowIdx + requiredDistance - 1 < boardSize - 1
   ) {
-    let j = tileIdx;
+    let j = columnIdx;
     for (let i = rowIdx; i <= firstSelect.rowIdx + distance; i++) {
       newSelectedMoves.push({
         playerId: playerId,
-        tileIdx: j,
+        columnIdx: j,
         rowIdx: i,
       });
       j += 1;
@@ -127,27 +127,27 @@ export const checkDiagonalLeft = async (
 export const checkDiagonalRight = async (
   distance: number,
   rowIdx: number,
-  tileIdx: number,
+  columnIdx: number,
   boardSize: number,
   playerId: string,
   board: (number | string)[][],
   firstSelect: Move
 ): Promise<Move[]> => {
-  let left = [rowIdx, tileIdx];
-  let right = [rowIdx, tileIdx];
+  let left = [rowIdx, columnIdx];
+  let right = [rowIdx, columnIdx];
   const requiredDistance = Math.ceil(distance / 2);
   let newSelectedMoves = [];
   if (
     firstSelect.rowIdx === rowIdx + 1 &&
-    firstSelect.tileIdx === tileIdx - 1 &&
-    tileIdx + requiredDistance - 1 < boardSize - 1 &&
+    firstSelect.columnIdx === columnIdx - 1 &&
+    columnIdx + requiredDistance - 1 < boardSize - 1 &&
     rowIdx - requiredDistance + 1 > 0
   ) {
-    let j = tileIdx;
+    let j = columnIdx;
     for (let i = rowIdx; i >= firstSelect.rowIdx - distance; i--) {
       newSelectedMoves.push({
         playerId: playerId,
-        tileIdx: j,
+        columnIdx: j,
         rowIdx: i,
       });
       j += 1;
@@ -155,15 +155,15 @@ export const checkDiagonalRight = async (
   }
   if (
     firstSelect.rowIdx === rowIdx - 1 &&
-    firstSelect.tileIdx === tileIdx + 1 &&
-    tileIdx - requiredDistance+1 > 0 &&
+    firstSelect.columnIdx === columnIdx + 1 &&
+    columnIdx - requiredDistance+1 > 0 &&
     rowIdx + requiredDistance < boardSize - 1
   ) {
-    let j = tileIdx;
+    let j = columnIdx;
     for (let i = rowIdx; i <= firstSelect.rowIdx + distance; i++) {
       newSelectedMoves.push({
         playerId: playerId,
-        tileIdx: j,
+        columnIdx: j,
         rowIdx: i,
       });
       j -= 1;

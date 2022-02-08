@@ -20,7 +20,7 @@ class Bot(object):
         board = Board(size=self.board_size, moves=self.moves).board
 
         # for move in self.moves:
-        #     board[move["row_idx"]][move["tile_idx"]] = move[" player_id"]
+        #     board[move["row_idx"]][move["column_idx"]] = move[" player_id"]
 
         for row in board:
             print(f"{row}\n")
@@ -38,12 +38,12 @@ class Bot(object):
         for move in self.moves:
             move = Move(
                 row_idx=move["rowIdx"],
-                tile_idx=move["tileIdx"],
+                column_idx=move["columnIdx"],
                 player_id=move["playerId"],
             )
             if move.player_id == self.player_making_move and move.player_id[:4] != "FIRE":
                 possible_best_move = self.best_move(
-                    move.row_idx, move.tile_idx, self.player_making_move
+                    move.row_idx, move.column_idx, self.player_making_move
                 )
                 if possible_best_move:
                     best_offense_moves.append(possible_best_move)
@@ -52,7 +52,7 @@ class Bot(object):
                 and move.player_id[:4] != "FIRE"
             ):
                 possible_best_move = self.best_move(
-                    move.row_idx, move.tile_idx, move.player_id
+                    move.row_idx, move.column_idx, move.player_id
                 )
                 if possible_best_move:
                     best_defense_moves.append(possible_best_move)
@@ -61,7 +61,7 @@ class Bot(object):
                 # players_turn = self.player_making_move - move. player_id
                 if move and (move.chance - defense) >= highest_chance:
                     best_move = Move(
-                        move.row_idx, move.tile_idx, self.player_making_move
+                        move.row_idx, move.column_idx, self.player_making_move
                     )
                     highest_chance = move.chance
                 continue
@@ -71,7 +71,7 @@ class Bot(object):
                 # players_turn = self.player_making_move - move. player_id
                 if move and (move.chance - offense) >= highest_chance:
                     best_move = Move(
-                        move.row_idx, move.tile_idx, self.player_making_move
+                        move.row_idx, move.column_idx, self.player_making_move
                     )
                     highest_chance = move.chance
                 continue
@@ -83,16 +83,16 @@ class Bot(object):
             random_legal_move = random.choice(legal_moves)
             best_move = Move(
                 random_legal_move.row_idx,
-                random_legal_move.tile_idx,
+                random_legal_move.column_idx,
                 self.player_making_move,
             )
             return best_move
         return best_move
 
-    def best_move(self, row_idx, tile_idx, player_id):
+    def best_move(self, row_idx, column_idx, player_id):
         def checkHorizontal():
-            left_idx = tile_idx
-            right_idx = tile_idx
+            left_idx = column_idx
+            right_idx = column_idx
             best_right_move = None
             best_left_move = None
             left_chance = 0
@@ -145,30 +145,30 @@ class Bot(object):
             top_chance = 0
             bottom_chance = 0
             while top_idx > 0 and (
-                type(self.board[top_idx - 1][tile_idx]) == int
-                or self.board[top_idx - 1][tile_idx] == player_id
+                type(self.board[top_idx - 1][column_idx]) == int
+                or self.board[top_idx - 1][column_idx] == player_id
             ):
 
-                if type(self.board[top_idx - 1][tile_idx]) == int and not best_top_move:
+                if type(self.board[top_idx - 1][column_idx]) == int and not best_top_move:
                     best_top_move = BestMove(
-                        top_idx - 1, tile_idx, top_chance, self.player_making_move
+                        top_idx - 1, column_idx, top_chance, self.player_making_move
                     )
-                if self.board[top_idx - 1][tile_idx] == player_id:
+                if self.board[top_idx - 1][column_idx] == player_id:
                     top_chance += 1
                     if best_top_move:
                         best_top_move.chance = top_chance
                 top_idx -= 1
 
             while bottom_idx < self.board_size - 1 and (
-                type(self.board[bottom_idx + 1][tile_idx]) == int
-                or self.board[bottom_idx + 1][tile_idx] == player_id
+                type(self.board[bottom_idx + 1][column_idx]) == int
+                or self.board[bottom_idx + 1][column_idx] == player_id
             ):
 
-                if type(self.board[bottom_idx + 1][tile_idx]) == int and not best_bottom_move:
+                if type(self.board[bottom_idx + 1][column_idx]) == int and not best_bottom_move:
                     best_bottom_move = BestMove(
-                        bottom_idx + 1, tile_idx, bottom_chance, self.player_making_move
+                        bottom_idx + 1, column_idx, bottom_chance, self.player_making_move
                     )
-                if self.board[bottom_idx + 1][tile_idx] == player_id:
+                if self.board[bottom_idx + 1][column_idx] == player_id:
                     bottom_chance += 1
                     if best_bottom_move:
                         best_bottom_move.chance = bottom_chance
@@ -186,8 +186,8 @@ class Bot(object):
 
         # named after bottom are of move diagonol direction
         def checkDiagonalLeft():
-            left = [row_idx, tile_idx]
-            right = [row_idx, tile_idx]
+            left = [row_idx, column_idx]
+            right = [row_idx, column_idx]
             best_left_move = None
             best_right_move = None
             left_chance = 0
@@ -248,8 +248,8 @@ class Bot(object):
 
         # named after bottom are of move diagonol direction
         def checkDiagonalRight():
-            left = [row_idx, tile_idx]
-            right = [row_idx, tile_idx]
+            left = [row_idx, column_idx]
+            right = [row_idx, column_idx]
             best_left_move = None
             best_right_move = None
             left_chance = 0
@@ -333,9 +333,9 @@ class Bot(object):
 
     def make_move(self, new_move: Move):
         row_idx = new_move.row_idx
-        tile_idx = new_move.tile_idx
+        column_idx = new_move.column_idx
         player_id = new_move.player_id
-        self.board[row_idx][tile_idx] = player_id
+        self.board[row_idx][column_idx] = player_id
         print("NEW BOARD")
         for row in self.board:
             print(f"{row}\n")
@@ -343,13 +343,13 @@ class Bot(object):
 
 if __name__ == "__main__":
     moves = [
-        {" player_id": 1, "row_idx": 0, "tile_idx": 1},
-        {" player_id": 1, "row_idx": 0, "tile_idx": 2},
-        {" player_id": 1, "row_idx": 1, "tile_idx": 0},
-        {" player_id": 1, "row_idx": 1, "tile_idx": 2},
-        {" player_id": 1, "row_idx": 2, "tile_idx": 0},
-        {" player_id": 1, "row_idx": 2, "tile_idx": 1},
-        {" player_id": 2, "row_idx": 2, "tile_idx": 2},
+        {" player_id": 1, "row_idx": 0, "column_idx": 1},
+        {" player_id": 1, "row_idx": 0, "column_idx": 2},
+        {" player_id": 1, "row_idx": 1, "column_idx": 0},
+        {" player_id": 1, "row_idx": 1, "column_idx": 2},
+        {" player_id": 1, "row_idx": 2, "column_idx": 0},
+        {" player_id": 1, "row_idx": 2, "column_idx": 1},
+        {" player_id": 2, "row_idx": 2, "column_idx": 2},
     ]
     bot = Bot(win_by=3, board_size=3, moves=moves, player_making_move=2)
 

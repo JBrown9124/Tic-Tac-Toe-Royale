@@ -11,23 +11,23 @@ const handleSwap = async (
   playerId: string,
   selectedPowerUp: PowerUp,
   rowIdx: number,
-  tileIdx: number,
+  columnIdx: number,
   boardSize: number,
   board: (string | number)[][],
   setSelectedPowerUpTiles: (selectedPowerUpTiles: Move[]) => void
 ) => {
-  const selectedPlayerId = board[rowIdx][tileIdx];
+  const selectedPlayerId = board[rowIdx][columnIdx];
   if (
     selectedPowerUpTiles.length > 0 &&
     (selectedPowerUpTiles[0].rowIdx !== rowIdx ||
-      selectedPowerUpTiles[0].tileIdx !== tileIdx) &&
+      selectedPowerUpTiles[0].columnIdx !== columnIdx) &&
       selectedPlayerId   !== playerId &&
     typeof selectedPlayerId  === "string" && selectedPlayerId.substring(0,4) !== "FIRE"
   ) {
-    const player = board[rowIdx][tileIdx];
+    const player = board[rowIdx][columnIdx];
     selectedPowerUpTiles.push({
       playerId: selectedPlayerId ,
-      tileIdx: tileIdx,
+      columnIdx: columnIdx,
       rowIdx: rowIdx,
     });
     setSelectedPowerUpTiles([...selectedPowerUpTiles]);
@@ -39,7 +39,7 @@ const handleSwap = async (
     
     selectedPowerUpTiles.push({
       playerId: selectedPlayerId ,
-      tileIdx: tileIdx,
+      columnIdx: columnIdx,
       rowIdx: rowIdx,
     });
     setSelectedPowerUpTiles([...selectedPowerUpTiles]);

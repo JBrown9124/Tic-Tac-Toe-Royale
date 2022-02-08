@@ -26,7 +26,7 @@ interface TileProps {
   value: number | JSX.Element | string;
   playerPieces: Player[];
   rowIdx: number;
-  tileIdx: number;
+  columnIdx: number;
   updateBoardCache: () => void;
   gameStatus: GameStatus;
   sizeOfBoardPiece: { mobile: string; desktop: string };
@@ -45,7 +45,7 @@ export const Tile = ({
   value,
   updateBoardCache,
   rowIdx,
-  tileIdx,
+  columnIdx,
   playerPieces,
   gameStatus,
 
@@ -66,7 +66,7 @@ TileProps) => {
   const playerAttackPieceSelected =
     selectedPowerUpTiles.length > 1 &&
     (selectedPowerUp.name === "cleave" || selectedPowerUp.name === "arrow") &&
-    tileIdx === selectedPowerUpTiles[0].tileIdx &&
+    columnIdx === selectedPowerUpTiles[0].columnIdx &&
     rowIdx === selectedPowerUpTiles[0].rowIdx;
   const handleClick = async () => {
     
@@ -82,7 +82,7 @@ TileProps) => {
         selectedPowerUp,
         selectedPowerUpTiles,
         playerId,
-        tileIdx,
+        columnIdx,
         rowIdx,
         setSelectedPowerUpTiles,
         boardSize,
@@ -95,7 +95,7 @@ TileProps) => {
   //Clear tiles select status
   useEffect(() => {
     selectedPowerUpTiles.forEach((tile) => {
-      if (tile.rowIdx === rowIdx && tile.tileIdx === tileIdx) {
+      if (tile.rowIdx === rowIdx && tile.columnIdx === columnIdx) {
         setIsSelected(true);
       }
     });
@@ -105,7 +105,7 @@ TileProps) => {
     if (playerAttackPieceSelected) {
       setIsSelected(false);
     }
-  }, [rowIdx, selectedPowerUpTiles.length, tileIdx]);
+  }, [rowIdx, selectedPowerUpTiles.length, columnIdx]);
   useEffect(() => {
     setIsSelected(false);
     selectedPowerUpTiles = [];

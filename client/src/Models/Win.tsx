@@ -6,5 +6,5 @@ export interface Win{
 }
 export interface WinningMove{
     rowIdx:number,
-    tileIdx:number
+    columnIdx:number
 }

@@ -4,7 +4,7 @@ import {PowerUp} from "./PowerUp"
 interface FireMove{
   playerId: string,
   rowIdx: number,
-  tileIdx:number,
+  columnIdx:number,
   playerIdWhoCast: string
 }
 export interface GameStatus {

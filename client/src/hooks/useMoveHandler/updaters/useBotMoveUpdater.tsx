@@ -58,7 +58,7 @@ export default function useBotMoveUpdater({
               if (botMoveResponse) {
                 determineWinner(
                   botMoveResponse.rowIdx,
-                  botMoveResponse.tileIdx,
+                  botMoveResponse.columnIdx,
                   board,
                   lobby.board.size,
                   botMoveResponse.playerId,

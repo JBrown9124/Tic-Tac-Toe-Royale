@@ -9,7 +9,7 @@ interface handlePowerUpArgs {
   selectedPowerUp: PowerUp;
   selectedPowerUpTiles: Move[];
   playerId: string;
-  tileIdx: number;
+  columnIdx: number;
   rowIdx: number;
   setSelectedPowerUpTiles: (selectedPowerUpTiles: Move[]) => void;
   boardSize: number;
@@ -20,7 +20,7 @@ const handlePowerUps = async ({
   selectedPowerUp,
   selectedPowerUpTiles,
   playerId,
-  tileIdx,
+  columnIdx,
   rowIdx,
   setSelectedPowerUpTiles,
   boardSize,
@@ -30,7 +30,7 @@ const handlePowerUps = async ({
   const caster = selectedPowerUp.rules.affectsCaster ? 1 : 0;
   if (
     selectedPowerUpTiles.length === 1 &&
-    tileIdx === selectedPowerUpTiles[0].tileIdx &&
+    columnIdx === selectedPowerUpTiles[0].columnIdx &&
     rowIdx === selectedPowerUpTiles[0].rowIdx
   ) {
     return setSelectedPowerUpTiles([]);
@@ -45,7 +45,7 @@ const handlePowerUps = async ({
         handleBomb(
           selectedPowerUpTiles,
           playerId,
-          tileIdx,
+          columnIdx,
           rowIdx,
           setSelectedPowerUpTiles,
           boardSize
@@ -58,7 +58,7 @@ const handlePowerUps = async ({
           playerId,
           selectedPowerUp,
           rowIdx,
-          tileIdx,
+          columnIdx,
           boardSize,
           board,
           setSelectedPowerUpTiles
@@ -71,7 +71,7 @@ const handlePowerUps = async ({
           playerId,
           selectedPowerUp,
           rowIdx,
-          tileIdx,
+          columnIdx,
           boardSize,
           board,
           setSelectedPowerUpTiles
@@ -83,7 +83,7 @@ const handlePowerUps = async ({
           selectedPowerUpTiles,
           board,
           rowIdx,
-          tileIdx,
+          columnIdx,
           playerId,
           setSelectedPowerUpTiles
         );
@@ -94,7 +94,7 @@ const handlePowerUps = async ({
           selectedPowerUpTiles,
           playerId,
           rowIdx,
-          tileIdx,
+          columnIdx,
           boardSize,
           board,
           setSelectedPowerUpTiles

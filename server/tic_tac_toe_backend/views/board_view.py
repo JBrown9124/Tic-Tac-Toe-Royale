@@ -84,12 +84,12 @@ class Board(APIView):
 
                         if (
                             move["rowIdx"] == affected_tile["rowIdx"]
-                            and move["tileIdx"] == affected_tile["tileIdx"]
+                            and move["columnIdx"] == affected_tile["columnIdx"]
                         ):
                             lobby_board_copy["moves"].remove(move)
                             for i, fire_tile in enumerate(lobby_game_status_copy["fireTiles"]):
                                 if (
-                                    fire_tile["tileIdx"] == move["tileIdx"]
+                                    fire_tile["columnIdx"] == move["columnIdx"]
                                     and fire_tile["rowIdx"] == move["rowIdx"]
                                 ):
                                     lobby_game_status_copy["fireTiles"].remove(fire_tile)
@@ -99,18 +99,19 @@ class Board(APIView):
                 affected_tile = new_power_up_use["selectedPowerUpTiles"][0]
                 fire_move = FireMove(
                     row_idx=affected_tile["rowIdx"],
-                    tile_idx=affected_tile["tileIdx"],
+                    column_idx=affected_tile["columnIdx"],
                     player_id="FIRE" + str(uuid.uuid4()),
                     player_id_who_cast=last_turn,
                 ).to_dict()
                 lobby_board_copy["moves"].append(
                     Move(
                         affected_tile["rowIdx"],
-                        tile_idx=affected_tile["tileIdx"],
+                        column_idx=affected_tile["columnIdx"],
                         player_id=fire_move["playerId"],
                     ).to_dict()
                 )
                 lobby_game_status_copy["fireTiles"].append(fire_move)
+        
         if len(lobby_game_status_copy["fireTiles"]) > 0:
             for i, tile in enumerate(lobby_game_status_copy["fireTiles"]):
                 if last_turn == tile["playerIdWhoCast"]:
@@ -119,7 +120,7 @@ class Board(APIView):
                         moves=lobby_board_copy["moves"],
                         current_location=FireMove(
                             row_idx=tile["rowIdx"],
-                            tile_idx=tile["tileIdx"],
+                            column_idx=tile["columnIdx"],
                             player_id=tile["playerId"],
                             player_id_who_cast=tile["playerIdWhoCast"],
                         ),
@@ -128,26 +129,28 @@ class Board(APIView):
                     lobby_game_status_copy["fireTiles"][i] = new_fire_position
                     new_fire_move = Move(
                         row_idx=new_fire_position["rowIdx"],
-                        tile_idx=new_fire_position["tileIdx"],
+                        column_idx=new_fire_position["columnIdx"],
                         player_id=new_fire_position["playerId"],
                     ).to_dict()
+                    
                     replaced_move = False
                     last_fire_move = tile
                     for i, move in enumerate(lobby_board_copy["moves"]):
                         if (
                             move["rowIdx"] == new_fire_position["rowIdx"]
-                            and new_fire_position["tileIdx"] == move["tileIdx"]
+                            and new_fire_position["columnIdx"] == move["columnIdx"]
                         ):
                             lobby_board_copy["moves"][i] = new_fire_move
                             lobby_board_copy["moves"][i]["isFireRoot"] = True
                             replaced_move = True
                         if (
                             move["rowIdx"] == last_fire_move["rowIdx"]
-                            and move["tileIdx"] == last_fire_move["tileIdx"]
+                            and move["columnIdx"] == last_fire_move["columnIdx"]
                         ):
                             move["isFireRoot"] = False
                     if not replaced_move:
                         lobby_board_copy["moves"].append(new_fire_move)
+        
         tile_amount = lobby_board_copy["size"] * lobby_board_copy["size"]
 
         if len(lobby_board_copy["moves"]) == tile_amount and not winner:

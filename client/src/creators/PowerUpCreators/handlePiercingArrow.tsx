@@ -11,7 +11,7 @@ const handlePiercingArrow = async (
   playerId: string,
   selectedPowerUp: PowerUp,
   rowIdx: number,
-  tileIdx: number,
+  columnIdx: number,
   boardSize: number,
   board: (number | string)[][],
   setSelectedPowerUpTiles: (selectedPowerUpTiles:Move[]) => void,
@@ -23,7 +23,7 @@ const handlePiercingArrow = async (
     const selectedVerticalTiles: Move[] = await checkVertical(
       selectedPowerUp.rules.tilesAffected,
       rowIdx,
-      tileIdx,
+      columnIdx,
       boardSize,
       playerId,
       board,
@@ -35,7 +35,7 @@ const handlePiercingArrow = async (
     const selectedHorizontalTiles = await checkHorizontal(
       selectedPowerUp.rules.tilesAffected,
       rowIdx,
-      tileIdx,
+      columnIdx,
       boardSize,
       playerId,
       board,
@@ -47,7 +47,7 @@ const handlePiercingArrow = async (
     const selectLeftDiagonalTiles = await checkDiagonalLeft(
       selectedPowerUp.rules.tilesAffected,
       rowIdx,
-      tileIdx,
+      columnIdx,
       boardSize,
       playerId,
       board,
@@ -59,7 +59,7 @@ const handlePiercingArrow = async (
     const selectRightDiagonalTiles = await checkDiagonalRight(
       selectedPowerUp.rules.tilesAffected,
       rowIdx,
-      tileIdx,
+      columnIdx,
       boardSize,
       playerId,
       board,
@@ -71,11 +71,11 @@ const handlePiercingArrow = async (
     setSelectedPowerUpTiles([...selectedPowerUpTiles]);
   } else if (
     selectedPowerUpTiles.length === 0 &&
-    board[rowIdx][tileIdx] === playerId
+    board[rowIdx][columnIdx] === playerId
   ) {
     selectedPowerUpTiles.push({
       playerId: playerId,
-      tileIdx: tileIdx,
+      columnIdx: columnIdx,
       rowIdx: rowIdx,
     });
     setSelectedPowerUpTiles([...selectedPowerUpTiles]);

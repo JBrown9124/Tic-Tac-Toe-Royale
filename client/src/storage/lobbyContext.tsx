@@ -8,7 +8,7 @@ const lobby: Lobby = {
   gameStatus: {
     win: { whoWon: null, type: null, winningMoves: null },
     whoTurn: "",
-    newMove: { rowIdx: 0, tileIdx: 0, playerId: "" },
+    newMove: { rowIdx: 0, columnIdx: 0, playerId: "" },
     newPowerUpUse: {
       powerUp: {
         value: 0,

@@ -18,7 +18,7 @@ interface Props {
   delay: number;
   boardRenderTime: number;
   win: Win;
-  move: { rowIdx: number; tileIdx: number };
+  move: { rowIdx: number; columnIdx: number };
   isCountDownFinished: boolean;
 }
 const BoardAnimator = ({
@@ -86,7 +86,7 @@ const BoardAnimator = ({
         return win?.winningMoves?.map((winningMove) => {
           if (
             winningMove.rowIdx === move.rowIdx &&
-            winningMove.tileIdx === move.tileIdx
+            winningMove.columnIdx === move.columnIdx
           ) {
             setIsWinningMove(true);
           }
@@ -145,7 +145,7 @@ const BoardAnimator = ({
       width: isWinningMove ? "100%" : "0%",
       top: "50%",
       left: "0%",
-      delay: move.tileIdx,
+      delay: move.columnIdx,
       rotate: 0,
       opacity: isWinningMove ? 1 : 0,
     },

@@ -1,15 +1,15 @@
 import { WinningMove } from "../../../Models/Win";
 export const isHorizontalWin = (
   winBy: number,
-  tileIdx: number,
+  columnIdx: number,
   rowIdx: number,
   playerId: string,
   board: (string | number)[][],
   boardSize: number,
   winningMoves: WinningMove[]
 ): boolean => {
-  let leftIdx = tileIdx;
-  let rightIdx = tileIdx;
+  let leftIdx = columnIdx;
+  let rightIdx = columnIdx;
 
   while (leftIdx > 0 && playerId === board[rowIdx][leftIdx - 1]) {
     leftIdx -= 1;
@@ -22,14 +22,14 @@ export const isHorizontalWin = (
   let isWin = rightIdx - leftIdx + 1 >= winBy;
   if (isWin) {
     for (let i = leftIdx; i <= rightIdx; i++)
-      winningMoves.push({ rowIdx: rowIdx, tileIdx: i });
+      winningMoves.push({ rowIdx: rowIdx, columnIdx: i });
   }
 
   return isWin;
 };
 
 export const isVerticalWin = ( winBy: number,
-  tileIdx: number,
+  columnIdx: number,
   rowIdx: number,
   playerId: string,
   board: (string | number)[][],
@@ -38,13 +38,13 @@ export const isVerticalWin = ( winBy: number,
   let topIdx = rowIdx;
   let bottomIdx = rowIdx;
 
-  while (topIdx > 0 && playerId === board[topIdx - 1][tileIdx]) {
+  while (topIdx > 0 && playerId === board[topIdx - 1][columnIdx]) {
     topIdx -= 1;
   }
 
   while (
     bottomIdx < boardSize - 1 &&
-    playerId === board[bottomIdx + 1][tileIdx]
+    playerId === board[bottomIdx + 1][columnIdx]
   ) {
     bottomIdx += 1;
   }
@@ -52,20 +52,20 @@ export const isVerticalWin = ( winBy: number,
   let isWin = bottomIdx - topIdx + 1 >= winBy;
   if (isWin) {
     for (let i = topIdx; i <= bottomIdx; i++)
-      winningMoves.push({ rowIdx: i, tileIdx: tileIdx });
+      winningMoves.push({ rowIdx: i, columnIdx: columnIdx });
   }
 
   return isWin;
 };
 export const isDiagonalLeftWin = ( winBy: number,
-  tileIdx: number,
+  columnIdx: number,
   rowIdx: number,
   playerId: string,
   board: (string | number)[][],
   boardSize: number,
   winningMoves: WinningMove[]) => {
-  let left = [rowIdx, tileIdx];
-  let right = [rowIdx, tileIdx];
+  let left = [rowIdx, columnIdx];
+  let right = [rowIdx, columnIdx];
   while (
     left[0] < boardSize - 1 &&
     left[1] > 0 &&
@@ -86,7 +86,7 @@ export const isDiagonalLeftWin = ( winBy: number,
   if (isWin) {
     let j = left[0];
     for (let i = left[1]; i <= right[1]; i++) {
-      winningMoves.push({ rowIdx: j, tileIdx: i });
+      winningMoves.push({ rowIdx: j, columnIdx: i });
       j -= 1;
     }
   }
@@ -94,14 +94,14 @@ export const isDiagonalLeftWin = ( winBy: number,
   return isWin;
 };
 export const isDiagonalRightWin = ( winBy: number,
-  tileIdx: number,
+  columnIdx: number,
   rowIdx: number,
   playerId: string,
   board: (string | number)[][],
   boardSize: number,
   winningMoves: WinningMove[]) => {
-  let left = [rowIdx, tileIdx];
-  let right = [rowIdx, tileIdx];
+  let left = [rowIdx, columnIdx];
+  let right = [rowIdx, columnIdx];
   while (
     right[0] < boardSize - 1 &&
     right[1] < boardSize - 1 &&
@@ -122,7 +122,7 @@ export const isDiagonalRightWin = ( winBy: number,
   if (isWin) {
     let j = left[0];
     for (let i = left[1]; i <= right[1]; i++) {
-      winningMoves.push({ rowIdx: j, tileIdx: i });
+      winningMoves.push({ rowIdx: j, columnIdx: i });
       j += 1;
     }
   }

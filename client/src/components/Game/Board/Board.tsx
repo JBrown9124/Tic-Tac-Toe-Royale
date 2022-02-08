@@ -55,15 +55,15 @@ export default function Board({
     <>
       {board.map((row: (string | number)[], rowIdx: number) => (
         <Grid justifyContent="center" container>
-          {row.map((tile: number | string, tileIdx: number) => (
+          {row.map((tile: number | string, columnIdx: number) => (
             <>
               <BoardAnimator
                 isCountDownFinished={isCountDownFinished}
-                key={rowIdx * tileIdx}
-                move={{ rowIdx: rowIdx, tileIdx: tileIdx }}
+                key={rowIdx * columnIdx}
+                move={{ rowIdx: rowIdx, columnIdx: columnIdx }}
                 win={gameStatus.win}
                 beforeColor={boardColor}
-                delay={(rowIdx * tileIdx === 0 ? 0 : rowIdx * tileIdx) * 10}
+                delay={(rowIdx * columnIdx === 0 ? 0 : rowIdx * columnIdx) * 10}
                 boardRenderTime={200 * boardSize}
               >
                 <Tile
@@ -76,17 +76,17 @@ export default function Board({
                   }
                   selectedPowerUpTiles={selectedPowerUpTiles}
                   playerId={playerId}
-                  key={rowIdx * tileIdx}
+                  key={rowIdx * columnIdx}
                   gameStatus={gameStatus}
                   rowIdx={rowIdx}
-                  tileIdx={tileIdx}
+                  columnIdx={columnIdx}
                   playerPieces={playerPieces}
                   sizeOfBoardPiece={sizeOfBoardPiece}
                   updateBoardCache={() =>
                     gameStatus.whoTurn === playerId
                       ? determineWinner(
                           rowIdx,
-                          tileIdx,
+                          columnIdx,
                           board,
                           boardSize,
                           playerId,

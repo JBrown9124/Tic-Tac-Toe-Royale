@@ -33,13 +33,13 @@ export default function usePowerUpMoveUpdater(gameStatus:GameStatus,board:(strin
         // Fire spread updater
         if (gameStatus.fireTiles.length > 0) {
           gameStatus?.fireTiles?.forEach((tile) => {
-            board[tile.rowIdx][tile.tileIdx] = tile.playerId;
+            board[tile.rowIdx][tile.columnIdx] = tile.playerId;
           });
         }
     
         // Move updater
         if (gameStatus.newMove.playerId !== "") {
-          board[gameStatus.newMove.rowIdx][gameStatus.newMove.tileIdx] =
+          board[gameStatus.newMove.rowIdx][gameStatus.newMove.columnIdx] =
             gameStatus.newMove.playerId;
         }
     

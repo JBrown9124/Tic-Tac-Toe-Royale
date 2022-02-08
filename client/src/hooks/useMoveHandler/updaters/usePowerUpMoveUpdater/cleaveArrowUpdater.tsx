@@ -9,7 +9,7 @@ import {powerUps} from "../../../../storage/powerUps"
         i++
       ) {
         board[gameStatus.newPowerUpUse.selectedPowerUpTiles[i].rowIdx][
-          gameStatus.newPowerUpUse.selectedPowerUpTiles[i].tileIdx
+          gameStatus.newPowerUpUse.selectedPowerUpTiles[i].columnIdx
         ] = getRandomInt(1, powerUpsAmount);
       }
       playSound();

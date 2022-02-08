@@ -11,7 +11,7 @@ const defaultLobby ={
     gameStatus: {
       win: { whoWon: null, type: null, winningMoves: null },
       whoTurn: "",
-      newMove: { playerId: "", rowIdx: 0, tileIdx: 0 },
+      newMove: { playerId: "", rowIdx: 0, columnIdx: 0 },
       newPowerUpUse: {
         powerUp: {
           value: 0,

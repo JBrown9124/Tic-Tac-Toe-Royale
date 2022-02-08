@@ -15,7 +15,7 @@ import {
 import { v4 as uuidv4 } from "uuid";
 const determineWinner = async (
   rowIdx: number,
-  tileIdx: number,
+  columnIdx: number,
   board: (number | string)[][],
   boardSize: number,
   playerId: string,
@@ -28,20 +28,20 @@ const determineWinner = async (
 ) => {
   let newPowerUp = null;
   let newPowerUpKey = null;
-  if (board[rowIdx][tileIdx] > 0) {
-    const powerUpKey: string = String(board[rowIdx][tileIdx]);
+  if (board[rowIdx][columnIdx] > 0) {
+    const powerUpKey: string = String(board[rowIdx][columnIdx]);
     // newPowerUp = { ...powerUps[powerUpKey], id: uuidv4() };
     newPowerUp = powerUps[powerUpKey];
     newPowerUpKey = powerUpKey;
     // console.log("newPowerUp:", newPowerUp);
   }
-  board[rowIdx][tileIdx] = playerId;
+  board[rowIdx][columnIdx] = playerId;
 
   let winningMoves: WinningMove[] = [];
 
   const win = isHorizontalWin(
     winBy,
-    tileIdx,
+    columnIdx,
     rowIdx,
     playerId,
     board,
@@ -51,7 +51,7 @@ const determineWinner = async (
     ? "horizontal"
     : isVerticalWin(
         winBy,
-        tileIdx,
+        columnIdx,
         rowIdx,
         playerId,
         board,
@@ -61,7 +61,7 @@ const determineWinner = async (
     ? "vertical"
     : isDiagonalRightWin(
         winBy,
-        tileIdx,
+        columnIdx,
         rowIdx,
         playerId,
         board,
@@ -71,7 +71,7 @@ const determineWinner = async (
     ? "diagonalRight"
     : isDiagonalLeftWin(
         winBy,
-        tileIdx,
+        columnIdx,
         rowIdx,
         playerId,
         board,
@@ -86,7 +86,7 @@ const determineWinner = async (
       whoWon: typeof win === "string" ? playerId : null,
       winningMoves: typeof win === "string" ? winningMoves : null,
     },
-    newMove: { rowIdx: rowIdx, tileIdx: tileIdx, playerId: playerId },
+    newMove: { rowIdx: rowIdx, columnIdx: columnIdx, playerId: playerId },
     whoTurn: playerId,
     newPowerUpUse: {
       powerUp: {

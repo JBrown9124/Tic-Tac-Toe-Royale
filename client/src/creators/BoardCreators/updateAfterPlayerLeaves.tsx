@@ -30,7 +30,7 @@ const updateAfterPlayerLeaves = async ({
       winningMoves: null,
     },
     whoTurn: playerPieces[playerPieces.length - 1]?.playerId,
-    newMove: { playerId: "", rowIdx: 0, tileIdx: 0 },
+    newMove: { playerId: "", rowIdx: 0, columnIdx: 0 },
     newPowerUpUse: {
       powerUp: {
         value: 0,
