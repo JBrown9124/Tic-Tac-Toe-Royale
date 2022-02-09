@@ -24,7 +24,7 @@ def spread_fire(lobby_game_status_copy,last_turn, lobby_board_copy,):
                     ).to_dict()
                     
                     replaced_move = False
-                    last_fire_move = tile
+                    last_fire_position = tile
                     for i, move in enumerate(lobby_board_copy["moves"]):
                         if (
                             move["rowIdx"] == new_fire_position["rowIdx"]
@@ -33,10 +33,12 @@ def spread_fire(lobby_game_status_copy,last_turn, lobby_board_copy,):
                             lobby_board_copy["moves"][i] = new_fire_move
                             lobby_board_copy["moves"][i]["isFireRoot"] = True
                             replaced_move = True
+                        
                         if (
-                            move["rowIdx"] == last_fire_move["rowIdx"]
-                            and move["columnIdx"] == last_fire_move["columnIdx"]
+                            move["rowIdx"] == last_fire_position["rowIdx"]
+                            and move["columnIdx"] == last_fire_position["columnIdx"]
                         ):
                             move["isFireRoot"] = False
+                    
                     if not replaced_move:
                         lobby_board_copy["moves"].append(new_fire_move)

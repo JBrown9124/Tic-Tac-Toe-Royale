@@ -1,7 +1,12 @@
 from typing import Union
+
+
 class Win(object):
     def __init__(
-        self, type: str = None, who_won: Union[int,str] = None, winning_moves: list = None
+        self,
+        type: str = None,
+        who_won: Union[int, str] = None,
+        winning_moves: list = None,
     ):
         self.type = type
         self.who_won = who_won
