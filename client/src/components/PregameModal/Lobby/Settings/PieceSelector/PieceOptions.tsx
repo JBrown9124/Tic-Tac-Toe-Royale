@@ -35,7 +35,7 @@ export default function PieceOptions({
       >
         <Grid
           item
-          spacing={2}
+          spacing={0}
           container
           justifyContent="center"
           sx={{
@@ -50,9 +50,9 @@ export default function PieceOptions({
               key={piece.name}
               onClick={() => handleSelectPiece(piece.name)}
               onMouseEnter={() => setOnHoverPiece(piece.name)}
-              sx={{ cursor: "pointer", }}
+              sx={{ cursor: "pointer", p:1 }}
             >
-              <PieceSelectorAnimator isSelected={selectedPiece === piece.name}>
+              <PieceSelectorAnimator  isSelected={selectedPiece === piece.name}>
                 {piece.value}
               </PieceSelectorAnimator>
             </Grid>
