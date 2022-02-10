@@ -11,7 +11,7 @@ import { Player } from "../../../../Models/Player";
 import { Lobby } from "../../../../Models/Lobby";
 import { RgbaColor } from "react-colorful";
 import CopyLobbyId from "../CopyLobbyId";
-import PieceSelector from "../Settings/PieceSelector";
+import PieceSelector from "../Settings/PieceSelector/PieceSelector";
 
 import useSound from "use-sound";
 import Tooltip from "@mui/material/Tooltip";

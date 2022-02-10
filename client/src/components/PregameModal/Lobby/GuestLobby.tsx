@@ -3,7 +3,7 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
-import PieceSelector from "./Settings/PieceSelector";
+import PieceSelector from "./Settings/PieceSelector/PieceSelector";
 import { useCookies } from "react-cookie";
 import playerReady from "../../../creators/APICreators/playerReady";
 import { Lobby } from "../../../Models/Lobby";

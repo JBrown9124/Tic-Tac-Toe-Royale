@@ -113,16 +113,7 @@ export default function PregameModal({
             p: 4,
           }}
         > */}
-      <Grid
-        
-        sx={{
-         
-         
-        }}
-      
-        
-        
-      >
+      <Grid sx={{}}>
         {(action === "welcome" || action === "leave" || action === "quit") && (
           <Welcome
             playerName={playerName}

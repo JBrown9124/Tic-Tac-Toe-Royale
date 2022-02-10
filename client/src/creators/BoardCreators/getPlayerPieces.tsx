@@ -31,6 +31,7 @@ const getPlayerPieces = async (
               width: sizeOfBoardPiece.mobile,
               maxHeight: sizeOfBoardPiece.desktop,
               maxWidth: sizeOfBoardPiece.desktop,
+              borderRadius:"15px"
             }}
           />
         );

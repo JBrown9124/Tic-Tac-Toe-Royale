@@ -17,6 +17,7 @@ const createPiece = (
     desktop: "40px",
   }
 ): PieceProps[] => {
+  const borderRadius = "5px"
   const pieces = [
     {
       name: "Clear",
@@ -29,6 +30,7 @@ const createPiece = (
             maxHeight: sizeOfPiece.desktop,
             maxWidth: sizeOfPiece.desktop,
             color: color,
+            borderRadius:borderRadius
           }}
         />
       ),
@@ -44,6 +46,7 @@ const createPiece = (
             maxHeight: sizeOfPiece.desktop,
             maxWidth: sizeOfPiece.desktop,
             color: color,
+            borderRadius:borderRadius
           }}
         />
       ),
@@ -59,6 +62,7 @@ const createPiece = (
             maxHeight: sizeOfPiece.desktop,
             maxWidth: sizeOfPiece.desktop,
             color: color,
+            borderRadius:borderRadius
           }}
         />
       ),
@@ -74,6 +78,7 @@ const createPiece = (
             maxHeight: sizeOfPiece.desktop,
             maxWidth: sizeOfPiece.desktop,
             color: color,
+            borderRadius:borderRadius
           }}
         />
       ),
@@ -89,6 +94,7 @@ const createPiece = (
             maxHeight: sizeOfPiece.desktop,
             maxWidth: sizeOfPiece.desktop,
             color: color,
+            borderRadius:borderRadius
           }}
         />
       ),
@@ -104,6 +110,7 @@ const createPiece = (
             maxHeight: sizeOfPiece.desktop,
             maxWidth: sizeOfPiece.desktop,
             color: color,
+            borderRadius:borderRadius
           }}
         />
       ),
@@ -119,6 +126,7 @@ const createPiece = (
             maxHeight: sizeOfPiece.desktop,
             maxWidth: sizeOfPiece.desktop,
             color: color,
+            borderRadius:borderRadius
           }}
         />
       ),
@@ -135,6 +143,7 @@ const createPiece = (
             width: sizeOfPiece.mobile,
             maxHeight: sizeOfPiece.desktop,
             maxWidth: sizeOfPiece.desktop,
+            borderRadius:borderRadius
           }}
         />
       ),
@@ -153,6 +162,7 @@ const createPiece = (
             width: sizeOfPiece.mobile,
             maxHeight: sizeOfPiece.desktop,
             maxWidth: sizeOfPiece.desktop,
+            borderRadius:borderRadius
           }}
         />
       ),
@@ -171,6 +181,8 @@ const createPiece = (
             width: sizeOfPiece.mobile,
             maxHeight: sizeOfPiece.desktop,
             maxWidth: sizeOfPiece.desktop,
+            borderRadius:borderRadius
+
           }}
         />
       ),
@@ -189,6 +201,7 @@ const createPiece = (
             width: sizeOfPiece.mobile,
             maxHeight: sizeOfPiece.desktop,
             maxWidth: sizeOfPiece.desktop,
+            borderRadius:borderRadius
           }}
         />
       ),
@@ -207,6 +220,7 @@ const createPiece = (
             width: sizeOfPiece.mobile,
             maxHeight: sizeOfPiece.desktop,
             maxWidth: sizeOfPiece.desktop,
+            borderRadius:borderRadius
           }}
         />
       ),
@@ -226,6 +240,7 @@ const createPiece = (
             width: sizeOfPiece.mobile,
             maxHeight: sizeOfPiece.desktop,
             maxWidth: sizeOfPiece.desktop,
+            borderRadius:borderRadius
           }}
         />
       ),

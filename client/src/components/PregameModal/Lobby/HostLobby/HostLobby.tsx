@@ -11,7 +11,7 @@ import { Player } from "../../../../Models/Player";
 import { Lobby } from "../../../../Models/Lobby";
 import { RgbaColor } from "react-colorful";
 import CopyLobbyId from "../CopyLobbyId";
-import PieceSelector from "../Settings/PieceSelector";
+import PieceSelector from "../Settings/PieceSelector/PieceSelector";
 import useSound from "use-sound";
 import Tooltip from "@mui/material/Tooltip";
 import RightTopHalfPanel from "./RightTopHalfPanel";
@@ -99,7 +99,7 @@ export default function HostLobby({
               justifyContent="center"
               alignItems="center"
               sx={{
-                width: { lg: "30%", sm: "100%" },
+                width: { lg: "80%", sm: "100%" },
                 margin: "auto",
 
                 p: 2,

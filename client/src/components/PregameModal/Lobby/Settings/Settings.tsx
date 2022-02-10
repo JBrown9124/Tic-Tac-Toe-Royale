@@ -1,7 +1,7 @@
 import Grid from "@mui/material/Grid";
 import ColorSelector from "./ColorSelector";
 import SizeSlider from "./SizeSlider";
-import PieceSelector from "./PieceSelector";
+import PieceSelector from "./PieceSelector/PieceSelector";
 import { RgbaColor } from "react-colorful";
 import WinBy from "./WinBy";
 interface SettingsProps {

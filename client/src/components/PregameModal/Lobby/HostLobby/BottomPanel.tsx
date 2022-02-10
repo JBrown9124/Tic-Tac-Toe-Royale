@@ -1,21 +1,9 @@
-import Settings from "../Settings/Settings";
 import Grid from "@mui/material/Grid";
-import PlayerList from "../PlayerList";
-import { useState } from "react";
 import arePlayersReady from "../../../../creators/HostLobbyCreators/arePlayersReady";
-import handleAddBot from "../../../../creators/HostLobbyCreators/handleAddBot";
-import sendHostPiece from "../../../../creators/HostLobbyCreators/sendHostPiece";
 import CustomButton from "../../../CustomButton";
 import Typography from "@mui/material/Typography";
 import { Player } from "../../../../Models/Player";
-import { Lobby } from "../../../../Models/Lobby";
-import { RgbaColor } from "react-colorful";
-import CopyLobbyId from "../CopyLobbyId";
-import PieceSelector from "../Settings/PieceSelector";
-import useSound from "use-sound";
-import Tooltip from "@mui/material/Tooltip";
-import RightTopHalfPanel from "./RightTopHalfPanel";
-import Zoom from "@mui/material/Zoom";
+
 interface BottomHalfPanelProps {
   handleLeave: () => void;
 
