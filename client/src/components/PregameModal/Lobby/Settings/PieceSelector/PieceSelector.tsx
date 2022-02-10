@@ -16,6 +16,7 @@ export default function PieceSelector({
   playerPiece,
 }: PieceSelectorProps) {
   const [isPieceSelected, setIsPieceSelected] = useState(false);
+  const [selectedPiece, setSelectedPiece] = useState("");
   const [onHoverPiece, setOnHoverPiece] = useState("");
   const [isOnHoverPiece, setIsOnHoverPiece] = useState(false);
   const [hoverDirection, setHoverDirection] = useState("");
@@ -26,14 +27,13 @@ export default function PieceSelector({
     //   setPiece(piece);
     //   setIsPieceSelected(false);
     // }, 500);
+    setPiece(piece);
     setIsPieceSelected(true);
     setTimeout(() => {
-      setPiece(piece);;
+      setSelectedPiece(piece);
       setIsPieceSelected(false);
       setOnHoverPiece(piece);
     }, 500);
-    
-  
   };
   const handleHoverPiece = (piece: string) => {
     if (
@@ -84,7 +84,7 @@ export default function PieceSelector({
         </Grid>
         <Grid item>
           <SelectedPiece
-            selectedPiece={playerPiece}
+            selectedPiece={selectedPiece}
             isPieceSelected={isPieceSelected}
           />
         </Grid>
