@@ -64,14 +64,30 @@ export default function PieceSelector({
             Select your Piece
           </Typography>
         </Grid>
-        <Grid item>
-          <YourPiece
-            isOnHoverPiece={isOnHoverPiece}
-            selectedPiece={playerPiece}
-            onHoverPiece={onHoverPiece}
-            isPieceSelected={isPieceSelected}
-            hoverDirection={hoverDirection}
-          />
+        <Grid
+          item
+          container
+          justifyContent="center"
+          direction={{ md: "row", xs: "column" }}
+          spacing={{ md: 6, xs: 2 }}
+        >
+          <Grid item display={{ xs: 'none', md:"flex"}}>
+            <YourPiece
+              isOnHoverPiece={isOnHoverPiece}
+              selectedPiece={playerPiece}
+              onHoverPiece={onHoverPiece}
+              isPieceSelected={isPieceSelected}
+              hoverDirection={hoverDirection}
+            />
+          </Grid>
+          {playerPiece.length > 0 && (
+            <Grid item>
+              <SelectedPiece
+                selectedPiece={selectedPiece}
+                isPieceSelected={isPieceSelected}
+              />
+            </Grid>
+          )}
         </Grid>
         <Grid item>
           <PieceOptions
@@ -82,12 +98,7 @@ export default function PieceSelector({
             setPiece={(props) => handlePieceSelected(props)}
           />
         </Grid>
-        <Grid item>
-          <SelectedPiece
-            selectedPiece={selectedPiece}
-            isPieceSelected={isPieceSelected}
-          />
-        </Grid>
+        <Grid item></Grid>
         <Grid item>
           <UploadPieceButton setPiece={(props) => handlePieceSelected(props)} />
         </Grid>

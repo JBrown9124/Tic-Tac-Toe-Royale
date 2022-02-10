@@ -11,21 +11,22 @@ export default function SelectedPiece({
   isPieceSelected,
 }: SelectedPieceProps) {
   const pieces = createPiece("black", {
-    mobile: "10vw",
+    mobile: "15vw",
     desktop: "90px",
   });
 
   return (
     <>
       {" "}
-      <Typography sx={{
+      {/* <Typography sx={{
               fontFamily: "Bungee Hairline, cursive",
               fontWeight: 800,
+              fontSize:".6rem",
               p: 1,
             }}>
         {" "}
         {selectedPiece.length === 0 ? "No Piece Selected" : "Your Selection"}
-      </Typography>
+      </Typography> */}
       <SelectedPieceInAnimator
         isPieceSelected={isPieceSelected}
         selectedPiece={selectedPiece}
@@ -36,8 +37,8 @@ export default function SelectedPiece({
             src={selectedPiece}
             alt={selectedPiece}
             style={{
-              height: "10vw",
-              width: "10vw",
+              height: "15vw",
+              width: "15vw",
               maxHeight: "90px",
               maxWidth: "90px",
               borderRadius: "15px",
