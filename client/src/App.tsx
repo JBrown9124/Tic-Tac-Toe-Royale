@@ -1,6 +1,6 @@
 import Grid from "@mui/material/Grid";
 import "./App.css";
-import { useState} from "react";
+import { useState } from "react";
 import PregameModal from "./components/PregameModal/PregameModal";
 import Game from "./components/Game/Game";
 import { Lobby } from "./Models/Lobby";
@@ -11,9 +11,9 @@ import useCommands from "./hooks/useCommands";
 import useSocket from "./hooks/useSocket/useSocket";
 import BuildingBoardSplashScreen from "./components/BuildingBoardSplashScreen";
 import { backgroundColor } from "./themes/theme1";
-import defaultGameStatus from "./storage/defaultGameStatus"
-import defaultLobby from "./storage/defaultLobby"
-
+import defaultGameStatus from "./storage/defaultGameStatus";
+import defaultLobby from "./storage/defaultLobby";
+import PreGameModalAnimator from "./animators/PreGameModalAnimator";
 
 function App() {
   const [action, setAction] = useState("welcome");
@@ -85,7 +85,7 @@ function App() {
     setHostWinBy,
     setHostColor,
     setHostSize,
-    gameStatus
+    gameStatus,
   });
 
   return (
@@ -112,8 +112,7 @@ function App() {
         {action === "begin" && !isLobbyReceived && (
           <BuildingBoardSplashScreen boardColor={lobby.board?.color} />
         )}
-        {(action === "create" ||
-          action === "guest" ||
+        {(
           action === "begin" ||
           action === "in game") && (
           <Grid item>
@@ -136,28 +135,30 @@ function App() {
           </Grid>
         )}
         {action !== "begin" && action !== "in game" && (
-          <PregameModal
-            playerName={playerName}
-            setPlayerName={(props) => setPlayerName(props)}
-            handleStart={() => handleStart()}
-            action={action}
-            isOpen={true}
-            setLobbyId={(props) => setLobbyId(props)}
-            setLobby={(props) => setLobby(props)}
-            playerId={playerId}
-            setPlayerId={(props) => setPlayerId(props)}
-            playerPiece={pieceSelection}
-            hostSize={hostSize}
-            setHostSize={(props) => setHostSize(props)}
-            hostWinBy={hostWinBy}
-            setHostWinBy={(props) => setHostWinBy(props)}
-            setHostColor={(props) => setHostColor(props)}
-            hostColor={hostColor}
-            setPiece={(props) => setPieceSelection(props)}
-            lobby={lobby}
-            setAction={(props) => setAction(props)}
-            isLobbyFound={isLobbyFound}
-          />
+          <PreGameModalAnimator delay={0} fromY={100} isUsingPowerUp={action !== "begin" && action !== "in game"}>
+            <PregameModal
+              playerName={playerName}
+              setPlayerName={(props) => setPlayerName(props)}
+              handleStart={() => handleStart()}
+              action={action}
+              isOpen={true}
+              setLobbyId={(props) => setLobbyId(props)}
+              setLobby={(props) => setLobby(props)}
+              playerId={playerId}
+              setPlayerId={(props) => setPlayerId(props)}
+              playerPiece={pieceSelection}
+              hostSize={hostSize}
+              setHostSize={(props) => setHostSize(props)}
+              hostWinBy={hostWinBy}
+              setHostWinBy={(props) => setHostWinBy(props)}
+              setHostColor={(props) => setHostColor(props)}
+              hostColor={hostColor}
+              setPiece={(props) => setPieceSelection(props)}
+              lobby={lobby}
+              setAction={(props) => setAction(props)}
+              isLobbyFound={isLobbyFound}
+            />
+          </PreGameModalAnimator>
         )}
       </Grid>
       {/* </LobbyContext.Provider> */}

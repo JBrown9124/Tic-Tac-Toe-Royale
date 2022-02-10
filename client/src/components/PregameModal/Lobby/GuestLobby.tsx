@@ -90,47 +90,68 @@ export default function GuestLobby({
   };
   return (
     <>
-      <Grid container direction="column" spacing={6}>
+      <Grid container direction="column" spacing={6} sx={{p:2}}>
         <CopyLobbyId lobbyId={lobby.lobbyId} />
         <Grid container item direction="row" spacing={2}>
-          <Grid item xs={12} md={6} textAlign="center">
-            <PieceSelector
-              playerPiece={playerPiece}
-              setPiece={(props) => setPiece(props)}
-            />
+          <Grid item xs={12} md={8} textAlign="center">
+            <Grid  item
+              container
+              direction="column"
+              textAlign="center"
+              justifyContent="center"
+              alignItems="center"
+              sx={{
+                width: { lg: "50%", sm: "100%" },
+                margin: "auto",
+
+                p: 2,
+              }}>
+              <PieceSelector
+                playerPiece={playerPiece}
+                setPiece={(props) => setPiece(props)}
+              />
+            </Grid>
+            {isError && (
+              <Grid container item textAlign="center" justifyContent="center">
+                <Typography
+                  sx={{
+                    color: "red",
+                    textAlign: "center",
+                    fontFamily: "Bungee Hairline, cursive",
+                    fontWeight: 800,
+                  }}
+                >
+                  Select a piece.
+                </Typography>
+              </Grid>
+            )}
+            <Grid
+              container
+              item
+              textAlign="center"
+              justifyContent="center"
+              spacing={4}
+              sx={{ p: "20px" }}
+            >
+              <Grid item>
+                <CustomButton onClick={() => handleLeave()} message={"Leave"} />
+              </Grid>
+
+              <Grid item>
+                {" "}
+                <CustomButton
+                  onClick={() => handleReadyClick()}
+                  message={isReady ? "Cancel" : "Ready"}
+                />
+              </Grid>
+            </Grid>
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={4}>
             <PlayerList
               playerId={playerId}
               playerName={playerName}
               players={lobby.players}
               playerPiece={playerPiece}
-            />
-          </Grid>
-        </Grid>
-        {isError && (
-          <Grid container item textAlign="center" justifyContent="center">
-            <Typography sx={{ color: "red", textAlign: "center",fontFamily: "Bungee Hairline, cursive", fontWeight: 800}}>
-              Select a piece.
-            </Typography>
-          </Grid>
-        )}
-        <Grid
-          container
-          item
-          textAlign="center"
-          justifyContent="center"
-          spacing={4}
-        >
-          <Grid item>
-            <CustomButton onClick={() => handleLeave()} message={"Leave"} />
-          </Grid>
-
-          <Grid item>
-            {" "}
-            <CustomButton
-              onClick={() => handleReadyClick()}
-              message={isReady ? "Cancel" : "Ready"}
             />
           </Grid>
         </Grid>
