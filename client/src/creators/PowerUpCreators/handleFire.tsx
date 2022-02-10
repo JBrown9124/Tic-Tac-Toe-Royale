@@ -1,4 +1,3 @@
-import { PowerUp } from "../../Models/PowerUp";
 import { Move } from "../../Models/Move";
 const handleFire = (
   selectedPowerUpTiles: Move[],

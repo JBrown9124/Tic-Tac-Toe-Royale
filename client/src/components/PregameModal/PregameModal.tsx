@@ -2,7 +2,7 @@ import Grid from "@mui/material/Grid";
 import Modal from "@mui/material/Modal";
 import { useState } from "react";
 import Welcome from "./Welcome";
-import HostLobby from "./Lobby/HostLobby";
+import HostLobby from "./Lobby/HostLobby/HostLobby";
 import Join from "./Join";
 import GuestLobby from "./Lobby/GuestLobby";
 import { RgbaColor } from "react-colorful";
@@ -90,7 +90,7 @@ export default function PregameModal({
 
   return (
     <>
-      <Modal
+      {/* <Modal
         open={isOpen}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
@@ -112,57 +112,65 @@ export default function PregameModal({
             boxShadow: 24,
             p: 4,
           }}
-        >
-          {(action === "welcome" ||
-            action === "leave" ||
-            action === "quit") && (
-            <Welcome
-              playerName={playerName}
-              setPlayerName={(props) => setPlayerName(props)}
-              joinGame={() => handleJoinSelect()}
-              createGame={() => handleCreateGameSelect()}
-            />
-          )}
-          {action === "join" && (
-            <Join
-              handleJoinBack={() => handleJoinBackSelect()}
-              handleJoinSubmit={(lobbyId) => handleFindSubmit(lobbyId)}
-              isLobbyFound={isLobbyFound}
-            />
-          )}
-          {action === "guest" && isLobbyFound && (
-            <GuestLobby
-              playerName={playerName}
-              playerId={playerId}
-              lobby={lobby}
-              setPiece={(props) => setPiece(props)}
-              playerPiece={playerPiece}
-              handleLeave={() => handleLeaveSelect()}
-            />
-          )}
+        > */}
+      <Grid
+        
+        sx={{
+         
+         
+        }}
+      
+        
+        
+      >
+        {(action === "welcome" || action === "leave" || action === "quit") && (
+          <Welcome
+            playerName={playerName}
+            setPlayerName={(props) => setPlayerName(props)}
+            joinGame={() => handleJoinSelect()}
+            createGame={() => handleCreateGameSelect()}
+          />
+        )}
+        {action === "join" && (
+          <Join
+            handleJoinBack={() => handleJoinBackSelect()}
+            handleJoinSubmit={(lobbyId) => handleFindSubmit(lobbyId)}
+            isLobbyFound={isLobbyFound}
+          />
+        )}
+        {action === "guest" && isLobbyFound && (
+          <GuestLobby
+            playerName={playerName}
+            playerId={playerId}
+            lobby={lobby}
+            setPiece={(props) => setPiece(props)}
+            playerPiece={playerPiece}
+            handleLeave={() => handleLeaveSelect()}
+          />
+        )}
 
-          {action === "create" && (
-            <HostLobby
-              lobbyId={lobby.lobbyId}
-              playerName={playerName}
-              handleStart={() => handleStart()}
-              setWinBy={(props) => setHostWinBy(props)}
-              winBy={hostWinBy}
-              color={hostColor}
-              setColor={(props) => setHostColor(props)}
-              size={hostSize}
-              setSize={(props) => setHostSize(props)}
-              playerId={playerId}
-              setLobby={(props) => setLobby(props)}
-              hostSid={lobby?.hostSid}
-              players={lobby?.players}
-              handleLeave={() => handleLeaveSelect()}
-              setPiece={(props) => setPiece(props)}
-              playerPiece={playerPiece}
-            />
-          )}
-        </Grid>
-      </Modal>
+        {action === "create" && (
+          <HostLobby
+            lobbyId={lobby.lobbyId}
+            playerName={playerName}
+            handleStart={() => handleStart()}
+            setWinBy={(props) => setHostWinBy(props)}
+            winBy={hostWinBy}
+            color={hostColor}
+            setColor={(props) => setHostColor(props)}
+            size={hostSize}
+            setSize={(props) => setHostSize(props)}
+            playerId={playerId}
+            setLobby={(props) => setLobby(props)}
+            hostSid={lobby?.hostSid}
+            players={lobby?.players}
+            handleLeave={() => handleLeaveSelect()}
+            setPiece={(props) => setPiece(props)}
+            playerPiece={playerPiece}
+          />
+        )}
+      </Grid>
+      {/* </Modal> */}
     </>
   );
 }

@@ -22,19 +22,11 @@ export default function Welcome({
     <>
       <Grid
         container
-        sx={{ textAlign: "center" }}
+        sx={{ textAlign: "center", marginTop:"100px" }}
         spacing={6}
         justifyContent="center"
       >
-        <Grid
-          container
-          item
-          direction="column"
-          textAlign="right"
-          sx={{ fontSize: "10px" }}
-        >
-          IN DEVELOPMENT
-        </Grid>
+        
         <Grid container item direction="column">
           <Grid item>
             <Typography

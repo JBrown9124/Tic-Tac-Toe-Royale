@@ -21,6 +21,7 @@ export default function Join({
         direction="column"
         textAlign="center"
         justifyContent="center"
+        sx={{marginTop:"200px"}}
         spacing={4}
       >
         <Grid item>
