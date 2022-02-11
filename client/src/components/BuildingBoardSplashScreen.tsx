@@ -32,7 +32,7 @@ export default function BuildingBoardSplashScreen({
         </Grid> */}
         <Grid item>
           <HashLoader
-            color={"black"}
+            color={"#ec407a"}
             loading={true}
             css={override}
             size={300}

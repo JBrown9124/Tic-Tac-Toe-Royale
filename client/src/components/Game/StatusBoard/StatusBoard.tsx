@@ -109,7 +109,7 @@ export default function StatusBoard({
           borderRadius: "15px",
 
           bgcolor: statusBoardTurnOrderBackgroundColor,
-          border: "solid black 1px",
+          border: "solid #ec407a 1px",
           boxShadow: 10,
         }}
         direction="column"
@@ -120,14 +120,14 @@ export default function StatusBoard({
             {gameStatus.win.whoWon === "tie" ? (
               <Typography
                 variant="h6"
-                sx={{ fontFamily: "Bungee Hairline, cursive", fontWeight: 800 }}
+                sx={{ fontFamily: "Cinzel, serif", }}
               >
                 Its a tie!
               </Typography>
             ) : (
               <Typography
                 variant="h6"
-                sx={{ fontFamily: "Bungee Hairline, cursive", fontWeight: 800 }}
+                sx={{ fontFamily: "Cinzel, serif", }}
               >
                 {playerPieces.map((player: Player) => {
                   if (gameStatus.win.whoWon) {
@@ -159,47 +159,13 @@ export default function StatusBoard({
             }
           })}
         </Grid>
-        {/* <Grid item>
-          <Typography
-            sx={{
-              fontFamily: "Bungee Hairline, cursive",
-              fontWeight: 800,
-              p: 1,
-            }}
-          >{`Win by ${winBy}`}</Typography>
-        </Grid>
-
-        <Grid container direction="row" sx={{ p: 3 }} spacing={2}>
-          <Grid item xs={6}>
-            <CustomButton
-              sx={{
-                fontSize: "13px",
-                height: "50px",
-                border: powerOrMove === "Power" ? "solid 2px blue" : "none",
-              }}
-              onClick={() => setPowerOrMove("Power")}
-              message={"Power"}
-            />
-          </Grid>
-
-          <Grid item xs={6}>
-            <CustomButton
-              sx={{
-                fontSize: "13px",
-                height: "50px",
-                border: powerOrMove === "Move" ? "solid 2px blue" : "none",
-              }}
-              message={"Move"}
-              onClick={() => handleMoveSelect()}
-            />
-          </Grid>
-        </Grid> */}
+      
         {isUsingPowerUp ? (
           <Grid item>
             <Typography
               sx={{
-                fontFamily: "Roboto, sans-serif",
-                fontWeight: 300,
+                fontFamily: "Noto Sans, sans-serif",
+
                 p: 1,
               }}
             >
@@ -210,8 +176,7 @@ export default function StatusBoard({
           <Grid item>
             <Typography
               sx={{
-                fontFamily: "Roboto, sans-serif",
-                fontWeight: 300,
+                fontFamily: "Noto Sans, sans-serif",
                 p: 1,
               }}
             >

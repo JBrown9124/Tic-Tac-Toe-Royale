@@ -42,7 +42,7 @@ export default function BotOptions({
           </Typography>
         </Grid>
         <Grid item sx={{p:1}}>
-          <Tooltip
+          {/* <Tooltip
             placement="right"
             TransitionComponent={Zoom}
             title={
@@ -56,8 +56,8 @@ export default function BotOptions({
                 Add up to 10 bots!
               </Typography>
             }
-          >
-            <div>
+          > */}
+            {/* <div> */}
               <CustomButton
                 onClick={() =>
                   handleAddBot(players, lobbyId, setLobby, playAddBotSound)
@@ -74,8 +74,8 @@ export default function BotOptions({
                 //   />
                 // }
               />
-            </div>
-          </Tooltip>{" "}
+            {/* </div>
+          </Tooltip>{" "} */}
         </Grid>
       </Grid>
     </>

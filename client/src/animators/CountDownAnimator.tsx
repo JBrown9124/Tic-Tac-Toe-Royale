@@ -104,8 +104,8 @@ export default function CountDownAnimator({
               // top: "50%",
               // left: "50%",
               // transform: `translate(-50%, -50%)`,
-              fontFamily: "Major Mono Display, monospace",
-              fontWeight: "bold",
+              fontFamily: "Cinzel, serif",
+           
 
               [theme.breakpoints.up("sm")]: {
                 fontSize: "6rem",

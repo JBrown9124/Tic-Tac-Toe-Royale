@@ -4,58 +4,75 @@ import Typography from "@mui/material/Typography";
 const StyledTextField = styled(TextField)({
   borderRadius: "100px",
   background: "#4c8c4a",
- 
+  color: "black",
   "& .MuiInput-underline:before": {
-    border:"none",
+    border: "none",
     borderBottomColor: "none",
     borderRadius: "100px",
+    color: "black",
   },
 
   "& :focus": {
-    borderRadius:"100px"
+    color: "black",
+    borderRadius: "100px",
   },
   "&$focused": {
-    borderRadius:"100px"
+    borderRadius: "100px",
+    color: "black",
   },
   "& label.Mui-focused": {
     // backgroundColor: "white",
     borderRadius: "100px",
+
     "& :focus": {
-      borderRadius:"100px"
+      borderRadius: "100px",
+      color: "black",
     },
     "&$focused": {
-      borderRadius:"100px"
+      borderRadius: "100px",
+      color: "black",
     },
-    color: "white",
+    color: "#424242",
   },
+
   "& .MuiInput-underline:after": {
-    border:"none",
+    border: "none",
+    color: "black",
+
     borderBottomColor: "black",
     backgroundColor: "white",
     borderRadius: "100px",
   },
   "& .MuiOutlinedInput-root": {
+   
+ 
     "& fieldset": {
-      border:"none",
+      color: "black",
+      border: "none",
       borderColor: "none",
       borderRadius: "100px",
     },
     "&:hover fieldset": {
-      border:"none",
+      color: "black",
+      border: "none",
       borderColor: "none",
       borderRadius: "100px",
     },
     "&.Mui-focused fieldset": {
-      border:"none",
+      color: "black",
+      border: "none",
       borderColor: "none",
       borderRadius: "100px",
       fontFamily: "Major Mono Display, monospace",
+      
     },
-  
-  "& .MuiInput-underline:before": {
-    borderRadius:"100px"
+
+    "& .MuiInput-underline:before": {
+      
+      color: "black",
+      borderRadius: "100px",
+    },
   },
-    },
 });
 interface CustomTextFieldProps {
   onClick?: () => void;
@@ -103,10 +120,10 @@ export default function CustomTextField({
       onChange={onChange}
       variant="outlined"
       inputProps={{
-        style: { fontFamily: "Noto Sans, sans-serif", color:"white" },
+        style: { fontFamily: "Noto Sans, sans-serif", color: "white" },
       }} // font size of input text
       InputLabelProps={{
-        style: { fontFamily: "Noto Sans, sans-serif", color:"#bdbdbd" },
+        style: { fontFamily: "Noto Sans, sans-serif" },
       }} // font size of input label
       //   sx={{
       //     width: "10vw",

@@ -209,7 +209,7 @@ const BoardAnimator = ({
       <animated.div
         style={{
           ...(lineStyle as any),
-
+          borderRadius: "5px",
           background:
             beforeColor?.r * 0.299 +
               beforeColor?.g * 0.587 +

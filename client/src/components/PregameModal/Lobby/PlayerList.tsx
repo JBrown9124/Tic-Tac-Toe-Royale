@@ -98,7 +98,7 @@ export default function PlayerList({
                             <img
                               src={playerPiece}
                               alt={playerPiece}
-                              style={{ width: "40px", height: "40px" }}
+                              style={{ width: "40px", height: "40px", borderRadius:"5px" }}
                             />
                           }
                         />
@@ -178,7 +178,7 @@ export default function PlayerList({
                             <img
                               src={player.piece}
                               alt={player.piece}
-                              style={{ width: "40px", height: "40px" }}
+                              style={{ width: "40px", height: "40px", borderRadius:"5px" }}
                             />
                           }
                         />

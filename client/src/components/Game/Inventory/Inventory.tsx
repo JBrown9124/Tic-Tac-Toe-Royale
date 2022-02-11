@@ -69,8 +69,8 @@ export default function Inventory({
         sx={{
           borderRadius: "15px",
           p: 1,
-          background: "#e8f5e9",
-          border: "solid black 1px",
+          background: "#81c784",
+          border: "solid #ec407a 1px",
           boxShadow: 10,
         }}
         textAlign="center"
@@ -78,8 +78,7 @@ export default function Inventory({
         <Grid item textAlign="center" sx={{}}>
           <Typography
             sx={{
-              fontFamily: "Bungee Hairline, cursive",
-              fontWeight: 800,
+              fontFamily: "Cinzel, serif",
               p: 1,
               marginBottom: 2,
             }}
@@ -139,8 +138,7 @@ export default function Inventory({
                     <Grid item>
                       <Typography
                         sx={{
-                          fontFamily: "Bungee Hairline, cursive",
-                          fontWeight: 800,
+                          fontFamily: "Noto Sans, sans-serif",
                           p: 0,
                         }}
                       >
@@ -161,7 +159,7 @@ export default function Inventory({
               }}
             >
               <Typography
-                sx={{ fontFamily: "Bungee Hairline, cursive", fontWeight: 800 }}
+                sx={{ fontFamily: "Cinzel, serif", }}
               >
                 {" "}
                 Go Here

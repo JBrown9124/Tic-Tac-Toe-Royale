@@ -132,7 +132,7 @@ TileProps) => {
           cursor: "pointer",
           border: `solid ${isSelected ? "1px" : "1px"}`,
           boxShadow: 7,
-
+          borderRadius:"5px",
           borderColor: isSelected
             ? selectedPowerUp.selectColor
             : boardColor?.r * 0.299 +
@@ -143,7 +143,7 @@ TileProps) => {
             : "white",
         }}
       >
-        <Grid item sx={{}}>
+        <Grid item sx={{ }}>
           {isSelected ? (
             <img
               src={selectedPowerUp.imgUrl}
@@ -162,6 +162,7 @@ TileProps) => {
                 width: sizeOfBoardPiece.mobile,
                 maxHeight: sizeOfBoardPiece.desktop,
                 maxWidth: sizeOfBoardPiece.desktop,
+                borderRadius:"5px"
               }}
               src={"https://c.tenor.com/VbezPY1TRaMAAAAC/fire-flames.gif"}
               alt={"fire"}

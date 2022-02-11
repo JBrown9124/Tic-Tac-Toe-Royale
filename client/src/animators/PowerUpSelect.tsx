@@ -36,13 +36,25 @@ const PowerUpSelect = ({
 }: Props) => {
   const [isBooped, setIsBooped] = useState(false);
   const [isQuantityChanged, setIsQuantityChanged] = useState(false);
+  const [isSelected, setIsSelected] = useState(false);
+  useEffect(() => {
+    if (isClicked) {
+      setIsSelected(true);
+      const t = setTimeout(() => {
+        setIsSelected(false);
+      }, 100);
+      return () => {
+        clearTimeout(t);
+      };
+    }
+  }, [isClicked]);
   const style = useSpring({
     opacity: 1,
 
-    transform: isClicked
+    transform: isSelected
       ? `translate(${x}px, ${y}px)
     rotate(${rotation}deg)
-    scale(${scale})`
+    scale(${1.2})`
       : `translate(0px, 0px)
     rotate(0deg)
     
@@ -99,7 +111,11 @@ const PowerUpSelect = ({
   return (
     <animated.div style={style as any}>
       <animated.div style={quantityChanged as any}>
-        <animated.div  style={hover as any} onMouseEnter={trigger} onMouseLeave={triggerLeave}>
+        <animated.div
+          style={hover as any}
+          onMouseEnter={trigger}
+          onMouseLeave={triggerLeave}
+        >
           {children}
         </animated.div>
       </animated.div>

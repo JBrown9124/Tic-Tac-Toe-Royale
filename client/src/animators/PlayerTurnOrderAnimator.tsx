@@ -97,10 +97,9 @@ export default function PlayerTurnOrderAnimator({
               color:
                 item?.playerId ===
                 playerPieces[playerPieces.length - 1]?.playerId
-                  ? "green"
+                  ? "black"
                   : "black",
-              fontFamily: "Bungee Hairline, cursive",
-              fontWeight: 800,
+                  fontFamily: "Cinzel, serif",
               fontStyle:
                 item.playerId === gameStatus.win.whoWon ? "italic" : "normal",
             }}
@@ -122,45 +121,6 @@ export default function PlayerTurnOrderAnimator({
         </animated.div>
       ))}
     </>
-    // <>
-    //   {transitions((style, item, t, i) => (
-    //     <animated.div
-    //       style={{
-    //         ...style,
-
-    //         padding: item?.playerId === gameStatus.whoTurn ? "20px" : "6px",
-    //         scale: item?.playerId === gameStatus.whoTurn ? 1.3 : 1,
-    //       }}
-    //     >
-    //       <Grid item>{item.piece}</Grid>
-    //       <Grid
-    //         item
-    //         sx={{
-    //           color:
-    //             item?.playerId === gameStatus.whoTurn
-    //               ? "green"
-    //               : item?.playerId === playerPieces[whoNextIndex]?.playerId
-    //               ? "yellow"
-    //               : "black",
-    //           fontStyle:item.playerId === gameStatus.win.whoWon? "italic":"normal"
-    //         }}
-    //       >
-    //         {" "}
-    //         {playerId === gameStatus.whoTurn &&
-    //         item?.playerId === gameStatus.whoTurn
-    //           ? "You're Up!"
-    //           : playerId === playerPieces[whoNextIndex]?.playerId &&
-    //             item?.playerId === playerPieces[whoNextIndex]?.playerId
-    //           ? "You're Next!"
-    //           : item.playerId === gameStatus.win.whoWon && playerId === item.playerId
-    //           ? "You Win!"
-    //           : item.playerId === gameStatus.win.whoWon
-    //           ? `${item.name} Wins!`
-    //           : item?.name}
-    //       </Grid>
-    //     </animated.div>
-    //   ))}
-    //   <div ref={playerPiecesEndRef}></div>
-    // </>
+  
   );
 }

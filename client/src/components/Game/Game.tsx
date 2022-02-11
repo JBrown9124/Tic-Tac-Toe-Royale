@@ -147,7 +147,7 @@ export default function Game({
       <Grid
         container
         direction="row"
-        justifyContent={{ lg: "normal", md: "center", xs: "center" }}
+        justifyContent={{ xl:"normal", lg: "center", md: "center", xs: "center" }}
         spacing={{ lg: 0, md: 0, xs: 2 }}
       >
         <Grid
@@ -155,9 +155,10 @@ export default function Game({
           sm={12}
           container
           alignItems="center"
-          justifyContent={{ lg: "right", md: "center", xs: "center" }}
+          justifyContent={{ xl:"right", lg: "center", md: "center", xs: "center" }}
           md={12}
-          lg={2}
+          lg={12}
+          xl={2}
           spacing={0}
         >
           <StatusBoardAnimator
@@ -165,7 +166,8 @@ export default function Game({
             isVisible={isCountDownFinished}
             delay={800}
           >
-            <Grid item sx={{ p: 1 }}>
+            <Grid container direction="row">
+            <Grid item sx={{ p: 1 }} xs={6}  sm={6} md={6} lg={6} xl={12}>
               <StatusBoard
                 inventory={inventory}
                 setSelectedPowerUpTiles={(props) => {
@@ -188,9 +190,24 @@ export default function Game({
                 playerId={playerId}
               />
             </Grid>
+            <Grid item sx={{ p: 1 }} xs={6} sm={6} md={6} lg={6} xl={12}>
+              <Inventory
+                isBoardCreated={isBoardCreated}
+                // powerOrMove={powerOrMove}
+                isUsingPowerUp={isUsingPowerUp}
+                setIsUsingPowerUp={(props) => setIsUsingPowerUp(props)}
+                setSelectedPowerUpTiles={(props) =>
+                  setSelectedPowerUpTiles(props)
+                }
+                selectedPowerUp={selectedPowerUp}
+                inventory={inventory}
+                setCursor={(props) => setCursor(props)}
+                setSelectedPowerUp={(props) => setSelectedPowerUp(props)}
+              />
+            </Grid>
             {isUsingPowerUp && (
               // <SelectedPowerComponentAnimator delay={0} isUsingPowerUp={isUsingPowerUp} fromScale={0}>
-              <Grid item sx={{ p: 1 }}>
+              <Grid item sx={{ p: 1 }} xs={12} sm={12} md={12} lg={12} xl={12}>
                 <SelectedPower
                   onFinish={() =>
                     onFinish(
@@ -214,20 +231,7 @@ export default function Game({
               // </SelectedPowerComponentAnimator>
             )}
 
-            <Grid item sx={{ p: 1 }}>
-              <Inventory
-                isBoardCreated={isBoardCreated}
-                // powerOrMove={powerOrMove}
-                isUsingPowerUp={isUsingPowerUp}
-                setIsUsingPowerUp={(props) => setIsUsingPowerUp(props)}
-                setSelectedPowerUpTiles={(props) =>
-                  setSelectedPowerUpTiles(props)
-                }
-                selectedPowerUp={selectedPowerUp}
-                inventory={inventory}
-                setCursor={(props) => setCursor(props)}
-                setSelectedPowerUp={(props) => setSelectedPowerUp(props)}
-              />
+           
             </Grid>
           </StatusBoardAnimator>
         </Grid>
@@ -238,7 +242,8 @@ export default function Game({
           sx={{ marginTop: "40px" }}
           justifyContent="center"
           md={12}
-          lg={8}
+          lg={12}
+          xl={8}
         >
           <Board
             // powerOrMove={powerOrMove}
@@ -270,7 +275,8 @@ export default function Game({
           textAlign="center"
           justifyContent={{ md: "center", sm: "center" }}
           md={12}
-          lg={1}
+          lg={12}
+          xl={2}
           direction="column"
         >
           <StatusBoardAnimator

@@ -23,8 +23,8 @@ export default function SelectedPower({
         sx={{
           borderRadius: "15px",
 
-          backgroundColor: "#ffecb3",
-          border: "solid black 1px",
+          backgroundColor: "#81c784",
+          border: "solid #ec407a 1px",
           boxShadow: 10,
           p: 1,
         }}
@@ -33,8 +33,8 @@ export default function SelectedPower({
         <Grid item>
           <Typography
             sx={{
-              fontFamily: "Bungee Hairline, cursive",
-              fontWeight: 800,
+              fontFamily: "Cinzel, serif",
+              
               p: 1,
             }}
           >
@@ -50,7 +50,7 @@ export default function SelectedPower({
         </Grid>
         <Grid item sx={{ p: 1 }}>
           <Typography
-            sx={{ fontFamily: "Roboto, sans-serif", fontWeight: 300 }}
+            sx={{  fontFamily: "Noto Sans, sans-serif", fontWeight: 300 }}
           >
             {selectedPowerUp.description}
           </Typography>

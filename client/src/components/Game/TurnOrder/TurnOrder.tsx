@@ -38,7 +38,7 @@ export default function TurnOrder({
           bgcolor: statusBoardTurnOrderBackgroundColor,
           p: 1,
           boxShadow: 10,
-          border: "solid black 1px",
+          border: "solid #ec407a 1px",
           maxHeight: { xs: 150, md: 250, lg: 700 },
         }}
       >

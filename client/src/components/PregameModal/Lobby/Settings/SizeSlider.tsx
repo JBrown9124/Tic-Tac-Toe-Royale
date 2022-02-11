@@ -133,8 +133,8 @@ export default function SizeSlider({ setSize, size }: SizeSliderProps) {
               type: "number",
               "aria-labelledby": "input-slider",
               style: {
-                fontFamily: "Bungee Hairline, cursive",
-                fontWeight: 800,
+                fontFamily: "Noto Sans, sans-serif",
+              
                 color: primaryFontColor,
               },
             }}
