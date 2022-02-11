@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useSound } from "use-sound";
 import { PowerUp, PowerUps } from "../../../Models/PowerUp";
 import CustomButton from "../../CustomButton";
-import { backgroundColor } from "../../../themes/theme1";
+import { statusBoardTurnOrderBackgroundColor } from "../../../themes/theme1";
 
 interface StatusBoardProps {
   playerPieces: Player[];
@@ -27,7 +27,7 @@ interface StatusBoardProps {
   setSelectedPowerUp: (powerUp: PowerUp) => void;
   setSelectedPowerUpTiles: (powerUpTiles: Move[]) => void;
   isUsingPowerUp: boolean;
-  inventory: PowerUps
+  inventory: PowerUps;
 }
 export default function StatusBoard({
   playerPieces,
@@ -47,7 +47,7 @@ export default function StatusBoard({
   setSelectedPowerUpTiles,
   // powerOrMove,
   isUsingPowerUp,
-  inventory
+  inventory,
 }: StatusBoardProps) {
   const [startWinSound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/winnerSound.mp3"
@@ -83,7 +83,7 @@ export default function StatusBoard({
       name: "",
       description: "",
       imgUrl: "",
-  
+
       rules: {
         affectsCaster: false,
         direction: {
@@ -97,7 +97,7 @@ export default function StatusBoard({
         areaShape: "line",
       },
       selectColor: "",
-      quantity: 0
+      quantity: 0,
     });
     setSelectedPowerUpTiles([]);
   };
@@ -108,7 +108,7 @@ export default function StatusBoard({
         sx={{
           borderRadius: "15px",
 
-          bgcolor: backgroundColor,
+          bgcolor: statusBoardTurnOrderBackgroundColor,
           border: "solid black 1px",
           boxShadow: 10,
         }}
@@ -194,11 +194,12 @@ export default function StatusBoard({
             />
           </Grid>
         </Grid> */}
-        {isUsingPowerUp? (
+        {isUsingPowerUp ? (
           <Grid item>
             <Typography
               sx={{
-              fontFamily: "Roboto, sans-serif", fontWeight: 300 ,
+                fontFamily: "Roboto, sans-serif",
+                fontWeight: 300,
                 p: 1,
               }}
             >
@@ -209,14 +210,15 @@ export default function StatusBoard({
           <Grid item>
             <Typography
               sx={{
-                fontFamily: "Roboto, sans-serif", fontWeight: 300 ,
+                fontFamily: "Roboto, sans-serif",
+                fontWeight: 300,
                 p: 1,
               }}
             >
               Make a move or select a power from below!
             </Typography>
           </Grid>
-        )} 
+        )}
         <Grid container direction="column" sx={{ p: 1 }} spacing={2}>
           <Grid item>
             <CustomButton

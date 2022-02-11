@@ -2,7 +2,7 @@ import Grid from "@mui/material/Grid";
 import PlayerTurnOrderAnimator from "../../../animators/PlayerTurnOrderAnimator";
 import { Player } from "../../../Models/Player";
 import { GameStatus } from "../../../Models/GameStatus";
-import { backgroundColor } from "../../../themes/theme1";
+import { statusBoardTurnOrderBackgroundColor } from "../../../themes/theme1";
 
 interface TurnOrderProps {
   playerPieces: Player[];
@@ -35,7 +35,7 @@ export default function TurnOrder({
           borderRadius: "15px",
           overflowY: "auto",
           overflowX: "hidden",
-          bgcolor: backgroundColor,
+          bgcolor: statusBoardTurnOrderBackgroundColor,
           p: 1,
           boxShadow: 10,
           border: "solid black 1px",
