@@ -113,23 +113,24 @@ const BoardAnimator = ({
     width: width,
 
     delay: isRendered ? 0 : delay,
-    transform: isVisible
-      ? `translate(${x}px, ${y}px)
-         rotate(${0}deg)
-         scale(${scale})`
-      : `translate(-300px, 0px)
-         rotate(180deg)
+    // transform: isVisible
+    //   ? `translate(${x}px, ${y}px)
+    //      rotate(${0}deg)
+    //      scale(${scale})`
+    //   : `translate(-300px, 0px)
+    //      rotate(180deg)
          
-         scale(5)`,
+    //      scale(5)`,
     background: isBooped
       ? `rgba(${beforeColor?.r}, ${beforeColor?.g}, ${beforeColor?.b}, ${
           beforeColor.a - 0.5
         })`
       : `rgba(${beforeColor?.r}, ${beforeColor?.g}, ${beforeColor?.b}, ${beforeColor?.a})`,
-    config: isRendered
-      ? { mass: 0.1, tension: 399, friction: 0, clamp: true }
-      : { mass: 1, tension: 170, friction: 26 },
-  });
+    config: { mass: 1, tension: 170, friction: 26 }});
+    // isRendered ?
+       
+  //     : { mass: 1, tension: 170, friction: 26 },
+  // });
   const directionProps: any = {
     vertical: {
       height: isWinningMove ? "100%" : "0%",

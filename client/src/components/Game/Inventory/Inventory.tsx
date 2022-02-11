@@ -158,9 +158,7 @@ export default function Inventory({
                 p: 1,
               }}
             >
-              <Typography
-                sx={{ fontFamily: "Cinzel, serif", }}
-              >
+              <Typography sx={{ fontFamily: "Cinzel, serif" }}>
                 {" "}
                 Go Here
               </Typography>
