@@ -3,9 +3,11 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 const StyledTextField = styled(TextField)({
   borderRadius: "100px",
-  background: "#e8f5e9",
+  background: "#4c8c4a",
+ 
   "& .MuiInput-underline:before": {
-    borderBottomColor: "black",
+    border:"none",
+    borderBottomColor: "none",
     borderRadius: "100px",
   },
 
@@ -24,24 +26,28 @@ const StyledTextField = styled(TextField)({
     "&$focused": {
       borderRadius:"100px"
     },
-    color: "#ce93d8",
+    color: "white",
   },
   "& .MuiInput-underline:after": {
+    border:"none",
     borderBottomColor: "black",
     backgroundColor: "white",
     borderRadius: "100px",
   },
   "& .MuiOutlinedInput-root": {
     "& fieldset": {
-      borderColor: "#e8f5e9",
+      border:"none",
+      borderColor: "none",
       borderRadius: "100px",
     },
     "&:hover fieldset": {
-      borderColor: "#ffecb3",
+      border:"none",
+      borderColor: "none",
       borderRadius: "100px",
     },
     "&.Mui-focused fieldset": {
-      borderColor: "#ffecb3",
+      border:"none",
+      borderColor: "none",
       borderRadius: "100px",
       fontFamily: "Major Mono Display, monospace",
     },
@@ -97,10 +103,10 @@ export default function CustomTextField({
       onChange={onChange}
       variant="outlined"
       inputProps={{
-        style: { fontFamily: "Bungee Hairline, cursive", fontWeight: 800 },
+        style: { fontFamily: "Noto Sans, sans-serif", color:"white" },
       }} // font size of input text
       InputLabelProps={{
-        style: { fontFamily: "Bungee Hairline, cursive", fontWeight: 800 },
+        style: { fontFamily: "Noto Sans, sans-serif", color:"#bdbdbd" },
       }} // font size of input label
       //   sx={{
       //     width: "10vw",

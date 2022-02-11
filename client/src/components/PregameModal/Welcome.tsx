@@ -28,23 +28,12 @@ export default function Welcome({
       >
         
         <Grid container item direction="column">
-          <Grid item>
-            <Typography
-              variant="h2"
-              sx={{
-                fontFamily: "Major Mono Display, monospace",
-                fontSize: "2rem",
-                color:"#4dd0e1"
-              }}
-            >
-              Welcome to{" "}
-            </Typography>
-          </Grid>
+         
           <Grid item>
             {" "}
             <Typography
               variant="h2"
-              sx={{ fontFamily: "Major Mono Display, monospace", p: 2,  color:"#e0f7fa" }}
+              sx={{ fontFamily: "Major Mono Display, monospace", p: 2,  color:"#bc477b", fontSize:"5rem"}}
             >
               Tic-Tac-Toe Royale
             </Typography>
@@ -53,6 +42,7 @@ export default function Welcome({
 
         <Grid item>
           <CustomTextField
+          sx={{ boxShadow:3,}}
             onClick={() => setIsError(false)}
             error={isError}
             value={playerName}
@@ -69,13 +59,14 @@ export default function Welcome({
           sx={{ marginTop: 3,  }}
           container
           item
-          direction={{ xs:"row",sm: "row", md: "column", lg: "column" }}
+          direction={{ xs:"row",sm: "row", md: "row", }}
           
           justifyContent="center"
         >
-          <Grid item sm={6} md={12}>
+          <Grid item sm={6} md={2}>
             <CustomButton
-              message={"Start Game"}
+              message={"Start"}
+              sx={{p:3}}
               onClick={() =>
                 playerName.length === 0
                   ? setIsError(true)
@@ -83,9 +74,10 @@ export default function Welcome({
               }
             />
           </Grid>
-          <Grid item sm={6} md={12}  sx={{marginLeft:{ xs: 4, sm:4,md:0,lg:0,xl:0 }}}>
+          <Grid item sm={6} md={2}  sx={{marginLeft:{ xs: 4, sm:4,md:0,lg:0,xl:0 }}}>
             <CustomButton
-              message={"Join Game"}
+              message={"Join"}
+              sx={{p:3}}
               onClick={() =>
                 playerName.length === 0
                   ? setIsError(true)

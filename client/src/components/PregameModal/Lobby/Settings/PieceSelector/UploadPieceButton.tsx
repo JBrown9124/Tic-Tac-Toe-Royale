@@ -60,14 +60,14 @@ export default function UploadPieceButton({setPiece}:UploadPieceButtonProps){
               <Button
                 component="span"
                 sx={{
-                  backgroundColor: "#e8f5e9",
+                  backgroundColor: "#ec407a",
 
                   "&:hover": {
-                    backgroundColor: "#fff8e1",
+                    backgroundColor: "#ff77a9",
                     boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
                   },
-                  fontFamily: "Major Mono Display, monospace",
-                  boxShadow: "rgba(0, 0, 0, 0.24) 0px 1px 4px",
+                  fontFamily: "Cinzel, serif",
+                  boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 7px",
                   color: "black",
                   fill: "transparent",
                   textTransform: "none",

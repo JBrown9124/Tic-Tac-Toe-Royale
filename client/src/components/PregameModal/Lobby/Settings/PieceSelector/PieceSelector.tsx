@@ -52,26 +52,29 @@ export default function PieceSelector({
   };
   return (
     <>
-      <Grid container direction="column" spacing={2}>
-        <Grid item>
-          <Typography
-            sx={{
-              fontFamily: "Bungee Hairline, cursive",
-              fontWeight: 800,
-              p: 0,
-            }}
-          >
-            Select your Piece
-          </Typography>
-        </Grid>
+      <Grid
+        container
+        direction="column"
+        sx={{
+          background: "#519657",
+
+          borderRadius: "15px",
+          border: "1px solid #ec407a",
+          p: 4,
+          boxShadow: 20,
+        }}
+        spacing={0}
+      >
+        <Grid item></Grid>
         <Grid
           item
           container
           justifyContent="center"
+          sx={{p:2}}
           direction={{ md: "row", xs: "column" }}
           spacing={{ md: 6, xs: 2 }}
         >
-          <Grid item display={{ xs: 'none', md:"flex"}}>
+          <Grid item display={{ xs: "none", md: "flex" }}>
             <YourPiece
               isOnHoverPiece={isOnHoverPiece}
               selectedPiece={playerPiece}
@@ -98,8 +101,8 @@ export default function PieceSelector({
             setPiece={(props) => handlePieceSelected(props)}
           />
         </Grid>
-        <Grid item></Grid>
-        <Grid item>
+
+        <Grid item sx={{ marginTop: 3 }}>
           <UploadPieceButton setPiece={(props) => handlePieceSelected(props)} />
         </Grid>
       </Grid>

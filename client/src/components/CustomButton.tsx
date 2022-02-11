@@ -2,14 +2,14 @@ import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 
 const StyledButton = styled(Button)(({ theme }) => ({
-  backgroundColor: "#ffecb3",
-
+  backgroundColor: "#ec407a",
+  
   "&:hover": {
-    backgroundColor: "#fff8e1",
+    backgroundColor: "#ff77a9",
     boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
   },
-  fontFamily: "Major Mono Display, monospace",
-  boxShadow:'rgba(0, 0, 0, 0.24) 0px 1px 4px',
+  fontFamily: "Cinzel, serif",
+  boxShadow:'rgba(0, 0, 0, 0.24) 0px 3px 7px',
   color: "black",
   fill: "transparent",
   textTransform: "none",

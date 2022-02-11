@@ -31,7 +31,7 @@ export default function PieceOptions({
       <Grid
         container
         direction="column"
-        sx={{ borderRadius: "40px", background:"#9ccc65", }}
+        sx={{ borderRadius: "5px", background: "#81c784", border:"1px solid #ec407a" }}
       >
         <Grid
           item

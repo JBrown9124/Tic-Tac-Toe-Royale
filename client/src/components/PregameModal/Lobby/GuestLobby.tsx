@@ -102,11 +102,7 @@ export default function GuestLobby({
               justifyContent="center"
               alignItems="center"
               sx={{
-                background: "#43a047",
-                borderRadius: "15px",
-                border: "1px solid white",
-                p: 3,
-                boxShadow: 20,
+               
                 marginTop: {md:20, xs:0},
               }}
             >

@@ -65,6 +65,7 @@ export default function BottomHalfPanel({
         container
         justifyContent="center"
         direction={{xs:"row",md:"column"}}
+        sx={{marginTop:{xs:"1px",md:0}}}
         textAlign="center"
         spacing={4}
       >

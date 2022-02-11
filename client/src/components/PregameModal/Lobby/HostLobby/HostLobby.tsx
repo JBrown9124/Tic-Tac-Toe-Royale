@@ -72,18 +72,12 @@ export default function HostLobby({
         </Grid>
 
         <Grid item container direction="row" justifyContent="center">
-          <Grid item sx={{ p: 1, marginTop: "55px" }} md={7}>
-            <Grid
-              item
-              sx={{
-                p: 2,
-                background: "#f48fb1",
-                borderRadius: "15px",
-                boxShadow: 20,
-                border: "1px solid white",
-              }}
-            >
+          <Grid item sx={{ p: 1, marginTop: 0 }} md={7} container direction="column" spacing={4}>
+            <Grid item sx={{}}>
               <Settings
+                setLobby={setLobby}
+                players={players}
+                lobbyId={lobbyId}
                 winBy={winBy}
                 setWinBy={(props) => setWinBy(props)}
                 color={color}
@@ -105,13 +99,8 @@ export default function HostLobby({
             </Grid>
             <Grid
               item
-              sx={{
-                background: "#43a047",
-                borderRadius: "15px",
-                border:"1px solid white",
-                p: 3,
-                boxShadow: 20,
-                marginTop: 1,
+              sx={{p:0
+                
               }}
             >
               <PieceSelector

@@ -40,9 +40,9 @@ const PieceSelectorAnimator = ({
     opacity: 1,
     height: "90%",
     borderRadius:"5px",
-    boxShadow: isSelected
-      ? "rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset"
-      : "rgba(0, 0, 0, 0.0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.00) 0px 0px 0px inset",
+    // boxShadow: isSelected
+    //   ? "rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset"
+    //   : "rgba(0, 0, 0, 0.0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.00) 0px 0px 0px inset",
     transform: isSelected
       ? `translate(${x}px, ${y}px)
     rotate(${rotation}deg)

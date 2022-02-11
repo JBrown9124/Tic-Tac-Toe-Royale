@@ -30,16 +30,16 @@ export default function PlayerList({
         textAlign="center"
         direction="column"
         justifyContent="center"
-        sx={{ borderRadius: "15px", background: "#e1bee7", border:"1px solid white"}}
+        sx={{ p: 0 }}
       >
-        <Grid item>
+        {/* <Grid item>
           <Typography
-            sx={{ fontFamily: "Bungee Hairline, cursive", fontWeight: 800 }}
+            sx={{ fontFamily: "Noto Sans, sans-serif"}}
           >
             {" "}
             Players{" "}
           </Typography>
-        </Grid>
+        </Grid> */}
         <Grid item>
           <List dense sx={{ justifyContent: "center" }} aria-label="players">
             {players.length === 0 ? (
@@ -49,7 +49,14 @@ export default function PlayerList({
                 {" "}
                 {players.map((player: Player, idx: number) =>
                   player.playerId === playerId ? (
-                    <ListItem key={idx}>
+                    <ListItem
+                      key={idx}
+                      sx={{
+                        background: "#81c784",
+                        p: 1,
+                        border: "1px solid #ec407a", borderRadius:"5px", boxShadow:20
+                      }}
+                    >
                       {!player.isHost && (
                         <ListItemIcon>
                           {player.isReady ? (
@@ -112,15 +119,21 @@ export default function PlayerList({
                         sx={{ textAlign: "center" }}
                         primaryTypographyProps={{
                           style: {
-                            fontFamily: "Bungee Hairline, cursive",
-                            fontWeight: 800,
+                            fontFamily: "Noto Sans, sans-serif",
                           },
                         }}
                         primary={player.name}
                       />
                     </ListItem>
                   ) : (
-                    <ListItem key={idx}>
+                    <ListItem
+                      key={idx}
+                      sx={{
+                        background: "#81c784",
+                        p: 1,
+                        border: "1px solid #ec407a",borderRadius:"5px", boxShadow:20
+                      }}
+                    >
                       {!player.isHost && (
                         <ListItemIcon>
                           {player.isReady ? (
@@ -185,8 +198,7 @@ export default function PlayerList({
                       <ListItemText
                         primaryTypographyProps={{
                           style: {
-                            fontFamily: "Bungee Hairline, cursive",
-                            fontWeight: 800,
+                            fontFamily: "Noto Sans, sans-serif",
                           },
                         }}
                         sx={{ textAlign: "center" }}

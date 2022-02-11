@@ -1,10 +1,13 @@
 import Grid from "@mui/material/Grid";
 import ColorSelector from "./ColorSelector";
 import SizeSlider from "./SizeSlider";
+import BotOptions from "./BotOptions";
 import PieceSelector from "./PieceSelector/PieceSelector";
 import { RgbaColor } from "react-colorful";
 import WinBy from "./WinBy";
-import {primaryFontColor} from "../../../../themes/theme1"
+import { Player } from "../../../../Models/Player";
+import { Lobby } from "../../../../Models/Lobby";
+import { primaryFontColor } from "../../../../themes/theme1";
 
 interface SettingsProps {
   setPiece: (piece: string) => void;
@@ -15,6 +18,9 @@ interface SettingsProps {
   color: RgbaColor;
   winBy: number;
   setWinBy: (value: number) => void;
+  players: Player[];
+  lobbyId: number;
+  setLobby: (lobby: Lobby) => void;
 }
 export default function Settings({
   setPiece,
@@ -25,27 +31,47 @@ export default function Settings({
   color,
   winBy,
   setWinBy,
+  players,
+  lobbyId,
+  setLobby,
 }: SettingsProps) {
   return (
     <Grid
       container
-      spacing={2}
+      spacing={0}
       direction="row"
-      sx={{ borderRadius: "100px", p: 0 }}
+      sx={{
+        p: 2,
+        background: "#519657",
+        borderRadius: "15px",
+        boxShadow: 20,
+        border:"1px solid #ec407a",
+      }}
       justifyContent="center"
     >
-      <Grid item md={4}>
+      <Grid item md={6}>
         <ColorSelector setColor={(props) => setColor(props)} color={color} />
       </Grid>
-      <Grid item xs={12} md={4}>
-        <WinBy
-          winBy={winBy}
-          setWinBy={(props) => setWinBy(props)}
-          size={size}
-        />
-      </Grid>
-      <Grid item xs={12} md={4}>
-        <SizeSlider size={size} setSize={(props) => setSize(props)} />
+      <Grid item container direction="column" xs={12} md={6} spacing={7} sx={{p:2}}>
+        <Grid item>
+          <SizeSlider size={size} setSize={(props) => setSize(props)} />
+        </Grid>
+        <Grid container item direction="row" justifyContent="center" spacing={5}>
+          <Grid item md={6}>
+            <WinBy
+              winBy={winBy}
+              setWinBy={(props) => setWinBy(props)}
+              size={size}
+            />
+          </Grid>
+          <Grid item md={6}>
+            <BotOptions
+              lobbyId={lobbyId}
+              setLobby={(props) => setLobby(props)}
+              players={players}
+            />
+          </Grid>
+        </Grid>
       </Grid>
     </Grid>
   );

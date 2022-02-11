@@ -31,40 +31,7 @@ export default function RightTopHalfPanel({players,lobbyId,setLobby,playerId,pla
     return (
     <Grid container item justifyContent="center" alignItems="center">
       <Grid item sx={{ p: 1 }}>
-        <Tooltip
-          placement="right"
-          TransitionComponent={Zoom}
-          title={
-            <Typography
-              sx={{
-                fontSize: "10px",
-                fontFamily: "Bungee Hairline, cursive !important",
-                fontWeight: "800 !important",
-              }}
-            >
-              Add up to 10 bots!
-            </Typography>
-          }
-        >
-          <div>
-            <CustomButton
-              onClick={() =>
-                handleAddBot(players, lobbyId, setLobby, playAddBotSound)
-              }
-              message={"+"}
-              sx={{ fontSize: "2rem", borderRadius: "100px" }}
-              icon={
-                <img
-                  style={{ width: "40px", height: "40px" }}
-                  src={
-                    "https://cdn1.iconfinder.com/data/icons/robots-avatars-set/354/Robot_bot___robot_robo_bot_artificial_intelligence-512.png"
-                  }
-                  alt={"bot"}
-                />
-              }
-            />
-          </div>
-        </Tooltip>
+      
       </Grid>
 
       <PlayerList
