@@ -17,6 +17,7 @@ import Tooltip from "@mui/material/Tooltip";
 import RightTopHalfPanel from "./RightTopHalfPanel";
 import BottomPanel from "./BottomPanel";
 import Zoom from "@mui/material/Zoom";
+import { Divider } from "@mui/material";
 interface PlayerListProps {
   handleLeave: () => void;
   setPiece: (piece: string) => void;
@@ -69,48 +70,47 @@ export default function HostLobby({
         sx={{ p: 2, margin: "auto" }}
         spacing={0}
       >
-        <CopyLobbyId lobbyId={lobbyId} />
-        <Grid item container sx={{ textAlign: "center" }} spacing={2}>
-          <Grid item  xs={12} md={8} sx={{}}>
-            <Settings
-              winBy={winBy}
-              setWinBy={(props) => setWinBy(props)}
-              color={color}
-              setColor={(props) => setColor(props)}
-              size={size}
-              setSize={(props) => setSize(props)}
-              playerPiece={playerPiece}
-              setPiece={(props) =>
-                sendHostPiece(
-                  setPiece,
-                  props,
-                  playerName,
-                  playerId,
-                  lobbyId,
-                  hostSid
-                )
-              }
-            />
-            <Grid
-              item
-              container
-              direction="column"
-              textAlign="center"
-              justifyContent="center"
-              alignItems="center"
-              sx={{
-                width: { lg: "80%", sm: "100%" },
-                margin: "auto",
-
-                p: 2,
-              }}
-            >
+        <Grid item>
+          <CopyLobbyId lobbyId={lobbyId} />
+        </Grid>
+        <Grid item sx={{p:3}}>
+          <Divider>
+            <Typography sx={{fontFamily: "Major Mono Display, monospace",}}>Board Settings</Typography>
+          </Divider>
+        </Grid>
+        <Grid item sx={{ p: 2 }}>
+          <Settings
+            winBy={winBy}
+            setWinBy={(props) => setWinBy(props)}
+            color={color}
+            setColor={(props) => setColor(props)}
+            size={size}
+            setSize={(props) => setSize(props)}
+            playerPiece={playerPiece}
+            setPiece={(props) =>
+              sendHostPiece(
+                setPiece,
+                props,
+                playerName,
+                playerId,
+                lobbyId,
+                hostSid
+              )
+            }
+          />
+        </Grid>
+        <Grid item sx={{p:3}}>
+          <Divider sx={{}} />
+        </Grid>
+        <Grid item container direction="row" justifyContent="center">
+          <Grid item sx={{ p: 5 }} md={8}>
+            <Grid item>
               <PieceSelector
                 playerPiece={playerPiece}
                 setPiece={(props) => setPiece(props)}
               />
             </Grid>
-            <Grid item sx={{p:5}}>
+            <Grid item sx={{p:4}}>
               <BottomPanel
                 handleLeave={() => handleLeave()}
                 handleStart={() => handleStart()}
@@ -126,8 +126,7 @@ export default function HostLobby({
               />
             </Grid>
           </Grid>
-
-          <Grid item xs={12} md={3}>
+          <Grid item md={4}>
             <RightTopHalfPanel
               players={players}
               lobbyId={lobbyId}
@@ -138,21 +137,6 @@ export default function HostLobby({
             />
           </Grid>
         </Grid>
-        {/* <Grid item>
-          <BottomPanel
-            handleLeave={() => handleLeave()}
-            handleStart={() => handleStart()}
-            winBy={winBy}
-            size={size}
-            playerPiece={playerPiece}
-            players={players}
-            setPiece={(props) => setPiece(props)}
-            isError={isError}
-            errorMessage={errorMessage}
-            setErrorMessage={(props) => setErrorMessage(props)}
-            setIsError={(props) => setIsError(props)}
-          />
-        </Grid> */}
       </Grid>
     </>
   );

@@ -20,7 +20,7 @@ export default function PieceOptions({
   const [playSound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3"
   );
-  const pieces = createPiece("black");
+  const pieces = createPiece("black",{mobile:'8vw',desktop:"50px"});
   const handleSelectPiece = (pieceName: string) => {
     setPiece(pieceName);
     playSound();

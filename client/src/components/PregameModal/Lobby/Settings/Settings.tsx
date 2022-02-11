@@ -25,22 +25,25 @@ export default function Settings({
   setWinBy,
 }: SettingsProps) {
   return (
-    <Grid container spacing={2} direction="column" sx={{borderRadius:"100px", p:0}}>
-      <Grid item>
-      <ColorSelector setColor={(props) => setColor(props)} color={color} />
-       
+    <Grid
+      container
+      spacing={2}
+      direction="row"
+      sx={{ borderRadius: "100px", p: 0 }}
+      justifyContent="center"
+    >
+      <Grid item md={4}>
+        <ColorSelector setColor={(props) => setColor(props)} color={color} />
       </Grid>
-      <Grid item container direction="row">
-        <Grid item xs={12} md={6}>
-          <WinBy
-            winBy={winBy}
-            setWinBy={(props) => setWinBy(props)}
-            size={size}
-          />
-        </Grid>
-        <Grid item  xs={12} md={6}>
+      <Grid item xs={12} md={4}>
+        <WinBy
+          winBy={winBy}
+          setWinBy={(props) => setWinBy(props)}
+          size={size}
+        />
+      </Grid>
+      <Grid item xs={12} md={4}>
         <SizeSlider size={size} setSize={(props) => setSize(props)} />
-        </Grid>
       </Grid>
     </Grid>
   );
