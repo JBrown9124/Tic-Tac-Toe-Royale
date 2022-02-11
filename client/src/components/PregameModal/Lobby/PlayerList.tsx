@@ -30,7 +30,7 @@ export default function PlayerList({
         textAlign="center"
         direction="column"
         justifyContent="center"
-        sx={{ borderRadius: "60px", background: "#e8f5e9" }}
+        sx={{ borderRadius: "15px", background: "#e1bee7", border:"1px solid white"}}
       >
         <Grid item>
           <Typography

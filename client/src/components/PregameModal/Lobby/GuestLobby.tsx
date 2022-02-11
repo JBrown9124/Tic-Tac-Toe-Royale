@@ -90,27 +90,34 @@ export default function GuestLobby({
   };
   return (
     <>
-      <Grid container direction="column" spacing={6} sx={{p:2}}>
+      <Grid container direction="column" spacing={6} sx={{ p: 2 }}>
         <CopyLobbyId lobbyId={lobby.lobbyId} />
         <Grid container item direction="row" spacing={2}>
-          <Grid item xs={12} md={8} textAlign="center">
-            <Grid  item
+          <Grid item xs={12} md={7} textAlign="center">
+            <Grid
+              item
               container
               direction="column"
               textAlign="center"
               justifyContent="center"
               alignItems="center"
               sx={{
-                width: { lg: "50%", sm: "100%" },
-                margin: "auto",
-
-                p: 2,
-              }}>
+                background: "#43a047",
+                borderRadius: "15px",
+                border: "1px solid white",
+                p: 3,
+                boxShadow: 20,
+                marginTop: {md:20, xs:0},
+              }}
+            >
               <PieceSelector
                 playerPiece={playerPiece}
                 setPiece={(props) => setPiece(props)}
               />
             </Grid>
+            
+          </Grid>
+          <Grid item container md={1}>
             {isError && (
               <Grid container item textAlign="center" justifyContent="center">
                 <Typography
@@ -128,8 +135,10 @@ export default function GuestLobby({
             <Grid
               container
               item
+              
               textAlign="center"
               justifyContent="center"
+              direction={{xs:"row", md:"column"}}
               spacing={4}
               sx={{ p: "20px" }}
             >
@@ -145,7 +154,7 @@ export default function GuestLobby({
                 />
               </Grid>
             </Grid>
-          </Grid>
+            </Grid>
           <Grid item xs={12} md={4}>
             <PlayerList
               playerId={playerId}

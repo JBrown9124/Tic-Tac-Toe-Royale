@@ -12,7 +12,7 @@ export default function SelectedPiece({
 }: SelectedPieceProps) {
   const pieces = createPiece("black", {
     mobile: "15vw",
-    desktop: "90px",
+    desktop: "55px",
   });
 
   return (

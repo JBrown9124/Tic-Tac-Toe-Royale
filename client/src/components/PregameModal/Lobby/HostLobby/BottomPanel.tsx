@@ -35,13 +35,15 @@ export default function BottomHalfPanel({
   setPiece,
 }: BottomHalfPanelProps) {
   return (
-    <Grid container direction="column" >
+    <Grid container direction="column" alignItems="center" justifyContent="center">
       {isError && (
         <Grid
           container
           direction="column"
           justifyContent="center"
+          alignItems="center"
           textAlign="center"
+          
         >
           <Grid item>
             <Typography
@@ -62,6 +64,7 @@ export default function BottomHalfPanel({
         item
         container
         justifyContent="center"
+        direction={{xs:"row",md:"column"}}
         textAlign="center"
         spacing={4}
       >

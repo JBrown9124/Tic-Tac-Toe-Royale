@@ -60,7 +60,7 @@ export default function UploadPieceButton({setPiece}:UploadPieceButtonProps){
               <Button
                 component="span"
                 sx={{
-                  backgroundColor: "#ffecb3",
+                  backgroundColor: "#e8f5e9",
 
                   "&:hover": {
                     backgroundColor: "#fff8e1",

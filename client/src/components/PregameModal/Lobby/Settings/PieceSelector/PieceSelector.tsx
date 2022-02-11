@@ -58,7 +58,7 @@ export default function PieceSelector({
             sx={{
               fontFamily: "Bungee Hairline, cursive",
               fontWeight: 800,
-              p: 1,
+              p: 0,
             }}
           >
             Select your Piece

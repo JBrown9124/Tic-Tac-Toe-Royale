@@ -4,6 +4,8 @@ import SizeSlider from "./SizeSlider";
 import PieceSelector from "./PieceSelector/PieceSelector";
 import { RgbaColor } from "react-colorful";
 import WinBy from "./WinBy";
+import {primaryFontColor} from "../../../../themes/theme1"
+
 interface SettingsProps {
   setPiece: (piece: string) => void;
   playerPiece: string;

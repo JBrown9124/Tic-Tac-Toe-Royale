@@ -24,7 +24,7 @@ const StyledTextField = styled(TextField)({
     "&$focused": {
       borderRadius:"100px"
     },
-    color: "black",
+    color: "#ce93d8",
   },
   "& .MuiInput-underline:after": {
     borderBottomColor: "black",

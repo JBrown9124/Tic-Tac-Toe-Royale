@@ -6,11 +6,11 @@ import Slider from "@mui/material/Slider";
 import TextField from "@mui/material/TextField";
 import Input from "@mui/material/Input";
 import { useCookies } from "react-cookie";
-
+import {primaryFontColor} from "../../../../themes/theme1"
 import { useSound } from "use-sound";
 const CustomInput = styled(Input)({
   "& .MuiInput-underline:before": {
-    borderBottomColor: "black",
+    borderBottomColor: primaryFontColor,
     borderRadius:"100px",
   },
 
@@ -29,23 +29,23 @@ const CustomInput = styled(Input)({
     // "&$focused": {
     //   backgroundColor: "white",
     // },
-    color: "black",
+    color: primaryFontColor,
   },
   "& .MuiInput-underline:after": {
-    borderBottomColor: "black",
+    borderBottomColor: primaryFontColor,
     backgroundColor: "white",
   },
   "& .MuiOutlinedInput-root": {
     "& fieldset": {
-      borderColor: "#e8f5e9",borderRadius:"100px",
+      borderColor: primaryFontColor,borderRadius:"100px",
       
     },
     "&:hover fieldset": {
-      borderColor: "#e8f5e9",
+      borderColor: primaryFontColor,
       
     },
     "&.Mui-focused fieldset": {
-      borderColor: "#e8f5e9",
+      borderColor: primaryFontColor,
      
       fontFamily: "Major Mono Display, monospace",
     },
@@ -87,7 +87,7 @@ export default function SizeSlider({ setSize, size }: SizeSliderProps) {
     <Grid container direction="column" spacing={2}>
       <Grid item>
         <Typography
-          sx={{ fontFamily: "Bungee Hairline, cursive", fontWeight: 800 }}
+          sx={{ fontFamily: "Bungee Hairline, cursive", fontWeight: 800, color:primaryFontColor }}
         >
           Select Board Size
         </Typography>
@@ -127,7 +127,7 @@ export default function SizeSlider({ setSize, size }: SizeSliderProps) {
               "aria-labelledby": "input-slider",
               style: {
                 fontFamily: "Bungee Hairline, cursive",
-                fontWeight: 800,
+                fontWeight: 800,color:primaryFontColor
               },
             }}
           />

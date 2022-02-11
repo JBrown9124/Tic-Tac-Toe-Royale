@@ -5,6 +5,8 @@ import Tooltip from '@mui/material/Tooltip';
 import { styled } from "@mui/material/styles";
 import Zoom from '@mui/material/Zoom';
 import { useSound } from "use-sound";
+import {primaryFontColor} from "../../../../themes/theme1"
+
 
 const StyledTextField = styled(TextField)({
   borderRadius:"100px",
@@ -60,7 +62,7 @@ export default function WinBy({ winBy, setWinBy, size }: WinByProps) {
     <>
       <Grid container direction="column" spacing={1}>
         <Grid item>
-          <Typography sx={{fontFamily: "Bungee Hairline, cursive", fontWeight: 800}}>Win By</Typography>
+          <Typography sx={{fontFamily: "Bungee Hairline, cursive", fontWeight: 800, color:primaryFontColor}}>Win By</Typography>
         </Grid>
        
         <Grid item>

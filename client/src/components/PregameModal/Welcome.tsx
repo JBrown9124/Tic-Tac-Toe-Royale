@@ -34,6 +34,7 @@ export default function Welcome({
               sx={{
                 fontFamily: "Major Mono Display, monospace",
                 fontSize: "2rem",
+                color:"#4dd0e1"
               }}
             >
               Welcome to{" "}
@@ -43,7 +44,7 @@ export default function Welcome({
             {" "}
             <Typography
               variant="h2"
-              sx={{ fontFamily: "Major Mono Display, monospace", p: 2 }}
+              sx={{ fontFamily: "Major Mono Display, monospace", p: 2,  color:"#e0f7fa" }}
             >
               Tic-Tac-Toe Royale
             </Typography>

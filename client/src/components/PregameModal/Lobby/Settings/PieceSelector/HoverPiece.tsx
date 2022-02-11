@@ -18,7 +18,7 @@ export default function HoverPiece({
 }: HoverPieceProps) {
   const pieces = createPiece("black", {
     mobile: "15vw",
-    desktop: "150px",
+    desktop: "110px",
   });
 
   return (
@@ -43,8 +43,8 @@ export default function HoverPiece({
             style={{
               height: "15vw",
               width: "15vw",
-              maxHeight: "150px",
-              maxWidth: "150px",
+              maxHeight: "110px",
+              maxWidth: "110px",
               borderRadius:"15px"
             }}
           />

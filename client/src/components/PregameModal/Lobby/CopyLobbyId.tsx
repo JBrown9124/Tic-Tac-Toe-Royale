@@ -27,7 +27,7 @@ const CopyLobbyId = ({ lobbyId }: CopyLobbyIdProps) => {
           sx={{
             
             height: "25px",
-            fontSize:"12px"
+            fontSize:"12px",
           }}
           onClick={() => {
             handleCopyLobbyId();
@@ -37,7 +37,7 @@ const CopyLobbyId = ({ lobbyId }: CopyLobbyIdProps) => {
       </Grid>
       <Grid item>
         <Typography
-          sx={{ fontFamily: "Bungee Hairline, cursive", fontWeight: 800 }}
+          sx={{ fontFamily: "Bungee Hairline, cursive", fontWeight: 800, color:"#77C9D4"}}
         >
           Lobby ID: {lobbyId}
         </Typography>
