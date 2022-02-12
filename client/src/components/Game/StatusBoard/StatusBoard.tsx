@@ -180,7 +180,7 @@ export default function StatusBoard({
                 p: 1,
               }}
             >
-              Make a move or select a power from below!
+              Make a move or select a power!
             </Typography>
           </Grid>
         )}

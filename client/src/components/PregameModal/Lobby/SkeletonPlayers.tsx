@@ -6,7 +6,15 @@ import Skeleton from "@mui/material/Skeleton";
 export default function SkeletonPlayers() {
   return (
     <>
-      <ListItem>
+      <ListItem
+        sx={{
+          background: "#81c784",
+          p: 1,
+          border: "1px solid #ec407a",
+          borderRadius: "5px",
+          boxShadow: 20,
+        }}
+      >
         <ListItemIcon>
           <Skeleton animation="wave" sx={{ width: "40px", height: "40px" }} />
         </ListItemIcon>
@@ -27,7 +35,15 @@ export default function SkeletonPlayers() {
           primary={<Skeleton animation="wave" sx={{ textAlign: "center" }} />}
         />
       </ListItem>{" "}
-      <ListItem>
+      <ListItem
+        sx={{
+          background: "#81c784",
+          p: 1,
+          border: "1px solid #ec407a",
+          borderRadius: "5px",
+          boxShadow: 20,
+        }}
+      >
         <ListItemIcon>
           <Skeleton animation="wave" sx={{ width: "40px", height: "40px" }} />
         </ListItemIcon>
@@ -48,7 +64,15 @@ export default function SkeletonPlayers() {
           primary={<Skeleton animation="wave" sx={{ textAlign: "center" }} />}
         />
       </ListItem>{" "}
-      <ListItem>
+      <ListItem
+        sx={{
+          background: "#81c784",
+          p: 1,
+          border: "1px solid #ec407a",
+          borderRadius: "5px",
+          boxShadow: 20,
+        }}
+      >
         <ListItemIcon>
           <Skeleton sx={{ width: "40px", height: "40px" }} />
         </ListItemIcon>
@@ -67,7 +91,15 @@ export default function SkeletonPlayers() {
 
         <ListItemText primary={<Skeleton sx={{ textAlign: "center" }} />} />
       </ListItem>{" "}
-      <ListItem>
+      <ListItem
+        sx={{
+          background: "#81c784",
+          p: 1,
+          border: "1px solid #ec407a",
+          borderRadius: "5px",
+          boxShadow: 20,
+        }}
+      >
         <ListItemIcon>
           <Skeleton animation="wave" sx={{ width: "40px", height: "40px" }} />
         </ListItemIcon>

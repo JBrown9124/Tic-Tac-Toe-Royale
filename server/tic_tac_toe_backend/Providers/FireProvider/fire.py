@@ -81,7 +81,7 @@ class Fire:
                             player_id_who_cast=self.current_location.player_id_who_cast,
                         )
                     )
-                
+
             else:
                 spreadable_tiles.append(
                     FireMove(
@@ -161,7 +161,7 @@ class Fire:
                 )
         if (
             self.current_location.column_idx + 1 <= self.board_size - 1
-            and self.current_location.row_idx + 1 <= self.board_size -1
+            and self.current_location.row_idx + 1 <= self.board_size - 1
         ):
             if (
                 type(
@@ -298,7 +298,13 @@ class Fire:
         return spreadable_tiles
 
     def spread(self):
-        return choice(self.find_spreadable_tiles()).to_dict()
+        spreadable_tiles = self.find_spreadable_tiles()
+
+        return (
+            choice(spreadable_tiles).to_dict()
+            if len(spreadable_tiles) > 0
+            else self.current_location.to_dict()
+        )
 
 
 if __name__ == "__main__":
