@@ -12,7 +12,7 @@ export const determineSizeOfPiece = (
     pieceSize.desktop = "80px";
     pieceSize.mobile = "10vw";
   } else if (boardSize >= 11 && boardSize <= 15) {
-    pieceSize.desktop = "60px";
+    pieceSize.desktop = "40px";
     pieceSize.mobile = "6vw";
   } else if (boardSize >= 16 && boardSize <= 20) {
     pieceSize.desktop = "40px";

@@ -6,7 +6,7 @@ import { Move } from "../../../Models/Move";
 import { defaultPowerUp } from "../../../storage/defaultPowerUp";
 import PowerUpSelect from "../../../animators/PowerUpSelect";
 import PowerUpAquired from "../../../animators/PowerUpAquired";
-
+import PowerOptions from "./PowerOptions";
 interface InventoryProps {
   inventory: PowerUps;
   setCursor: (url: string) => void;
@@ -30,20 +30,7 @@ export default function Inventory({
   isBoardCreated,
 }: InventoryProps) {
   const [inventoryList] = useState<PowerUp[]>([]);
-  const powerUpsWithQuantity = inventoryList.filter((item) => {
-    return item.quantity !== 0;
-  });
-  const handlePowerUpSelect = (powerUp: PowerUp, isSameId: boolean) => {
-    if (!isSameId) {
-      setSelectedPowerUp(powerUp);
-      setSelectedPowerUpTiles([]);
-      setIsUsingPowerUp(true);
-    } else {
-      setSelectedPowerUp(defaultPowerUp);
-      setSelectedPowerUpTiles([]);
-      setIsUsingPowerUp(false);
-    }
-  };
+
   useEffect(() => {
     if (inventoryList.length === 0) {
       for (let i = 1; i <= Object.keys(inventory).length; i++) {
@@ -68,102 +55,35 @@ export default function Inventory({
         direction="column"
         sx={{
           borderRadius: "15px",
-          p: 1,
+          p: 0,
           background: "#81c784",
           border: "solid #ec407a 1px",
           boxShadow: 10,
         }}
         textAlign="center"
+        justifyContent="center"
+        
+        
       >
         <Grid item textAlign="center" sx={{}}>
           <Typography
             sx={{
               fontFamily: "Cinzel, serif",
-              p: 1,
-              marginBottom: 2,
+              p: 0,
+              marginBottom: 0,
             }}
           >
             Your Powers
           </Typography>
         </Grid>
-        <Grid
-          container
-          direction="row"
-          spacing={2}
-          justifyContent="center"
-          sx={{ p: 1 }}
-        >
-          {inventoryList.map((powerUp, idx) => (
-            <PowerUpAquired
-              isAquired={powerUp.quantity > 0}
-              fromY={80}
-              x={0}
-              delay={0}
-              key={idx}
-            >
-              <Grid
-                item
-                onClick={() => {
-                  handlePowerUpSelect(
-                    powerUp,
-                    powerUp.value === selectedPowerUp.value
-                  );
-                }}
-              >
-                {powerUp.quantity !== 0 && (
-                  <Grid
-                    container
-                    direction="column"
-                    textAlign="center"
-                    justifyContent="center"
-                  >
-                    <Grid item sx={{ p: 1 }}>
-                      <PowerUpSelect
-                        quantity={powerUp.quantity}
-                        delay={0}
-                        isClicked={powerUp.value === selectedPowerUp.value}
-                        scale={1.5}
-                      >
-                        <img
-                          style={{
-                            width: "40px",
-                            height: "40px",
-                            cursor: "pointer",
-                          }}
-                          src={powerUp.imgUrl}
-                          alt={powerUp.name}
-                        />
-                      </PowerUpSelect>
-                    </Grid>
-                    <Grid item>
-                      <Typography
-                        sx={{
-                          fontFamily: "Noto Sans, sans-serif",
-                          p: 0,
-                        }}
-                      >
-                        {powerUp.quantity === 1 ? "" : powerUp.quantity}
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                )}
-              </Grid>
-            </PowerUpAquired>
-          ))}
-          {powerUpsWithQuantity.length === 0 && (
-            <Grid
-              container
-              direction="column"
-              sx={{
-                p: 1,
-              }}
-            >
-              <Typography sx={{ fontFamily: "Cinzel, serif" }}>
-                {" "}
-                Go Here
-              </Typography>
-            </Grid>
-          )}
+        <Grid item>
+          <PowerOptions
+            inventoryList={inventoryList}
+            setSelectedPowerUp={(props) => setSelectedPowerUp(props)}
+            setSelectedPowerUpTiles={(props) => setSelectedPowerUpTiles(props)}
+            setIsUsingPowerUp={(props) => setIsUsingPowerUp(props)}
+            selectedPowerUp={selectedPowerUp}
+          />
         </Grid>
       </Grid>
     </>
