@@ -114,3 +114,80 @@ export const powerUps: PowerUps = {
   //   quantity: 0,
   // },
 };
+
+export const powerUpsList=[ {
+  name: "fire",
+  cursorUrl:"http://www.rw-designer.com/cursor-view/53133.png",
+  description:
+    "Select any empty tile on the board. Spreads and destroys player owned tiles until the root of it is destroyed.",
+  imgUrl: fire,
+  value: 1,
+  rules: {
+    affectsCaster: false,
+    direction: { isVertical: true, isHorizontal: true, isDiagonal: true },
+    castAnywhere: true,
+    tilesAffected: 1,
+    mustBeEmptyTile: true,
+    areaShape: "line",
+  },
+  selectColor: "#f8bbd0",
+  quantity: 0,
+},
+
+{
+  name: "cleave",
+  cursorUrl:"http://www.rw-designer.com/cursor-view/111961.png",
+  description:
+    "Select a tile you own. Then select a tile in any direction next to your currently selected tile. Any tiles in the cleaves 3 tile range will be destroyed!",
+  imgUrl:
+    "https://i1.wp.com/st-central.net/wp-content/uploads/2020/08/icon_global_skill_p_cleave.png?ssl=1",
+  value: 2,
+  rules: {
+    affectsCaster: false,
+    direction: { isVertical: true, isHorizontal: true, isDiagonal: false },
+    castAnywhere: false,
+    tilesAffected: 3,
+    mustBeEmptyTile: false,
+    areaShape: "line",
+  },
+  selectColor: "#c8e6c9",
+  quantity: 0,
+},
+
+{
+  name: "arrow",
+  cursorUrl:"http://www.rw-designer.com/cursor-view/77464.png",
+  description:
+    "Select a tile you own. Then select a tile in any direction next to your currently selected tile. Any tiles in the arrows 2 tile range will be destroyed!",
+  imgUrl: "https://cdn.newworldfans.com/db_images/db/items_hires/arrowt4.png",
+
+  value: 3,
+  rules: {
+    affectsCaster: false,
+    direction: { isVertical: true, isHorizontal: true, isDiagonal: true },
+    castAnywhere: false,
+    tilesAffected: 2,
+    mustBeEmptyTile: false,
+    areaShape: "line",
+  },
+  selectColor: "#b2ebf2",
+  quantity: 0,
+},
+
+ {
+  name: "bomb",
+  cursorUrl:"http://www.rw-designer.com/cursor-view/97214.png",
+  description: "Click any spot on the board to destroy a 4 square radius.",
+  imgUrl: mcolbomb,
+  value: 4,
+  rules: {
+    affectsCaster: false,
+    direction: { isVertical: true, isHorizontal: true, isDiagonal: true },
+    castAnywhere: true,
+    tilesAffected: 4,
+    mustBeEmptyTile: false,
+    areaShape: "square",
+  },
+  selectColor: "#ffe0b2",
+  quantity: 0,
+}]

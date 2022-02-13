@@ -14,6 +14,7 @@ import CountDownAnimator from "../../animators/CountDownAnimator";
 import useMoveHandler from "../../hooks/useMoveHandler/useMoveHandler";
 import useBoardCreator from "../../hooks/useBoardCreator";
 import updateAfterPlayerLeaves from "../../creators/BoardCreators/updateAfterPlayerLeaves";
+import getDisplayPlayerPieces from "../../creators/BoardCreators/getDisplayPlayerPieces";
 import TurnOrder from "./TurnOrder/TurnOrder";
 import Inventory from "./Inventory/Inventory";
 import { PowerUp, PowerUps } from "../../Models/PowerUp";
@@ -66,10 +67,12 @@ export default function Game({
   const [isCountDownFinished, setIsCountDownFinished] = useState(false);
 
   const [piece, setPiece] = useState<JSX.Element | string>("");
+  const [displayPiece, setDisplayPiece] = useState<JSX.Element | string>("")
   const [inventory] = useState<PowerUps>(powerUps);
 
   const [board, setBoard] = useState<(number | string)[][]>([[]]);
   const [playerPieces, setPlayerPieces] = useState<Player[]>([]);
+  const [displayPlayerPieces, setDisplayPlayerPieces] = useState<Player[]>([])
 
   const [isUsingPowerUp, setIsUsingPowerUp] = useState(false);
   const [selectedPowerUp, setSelectedPowerUp] =
@@ -101,6 +104,8 @@ export default function Game({
     setPiece,
     setBoard,
     setAction,
+    setDisplayPiece,
+    displayPlayerPieces,
     setIsHost,
     setIsBoardCreated,
     sizeOfBoardPiece,
@@ -159,6 +164,8 @@ export default function Game({
           delay={800}
         >
           <StatusBoard
+          displayPiece={displayPiece}
+          selectedPowerUp={selectedPowerUp}
           boardSize={lobby.board.size}
             inventory={inventory}
             setSelectedPowerUpTiles={(props) => {
@@ -227,6 +234,7 @@ export default function Game({
           boardSize={lobby.board.size}
         />
         <Inventory
+        displayPiece={displayPiece}
         selectedPowerUpTiles={selectedPowerUpTiles}
         onFinish={()=>   onFinish(
           selectedPowerUp,

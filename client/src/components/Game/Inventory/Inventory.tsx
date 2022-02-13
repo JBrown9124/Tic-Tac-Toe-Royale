@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import { PowerUp, PowerUps } from "../../../Models/PowerUp";
 import { Move } from "../../../Models/Move";
 import { defaultPowerUp } from "../../../storage/defaultPowerUp";
-import PowerUpSelect from "../../../animators/PowerUpSelect";
+import MoveSelectAnimator from "../../../animators/MoveSelectAnimator";
 import PowerUpAquired from "../../../animators/PowerUpAquired";
+import CustomButton from "../../CustomButton";
 import SelectedPower from "./SelectedPower";
 import PowerOptions from "./PowerOptions";
 import onFinish from "../../../creators/BoardCreators/onFinish";
@@ -21,6 +22,7 @@ interface InventoryProps {
   isBoardCreated: boolean;
   selectedPowerUpTiles: Move[];
   onFinish: () => void;
+  displayPiece: string | JSX.Element;
 }
 export default function Inventory({
   inventory,
@@ -34,9 +36,14 @@ export default function Inventory({
   isBoardCreated,
   selectedPowerUpTiles,
   onFinish,
+  displayPiece,
 }: InventoryProps) {
   const [inventoryList] = useState<PowerUp[]>([]);
-
+  const handleMoveSelect = () => {
+    setSelectedPowerUpTiles([]);
+    setSelectedPowerUp(defaultPowerUp);
+    setIsUsingPowerUp(false);
+  };
   useEffect(() => {
     if (inventoryList.length === 0) {
       for (let i = 1; i <= Object.keys(inventory).length; i++) {
@@ -78,6 +85,18 @@ export default function Inventory({
             />
           </Grid>
         )}
+        <Grid item container justifyContent="center">
+          <Grid item sx={{p:1}}>
+            <MoveSelectAnimator delay={0} isClicked={!isUsingPowerUp} quantity={0}>
+              <div
+                style={{ cursor: "pointer" }}
+                onClick={() => handleMoveSelect()}
+              >
+                {displayPiece}{" "}
+              </div>
+            </MoveSelectAnimator>
+          </Grid>
+        </Grid>
         <Grid item>
           <PowerOptions
             inventoryList={inventoryList}

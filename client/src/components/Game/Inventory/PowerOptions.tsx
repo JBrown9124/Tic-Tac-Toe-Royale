@@ -15,6 +15,7 @@ import PowerUpSelect from "../../../animators/PowerUpSelect";
 import PowerUpAquired from "../../../animators/PowerUpAquired";
 import usePowerKeyPress from "../../../hooks/usePowerKeyPress";
 import fire from "../../../img/fire.png";
+import Badge from '@mui/material/Badge';
 import mcolbomb from "../../../img/mcol-bomb.svg";
 interface PowerOptions {
   inventoryList: PowerUp[];
@@ -102,15 +103,12 @@ export default function PowerOptions({
       >
         {inventoryList.map((powerUp, idx) => (
           <Grid
-            onClick={() => {
-              handlePowerUpSelect(
-                powerUp,
-                powerUp.value === selectedPowerUp.value
-              );
-            }}
+           
             item
           >
+
             <Grid item sx={{ p: 1 }}>
+            <Badge badgeContent={powerUp.quantity} invisible={powerUp.quantity<=1}>
               <PowerUpAquired
                 isAquired={powerUp.quantity > 0}
                 fromY={0}
@@ -125,7 +123,14 @@ export default function PowerOptions({
                   isClicked={powerUp.value === selectedPowerUp.value}
                   scale={1.1}
                 >
+               
                   <img
+                   onClick={() => {
+                    handlePowerUpSelect(
+                      powerUp,
+                      powerUp.value === selectedPowerUp.value
+                    );
+                  }}
                     style={{
                       width: "60px",
                       height: "60px",
@@ -135,8 +140,10 @@ export default function PowerOptions({
                     src={powerUp.imgUrl}
                     alt={powerUp.name}
                   />
+               
                 </PowerUpSelect>
               </PowerUpAquired>
+              </Badge>
             </Grid>
 
             {/* <Grid item>

@@ -1,6 +1,6 @@
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
-
+import Grid from "@mui/material/Grid";
 const StyledButton = styled(Button)(({ theme }) => ({
   backgroundColor: "#ec407a",
   
@@ -31,11 +31,11 @@ const StyledButton = styled(Button)(({ theme }) => ({
 }));
 interface CustomButtonProps {
   onClick?: () => void;
-  message: string;
+  message?: string;
   sx?: any;
   variant?: "text" | "outlined" | "contained" | undefined;
   component?:any
-  icon?:JSX.Element
+  icon?:JSX.Element|string
 }
 export default function CustomButton({
   message,
@@ -47,7 +47,11 @@ export default function CustomButton({
 }: CustomButtonProps) {
   return (
     <StyledButton sx={sx} onClick={onClick} variant={variant}  >
+      <Grid container direction="column">
+        <Grid item>
       {message}{icon}
+      </Grid>
+      </Grid>
     </StyledButton>
   );
 }

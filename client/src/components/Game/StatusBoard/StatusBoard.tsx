@@ -13,7 +13,7 @@ interface StatusBoardProps {
   playerPieces: Player[];
   gameStatus: GameStatus;
   winBy: number;
-
+  displayPiece: JSX.Element | string;
   quitGame: () => void;
   isBoardCreated: boolean;
   isCountDownFinished: boolean;
@@ -29,12 +29,14 @@ interface StatusBoardProps {
   isUsingPowerUp: boolean;
   inventory: PowerUps;
   sizeOfBoardPiece: { mobile: string; desktop: string };
-  boardSize:number
+  boardSize: number;
+  selectedPowerUp: PowerUp;
 }
 export default function StatusBoard({
   playerPieces,
   gameStatus,
   winBy,
+  displayPiece,
   sizeOfBoardPiece,
   quitGame,
   setPlayerPieces,
@@ -49,8 +51,9 @@ export default function StatusBoard({
   setSelectedPowerUpTiles,
   // powerOrMove,
   isUsingPowerUp,
+  selectedPowerUp,
   inventory,
-  boardSize
+  boardSize,
 }: StatusBoardProps) {
   const [startWinSound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/winnerSound.mp3"
@@ -89,22 +92,20 @@ export default function StatusBoard({
           bgcolor: statusBoardTurnOrderBackgroundColor,
           border: "solid #ec407a 1px",
           height:
-          boardSize === 6
-            ? 762
-            : boardSize === 5
-            ? 554.4
-            : boardSize === 4
-            ? 457.5
-            : boardSize === 3
-            ? 359.5
-            : 748,
+            boardSize === 6
+              ? 762
+              : boardSize === 5
+              ? 554.4
+              : boardSize === 4
+              ? 457.5
+              : boardSize === 3
+              ? 359.5
+              : 748,
           boxShadow: 10,
         }}
         direction="column"
         textAlign="center"
-      
         justifyContent="center"
-    
       >
         <Grid container direction="column" item>
           <Grid item sx={{ p: 0 }}>
@@ -145,7 +146,7 @@ export default function StatusBoard({
             })}
           </Grid>
         </Grid>
-        <Grid container direction="column" item sx={{marginTop:12}}>
+        <Grid container direction="column" item sx={{ marginTop: 12 }}>
           <Grid>
             <Typography sx={{ fontFamily: "Cinzel, serif" }} variant="h6">
               Game Stats
@@ -154,12 +155,27 @@ export default function StatusBoard({
             <Typography>{playerPieces.length} players</Typography>
           </Grid>
         </Grid>
-        <Grid container direction="column" item sx={{marginTop:12}}>
-          <CustomButton
-            sx={{ fontSize: "13px", height: "30px" }}
-            onClick={() => quitGame()}
-            message={"Power Information"}
-          />
+        <Grid container direction="column" item sx={{ marginTop: 12 }}>
+          <Grid item>
+            <Typography sx={{ fontFamily: "Cinzel, serif" }} variant="h6">
+              Selection
+            </Typography>
+          </Grid>
+          <Grid item sx={{ p: 1 }}>
+            {isUsingPowerUp ? (
+              <img
+                style={{ width: "50px", height: "50px" }}
+                src={selectedPowerUp.imgUrl}
+                alt={selectedPowerUp.name}
+              />
+            ) : displayPiece 
+            }
+          </Grid>
+          <Grid item sx={{ p: 0 }}>
+            <Typography sx={{ fontFamily: "Cinzel, serif" }}>
+              {isUsingPowerUp ? `${selectedPowerUp.name}` : `Move`}
+            </Typography>
+          </Grid>
         </Grid>
         {/*       
         {isUsingPowerUp ? (
@@ -189,7 +205,7 @@ export default function StatusBoard({
         <Grid
           container
           direction="row"
-          sx={{ p: 1, marginTop:12}}
+          sx={{ p: 1, marginTop: 12 }}
           item
           spacing={2}
           justifyContent={"center"}

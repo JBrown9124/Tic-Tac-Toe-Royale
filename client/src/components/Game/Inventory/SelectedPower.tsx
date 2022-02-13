@@ -39,7 +39,7 @@ export default function SelectedPower({
             </PulsatingAnimator>
           </Grid>
         )}
-        <Grid item>
+        {/* <Grid item>
           <Typography
             sx={{
               fontFamily: "Cinzel, serif",
@@ -49,7 +49,7 @@ export default function SelectedPower({
           >
             {selectedPowerUp.name} Selected
           </Typography>
-        </Grid>
+        </Grid> */}
         {/* <Grid item sx={{ p: 1 }}>
           <img
             style={{ width: "50px", height: "50px" }}
