@@ -28,12 +28,14 @@ interface StatusBoardProps {
   setSelectedPowerUpTiles: (powerUpTiles: Move[]) => void;
   isUsingPowerUp: boolean;
   inventory: PowerUps;
+  sizeOfBoardPiece: { mobile: string; desktop: string };
+  boardSize:number
 }
 export default function StatusBoard({
   playerPieces,
   gameStatus,
   winBy,
-
+  sizeOfBoardPiece,
   quitGame,
   setPlayerPieces,
   isBoardCreated,
@@ -48,6 +50,7 @@ export default function StatusBoard({
   // powerOrMove,
   isUsingPowerUp,
   inventory,
+  boardSize
 }: StatusBoardProps) {
   const [startWinSound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/winnerSound.mp3"
@@ -75,32 +78,7 @@ export default function StatusBoard({
       }
     }
   }, [gameStatus?.win?.whoWon]);
-  const handleMoveSelect = () => {
-    // setPowerOrMove("Move");
-    setIsUsingPowerUp(false);
-    setSelectedPowerUp({
-      value: 0,
-      name: "",
-      description: "",
-      imgUrl: "",
 
-      rules: {
-        affectsCaster: false,
-        direction: {
-          isVertical: false,
-          isHorizontal: false,
-          isDiagonal: false,
-        },
-        castAnywhere: false,
-        tilesAffected: 0,
-        mustBeEmptyTile: false,
-        areaShape: "line",
-      },
-      selectColor: "",
-      quantity: 0,
-    });
-    setSelectedPowerUpTiles([]);
-  };
   return (
     <>
       <Grid
@@ -110,25 +88,32 @@ export default function StatusBoard({
 
           bgcolor: statusBoardTurnOrderBackgroundColor,
           border: "solid #ec407a 1px",
+          height:
+          boardSize === 6
+            ? 762
+            : boardSize === 5
+            ? 554.4
+            : boardSize === 4
+            ? 457.5
+            : boardSize === 3
+            ? 359.5
+            : 748,
           boxShadow: 10,
         }}
         direction="column"
         textAlign="center"
+      
+        justifyContent="center"
+    
       >
-        <Grid container direction="column">
-          <Grid item sx={{ p: 1 }}>
+        <Grid container direction="column" item>
+          <Grid item sx={{ p: 0 }}>
             {gameStatus.win.whoWon === "tie" ? (
-              <Typography
-                variant="h6"
-                sx={{ fontFamily: "Cinzel, serif", }}
-              >
+              <Typography variant="h6" sx={{ fontFamily: "Cinzel, serif" }}>
                 Its a tie!
               </Typography>
             ) : (
-              <Typography
-                variant="h6"
-                sx={{ fontFamily: "Cinzel, serif", }}
-              >
+              <Typography variant="h6" sx={{ fontFamily: "Cinzel, serif" }}>
                 {playerPieces.map((player: Player) => {
                   if (gameStatus.win.whoWon) {
                     if (player.playerId === gameStatus.win.whoWon) {
@@ -147,19 +132,36 @@ export default function StatusBoard({
               </Typography>
             )}
           </Grid>
-        </Grid>
-        <Grid item>
-          {playerPieces.map((player, idx) => {
-            if (gameStatus.win.whoWon) {
-              if (player.playerId === gameStatus.win.whoWon) {
+
+          <Grid item>
+            {playerPieces.map((player, idx) => {
+              if (gameStatus.win.whoWon) {
+                if (player.playerId === gameStatus.win.whoWon) {
+                  return player.piece;
+                }
+              } else if (player.playerId === gameStatus.whoTurn) {
                 return player.piece;
               }
-            } else if (player.playerId === gameStatus.whoTurn) {
-              return player.piece;
-            }
-          })}
+            })}
+          </Grid>
         </Grid>
-      
+        <Grid container direction="column" item sx={{marginTop:12}}>
+          <Grid>
+            <Typography sx={{ fontFamily: "Cinzel, serif" }} variant="h6">
+              Game Stats
+            </Typography>
+            <Typography>Win by {winBy}</Typography>
+            <Typography>{playerPieces.length} players</Typography>
+          </Grid>
+        </Grid>
+        <Grid container direction="column" item sx={{marginTop:12}}>
+          <CustomButton
+            sx={{ fontSize: "13px", height: "30px" }}
+            onClick={() => quitGame()}
+            message={"Power Information"}
+          />
+        </Grid>
+        {/*       
         {isUsingPowerUp ? (
           <Grid item>
             <Typography
@@ -183,8 +185,15 @@ export default function StatusBoard({
               Make a move or select a power!
             </Typography>
           </Grid>
-        )}
-        <Grid container direction="column" sx={{ p: 1 }} spacing={2}>
+        )} */}
+        <Grid
+          container
+          direction="row"
+          sx={{ p: 1, marginTop:12}}
+          item
+          spacing={2}
+          justifyContent={"center"}
+        >
           <Grid item>
             <CustomButton
               sx={{ fontSize: "13px", height: "30px" }}

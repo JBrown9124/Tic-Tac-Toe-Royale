@@ -3,6 +3,7 @@ export interface PowerUps {
   [key: string]: {
     name: string;
     imgUrl: string;
+    cursorUrl:string;
     value: number;
     description: string;
     rules: PowerUpRules;
@@ -26,6 +27,7 @@ export interface PowerUp {
   
   name: string;
   imgUrl: string;
+  cursorUrl:string;
   value: number;
   description: string;
   rules: PowerUpRules;

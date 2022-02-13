@@ -1,12 +1,21 @@
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { useEffect, useState } from "react";
+import {
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+  useLayoutEffect,
+} from "react";
 import { PowerUp, PowerUps } from "../../../Models/PowerUp";
 import { Move } from "../../../Models/Move";
 import { defaultPowerUp } from "../../../storage/defaultPowerUp";
+import { powerUps } from "../../../storage/powerUps";
 import PowerUpSelect from "../../../animators/PowerUpSelect";
 import PowerUpAquired from "../../../animators/PowerUpAquired";
-import handlePowerUpKeys from "../../../creators/PowerUpCreators/handlePowerUpKeys";
+import usePowerKeyPress from "../../../hooks/usePowerKeyPress";
+import fire from "../../../img/fire.png";
+import mcolbomb from "../../../img/mcol-bomb.svg";
 interface PowerOptions {
   inventoryList: PowerUp[];
   setSelectedPowerUp: (powerUp: PowerUp) => void;
@@ -24,7 +33,9 @@ export default function PowerOptions({
   const powerUpsWithQuantity = inventoryList.filter((item) => {
     return item.quantity !== 0;
   });
-  const handlePowerUpSelect = (powerUp: PowerUp, isSameId: boolean) => {
+  const [isSafe, setIsSafe] = useState(false);
+  const [value, setValue] = useState("");
+  const handlePowerUpSelect = async (powerUp: PowerUp, isSameId: boolean) => {
     if (!isSameId) {
       setSelectedPowerUp(powerUp);
       setSelectedPowerUpTiles([]);
@@ -36,7 +47,50 @@ export default function PowerOptions({
     }
   };
 
-  
+  const handleUserKeyPress = useCallback((event) => {
+    const { key, keyCode } = event;
+
+    if (key === "1") {
+      setValue("1");
+    }
+    if (key === "2") {
+      setValue("2");
+    }
+    if (key === "3") {
+      setValue("3");
+    }
+    if (key === "4") {
+      setValue("4");
+    }
+  }, []);
+  useEffect(() => {
+    window.addEventListener("keydown", handleUserKeyPress);
+
+    return () => {
+      window.removeEventListener("keydown", handleUserKeyPress);
+    };
+  }, [handleUserKeyPress]);
+  useEffect(() => {
+    const handlePowerKeys = async () => {
+      inventoryList.forEach(async (item) => {
+        if (value === "1" && item.value === 1) {
+          await handlePowerUpSelect(item, 1 === selectedPowerUp.value);
+        }
+        if (value === "2" && item.value === 2) {
+          await handlePowerUpSelect(item, 2 === selectedPowerUp.value);
+        }
+        if (value === "3" && item.value === 3) {
+          await handlePowerUpSelect(item, 3 === selectedPowerUp.value);
+        }
+        if (value === "4" && item.value === 4) {
+          await handlePowerUpSelect(item, 4 === selectedPowerUp.value);
+        }
+      });
+    };
+
+    handlePowerKeys();
+  }, [value]);
+
   return (
     <>
       <Grid
@@ -47,13 +101,6 @@ export default function PowerOptions({
         sx={{ p: 0 }}
       >
         {inventoryList.map((powerUp, idx) => (
-          //   <PowerUpAquired
-          //     isAquired={powerUp.quantity > 0}
-          //     fromY={80}
-          //     x={0}
-          //     delay={0}
-          //     key={idx}
-          //   >
           <Grid
             onClick={() => {
               handlePowerUpSelect(
@@ -64,24 +111,35 @@ export default function PowerOptions({
             item
           >
             <Grid item sx={{ p: 1 }}>
-              <PowerUpSelect
-                quantity={powerUp.quantity}
+              <PowerUpAquired
+                isAquired={powerUp.quantity > 0}
+                fromY={0}
+                scale={1.1}
+                x={0}
                 delay={0}
-                isClicked={powerUp.value === selectedPowerUp.value}
-                scale={1.5}
+                key={idx}
               >
-                <img
-                  style={{
-                    width: "50px",
-                    height: "50px",
-                    cursor: "pointer",
-                  }}
-                  src={powerUp.imgUrl}
-                  alt={powerUp.name}
-                />
-              </PowerUpSelect>
+                <PowerUpSelect
+                  quantity={powerUp.quantity}
+                  delay={0}
+                  isClicked={powerUp.value === selectedPowerUp.value}
+                  scale={1.1}
+                >
+                  <img
+                    style={{
+                      width: "60px",
+                      height: "60px",
+                      cursor: "pointer",
+                      opacity: powerUp.quantity >= 1 ? 1 : 0.5,
+                    }}
+                    src={powerUp.imgUrl}
+                    alt={powerUp.name}
+                  />
+                </PowerUpSelect>
+              </PowerUpAquired>
             </Grid>
-            <Grid item>
+
+            {/* <Grid item>
               <Typography
                 sx={{
                   fontFamily: "Noto Sans, sans-serif",
@@ -90,11 +148,10 @@ export default function PowerOptions({
               >
                 {powerUp.quantity === 1 ? "" : powerUp.quantity}
               </Typography>
-            </Grid>
+            </Grid> */}
           </Grid>
-          //   </PowerUpAquired>
         ))}
-        {powerUpsWithQuantity.length === 0 && (
+        {/* {powerUpsWithQuantity.length === 0 && (
           <Grid
             container
             direction="column"
@@ -107,7 +164,7 @@ export default function PowerOptions({
               Go Here
             </Typography>
           </Grid>
-        )}
+        )} */}
       </Grid>
     </>
   );

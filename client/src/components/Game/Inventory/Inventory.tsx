@@ -6,7 +6,9 @@ import { Move } from "../../../Models/Move";
 import { defaultPowerUp } from "../../../storage/defaultPowerUp";
 import PowerUpSelect from "../../../animators/PowerUpSelect";
 import PowerUpAquired from "../../../animators/PowerUpAquired";
+import SelectedPower from "./SelectedPower";
 import PowerOptions from "./PowerOptions";
+import onFinish from "../../../creators/BoardCreators/onFinish";
 interface InventoryProps {
   inventory: PowerUps;
   setCursor: (url: string) => void;
@@ -17,6 +19,8 @@ interface InventoryProps {
   // powerOrMove: string;
   isUsingPowerUp: boolean;
   isBoardCreated: boolean;
+  selectedPowerUpTiles: Move[];
+  onFinish: () => void;
 }
 export default function Inventory({
   inventory,
@@ -28,6 +32,8 @@ export default function Inventory({
   isUsingPowerUp,
   // powerOrMove,
   isBoardCreated,
+  selectedPowerUpTiles,
+  onFinish,
 }: InventoryProps) {
   const [inventoryList] = useState<PowerUp[]>([]);
 
@@ -62,20 +68,16 @@ export default function Inventory({
         }}
         textAlign="center"
         justifyContent="center"
-        
-        
       >
-        <Grid item textAlign="center" sx={{}}>
-          <Typography
-            sx={{
-              fontFamily: "Cinzel, serif",
-              p: 0,
-              marginBottom: 0,
-            }}
-          >
-            Your Powers
-          </Typography>
-        </Grid>
+        {isUsingPowerUp && (
+          <Grid item>
+            <SelectedPower
+              selectedPowerUp={selectedPowerUp}
+              selectedPowerUpTiles={selectedPowerUpTiles}
+              onFinish={() => onFinish()}
+            />
+          </Grid>
+        )}
         <Grid item>
           <PowerOptions
             inventoryList={inventoryList}

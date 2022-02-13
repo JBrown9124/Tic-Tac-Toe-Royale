@@ -1,6 +1,6 @@
 import Grid from "@mui/material/Grid";
 import { Player } from "../../Models/Player";
-import { useState, useEffect} from "react";
+import { useState, useEffect, useCallback } from "react";
 import { defaultPowerUp } from "../../storage/defaultPowerUp";
 import { Lobby } from "../../Models/Lobby";
 import { Move } from "../../Models/Move";
@@ -18,8 +18,10 @@ import TurnOrder from "./TurnOrder/TurnOrder";
 import Inventory from "./Inventory/Inventory";
 import { PowerUp, PowerUps } from "../../Models/PowerUp";
 import { powerUps } from "../../storage/powerUps";
-import SelectedPower from "./SelectedPower/SelectedPower";
+import SelectedPower from "./Inventory/SelectedPower";
 import onFinish from "../../creators/BoardCreators/onFinish";
+import fire from "../../img/fire.png";
+import mcolbomb from "../../img/mcol-bomb.svg";
 
 interface GameProps {
   lobby: Lobby;
@@ -105,6 +107,7 @@ export default function Game({
   });
 
   /*For when user hits play again */
+
   useEffect(() => {
     if (action === "begin" && botCanMove) {
       setBotCanMove(false);
@@ -143,178 +146,143 @@ export default function Game({
     }, 3500);
   };
   return (
-    <>
-      <Grid
-        container
-        direction="row"
-        justifyContent={{ xl:"normal", lg: "center", md: "center", xs: "center" }}
-        spacing={{ lg: 0, md: 0, xs: 0 }}
-      >
-        <Grid
-          item
-          sm={12}
-          container
-          alignItems="center"
-          justifyContent={{ xl:"right", lg: "center", md: "center", xs: "center" }}
-          md={12}
-          lg={12}
-          xl={2}
-          spacing={0}
+    <Grid
+      container
+      direction="row"
+      justifyContent="center"
+    
+    >
+      <Grid item>
+        <StatusBoardAnimator
+          fromX={-100}
+          isVisible={isCountDownFinished}
+          delay={800}
         >
-          <StatusBoardAnimator
-            fromX={-100}
-            isVisible={isCountDownFinished}
-            delay={800}
-          >
-            <Grid container direction="row">
-            <Grid item sx={{ p: 1 }} xs={6}  sm={6} md={6} lg={6} xl={12}>
-              <StatusBoard
-                inventory={inventory}
-                setSelectedPowerUpTiles={(props) => {
-                  setSelectedPowerUpTiles(props);
-                }}
-                isUsingPowerUp={isUsingPowerUp}
-                setIsUsingPowerUp={(props) => setIsUsingPowerUp(props)}
-                setSelectedPowerUp={(props) => setSelectedPowerUp(props)}
-                handleStart={() => handleStart()}
-                isHost={isHost}
-                isCountDownFinished={isCountDownFinished}
-                isBoardCreated={isBoardCreated}
-                setPlayerPieces={(props) => setPlayerPieces(props)}
-                winBy={lobby.board.winBy}
-                gameStatus={gameStatus}
-                playerPieces={playerPieces}
-                quitGame={() => quitGame()}
-                playerId={playerId}
-              />
-            </Grid>
-            
-            {isUsingPowerUp && (
-              // <SelectedPowerComponentAnimator delay={0} isUsingPowerUp={isUsingPowerUp} fromScale={0}>
-              <Grid item sx={{ p: 1 }} xs={12} sm={12} md={12} lg={12} xl={12}>
-                <SelectedPower
-                  onFinish={() =>
-                    onFinish(
-                      selectedPowerUp,
-                      gameStatus,
-                      selectedPowerUpTiles,
-                      lobby,
-                      inventory,
-                      setSelectedPowerUpTiles,
-                      setSelectedPowerUp,
-                      setIsUsingPowerUp,
-                      setGameStatus,
-                      board,
-                      playerId
-                    )
-                  }
-                  selectedPowerUpTiles={selectedPowerUpTiles}
-                  selectedPowerUp={selectedPowerUp}
-                />
-              </Grid>
-              // </SelectedPowerComponentAnimator>
-            )}
-
-           
-            </Grid>
-          </StatusBoardAnimator>
-        </Grid>
-
-        <Grid
-          item
-          sm={12}
-          sx={{  }}
-          justifyContent="center"
-          md={12}
-          lg={12}
-          xl={8}
-        >
-          <Board
-            // powerOrMove={powerOrMove}
-            isUsingPowerUp={isUsingPowerUp}
-            selectedPowerUp={selectedPowerUp}
-            setSelectedPowerUpTiles={(props) => setSelectedPowerUpTiles(props)}
-            selectedPowerUpTiles={selectedPowerUpTiles}
+          <StatusBoard
+          boardSize={lobby.board.size}
             inventory={inventory}
-            playerId={playerId}
+            setSelectedPowerUpTiles={(props) => {
+              setSelectedPowerUpTiles(props);
+            }}
+            isUsingPowerUp={isUsingPowerUp}
+            setIsUsingPowerUp={(props) => setIsUsingPowerUp(props)}
+            setSelectedPowerUp={(props) => setSelectedPowerUp(props)}
+            handleStart={() => handleStart()}
+            isHost={isHost}
             isCountDownFinished={isCountDownFinished}
-            boardColor={lobby.board.color}
-            gameStatus={gameStatus}
-            setGameStatus={(props) => setGameStatus(props)}
+            isBoardCreated={isBoardCreated}
+            setPlayerPieces={(props) => setPlayerPieces(props)}
             winBy={lobby.board.winBy}
-            lobbyId={lobby.lobbyId}
-            lobbyHostSid={lobby.hostSid}
-            board={board}
-            sizeOfBoardPiece={sizeOfBoardPiece}
+            gameStatus={gameStatus}
             playerPieces={playerPieces}
-            piece={piece}
-            boardSize={lobby.board.size}
+            quitGame={() => quitGame()}
+            playerId={playerId}
+            sizeOfBoardPiece={sizeOfBoardPiece}
           />
-            <Inventory
-                isBoardCreated={isBoardCreated}
-                // powerOrMove={powerOrMove}
-                isUsingPowerUp={isUsingPowerUp}
-                setIsUsingPowerUp={(props) => setIsUsingPowerUp(props)}
-                setSelectedPowerUpTiles={(props) =>
-                  setSelectedPowerUpTiles(props)
-                }
-                selectedPowerUp={selectedPowerUp}
-                inventory={inventory}
-                setCursor={(props) => setCursor(props)}
-                setSelectedPowerUp={(props) => setSelectedPowerUp(props)}
-              />
-        </Grid>
-        <Grid
-          item
-          sm={12}
-          container
-          alignItems="center"
-          textAlign="center"
-          justifyContent={{ md: "center", sm: "center" }}
-          md={12}
-          lg={12}
-          xl={2}
-          direction="column"
+          {/* 
+        {isUsingPowerUp && (
+
+          <SelectedPower
+            onFinish={() =>
+              onFinish(
+                selectedPowerUp,
+                gameStatus,
+                selectedPowerUpTiles,
+                lobby,
+                inventory,
+                setSelectedPowerUpTiles,
+                setSelectedPowerUp,
+                setIsUsingPowerUp,
+                setGameStatus,
+                board,
+                playerId
+              )
+            }
+            selectedPowerUpTiles={selectedPowerUpTiles}
+            selectedPowerUp={selectedPowerUp}
+          />
+          )} */}
+        </StatusBoardAnimator>
+      </Grid>
+      <Grid item   sx={{  }}>
+        <Board
+          // powerOrMove={powerOrMove}
+          isUsingPowerUp={isUsingPowerUp}
+          selectedPowerUp={selectedPowerUp}
+          setSelectedPowerUpTiles={(props) => setSelectedPowerUpTiles(props)}
+          selectedPowerUpTiles={selectedPowerUpTiles}
+          inventory={inventory}
+          playerId={playerId}
+          isCountDownFinished={isCountDownFinished}
+          boardColor={lobby.board.color}
+          gameStatus={gameStatus}
+          setGameStatus={(props) => setGameStatus(props)}
+          winBy={lobby.board.winBy}
+          lobbyId={lobby.lobbyId}
+          lobbyHostSid={lobby.hostSid}
+          board={board}
+          sizeOfBoardPiece={sizeOfBoardPiece}
+          playerPieces={playerPieces}
+          piece={piece}
+          boardSize={lobby.board.size}
+        />
+        <Inventory
+        selectedPowerUpTiles={selectedPowerUpTiles}
+        onFinish={()=>   onFinish(
+          selectedPowerUp,
+          gameStatus,
+          selectedPowerUpTiles,
+          lobby,
+          inventory,
+          setSelectedPowerUpTiles,
+          setSelectedPowerUp,
+          setIsUsingPowerUp,
+          setGameStatus,
+          board,
+          playerId
+        )}
+          isBoardCreated={isBoardCreated}
+          // powerOrMove={powerOrMove}
+          isUsingPowerUp={isUsingPowerUp}
+          setIsUsingPowerUp={(props) => setIsUsingPowerUp(props)}
+          setSelectedPowerUpTiles={(props) => setSelectedPowerUpTiles(props)}
+          selectedPowerUp={selectedPowerUp}
+          inventory={inventory}
+          setCursor={(props) => setCursor(props)}
+          setSelectedPowerUp={(props) => setSelectedPowerUp(props)}
+        />
+      </Grid>
+      <Grid >
+        <StatusBoardAnimator
+          fromX={100}
+          isVisible={isCountDownFinished}
+          delay={800}
         >
-          <StatusBoardAnimator
-            fromX={100}
-            isVisible={isCountDownFinished}
-            delay={800}
-          >
-            <TurnOrder
-              playerWhoLeftSessionId={playerWhoLeftSessionId}
-              whoTurn={gameStatus.whoTurn}
-              playerId={playerId}
-              gameStatus={gameStatus}
-              isCountDownFinished={isCountDownFinished}
-              isBoardCreated={isBoardCreated}
-              setPlayerPieces={(props) => {
-                setPlayerPieces(props);
-              }}
-              playerPieces={playerPieces}
-            />
-          </StatusBoardAnimator>
-        </Grid>
+          <TurnOrder
+          boardSize={lobby.board.size}
+            playerWhoLeftSessionId={playerWhoLeftSessionId}
+            sizeOfBoardPiece={sizeOfBoardPiece}
+            whoTurn={gameStatus.whoTurn}
+            playerId={playerId}
+            gameStatus={gameStatus}
+            isCountDownFinished={isCountDownFinished}
+            isBoardCreated={isBoardCreated}
+            setPlayerPieces={(props) => {
+              setPlayerPieces(props);
+            }}
+            playerPieces={playerPieces}
+          />
+        </StatusBoardAnimator>
       </Grid>
       {!isCountDownFinished && isBoardCreated && (
-        <Grid
-          container
-          sx={{
-            position: "absolute",
-            top: "43%",
-            left: "50%",
-            transform: "translate(-50%,-50%)",
-          }}
-        >
-          <CountDownAnimator
-            boardColor={lobby.board.color}
-            startCountDown={isBoardCreated}
-            setBotCanMove={(props) => setBotCanMove(props)}
-            setIsCountDownFinished={(props) => setIsCountDownFinished(props)}
-            fromScale={0}
-          />
-        </Grid>
+        <CountDownAnimator
+          boardColor={lobby.board.color}
+          startCountDown={isBoardCreated}
+          setBotCanMove={(props) => setBotCanMove(props)}
+          setIsCountDownFinished={(props) => setIsCountDownFinished(props)}
+          fromScale={0}
+        />
       )}
-    </>
+    </Grid>
   );
 }

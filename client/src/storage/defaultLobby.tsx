@@ -18,7 +18,7 @@ const defaultLobby ={
           name: "",
           description: "",
           imgUrl: "",
-        
+          cursorUrl:"",
           rules: {
             affectsCaster: false,
             direction: {

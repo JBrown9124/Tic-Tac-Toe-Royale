@@ -14,6 +14,7 @@ import { backgroundColor } from "./themes/theme1";
 import defaultGameStatus from "./storage/defaultGameStatus";
 import defaultLobby from "./storage/defaultLobby";
 import PreGameModalAnimator from "./animators/PreGameModalAnimator";
+import fire from "./img/fire.png"
 
 function App() {
   const [action, setAction] = useState("welcome");
@@ -106,7 +107,7 @@ function App() {
                 }, ${lobby.board.color?.a - 0.5})`,
           overflowY: "auto",
           overflowX: "hidden",
-          cursor: `url(./img/fire.png)`,
+          // cursor: `url("http://www.rw-designer.com/cursor-view/53133.png"), auto`,
         }}
       >
         {action === "begin" && !isLobbyReceived && (

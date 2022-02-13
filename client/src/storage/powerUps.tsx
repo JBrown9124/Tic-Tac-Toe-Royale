@@ -5,6 +5,7 @@ import { PowerUps } from "../Models/PowerUp";
 export const powerUps: PowerUps = {
   "1": {
     name: "fire",
+    cursorUrl:"http://www.rw-designer.com/cursor-view/53133.png",
     description:
       "Place on an any empty tile. Spreads and destroys player owned tiles until the root of it is destroyed.",
     imgUrl: fire,
@@ -23,6 +24,7 @@ export const powerUps: PowerUps = {
 
   "2": {
     name: "cleave",
+    cursorUrl:"http://www.rw-designer.com/cursor-view/111961.png",
     description:
       "Select a tile you own. Then select a tile in any direction next to your currently selected tile. Any tiles in the cleaves 3 tile range will be destroyed!",
     imgUrl:
@@ -42,9 +44,11 @@ export const powerUps: PowerUps = {
 
   "3": {
     name: "arrow",
+    cursorUrl:"http://www.rw-designer.com/cursor-view/77464.png",
     description:
       "Select a tile you own. Then select a tile in any direction next to your currently selected tile. Any tiles in the arrows 2 tile range will be destroyed!",
     imgUrl: "https://cdn.newworldfans.com/db_images/db/items_hires/arrowt4.png",
+
     value: 3,
     rules: {
       affectsCaster: false,
@@ -60,6 +64,7 @@ export const powerUps: PowerUps = {
 
   "4": {
     name: "bomb",
+    cursorUrl:"http://www.rw-designer.com/cursor-view/97214.png",
     description: "Destroy a 4 square radius on any spot of the board.",
     imgUrl: mcolbomb,
     value: 4,

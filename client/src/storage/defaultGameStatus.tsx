@@ -8,7 +8,7 @@ const defaultGameStatus={
         name: "",
         description: "",
         imgUrl: "",
-     
+        cursorUrl:"",
         rules: {
           affectsCaster: false,
           direction: {

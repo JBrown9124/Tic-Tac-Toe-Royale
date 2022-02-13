@@ -3,7 +3,7 @@ export const defaultPowerUp = {
     name: "",
     description: "",
     imgUrl: "",
-
+  cursorUrl:"",
     rules: {
       affectsCaster: false,
       direction: { isVertical: false, isHorizontal: false, isDiagonal: false },

@@ -52,7 +52,7 @@ export default function PieceOptions({
               onMouseEnter={() => setOnHoverPiece(piece.name)}
               sx={{ cursor: "pointer", p:1 }}
             >
-              <PieceSelectorAnimator  isSelected={selectedPiece === piece.name}>
+              <PieceSelectorAnimator  isSelected={onHoverPiece === piece.name}>
                 {piece.value}
               </PieceSelectorAnimator>
             </Grid>

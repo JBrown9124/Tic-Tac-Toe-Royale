@@ -13,6 +13,7 @@ const lobby: Lobby = {
       powerUp: {
         value: 0,
         name: "",
+        cursorUrl:"",
         description: "",
         imgUrl: "",
         quantity: 0,

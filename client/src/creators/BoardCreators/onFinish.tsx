@@ -41,7 +41,7 @@ const onFinish = async (
       name: "",
       description: "",
       imgUrl: "",
-
+      cursorUrl:"",
       rules: {
         affectsCaster: false,
         direction: {

@@ -13,6 +13,8 @@ interface TurnOrderProps {
   playerWhoLeftSessionId: string;
   gameStatus: GameStatus;
   playerId: string;
+  sizeOfBoardPiece: { desktop: string; mobile: string };
+  boardSize: number;
 }
 export default function TurnOrder({
   playerPieces,
@@ -23,14 +25,16 @@ export default function TurnOrder({
   playerWhoLeftSessionId,
   gameStatus,
   playerId,
+  sizeOfBoardPiece,
+  boardSize,
 }: TurnOrderProps) {
   return (
     <>
       <Grid
         container
         textAlign="center"
-        direction={{ sm: "column", md: "column" }}
-        justifyContent={{ sm: "", md: "normal" }}
+        // direction={{ sm: "column", md: "column" }}
+        // justifyContent={{ sm: "", md: "normal" }}
         sx={{
           borderRadius: "15px",
           overflowY: "auto",
@@ -39,7 +43,19 @@ export default function TurnOrder({
           p: 1,
           boxShadow: 10,
           border: "solid #ec407a 1px",
-          maxHeight: { xs: 150, md: 250, lg: 700 },
+          // height: sizeOfBoardPiece && 748,
+          height:
+            boardSize === 6
+              ? 762
+              : boardSize === 5
+              ? 554.4
+              : boardSize === 4
+              ? 457.5
+              : boardSize === 3
+              ? 359.5
+              : 748,
+
+          // maxHeight: { xs: 150, md: 250, lg: 750 },
         }}
       >
         <Grid

@@ -34,7 +34,7 @@ const updateAfterPlayerLeaves = async ({
     newPowerUpUse: {
       powerUp: {
         value: 0,
-        name: "",
+        name: "", cursorUrl:"",
         description: "",
         imgUrl: "",
         quantity: 0,

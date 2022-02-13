@@ -92,6 +92,7 @@ const determineWinner = async (
       powerUp: {
         value: 0,
         name: "",
+        cursorUrl:"",
         description: "",
         imgUrl: "",
 

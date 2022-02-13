@@ -21,41 +21,12 @@ export default function SelectedPower({
         container
         direction="column"
         sx={{
-          borderRadius: "15px",
-
-          backgroundColor: "#81c784",
-          border: "solid #ec407a 1px",
-          boxShadow: 10,
-          p: 1,
+         
         }}
         textAlign="center"
+        justifyContent="center"
       >
-        <Grid item>
-          <Typography
-            sx={{
-              fontFamily: "Cinzel, serif",
-              
-              p: 1,
-            }}
-          >
-            {selectedPowerUp.name}
-          </Typography>
-        </Grid>
-        <Grid item sx={{ p: 1 }}>
-          <img
-            style={{ width: "50px", height: "50px" }}
-            src={selectedPowerUp.imgUrl}
-            alt={selectedPowerUp.name}
-          />
-        </Grid>
-        <Grid item sx={{ p: 1 }}>
-          <Typography
-            sx={{  fontFamily: "Noto Sans, sans-serif", fontWeight: 300 }}
-          >
-            {selectedPowerUp.description}
-          </Typography>
-        </Grid>
-        {selectedPowerUpTiles.length >= selectedPowerUp.rules.tilesAffected+caster && (
+         {selectedPowerUpTiles.length >= selectedPowerUp.rules.tilesAffected+caster && (
           <Grid item sx={{ p: 1 }}>
             <PulsatingAnimator>
             <CustomButton
@@ -68,6 +39,32 @@ export default function SelectedPower({
             </PulsatingAnimator>
           </Grid>
         )}
+        <Grid item>
+          <Typography
+            sx={{
+              fontFamily: "Cinzel, serif",
+              
+              p: 1,
+            }}
+          >
+            {selectedPowerUp.name} Selected
+          </Typography>
+        </Grid>
+        {/* <Grid item sx={{ p: 1 }}>
+          <img
+            style={{ width: "50px", height: "50px" }}
+            src={selectedPowerUp.imgUrl}
+            alt={selectedPowerUp.name}
+          />
+        </Grid> */}
+        {/* <Grid item sx={{ p: 1 }}>
+          <Typography
+            sx={{  fontFamily: "Noto Sans, sans-serif", fontWeight: 300 }}
+          >
+            {selectedPowerUp.description}
+          </Typography>
+        </Grid> */}
+       
       </Grid>
     </>
   );

@@ -39,7 +39,7 @@ const PieceSelectorAnimator = ({
   const style = useSpring({
     opacity: 1,
     height: "90%",
-    borderRadius:"5px",
+    borderRadius: "5px",
     // boxShadow: isSelected
     //   ? "rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset"
     //   : "rgba(0, 0, 0, 0.0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.00) 0px 0px 0px inset",
@@ -54,24 +54,11 @@ const PieceSelectorAnimator = ({
 
     config: { mass: 1, tension: 170, friction: 26 },
   });
-  const quantityChanged = useSpring({
-    opacity: 1,
 
-    transform: isQuantityChanged
-      ? `translate(${x}px, ${y}px)
-    rotate(${rotation}deg)
-    scale(${scale})`
-      : `translate(0px, 0px)
-    rotate(0deg)
-    
-    scale(1)`,
-
-    config: { mass: 1, tension: 180, friction: 12 },
-  });
   const hover = useSpring({
     opacity: 1,
 
-    transform: isBooped
+    transform: isSelected
       ? `translate(${x}px, ${y}px)
     rotate(${rotation}deg)
     scale(${1.2})`
@@ -93,25 +80,17 @@ const PieceSelectorAnimator = ({
   //       };
   //     }
   //   }, [quantity]);
-  const trigger = () => {
-    setIsBooped(true);
-  };
-  const triggerLeave = () => {
-    setIsBooped(false);
-  };
+
 
   return (
-    <animated.div style={style as any}>
-      <animated.div style={quantityChanged as any}>
-        <animated.div
-          style={hover as any}
-          onMouseEnter={trigger}
-          onMouseLeave={triggerLeave}
-        >
-          {children}
-        </animated.div>
+ 
+      <animated.div
+        style={hover as any}
+     
+      >
+        {children}
       </animated.div>
-    </animated.div>
+
   );
 };
 
