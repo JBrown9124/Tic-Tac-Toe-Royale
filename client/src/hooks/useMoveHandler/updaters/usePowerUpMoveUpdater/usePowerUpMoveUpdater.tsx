@@ -11,16 +11,16 @@ export default function usePowerUpMoveUpdater(gameStatus:GameStatus,board:(strin
       );
      
       const [playFireSound] = useSound(
-        process.env.PUBLIC_URL + "static/assets/sounds/fireSound.mp3"
+        process.env.PUBLIC_URL + "static/assets/sounds/fireSound.mp3", {volume:.1}
       );
       const [playArrowSound] = useSound(
-        process.env.PUBLIC_URL + "static/assets/sounds/arrowSound.mp3"
+        process.env.PUBLIC_URL + "static/assets/sounds/arrowSound.mp3", {volume:.1}
       );
       const [playBombSound] = useSound(
-        process.env.PUBLIC_URL + "static/assets/sounds/bombSound.mp3"
+        process.env.PUBLIC_URL + "static/assets/sounds/bombSound.mp3", {volume:.1}
       );
       const [playCleaveSound] = useSound(
-        process.env.PUBLIC_URL + "static/assets/sounds/cleaveSound.mp3"
+        process.env.PUBLIC_URL + "static/assets/sounds/cleaveSound.mp3", {volume:.1}
       );
     
       const [count, setCount] = useState(1);

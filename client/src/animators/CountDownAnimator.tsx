@@ -42,10 +42,10 @@ export default function CountDownAnimator({
   const [index, setIndex] = useState(0);
   const [numbers, setNumbers] = useState(["", 3, 2, 1, "Begin", ""]);
   const [startCountDownSound] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/countDown.mp3"
+    process.env.PUBLIC_URL + "static/assets/sounds/countDown.mp3", {volume:.1}
   );
   const [startOpenSound] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/warHorn.mp3"
+    process.env.PUBLIC_URL + "static/assets/sounds/warHorn.mp3", {volume:.1}
   );
 
   useEffect(() => {

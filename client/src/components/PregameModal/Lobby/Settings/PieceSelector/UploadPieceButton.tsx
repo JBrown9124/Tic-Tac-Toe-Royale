@@ -15,7 +15,7 @@ export default function UploadPieceButton({
   setPiece,
 }: UploadPieceButtonProps) {
   const [playSound] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3"
+    process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3", {volume:.1}
   );
   const handleImageUpload = (event: any) => {
     getBase64(event[0], (result: string) => {

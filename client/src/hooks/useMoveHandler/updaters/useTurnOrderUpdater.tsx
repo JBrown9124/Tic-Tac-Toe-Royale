@@ -11,7 +11,7 @@ playerId: string,
   
 ) {
   const [playYourTurnSound] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/yourTurnSound.mp3"
+    process.env.PUBLIC_URL + "static/assets/sounds/yourTurnSound.mp3", {volume:.1}
   );
   
   useMemo(() => {

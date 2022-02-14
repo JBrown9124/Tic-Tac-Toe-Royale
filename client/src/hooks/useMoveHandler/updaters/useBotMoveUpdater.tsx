@@ -32,7 +32,7 @@ export default function useBotMoveUpdater({
     inventory
 }: useBotMoveUpdaterProps) {
   const [startOtherPlayerMoveSound] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/otherPlayerMoveSound.mp3"
+    process.env.PUBLIC_URL + "static/assets/sounds/otherPlayerMoveSound.mp3", {volume:.1}
   );
   
   useEffect(() => {

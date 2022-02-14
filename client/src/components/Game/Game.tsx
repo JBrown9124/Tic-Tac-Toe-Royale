@@ -61,7 +61,7 @@ export default function Game({
   setIsGuideOpen,
 }: GameProps) {
   const [playLeaveSound] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/floorDrumBackButton.mp3"
+    process.env.PUBLIC_URL + "static/assets/sounds/floorDrumBackButton.mp3", {volume:.1}
   );
 
   const [isBoardCreated, setIsBoardCreated] = useState(false);

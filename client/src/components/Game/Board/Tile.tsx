@@ -60,7 +60,7 @@ export const Tile = ({
 }: // powerOrMove,
 TileProps) => {
   const [startSnare] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/yourMoveSound.mp3"
+    process.env.PUBLIC_URL + "static/assets/sounds/yourMoveSound.mp3", {volume:.1}
   );
   const [isSelected, setIsSelected] = useState(false);
   const playerAttackPieceSelected =

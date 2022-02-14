@@ -25,9 +25,7 @@ playerId: string;
   lobbyId: number;
 }
 export default function RightTopHalfPanel({players,lobbyId,setLobby,playerId,playerName,playerPiece}:RightTopHalfPanelProps) {
-    const [playAddBotSound] = useSound(
-        process.env.PUBLIC_URL + "static/assets/sounds/addBotSound.mp3"
-      );
+  
     return (
     <Grid container item justifyContent="center" alignItems="center">
       <Grid item sx={{ p: 1 }}>

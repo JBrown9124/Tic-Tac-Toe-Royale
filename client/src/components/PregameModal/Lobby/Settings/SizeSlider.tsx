@@ -60,7 +60,7 @@ interface SizeSliderProps {
 }
 export default function SizeSlider({ setSize, size }: SizeSliderProps) {
   const [playSound] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3"
+    process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3", {volume:.1}
   );
   const handleSliderChange = (value: number | number[]) => {
     if (typeof value === "number") {

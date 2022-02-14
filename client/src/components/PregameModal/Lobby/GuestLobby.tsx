@@ -29,10 +29,10 @@ export default function GuestLobby({
   const [isReady, setIsReady] = useState(false);
   const [isError, setIsError] = useState(false);
   const [playReadySound] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3"
+    process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3", {volume:.1}
   );
   const [playUnreadySound] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/floorDrumBackButton.mp3"
+    process.env.PUBLIC_URL + "static/assets/sounds/floorDrumBackButton.mp3", {volume:.1}
   );
   useEffect(() => {
     /*When player clicks a piece while players status is set to ready. Sets players status to false and makes a api 

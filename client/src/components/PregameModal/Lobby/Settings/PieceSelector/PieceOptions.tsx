@@ -18,7 +18,7 @@ export default function PieceOptions({
   onHoverPiece
 }: PieceOptionsProps) {
   const [playSound] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3"
+    process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3", {volume:.1}
   );
   const pieces = createPiece("black",{mobile:'8vw',desktop:"40px"});
   const handleSelectPiece = (pieceName: string) => {

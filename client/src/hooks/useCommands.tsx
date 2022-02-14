@@ -52,9 +52,7 @@ export default function useCommands({
   playerId,
   setAction,
 }: UseCommandsProps) {
-  const [playJoinOrStart] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/joinOrStartSound.mp3"
-  );
+
 
   useEffect(() => {
     switch (action) {
@@ -88,7 +86,7 @@ export default function useCommands({
             setPlayerId(response.player.playerId);
             setLobby(response.lobby);
 
-            playJoinOrStart();
+            // playJoinOrStart();
           }
         });
         break;

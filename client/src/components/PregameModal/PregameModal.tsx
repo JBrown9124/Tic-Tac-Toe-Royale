@@ -58,17 +58,17 @@ export default function PregameModal({
   const [open, setOpen] = useState(true);
 
   const [playForward] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3"
+    process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3",{volume:.1}
   );
   const [playBackward] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/floorDrumBackButton.mp3"
+    process.env.PUBLIC_URL + "static/assets/sounds/floorDrumBackButton.mp3",{volume:.1}
   );
-  const [playJoinOrStart] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/joinOrStartSound.mp3"
-  );
+  // const [playJoinOrStart] = useSound(
+  //   process.env.PUBLIC_URL + "static/assets/sounds/joinOrStartSound.mp3"
+  // );
 
   const handleCreateGameSelect = () => {
-    playJoinOrStart();
+    // playJoinOrStart();
 
     setAction("create");
   };

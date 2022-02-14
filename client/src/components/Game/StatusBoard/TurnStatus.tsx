@@ -2,12 +2,7 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { Player } from "../../../Models/Player";
 import { GameStatus } from "../../../Models/GameStatus";
-import { Move } from "../../../Models/Move";
-import { useEffect, useState } from "react";
-import { useSound } from "use-sound";
-import { PowerUp, PowerUps } from "../../../Models/PowerUp";
-import CustomButton from "../../CustomButton";
-import { statusBoardTurnOrderBackgroundColor } from "../../../themes/theme1";
+
 interface TurnStatusProps {
   playerPieces: Player[];
   gameStatus: GameStatus;

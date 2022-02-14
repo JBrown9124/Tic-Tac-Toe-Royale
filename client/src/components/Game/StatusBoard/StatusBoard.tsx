@@ -61,13 +61,13 @@ export default function StatusBoard({
   setIsGuideOpen,
 }: StatusBoardProps) {
   const [startWinSound] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/winnerSound.mp3"
+    process.env.PUBLIC_URL + "static/assets/sounds/winnerSound.mp3", {volume:.1}
   );
   const [startGameOverSound] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/darkGameOver.mp3"
+    process.env.PUBLIC_URL + "static/assets/sounds/darkGameOver.mp3", {volume:.1}
   );
   const [startTieSound] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/tie.mp3"
+    process.env.PUBLIC_URL + "static/assets/sounds/tie.mp3", {volume:.1}
   );
   const [winner, setWinner] = useState<Player>();
   useEffect(() => {

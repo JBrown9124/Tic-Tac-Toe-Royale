@@ -41,7 +41,7 @@ interface WinByProps {
 }
 export default function WinBy({ winBy, setWinBy, size }: WinByProps) {
   const [playSound] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3"
+    process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3", {volume:.1}
   );
   const handleInputChange = (value: number) => {
     setWinBy(value);

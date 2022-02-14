@@ -41,7 +41,7 @@ export default function TurnOrder({
   useEffect(() => {
     
     scrollToBottom();
-  }, [playerPieces,playersTurn]);
+  }, [playerPieces]);
   return (
     <>
       <Grid
@@ -50,7 +50,7 @@ export default function TurnOrder({
         sx={{
           borderRadius: "15px",
           overflowY: { xs: "auto", sm: "auto", md: "auto", lg: "auto" },
-          // overflowX: { xs: "auto", sm: "auto", md: "auto", lg: "hidden" },
+          overflowX: { xs: "auto", sm: "auto", md: "auto", lg: "hidden" },
           bgcolor: statusBoardTurnOrderBackgroundColor,
           p: 1,
           boxShadow: 10,

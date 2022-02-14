@@ -40,6 +40,7 @@ export default function Settings({
       container
       spacing={0}
       direction="row"
+      alignItems="center"
       sx={{
         p: 2,
         background: "#519657",
@@ -52,19 +53,19 @@ export default function Settings({
       <Grid item md={6}>
         <ColorSelector setColor={(props) => setColor(props)} color={color} />
       </Grid>
-      <Grid item container direction="column" xs={12} md={6} spacing={7} sx={{p:2}}>
+      <Grid item container direction="column" xs={12} md={6} spacing={2} sx={{p:2}}>
         <Grid item>
           <SizeSlider size={size} setSize={(props) => setSize(props)} />
         </Grid>
-        <Grid container item direction="row" justifyContent="center" spacing={5}>
-          <Grid item md={6}>
+        <Grid container item direction="row" justifyContent="center" spacing={2}>
+          <Grid item md={6} xs={6}>
             <WinBy
               winBy={winBy}
               setWinBy={(props) => setWinBy(props)}
               size={size}
             />
           </Grid>
-          <Grid item md={6}>
+          <Grid item md={6}  xs={6}>
             <BotOptions
               lobbyId={lobbyId}
               setLobby={(props) => setLobby(props)}
