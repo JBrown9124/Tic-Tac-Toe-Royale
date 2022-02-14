@@ -1,21 +1,18 @@
-import List from "@mui/material/List";
-import ListItemButton from "@mui/material/ListItemButton";
-import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
-import createPiece from "../../../../../creators/BoardCreators/createPiece";
+
 import Input from "@mui/material/Input";
 import useSound from "use-sound";
 import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
-import Zoom from "@mui/material/Zoom";
+import {VolumeContext} from "../../../../../storage/VolumeContext"
+import {useContext} from 'react'
 interface UploadPieceButtonProps {
   setPiece: (piece: string) => void;
 }
 export default function UploadPieceButton({
   setPiece,
 }: UploadPieceButtonProps) {
+  const volume:number = useContext(VolumeContext)
   const [playSound] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3", {volume:.1}
+    process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3", {volume:volume}
   );
   const handleImageUpload = (event: any) => {
     getBase64(event[0], (result: string) => {

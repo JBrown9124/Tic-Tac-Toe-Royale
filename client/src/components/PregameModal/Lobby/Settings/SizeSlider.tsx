@@ -1,13 +1,13 @@
-import { useState, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Slider from "@mui/material/Slider";
-import TextField from "@mui/material/TextField";
+
 import Input from "@mui/material/Input";
-import { useCookies } from "react-cookie";
 import { primaryFontColor } from "../../../../themes/theme1";
 import { useSound } from "use-sound";
+import { VolumeContext } from "../../../../storage/VolumeContext";
 const CustomInput = styled(Input)({
   "& .MuiInput-underline:before": {
     borderBottomColor: primaryFontColor,
@@ -59,28 +59,34 @@ interface SizeSliderProps {
   size: number;
 }
 export default function SizeSlider({ setSize, size }: SizeSliderProps) {
+  const volume: number = useContext(VolumeContext);
   const [playSound] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3", {volume:.1}
+    process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3",
+    { volume: volume }
   );
+  const [sizeValue, setSizeValue] = useState(size);
   const handleSliderChange = (value: number | number[]) => {
     if (typeof value === "number") {
-      setSize(value);
+      setSizeValue(value);
     }
   };
 
   const handleInputChange = (value: number) => {
-    setSize(value);
+    setSizeValue(value);
     playSound();
   };
 
   const handleBlur = () => {
     if (size < 0) {
-      setSize(0);
+      setSizeValue(0);
     } else if (size > 20) {
-      setSize(20);
+      setSizeValue(20);
     }
   };
-
+  useEffect(() => {
+    const change = setTimeout(() => setSize(sizeValue), 100);
+    return () => clearTimeout(change);
+  }, [sizeValue]);
   return (
     <Grid
       container
@@ -107,7 +113,7 @@ export default function SizeSlider({ setSize, size }: SizeSliderProps) {
             step={1}
             min={3}
             sx={{ color: "#ec407a" }}
-            value={size}
+            value={sizeValue}
             onChange={(
               e: Event,
               value: number | number[],
@@ -118,7 +124,7 @@ export default function SizeSlider({ setSize, size }: SizeSliderProps) {
             aria-labelledby="input-slider"
           />
         </Grid>
-        <Grid item xs={2} sm={2} md={2} lg={2} >
+        <Grid item xs={2} sm={2} md={2} lg={2}>
           <CustomInput
             value={size}
             size="small"
@@ -134,7 +140,7 @@ export default function SizeSlider({ setSize, size }: SizeSliderProps) {
               "aria-labelledby": "input-slider",
               style: {
                 fontFamily: "Noto Sans, sans-serif",
-              
+
                 color: primaryFontColor,
               },
             }}

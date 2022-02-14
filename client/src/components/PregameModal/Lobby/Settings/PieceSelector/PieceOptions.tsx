@@ -2,7 +2,8 @@ import Grid from "@mui/material/Grid";
 import createPiece from "../../../../../creators/BoardCreators/createPiece";
 import useSound from "use-sound";
 import PieceSelectorAnimator from "../../../../../animators/PieceSelectorAnimator";
-
+import {VolumeContext} from "../../../../../storage/VolumeContext"
+import {useContext} from "react"
 interface PieceOptionsProps {
   setPiece: (piece: string) => void;
   selectedPiece: string;
@@ -17,8 +18,9 @@ export default function PieceOptions({
   setOnHoverPiece,
   onHoverPiece
 }: PieceOptionsProps) {
+  const volume:number=useContext(VolumeContext)
   const [playSound] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3", {volume:.1}
+    process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3", {volume:volume}
   );
   const pieces = createPiece("black",{mobile:'8vw',desktop:"40px"});
   const handleSelectPiece = (pieceName: string) => {

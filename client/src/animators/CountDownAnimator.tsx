@@ -1,11 +1,11 @@
 import { useSpring } from "react-spring";
 import { useTransition, animated, config } from "react-spring";
-import { useState, useEffect, ReactNode } from "react";
+import { useState, useEffect, ReactNode, useContext } from "react";
 import useSound from "use-sound";
 import Typography from "@mui/material/Typography";
 import { RgbaColor } from "react-colorful";
 import {createTheme} from "@mui/material/styles";
-
+import {VolumeContext} from "../storage/VolumeContext"
 
 interface CountDownAnimatorProps {
   delay?: number;
@@ -41,11 +41,12 @@ export default function CountDownAnimator({
   let theme = createTheme();
   const [index, setIndex] = useState(0);
   const [numbers, setNumbers] = useState(["", 3, 2, 1, "Begin", ""]);
+  const volume = useContext(VolumeContext)
   const [startCountDownSound] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/countDown.mp3", {volume:.1}
+    process.env.PUBLIC_URL + "static/assets/sounds/countDown.mp3", {volume:volume}
   );
   const [startOpenSound] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/warHorn.mp3", {volume:.1}
+    process.env.PUBLIC_URL + "static/assets/sounds/warHorn.mp3", {volume:volume}
   );
 
   useEffect(() => {

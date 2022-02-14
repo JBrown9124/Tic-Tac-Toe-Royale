@@ -1,6 +1,7 @@
 import Grid from "@mui/material/Grid";
 import { RgbaColor, RgbaColorPicker } from "react-colorful";
 import Typography from "@mui/material/Typography";
+import { useEffect, useState } from "react";
 import { primaryFontColor } from "../../../../themes/theme1";
 
 interface ColorSelectorProps {
@@ -8,6 +9,11 @@ interface ColorSelectorProps {
   color: RgbaColor;
 }
 export default function ColorSelecter({ color, setColor }: ColorSelectorProps) {
+  const [colorValue, setColorValue] = useState(color);
+  useEffect(() => {
+    const change = setTimeout(() => setColor(colorValue), 100);
+    return () => clearTimeout(change);
+  }, [colorValue]);
   return (
     <>
       <Grid
@@ -16,9 +22,14 @@ export default function ColorSelecter({ color, setColor }: ColorSelectorProps) {
         justifyContent="center"
         spacing={0}
         textAlign="center"
-        sx={{ background: "#81c784", borderRadius: "5px",p:2, border:"1px solid #ec407a" }}
+        sx={{
+          background: "#81c784",
+          borderRadius: "5px",
+          p: 2,
+          border: "1px solid #ec407a",
+        }}
       >
-        <Grid item sx={{ marginBottom:1 }}>
+        <Grid item sx={{ marginBottom: 1 }}>
           <Typography
             sx={{
               fontFamily: "Noto Sans, sans-serif",
@@ -32,7 +43,7 @@ export default function ColorSelecter({ color, setColor }: ColorSelectorProps) {
           item
           sx={{ justifyContent: "center", textAlign: "center", margin: "auto" }}
         >
-          <RgbaColorPicker color={color} onChange={setColor} />
+          <RgbaColorPicker color={colorValue} onChange={setColorValue} />
         </Grid>
       </Grid>
     </>

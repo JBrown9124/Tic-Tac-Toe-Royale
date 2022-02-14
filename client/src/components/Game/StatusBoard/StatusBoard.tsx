@@ -3,8 +3,9 @@ import Typography from "@mui/material/Typography";
 import { Player } from "../../../Models/Player";
 import { GameStatus } from "../../../Models/GameStatus";
 import { Move } from "../../../Models/Move";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useSound } from "use-sound";
+import {VolumeContext} from "../../../storage/VolumeContext"
 import { PowerUp, PowerUps } from "../../../Models/PowerUp";
 import CustomButton from "../../CustomButton";
 import { statusBoardTurnOrderBackgroundColor } from "../../../themes/theme1";
@@ -60,14 +61,15 @@ export default function StatusBoard({
   boardSize,
   setIsGuideOpen,
 }: StatusBoardProps) {
+  const volume = useContext(VolumeContext)
   const [startWinSound] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/winnerSound.mp3", {volume:.1}
+    process.env.PUBLIC_URL + "static/assets/sounds/winnerSound.mp3", {volume:volume}
   );
   const [startGameOverSound] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/darkGameOver.mp3", {volume:.1}
+    process.env.PUBLIC_URL + "static/assets/sounds/darkGameOver.mp3", {volume:volume}
   );
   const [startTieSound] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/tie.mp3", {volume:.1}
+    process.env.PUBLIC_URL + "static/assets/sounds/tie.mp3", {volume:volume}
   );
   const [winner, setWinner] = useState<Player>();
   useEffect(() => {

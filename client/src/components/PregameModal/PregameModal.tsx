@@ -1,6 +1,6 @@
 import Grid from "@mui/material/Grid";
 import Modal from "@mui/material/Modal";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Welcome from "./Welcome";
 import HostLobby from "./Lobby/HostLobby/HostLobby";
 import Join from "./Join";
@@ -8,6 +8,8 @@ import GuestLobby from "./Lobby/GuestLobby";
 import { RgbaColor } from "react-colorful";
 import { Lobby } from "../../Models/Lobby";
 import useSound from "use-sound";
+
+import {VolumeContext} from "../../storage/VolumeContext"
 import { backgroundColor } from "../../themes/theme1";
 interface PregameModalProps {
   setPiece: (piece: string) => void;
@@ -31,6 +33,8 @@ interface PregameModalProps {
   playerName: string;
   setPlayerName: (playerName: string) => void;
   setIsGuideOpen: (isGuideOpen: boolean) => void;
+  volume:number
+  setVolume: (volume: number) => void;
 }
 export default function PregameModal({
   setPiece,
@@ -54,14 +58,15 @@ export default function PregameModal({
   playerName,
   setPlayerName,
   setIsGuideOpen,
+  volume,setVolume
 }: PregameModalProps) {
   const [open, setOpen] = useState(true);
-
+  // const volume = useContext(VolumeContext)
   const [playForward] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3",{volume:.1}
+    process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3",{volume:volume}
   );
   const [playBackward] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/floorDrumBackButton.mp3",{volume:.1}
+    process.env.PUBLIC_URL + "static/assets/sounds/floorDrumBackButton.mp3",{volume:volume}
   );
   // const [playJoinOrStart] = useSound(
   //   process.env.PUBLIC_URL + "static/assets/sounds/joinOrStartSound.mp3"
@@ -144,6 +149,8 @@ export default function PregameModal({
 
         {action === "create" && (
           <HostLobby
+          volume={volume}
+          setVolume={(props) => setVolume(props)}
             setIsGuideOpen={(props) => setIsGuideOpen(props)}
             lobbyId={lobby.lobbyId}
             playerName={playerName}

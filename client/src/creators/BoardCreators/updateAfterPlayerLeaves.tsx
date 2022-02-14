@@ -23,8 +23,8 @@ const updateAfterPlayerLeaves = async ({
       }
     }
     for (var j = displayPlayerPieces.length; j--; ) {
-      if (playerPieces[j].sessionId === playerWhoLeftSessionId) {
-        playerPieces.splice(j, 1);
+      if (displayPlayerPieces[j].sessionId === playerWhoLeftSessionId) {
+        displayPlayerPieces.splice(j, 1);
       }
     }
   };

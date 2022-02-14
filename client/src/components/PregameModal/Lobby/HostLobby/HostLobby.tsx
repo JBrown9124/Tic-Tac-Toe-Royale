@@ -1,20 +1,17 @@
 import Settings from "../Settings/Settings";
 import Grid from "@mui/material/Grid";
-import { useState } from "react";
+import { useState,} from "react";
 import sendHostPiece from "../../../../creators/HostLobbyCreators/sendHostPiece";
-import Typography from "@mui/material/Typography";
 import { Player } from "../../../../Models/Player";
 import { Lobby } from "../../../../Models/Lobby";
 import { RgbaColor } from "react-colorful";
 import CopyLobbyId from "../CopyLobbyId";
 import PieceSelector from "../Settings/PieceSelector/PieceSelector";
-import useSound from "use-sound";
-import Tooltip from "@mui/material/Tooltip";
+
 import RightTopHalfPanel from "./RightTopHalfPanel";
 import BottomPanel from "./BottomPanel";
-import Zoom from "@mui/material/Zoom";
-import { Divider } from "@mui/material";
-import { primaryFontColor } from "../../../../themes/theme1";
+
+import VolumeSlider from "../../../VolumeSlider";
 import CustomButton from "../../../CustomButton";
 interface PlayerListProps {
   handleLeave: () => void;
@@ -33,7 +30,9 @@ interface PlayerListProps {
   playerId: string;
   playerName: string;
   lobbyId: number;
-  setIsGuideOpen:(isGuideOpen: boolean)=> void;
+  setIsGuideOpen: (isGuideOpen: boolean) => void;
+  volume: number;
+  setVolume: (volume: number) => void;
 }
 export default function HostLobby({
   handleLeave,
@@ -52,11 +51,13 @@ export default function HostLobby({
   setWinBy,
   playerName,
   lobbyId,
-  setIsGuideOpen
+  setIsGuideOpen,
+  volume,
+  setVolume,
 }: PlayerListProps) {
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-
+  // const volume = useContext(VolumeContext)
   return (
     <>
       <Grid
@@ -76,6 +77,12 @@ export default function HostLobby({
           spacing={2}
         >
           <Grid item>
+            <VolumeSlider
+              volume={volume}
+              setVolume={(props) => setVolume(props)}
+            />
+          </Grid>
+          <Grid item>
             {" "}
             <CustomButton
               sx={{
@@ -83,7 +90,7 @@ export default function HostLobby({
                 fontSize: "12px",
               }}
               message={"Guide"}
-              onClick={()=>setIsGuideOpen(true)}
+              onClick={() => setIsGuideOpen(true)}
             />
           </Grid>
           <Grid item>

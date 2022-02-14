@@ -3,8 +3,7 @@ import { useTransition, animated, config } from "react-spring";
 
 import { Player } from "../Models/Player";
 import { GameStatus } from "../Models/GameStatus";
-import useSound from "use-sound";
-import Typography from "@mui/material/Typography";
+
 import React, { useEffect, useRef, useState } from "react";
 import Grid from "@mui/material/Grid";
 interface PlayerTurnOrderAnimatorProps {

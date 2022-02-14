@@ -5,6 +5,8 @@ import Tooltip from "@mui/material/Tooltip";
 import { styled } from "@mui/material/styles";
 import Zoom from "@mui/material/Zoom";
 import { useSound } from "use-sound";
+import { useContext } from "react";
+import { VolumeContext } from "../../../../storage/VolumeContext";
 import { primaryFontColor } from "../../../../themes/theme1";
 
 const StyledTextField = styled(TextField)({
@@ -40,8 +42,10 @@ interface WinByProps {
   size: number;
 }
 export default function WinBy({ winBy, setWinBy, size }: WinByProps) {
+  const volume: number = useContext(VolumeContext);
   const [playSound] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3", {volume:.1}
+    process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3",
+    { volume: volume }
   );
   const handleInputChange = (value: number) => {
     setWinBy(value);
@@ -56,7 +60,12 @@ export default function WinBy({ winBy, setWinBy, size }: WinByProps) {
         spacing={0}
         alignItems="center"
         justifyContent="center"
-        sx={{ background: "#81c784", borderRadius: "5px", p:2, border:"1px solid #ec407a"}}
+        sx={{
+          background: "#81c784",
+          borderRadius: "5px",
+          p: 2,
+          border: "1px solid #ec407a",
+        }}
       >
         <Typography
           sx={{
@@ -90,7 +99,7 @@ export default function WinBy({ winBy, setWinBy, size }: WinByProps) {
               type: "number",
               "aria-labelledby": "winBy",
             }}
-            sx={{  marginLeft: 1 }}
+            sx={{ marginLeft: 1 }}
             variant="standard"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               handleInputChange(parseInt(e.target.value))

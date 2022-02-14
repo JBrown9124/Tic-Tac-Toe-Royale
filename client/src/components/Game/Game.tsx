@@ -1,12 +1,13 @@
 import Grid from "@mui/material/Grid";
 import { Player } from "../../Models/Player";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useContext } from "react";
 import { defaultPowerUp } from "../../storage/defaultPowerUp";
 import { Lobby } from "../../Models/Lobby";
 import { Move } from "../../Models/Move";
 import { GameStatus } from "../../Models/GameStatus";
 import { determineSizeOfPiece } from "../../creators/BoardCreators/sizeOfPiece";
 import { useSound } from "use-sound";
+import { VolumeContext } from "../../storage/VolumeContext";
 import Board from "./Board/Board";
 import StatusBoardAnimator from "../../animators/StatusBoardAnimator";
 import StatusBoard from "./StatusBoard/StatusBoard";
@@ -60,8 +61,10 @@ export default function Game({
   handleStart,
   setIsGuideOpen,
 }: GameProps) {
+  const volume = useContext(VolumeContext);
   const [playLeaveSound] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/floorDrumBackButton.mp3", {volume:.1}
+    process.env.PUBLIC_URL + "static/assets/sounds/floorDrumBackButton.mp3",
+    { volume: volume }
   );
 
   const [isBoardCreated, setIsBoardCreated] = useState(false);

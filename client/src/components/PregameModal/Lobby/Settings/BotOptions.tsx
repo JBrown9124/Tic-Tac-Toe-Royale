@@ -3,11 +3,11 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { Player } from "../../../../Models/Player";
 import { Lobby } from "../../../../Models/Lobby";
-
+import {useContext} from "react"
 import useSound from "use-sound";
 import handleAddBot from "../../../../creators/HostLobbyCreators/handleAddBot";
 import CustomButton from "../../../CustomButton";
-
+import {VolumeContext} from "../../../../storage/VolumeContext";
 
 interface BotOptionsProps {
   players: Player[];
@@ -19,8 +19,9 @@ export default function BotOptions({
   lobbyId,
   setLobby,
 }: BotOptionsProps) {
+  const volume:number = useContext(VolumeContext)
   const [playAddBotSound] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/addBotSound.mp3", {volume:.1}
+    process.env.PUBLIC_URL + "static/assets/sounds/addBotSound.mp3", {volume:volume}
   );
   return (
     <>

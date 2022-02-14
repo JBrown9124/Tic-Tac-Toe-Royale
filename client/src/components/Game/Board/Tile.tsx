@@ -1,5 +1,5 @@
 import Grid from "@mui/material/Grid";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext} from "react";
 import { RgbaColor } from "react-colorful";
 import { GameStatus } from "../../../Models/GameStatus";
 import { PlayerPieces } from "../../../Models/PlayerPieces";
@@ -7,17 +7,7 @@ import { Player } from "../../../Models/Player";
 import { PowerUp } from "../../../Models/PowerUp";
 import { Move } from "../../../Models/Move";
 import handlePowerUps from "../../../creators/PowerUpCreators/handlePowerUps";
-import {
-  checkHorizontal,
-  checkVertical,
-  checkDiagonalLeft,
-  checkDiagonalRight,
-} from "../../../creators/PowerUpCreators/safeSelectHelper";
-import {
-  sizeOfPiece,
-  mobileSizeOfPiece,
-  determineSizeOfPiece,
-} from "../../../creators/BoardCreators/sizeOfPiece";
+import {VolumeContext} from "../../../storage/VolumeContext"
 import { useSound } from "use-sound";
 interface TileProps {
   chosenPiece: JSX.Element | string | undefined;
@@ -59,8 +49,9 @@ export const Tile = ({
   isUsingPowerUp,
 }: // powerOrMove,
 TileProps) => {
+  const volume = useContext(VolumeContext)
   const [startSnare] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/yourMoveSound.mp3", {volume:.1}
+    process.env.PUBLIC_URL + "static/assets/sounds/yourMoveSound.mp3", {volume:volume}
   );
   const [isSelected, setIsSelected] = useState(false);
   const playerAttackPieceSelected =

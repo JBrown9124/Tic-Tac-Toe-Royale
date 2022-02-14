@@ -5,6 +5,8 @@ import { Lobby } from "../../../Models/Lobby";
 import botMove from "../../../creators/APICreators/botMove";
 import determineWinner from "../../../creators/BoardCreators/determineWinner/determineWinner";
 import { PowerUps } from "../../../Models/PowerUp";
+import {VolumeContext} from "../../../storage/VolumeContext"
+import {useContext} from "react"
 import useSound from "use-sound";
 interface useBotMoveUpdaterProps {
   playerWhoLeftSessionId: string;
@@ -31,8 +33,9 @@ export default function useBotMoveUpdater({
     isHost,
     inventory
 }: useBotMoveUpdaterProps) {
+  const volume:number = useContext(VolumeContext)
   const [startOtherPlayerMoveSound] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/otherPlayerMoveSound.mp3", {volume:.1}
+    process.env.PUBLIC_URL + "static/assets/sounds/otherPlayerMoveSound.mp3", {volume:volume}
   );
   
   useEffect(() => {

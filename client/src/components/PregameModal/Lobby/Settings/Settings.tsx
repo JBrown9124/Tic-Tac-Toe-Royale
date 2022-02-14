@@ -50,15 +50,15 @@ export default function Settings({
       }}
       justifyContent="center"
     >
-      <Grid item md={6}>
+      <Grid item  xs={12} sm={12} md={6} lg={6}>
         <ColorSelector setColor={(props) => setColor(props)} color={color} />
       </Grid>
-      <Grid item container direction="column" xs={12} md={6} spacing={2} sx={{p:2}}>
+      <Grid item container direction="column" xs={12} md={6} sm={12} lg={6} spacing={2} sx={{p:2}}>
         <Grid item>
           <SizeSlider size={size} setSize={(props) => setSize(props)} />
         </Grid>
         <Grid container item direction="row" justifyContent="center" spacing={2}>
-          <Grid item md={6} xs={6}>
+          <Grid item md={6} sm={6} lg={6} xs={6}>
             <WinBy
               winBy={winBy}
               setWinBy={(props) => setWinBy(props)}

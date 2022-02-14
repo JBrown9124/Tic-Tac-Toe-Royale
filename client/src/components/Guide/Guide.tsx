@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import ClearIcon from "@mui/icons-material/Clear";
-
+import VolumeSlider from "../VolumeSlider"
 import Action from "./Action";
 import { powerUps, powerUpsList } from "../../storage/powerUps";
 import PulsatingAnimator from "../../animators/PulsatingAnimator";
@@ -27,8 +27,10 @@ const style = {
 interface GuideProps {
   isOpen: boolean;
   onClose: () => void;
+  volume:number,
+  setVolume: (volume: number) => void
 }
-export default function Guide({ isOpen, onClose }: GuideProps) {
+export default function Guide({ isOpen, onClose, volume, setVolume }: GuideProps) {
   return (
     <>
       <Modal
@@ -61,8 +63,11 @@ export default function Guide({ isOpen, onClose }: GuideProps) {
             p: 4,
           }}
         >
-          <Grid sx={{ textAlign: "center", marginBottom: 5 }}>
+          <Grid sx={{ textAlign: "center", marginBottom: 3 }}>
             <CustomButton message={"Close Guide"} onClick={() => onClose()} />
+          </Grid>
+          <Grid sx={{justifyContent: "center", textAlign: "center",  marginBottom: 5  }} container>
+            <VolumeSlider volume={volume} setVolume={(props)=>setVolume(props)}/>
           </Grid>
           {powerUpsList.map((powerUp, idx) => (
             <Action

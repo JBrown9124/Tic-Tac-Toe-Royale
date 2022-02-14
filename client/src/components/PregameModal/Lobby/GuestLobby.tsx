@@ -1,7 +1,7 @@
 import PlayerList from "./PlayerList";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Button from "@mui/material/Button";
 import PieceSelector from "./Settings/PieceSelector/PieceSelector";
 import { useCookies } from "react-cookie";
@@ -9,6 +9,7 @@ import playerReady from "../../../creators/APICreators/playerReady";
 import { Lobby } from "../../../Models/Lobby";
 import CopyLobbyId from "./CopyLobbyId";
 import useSound from "use-sound";
+import {VolumeContext} from "../../../storage/VolumeContext"
 import CustomButton from "../../CustomButton";
 interface GuestLobbyProps {
   setPiece: (piece: string) => void;
@@ -28,11 +29,12 @@ export default function GuestLobby({
 }: GuestLobbyProps) {
   const [isReady, setIsReady] = useState(false);
   const [isError, setIsError] = useState(false);
+  const volume:number = useContext(VolumeContext)
   const [playReadySound] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3", {volume:.1}
+    process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3", {volume:volume}
   );
   const [playUnreadySound] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/floorDrumBackButton.mp3", {volume:.1}
+    process.env.PUBLIC_URL + "static/assets/sounds/floorDrumBackButton.mp3", {volume:volume}
   );
   useEffect(() => {
     /*When player clicks a piece while players status is set to ready. Sets players status to false and makes a api 
