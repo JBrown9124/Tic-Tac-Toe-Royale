@@ -49,8 +49,8 @@ export default function BottomHalfPanel({
             <Typography
               sx={{
                 color: "red",
-                fontFamily: "Bungee Hairline, cursive",
-                fontWeight: "800 ",
+                fontFamily: "Noto Sans, sans-serif"
+                
               }}
             >
               {" "}

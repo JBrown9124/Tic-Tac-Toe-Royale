@@ -18,6 +18,7 @@ interface UseMoveHandler {
   board: (string | number)[][];
   gameStatus: GameStatus;
   setGameStatus: (gameStatus: GameStatus) => void;
+  displayPlayerPieces: Player[]
 }
 
 export default function useMoveHandler({
@@ -32,6 +33,7 @@ export default function useMoveHandler({
   board,
   gameStatus,
   setGameStatus,
+  displayPlayerPieces
 }: UseMoveHandler) {
   useBotMoveUpdater({
     playerWhoLeftSessionId,
@@ -45,7 +47,7 @@ export default function useMoveHandler({
     inventory,
   });
 
-  useTurnOrderUpdater(playerId, isBoardCreated, gameStatus, playerPieces);
+  useTurnOrderUpdater(playerId, isBoardCreated, gameStatus, playerPieces, displayPlayerPieces);
 
   usePowerUpMoveUpdater(gameStatus, board);
 }

@@ -30,6 +30,7 @@ interface PregameModalProps {
   isLobbyFound: boolean;
   playerName: string;
   setPlayerName: (playerName: string) => void;
+  setIsGuideOpen: (isGuideOpen: boolean) => void;
 }
 export default function PregameModal({
   setPiece,
@@ -52,6 +53,7 @@ export default function PregameModal({
   isLobbyFound,
   playerName,
   setPlayerName,
+  setIsGuideOpen,
 }: PregameModalProps) {
   const [open, setOpen] = useState(true);
 
@@ -142,6 +144,7 @@ export default function PregameModal({
 
         {action === "create" && (
           <HostLobby
+            setIsGuideOpen={(props) => setIsGuideOpen(props)}
             lobbyId={lobby.lobbyId}
             playerName={playerName}
             handleStart={() => handleStart()}

@@ -15,6 +15,7 @@ import BottomPanel from "./BottomPanel";
 import Zoom from "@mui/material/Zoom";
 import { Divider } from "@mui/material";
 import { primaryFontColor } from "../../../../themes/theme1";
+import CustomButton from "../../../CustomButton";
 interface PlayerListProps {
   handleLeave: () => void;
   setPiece: (piece: string) => void;
@@ -32,6 +33,7 @@ interface PlayerListProps {
   playerId: string;
   playerName: string;
   lobbyId: number;
+  setIsGuideOpen:(isGuideOpen: boolean)=> void;
 }
 export default function HostLobby({
   handleLeave,
@@ -50,12 +52,10 @@ export default function HostLobby({
   setWinBy,
   playerName,
   lobbyId,
+  setIsGuideOpen
 }: PlayerListProps) {
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [playAddBotSound] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/addBotSound.mp3"
-  );
 
   return (
     <>
@@ -67,12 +67,39 @@ export default function HostLobby({
         sx={{ p: 2, margin: "auto" }}
         spacing={0}
       >
-        <Grid item>
-          <CopyLobbyId lobbyId={lobbyId} />
+        <Grid
+          item
+          container
+          direction="row"
+          textAlign="right"
+          justifyContent="right"
+          spacing={2}
+        >
+          <Grid item>
+            {" "}
+            <CustomButton
+              sx={{
+                height: "25px",
+                fontSize: "12px",
+              }}
+              message={"Guide"}
+              onClick={()=>setIsGuideOpen(true)}
+            />
+          </Grid>
+          <Grid item>
+            <CopyLobbyId lobbyId={lobbyId} />
+          </Grid>
         </Grid>
 
         <Grid item container direction="row" justifyContent="center">
-          <Grid item sx={{ p: 1, marginTop: 0 }} md={7} container direction="column" spacing={4}>
+          <Grid
+            item
+            sx={{ p: 1, marginTop: 0 }}
+            md={7}
+            container
+            direction="column"
+            spacing={4}
+          >
             <Grid item sx={{}}>
               <Settings
                 setLobby={setLobby}
@@ -97,12 +124,7 @@ export default function HostLobby({
                 }
               />
             </Grid>
-            <Grid
-              item
-              sx={{p:0
-                
-              }}
-            >
+            <Grid item sx={{ p: 0 }}>
               <PieceSelector
                 playerPiece={playerPiece}
                 setPiece={(props) => setPiece(props)}

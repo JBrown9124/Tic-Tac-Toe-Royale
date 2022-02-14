@@ -50,7 +50,7 @@ export default function StatusBoardAnimator({
     delay: delay,
 
 
-    config: { mass: 1, tension: 170, friction: 26 },
+    config:	{ mass: 1, tension: 280, friction: 120 },
 
   });
 

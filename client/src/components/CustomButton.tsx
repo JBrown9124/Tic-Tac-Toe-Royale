@@ -47,11 +47,9 @@ export default function CustomButton({
 }: CustomButtonProps) {
   return (
     <StyledButton sx={sx} onClick={onClick} variant={variant}  >
-      <Grid container direction="column">
-        <Grid item>
+
       {message}{icon}
-      </Grid>
-      </Grid>
+    
     </StyledButton>
   );
 }

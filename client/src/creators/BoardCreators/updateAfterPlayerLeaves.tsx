@@ -3,7 +3,7 @@ import { Player } from "../../Models/Player";
 // import sortPlayerPieces from "./sortPlayerPieces";
 interface UpdateAfterPlayerLeavesArgs {
   playerPieces: Player[];
-
+  displayPlayerPieces:Player[];
   setPlayerPieces: (plyerPieces: Player[]) => void;
   setGameStatus: (gameStatus: GameStatus) => void;
   gameStatus: GameStatus;
@@ -14,11 +14,17 @@ const updateAfterPlayerLeaves = async ({
   playerPieces,
   setGameStatus,
   playerWhoLeftSessionId,
+  displayPlayerPieces
   }: UpdateAfterPlayerLeavesArgs) => {
   const removePlayerFromPieces = async () => {
     for (var i = playerPieces.length; i--; ) {
       if (playerPieces[i].sessionId === playerWhoLeftSessionId) {
         playerPieces.splice(i, 1);
+      }
+    }
+    for (var j = displayPlayerPieces.length; j--; ) {
+      if (playerPieces[j].sessionId === playerWhoLeftSessionId) {
+        playerPieces.splice(j, 1);
       }
     }
   };

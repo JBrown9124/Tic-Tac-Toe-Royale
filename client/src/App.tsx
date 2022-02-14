@@ -18,7 +18,7 @@ import PreGameModalAnimator from "./animators/PreGameModalAnimator";
 import fire from "./img/fire.png";
 
 function App() {
-  const [action, setAction] = useState("guide");
+  const [action, setAction] = useState("welcome");
   const [lobbyId, setLobbyId] = useState(0);
   const [isLobbyReceived, setIsLobbyReceived] = useState(false);
   const [isLobbyFound, setIsLobbyFound] = useState(true);
@@ -38,6 +38,8 @@ function App() {
   const [lobby, setLobby] = useState<Lobby>(defaultLobby);
   const [playerId, setPlayerId] = useState("");
   const [playerName, setPlayerName] = useState("");
+
+  const [isGuideOpen, setIsGuideOpen] = useState(false);
 
   const handleStart = () => {
     const reqBody = {
@@ -111,13 +113,15 @@ function App() {
           // cursor: `url("http://www.rw-designer.com/cursor-view/53133.png"), auto`,
         }}
       >
-        {action === "guide" && <Guide />}
+        <Guide isOpen={isGuideOpen} onClose={() => setIsGuideOpen(false)} />
+        {/* {action === "guide" && } */}
         {action === "begin" && !isLobbyReceived && (
           <BuildingBoardSplashScreen boardColor={lobby.board?.color} />
         )}
         {(action === "begin" || action === "in game") && (
           <Grid item>
             <Game
+            setIsGuideOpen={(props)=>setIsGuideOpen(props)}
               setCursor={(props) => setCursor(props)}
               playerWhoLeftSessionId={playerWhoLeftSessionId}
               pieceSelection={pieceSelection}
@@ -142,6 +146,7 @@ function App() {
             isUsingPowerUp={action !== "begin" && action !== "in game"}
           >
             <PregameModal
+            setIsGuideOpen={(props)=>setIsGuideOpen(props)}
               playerName={playerName}
               setPlayerName={(props) => setPlayerName(props)}
               handleStart={() => handleStart()}

@@ -7,6 +7,7 @@ playerId: string,
   isBoardCreated: boolean,
   gameStatus: GameStatus,
   playerPieces: Player[],
+  displayPlayerPieces: Player[]
   
 ) {
   const [playYourTurnSound] = useSound(
@@ -14,12 +15,12 @@ playerId: string,
   );
   
   useMemo(() => {
-    let playerWhosTurnItIs = playerPieces[playerPieces.length - 1];
-    if (isBoardCreated && playerWhosTurnItIs.playerId !== gameStatus.whoTurn) {
-      let poppedPlayer = playerPieces.pop();
+    let playerWhosTurnItIs = displayPlayerPieces[displayPlayerPieces.length - 1];
+    if (isBoardCreated && playerWhosTurnItIs?.playerId !== gameStatus.whoTurn) {
+      let poppedPlayer = displayPlayerPieces.pop();
 
       if (poppedPlayer) {
-        playerPieces.unshift(poppedPlayer);
+        displayPlayerPieces.unshift(poppedPlayer);
       }
     }
     if (playerId === gameStatus.whoTurn) {
