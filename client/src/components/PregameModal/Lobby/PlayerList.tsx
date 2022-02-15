@@ -30,7 +30,8 @@ export default function PlayerList({
         textAlign="center"
         direction="column"
         justifyContent="center"
-        sx={{ p: 0 }}
+        sx={{ p: 0,  }}
+      
       >
         {/* <Grid item>
           <Typography
@@ -40,177 +41,194 @@ export default function PlayerList({
             Players{" "}
           </Typography>
         </Grid> */}
-        <Grid item>
-          <List dense sx={{ justifyContent: "center" }} aria-label="players">
-            {players.length === 0 ? (
-              <SkeletonPlayers />
-            ) : (
-              <>
-                {" "}
-                {players.map((player: Player, idx: number) =>
-                  player.playerId === playerId ? (
-                    <ListItem
-                      key={idx}
-                      sx={{
-                        background: "#81c784",
-                        p: 1,
-                        border: "1px solid #ec407a", borderRadius:"5px", boxShadow:20
-                      }}
-                    >
-                      {!player.isHost && (
-                        <ListItemIcon>
-                          {player.isReady ? (
-                            <CheckIcon
-                              sx={{
-                                width: "40px",
-                                height: "40px",
-                                color: "green",
-                              }}
-                            />
-                          ) : (
-                            <ClearIcon
-                              sx={{
-                                width: "40px",
-                                height: "40px",
-                                color: "red",
-                              }}
-                            />
-                          )}
-                        </ListItemIcon>
-                      )}
-                      {player.isHost && (
-                        <ListItemIcon>
-                          {" "}
-                          <FaCrown
+
+        <List dense  sx={{ }} aria-label="players">
+          {players.length === 0 ? (
+            <SkeletonPlayers />
+          ) : (
+            <>
+              {" "}
+              {players.map((player: Player, idx: number) =>
+                player.playerId === playerId ? (
+                  <ListItem
+                  disablePadding
+                  disableGutters
+                    key={idx}
+                    sx={{
+                      background: "#81c784",
+                      p: 1,
+                      border: "1px solid #ec407a",
+                      borderRadius: "5px",
+                      boxShadow: 20,
+                    }}
+                  >
+                    {!player.isHost && (
+                      <ListItemIcon>
+                        {player.isReady ? (
+                          <CheckIcon
+                            sx={{
+                              width: "40px",
+                              height: "40px",
+                              color: "green",
+                            }}
+                          />
+                        ) : (
+                          <ClearIcon
+                            sx={{
+                              width: "40px",
+                              height: "40px",
+                              color: "red",
+                            }}
+                          />
+                        )}
+                      </ListItemIcon>
+                    )}
+                    {player.isHost && (
+                      <ListItemIcon>
+                        {" "}
+                        <FaCrown
+                          style={{
+                            width: "40px",
+                            height: "40px",
+                            color: "orange",
+                          }}
+                        />
+                      </ListItemIcon>
+                    )}
+                    {playerPiece.length > 30 ? (
+                      <ListItemText
+                        inset
+                        key={playerPiece}
+                        primary={
+                          <img
+                            src={playerPiece}
+                            alt={playerPiece}
                             style={{
                               width: "40px",
                               height: "40px",
-                              color: "orange",
+                              borderRadius: "5px",
                             }}
                           />
-                        </ListItemIcon>
-                      )}
-                      {playerPiece.length > 30 ? (
-                        <ListItemText
-                          inset
-                          key={playerPiece}
-                          primary={
-                            <img
-                              src={playerPiece}
-                              alt={playerPiece}
-                              style={{ width: "40px", height: "40px", borderRadius:"5px" }}
-                            />
-                          }
-                        />
-                      ) : (
-                        pieces.map((piece) => {
-                          if (piece.name === playerPiece)
-                            return (
-                              <ListItemText
-                                inset
-                                key={piece?.name}
-                                primary={piece?.value}
-                              />
-                            );
-                        })
-                      )}
-
-                      <ListItemText
-                        sx={{ textAlign: "center" }}
-                        primaryTypographyProps={{
-                          style: {
-                            fontFamily: "Noto Sans, sans-serif",
-                          },
-                        }}
-                        primary={player.name}
+                        }
                       />
-                    </ListItem>
-                  ) : (
-                    <ListItem
-                      key={idx}
-                      sx={{
-                        background: "#81c784",
-                        p: 1,
-                        border: "1px solid #ec407a",borderRadius:"5px", boxShadow:20
-                      }}
-                    >
-                      {!player.isHost && (
-                        <ListItemIcon>
-                          {player.isReady ? (
-                            <CheckIcon
-                              sx={{
-                                width: "40px",
-                                height: "40px",
-                                color: "green",
-                              }}
+                    ) : (
+                      pieces.map((piece) => {
+                        if (piece.name === playerPiece)
+                          return (
+                            <ListItemText
+                              inset
+                              key={piece?.name}
+                              primary={piece?.value}
                             />
-                          ) : (
-                            <ClearIcon
-                              sx={{
-                                width: "40px",
-                                height: "40px",
-                                color: "red",
-                              }}
-                            />
-                          )}
-                        </ListItemIcon>
-                      )}
+                          );
+                      })
+                    )}
 
-                      {player.isHost && (
-                        <ListItemIcon>
-                          {" "}
-                          <FaCrown
+                    <ListItemText
+                    inset
+                      sx={{ textAlign: "center" }}
+                      primaryTypographyProps={{
+                        style: {
+                          fontFamily: "Noto Sans, sans-serif",
+                          
+                        },
+                      }}
+                      primary={player.name}
+                    />
+                  </ListItem>
+                ) : (
+                  <ListItem
+                  disablePadding
+                    key={idx}
+                    sx={{
+                      background: "#81c784",
+                      p: 1,
+                      border: "1px solid #ec407a",
+                      borderRadius: "5px",
+                      boxShadow: 20,
+                    }}
+                  >
+                    {!player.isHost && (
+                      <ListItemIcon>
+                        {player.isReady ? (
+                          <CheckIcon
+                            sx={{
+                              width: "40px",
+                              height: "40px",
+                              color: "green",
+                            }}
+                          />
+                        ) : (
+                          <ClearIcon
+                            sx={{
+                              width: "40px",
+                              height: "40px",
+                              color: "red",
+                            }}
+                          />
+                        )}
+                      </ListItemIcon>
+                    )}
+
+                    {player.isHost && (
+                      <ListItemIcon>
+                        {" "}
+                        <FaCrown
+                          style={{
+                            width: "40px",
+                            height: "40px",
+                            color: "orange",
+                          }}
+                        />
+                      </ListItemIcon>
+                    )}
+                    {typeof player.piece === "string" &&
+                    player.piece &&
+                    player.piece.length > 30 ? (
+                      <ListItemText
+                        inset
+                        key={player.piece}
+                        primary={
+                          <img
+                            src={player.piece}
+                            alt={player.piece}
                             style={{
                               width: "40px",
                               height: "40px",
-                              color: "orange",
+                              borderRadius: "5px",
                             }}
                           />
-                        </ListItemIcon>
-                      )}
-                      {typeof player.piece === "string" &&
-                      player.piece &&
-                      player.piece.length > 30 ? (
-                        <ListItemText
-                          inset
-                          key={player.piece}
-                          primary={
-                            <img
-                              src={player.piece}
-                              alt={player.piece}
-                              style={{ width: "40px", height: "40px", borderRadius:"5px" }}
-                            />
-                          }
-                        />
-                      ) : (
-                        pieces.map((piece) => {
-                          if (piece.name === player.piece)
-                            return (
-                              <ListItemText
-                                inset
-                                key={piece.name}
-                                primary={piece.value}
-                              />
-                            );
-                        })
-                      )}
-
-                      <ListItemText
-                        primaryTypographyProps={{
-                          style: {
-                            fontFamily: "Noto Sans, sans-serif",
-                          },
-                        }}
-                        sx={{ textAlign: "center" }}
-                        primary={player.name}
+                        }
                       />
-                    </ListItem>
-                  )
-                )}
-              </>
-            )}
-          </List>
-        </Grid>
+                    ) : (
+                      pieces.map((piece) => {
+                        if (piece.name === player.piece)
+                          return (
+                            <ListItemText
+                              inset
+                              key={piece.name}
+                              primary={piece.value}
+                            />
+                          );
+                      })
+                    )}
+
+                    <ListItemText
+               
+                      primaryTypographyProps={{
+                        style: {
+                          fontFamily: "Noto Sans, sans-serif",
+                        },
+                      }}
+                      sx={{  }}
+                      primary={player.name}
+                    />
+                  </ListItem>
+                )
+              )}
+            </>
+          )}
+        </List>
       </Grid>
     </>
   );

@@ -41,9 +41,14 @@ export default function ColorSelecter({ color, setColor }: ColorSelectorProps) {
         </Grid>
         <Grid
           item
-          sx={{ justifyContent: "center", textAlign: "center", margin: "auto" }}
+          sx={{
+            justifyContent: "center",
+            textAlign: "center",
+            margin: "auto",
+            
+          }}
         >
-          <RgbaColorPicker color={colorValue} onChange={setColorValue} />
+          <RgbaColorPicker color={colorValue} style={{width:150,height:150}}onChange={setColorValue} />
         </Grid>
       </Grid>
     </>

@@ -40,32 +40,39 @@ export default function Settings({
       container
       spacing={0}
       direction="row"
-      alignItems="center"
       sx={{
-        p: 2,
+        p: { lg: 2 },
         background: "#519657",
         borderRadius: "15px",
         boxShadow: 20,
-        border:"1px solid #ec407a",
+        border: "1px solid #ec407a",
+        // width: { xs: 250, lg:"100%" },
       }}
-      justifyContent="center"
     >
-      <Grid item  xs={12} sm={12} md={6} lg={6}>
+      <Grid item xs={12} sm={12} md={6} lg={6}>
         <ColorSelector setColor={(props) => setColor(props)} color={color} />
       </Grid>
-      <Grid item container direction="column" xs={12} md={6} sm={12} lg={6} spacing={2} sx={{p:2}}>
-        <Grid item>
-          <SizeSlider size={size} setSize={(props) => setSize(props)} />
-        </Grid>
-        <Grid container item direction="row" justifyContent="center" spacing={2}>
-          <Grid item md={6} sm={6} lg={6} xs={6}>
+      <Grid
+        item
+        xs={12}
+        md={6}
+        sm={12}
+        lg={6}
+        spacing={{ lg: 2 }}
+        sx={{ p: { lg: 2 } }}
+      >
+        <Grid container direction="row" spacing={2}>
+          <Grid item lg={12}>
+            <SizeSlider size={size} setSize={(props) => setSize(props)} />
+          </Grid>
+          <Grid item md={6} lg={6} sm={12} xs={12}>
             <WinBy
               winBy={winBy}
               setWinBy={(props) => setWinBy(props)}
               size={size}
             />
           </Grid>
-          <Grid item md={6}  xs={6}>
+          <Grid item md={6} lg={6} sm={12} xs={12}>
             <BotOptions
               lobbyId={lobbyId}
               setLobby={(props) => setLobby(props)}

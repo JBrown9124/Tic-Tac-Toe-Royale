@@ -1,6 +1,6 @@
 import Settings from "../Settings/Settings";
 import Grid from "@mui/material/Grid";
-import { useState,} from "react";
+import { useState } from "react";
 import sendHostPiece from "../../../../creators/HostLobbyCreators/sendHostPiece";
 import { Player } from "../../../../Models/Player";
 import { Lobby } from "../../../../Models/Lobby";
@@ -63,9 +63,8 @@ export default function HostLobby({
       <Grid
         container
         direction="column"
-        justifyContent="center"
         textAlign="center"
-        sx={{ p: 2, margin: "auto" }}
+        sx={{ p: { lg: 2 } }}
         spacing={0}
       >
         <Grid
@@ -98,16 +97,18 @@ export default function HostLobby({
           </Grid>
         </Grid>
 
-        <Grid item container direction="row" justifyContent="center">
+        <Grid item container direction="row">
           <Grid
             item
             sx={{ p: 1, marginTop: 0 }}
             md={7}
+            xs={6}
+            sm={6}
             container
             direction="column"
             spacing={4}
           >
-            <Grid item sx={{}}>
+            <Grid item >
               <Settings
                 setLobby={setLobby}
                 players={players}
@@ -138,7 +139,16 @@ export default function HostLobby({
               />
             </Grid>
           </Grid>
-          <Grid item sx={{ p: 0 }} md={1} container alignItems="center">
+          <Grid
+            item
+            sx={{ p: 0, display: { xs: "none", sm: "none", md: "flex" } }}
+            md={1}
+            sm={1}
+            xs={1}
+            container
+            alignItems="center"
+            justifyContent="center"
+          >
             <BottomPanel
               handleLeave={() => handleLeave()}
               handleStart={() => handleStart()}
@@ -153,7 +163,7 @@ export default function HostLobby({
               setIsError={(props) => setIsError(props)}
             />
           </Grid>
-          <Grid item md={4}>
+          <Grid item md={4} sm={6} xs={6} container direction="column">
             <RightTopHalfPanel
               players={players}
               lobbyId={lobbyId}
@@ -162,6 +172,21 @@ export default function HostLobby({
               playerName={playerName}
               playerPiece={playerPiece}
             />
+            <Grid sx={{ display: { xs: "flex", sm: "flex", md: "none" } }}>
+              <BottomPanel
+                handleLeave={() => handleLeave()}
+                handleStart={() => handleStart()}
+                winBy={winBy}
+                size={size}
+                playerPiece={playerPiece}
+                players={players}
+                setPiece={(props) => setPiece(props)}
+                isError={isError}
+                errorMessage={errorMessage}
+                setErrorMessage={(props) => setErrorMessage(props)}
+                setIsError={(props) => setIsError(props)}
+              />
+            </Grid>
           </Grid>
         </Grid>
       </Grid>

@@ -64,16 +64,16 @@ export default function BottomHalfPanel({
         item
         container
         justifyContent="center"
-        direction={{xs:"row",md:"column"}}
+        direction={{xs:"row", sm:"row",md:"column"}}
         sx={{marginTop:{xs:"1px",md:0}}}
         textAlign="center"
         spacing={4}
       >
-        <Grid item>
+        <Grid item xs={6}>
           <CustomButton onClick={handleLeave} message={"leave"} />
         </Grid>
 
-        <Grid item>
+        <Grid item xs={6}>
           <CustomButton
             onClick={() =>
               arePlayersReady(
