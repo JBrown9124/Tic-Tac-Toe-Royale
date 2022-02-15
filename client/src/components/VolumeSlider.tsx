@@ -25,7 +25,7 @@ export default function VolumeSlider({ volume, setVolume }: VolumeSliderProps) {
       sx={{
         width: 200,
         background: "#81c784",
-        borderRadius: "15px",
+        borderRadius: "5px",
         border: "1px solid #ec407a", p:1
       }}
     >

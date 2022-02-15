@@ -60,17 +60,18 @@ export default function PieceSelector({
 
           borderRadius: "15px",
           border: "1px solid #ec407a",
-          p: 4,
+          p: 2,
           boxShadow: 20,
+          
         }}
         spacing={0}
       >
-        <Grid item></Grid>
+        
         <Grid
           item
           container
           justifyContent="center"
-          sx={{p:2}}
+          sx={{p:1,}}
           direction={{ md: "row", xs: "column" }}
           spacing={{ md: 6, xs: 2 }}
         >

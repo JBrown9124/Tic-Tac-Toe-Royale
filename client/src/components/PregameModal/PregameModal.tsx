@@ -4,7 +4,7 @@ import { useState, useContext } from "react";
 import Welcome from "./Welcome";
 import HostLobby from "./Lobby/HostLobby/HostLobby";
 import Join from "./Join";
-import GuestLobby from "./Lobby/GuestLobby";
+import GuestLobby from "./Lobby/GuestLobby/GuestLobby";
 import { RgbaColor } from "react-colorful";
 import { Lobby } from "../../Models/Lobby";
 import useSound from "use-sound";
@@ -97,29 +97,7 @@ export default function PregameModal({
 
   return (
     <>
-      {/* <Modal
-        open={isOpen}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Grid
-          maxHeight="sm"
-          maxWidth="sm"
-          sx={{
-            position: "absolute" as "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            maxHeight: "100%",
-            maxWidth: "100%",
-            width: 800,
-            borderRadius: "15px",
-            bgcolor: backgroundColor,
-            overflow: "auto",
-            boxShadow: 24,
-            p: 4,
-          }}
-        > */}
+     
       <Grid sx={{}}>
         {(action === "welcome" || action === "leave" || action === "quit") && (
           <Welcome
@@ -138,6 +116,9 @@ export default function PregameModal({
         )}
         {action === "guest" && isLobbyFound && (
           <GuestLobby
+          volume={volume}
+          setVolume={(props) => setVolume(props)}
+            setIsGuideOpen={(props) => setIsGuideOpen(props)}
             playerName={playerName}
             playerId={playerId}
             lobby={lobby}

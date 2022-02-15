@@ -107,7 +107,7 @@ export default function SizeSlider({ setSize, size }: SizeSliderProps) {
         </Typography>
       </Grid>
       <Grid container item spacing={2}>
-        <Grid item xs={10} sm={10} md={10} lg={10}>
+        <Grid item xs={9} sm={10} md={10} lg={10}>
           <Slider
             max={15}
             step={1}
@@ -124,7 +124,7 @@ export default function SizeSlider({ setSize, size }: SizeSliderProps) {
             aria-labelledby="input-slider"
           />
         </Grid>
-        <Grid item xs={2} sm={2} md={2} lg={2}>
+        <Grid item xs={3} sm={2} md={2} lg={2}>
           <CustomInput
             value={size}
             size="small"

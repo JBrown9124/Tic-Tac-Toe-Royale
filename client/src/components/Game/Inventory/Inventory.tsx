@@ -150,7 +150,7 @@ export default function Inventory({
         container
         direction="column"
         sx={{
-          borderRadius: "15px",
+          borderRadius: { xs: "0px", sm: "0px", md: "0px", lg: "5px" },
           p: 0,
           background: "#519657",
           border: "solid #ec407a 1px",

@@ -61,8 +61,8 @@ export default function Settings({
         spacing={{ lg: 2 }}
         sx={{ p: { lg: 2 } }}
       >
-        <Grid container direction="row" spacing={2}>
-          <Grid item lg={12}>
+        <Grid container direction="row" spacing={{xs:0, sm:0, md:0, lg:2}}>
+          <Grid item md={12} lg={12} sm={12} xs={12}>
             <SizeSlider size={size} setSize={(props) => setSize(props)} />
           </Grid>
           <Grid item md={6} lg={6} sm={12} xs={12}>

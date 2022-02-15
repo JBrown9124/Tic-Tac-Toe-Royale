@@ -48,7 +48,7 @@ export default function TurnOrder({
         container
         alignItems="center" 
         sx={{
-          borderRadius: "15px",
+          borderRadius: { xs: "0px", sm: "0px", md: "0px", lg: "5px" },
           overflowY: { xs: "auto", sm: "auto", md: "auto", lg: "auto" },
           overflowX: { xs: "auto", sm: "auto", md: "auto", lg: "hidden" },
           bgcolor: statusBoardTurnOrderBackgroundColor,

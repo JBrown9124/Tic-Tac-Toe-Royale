@@ -30,8 +30,7 @@ export default function PlayerList({
         textAlign="center"
         direction="column"
         justifyContent="center"
-        sx={{ p: 0,  }}
-      
+        sx={{ p: 1 }}
       >
         {/* <Grid item>
           <Typography
@@ -41,8 +40,93 @@ export default function PlayerList({
             Players{" "}
           </Typography>
         </Grid> */}
-
-        <List dense  sx={{ }} aria-label="players">
+        {players.map((player) => (
+          <Grid
+          key={player.playerId}
+            container
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            textAlign="center"
+            sx={{
+              background: "#81c784",
+              p: 1,
+              border: "1px solid #ec407a",
+              borderRadius: "5px",
+              boxShadow: { xs: 0, sm: 0, md: 20 },
+            }}
+          >
+            <Grid item xs={4} sm={4} md={4} lg={4}>
+              {player.isHost ? (
+                <FaCrown
+                  style={{
+                    width: "40px",
+                    height: "40px",
+                    color: "orange",
+                  }}
+                />
+              ) : player.isReady ? (
+                <CheckIcon
+                  sx={{
+                    width: "40px",
+                    height: "40px",
+                    color: "green",
+                  }}
+                />
+              ) : (
+                <ClearIcon
+                  sx={{
+                    width: "40px",
+                    height: "40px",
+                    color: "red",
+                  }}
+                />
+              )}
+            </Grid>
+            <Grid item xs={4} sm={1} md={4} lg={4}>
+              {player.name}
+            </Grid>
+            <Grid item xs={4} sm={7} md={4} lg={4}>
+              {" "}
+              {player.playerId === playerId ? (
+                typeof playerPiece === "string" &&
+                playerPiece &&
+                playerPiece.length > 30 ? (
+                  <img
+                    src={playerPiece}
+                    alt={playerPiece}
+                    style={{
+                      width: "40px",
+                      height: "40px",
+                      borderRadius: "5px",
+                    }}
+                  />
+                ) : (
+                  pieces.map((piece) => {
+                    if (piece.name === playerPiece) return piece.value;
+                  })
+                )
+              ) : typeof player.piece === "string" &&
+                player.piece &&
+                player.piece.length > 30 ? (
+                <img
+                  src={player.piece}
+                  alt={player.piece}
+                  style={{
+                    width: "40px",
+                    height: "40px",
+                    borderRadius: "5px",
+                  }}
+                />
+              ) : (
+                pieces.map((piece) => {
+                  if (piece.name === player.piece) return piece.value;
+                })
+              )}
+            </Grid>
+          </Grid>
+        ))}
+        {/* <List dense  sx={{ }} aria-label="players">
           {players.length === 0 ? (
             <SkeletonPlayers />
           ) : (
@@ -228,7 +312,7 @@ export default function PlayerList({
               )}
             </>
           )}
-        </List>
+        </List> */}
       </Grid>
     </>
   );

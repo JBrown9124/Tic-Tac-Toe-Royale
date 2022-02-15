@@ -132,7 +132,7 @@ export default function HostLobby({
                 }
               />
             </Grid>
-            <Grid item sx={{ p: 0 }}>
+            <Grid item sx={{ p: 0, display:{xs:"none", sm:"none", md:"flex", lg:"flex"} }}>
               <PieceSelector
                 playerPiece={playerPiece}
                 setPiece={(props) => setPiece(props)}
@@ -172,7 +172,17 @@ export default function HostLobby({
               playerName={playerName}
               playerPiece={playerPiece}
             />
-            <Grid sx={{ display: { xs: "flex", sm: "flex", md: "none" } }}>
+          
+          </Grid>
+        </Grid>
+        <Grid container direction="column" sx={{ p: 0, display:{xs:"flex", sm:"flex", md:"none", lg:"none"} }}>
+        <Grid item >
+              <PieceSelector
+                playerPiece={playerPiece}
+                setPiece={(props) => setPiece(props)}
+              />
+            </Grid>
+            <Grid item>
               <BottomPanel
                 handleLeave={() => handleLeave()}
                 handleStart={() => handleStart()}
@@ -187,8 +197,7 @@ export default function HostLobby({
                 setIsError={(props) => setIsError(props)}
               />
             </Grid>
-          </Grid>
-        </Grid>
+            </Grid>
       </Grid>
     </>
   );

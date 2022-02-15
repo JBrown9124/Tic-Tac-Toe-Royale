@@ -5,7 +5,7 @@ import { GameStatus } from "../../../Models/GameStatus";
 import { Move } from "../../../Models/Move";
 import { useEffect, useState, useContext } from "react";
 import { useSound } from "use-sound";
-import {VolumeContext} from "../../../storage/VolumeContext"
+import { VolumeContext } from "../../../storage/VolumeContext";
 import { PowerUp, PowerUps } from "../../../Models/PowerUp";
 import CustomButton from "../../CustomButton";
 import { statusBoardTurnOrderBackgroundColor } from "../../../themes/theme1";
@@ -61,15 +61,18 @@ export default function StatusBoard({
   boardSize,
   setIsGuideOpen,
 }: StatusBoardProps) {
-  const volume = useContext(VolumeContext)
+  const volume = useContext(VolumeContext);
   const [startWinSound] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/winnerSound.mp3", {volume:volume}
+    process.env.PUBLIC_URL + "static/assets/sounds/winnerSound.mp3",
+    { volume: volume }
   );
   const [startGameOverSound] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/darkGameOver.mp3", {volume:volume}
+    process.env.PUBLIC_URL + "static/assets/sounds/darkGameOver.mp3",
+    { volume: volume }
   );
   const [startTieSound] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/tie.mp3", {volume:volume}
+    process.env.PUBLIC_URL + "static/assets/sounds/tie.mp3",
+    { volume: volume }
   );
   const [winner, setWinner] = useState<Player>();
   useEffect(() => {
@@ -94,7 +97,7 @@ export default function StatusBoard({
       <Grid
         container
         sx={{
-          borderRadius: "15px",
+          borderRadius: { xs: "0px", sm: "0px", md: "0px", lg: "5px" },
           overflowX: "hidden",
           overflowY: "auto",
           bgcolor: statusBoardTurnOrderBackgroundColor,
@@ -115,7 +118,16 @@ export default function StatusBoard({
         direction={{ xs: "row", sm: "row", md: "row", lg: "column" }}
         textAlign="center"
       >
-        <Grid item xs={3} sm={3} md={3} lg={4}  container alignItems="center" justifyContent="center">
+        <Grid
+          item
+          xs={3}
+          sm={3}
+          md={3}
+          lg={4}
+          container
+          alignItems="center"
+          justifyContent="center"
+        >
           <TurnStatus
             playerPieces={playerPieces}
             playerId={playerId}
@@ -168,7 +180,7 @@ export default function StatusBoard({
           }}
         />
         <Grid
-         justifyContent="center"
+          justifyContent="center"
           container
           direction="column"
           item
