@@ -1,6 +1,6 @@
 import Settings from "../Settings/Settings";
 import Grid from "@mui/material/Grid";
-import PlayerList from "../PlayerList";
+import PlayerList from "../../PlayerList/PlayerList";
 import { useState } from "react";
 import arePlayersReady from "../../../../creators/HostLobbyCreators/arePlayersReady";
 import handleAddBot from "../../../../creators/HostLobbyCreators/handleAddBot";

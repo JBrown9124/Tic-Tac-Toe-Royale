@@ -3,73 +3,90 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { Player } from "../../../../Models/Player";
 import { Lobby } from "../../../../Models/Lobby";
-import {useContext} from "react"
+import { useContext } from "react";
 import useSound from "use-sound";
 import handleAddBot from "../../../../creators/HostLobbyCreators/handleAddBot";
 import CustomButton from "../../../CustomButton";
-import {VolumeContext} from "../../../../storage/VolumeContext";
+import { VolumeContext } from "../../../../storage/VolumeContext";
+import leaveLobby from "../../../../creators/APICreators/leaveLobby";
 
 interface BotOptionsProps {
   players: Player[];
   lobbyId: number;
   setLobby: (lobby: Lobby) => void;
+  lobby: Lobby;
 }
 export default function BotOptions({
   players,
   lobbyId,
   setLobby,
+  lobby,
 }: BotOptionsProps) {
-  const volume:number = useContext(VolumeContext)
+  const volume: number = useContext(VolumeContext);
   const [playAddBotSound] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/addBotSound.mp3", {volume:volume}
+    process.env.PUBLIC_URL + "static/assets/sounds/addBotSound.mp3",
+    { volume: volume }
   );
+  const handleRemoveBot = async () => {
+    const botsInLobby = players.filter((player) => {
+      return player?.playerId?.substring(0, 3) === "BOT";
+    });
+
+    if (botsInLobby.length > 0) {
+      const botBeingRemoved = botsInLobby[botsInLobby.length - 1];
+      const reqBody = {
+        lobbyId: lobbyId,
+        player: botBeingRemoved,
+        hostSid: null,
+      };
+      await leaveLobby(reqBody);
+      
+      const scanAndRemove = new Promise((resolve, reject) => {
+        for (var i = lobby.players.length; i--; ) {
+          if (lobby.players[i].playerId === botBeingRemoved.playerId) {
+            resolve(lobby.players.splice(i, 1));
+          }
+        }
+      });
+      await scanAndRemove;
+      setLobby({ ...lobby });
+      playAddBotSound();
+    }
+
+    // leaveLobby( player: play
+    //   lobbyId: number;
+    //   hostSid: number;)
+  };
   return (
     <>
       <Grid
         container
         direction="column"
-        sx={{ background: "#81c784", borderRadius: "5px", p:1, border:"1px solid #ec407a" }}
+        sx={{
+          background: "#81c784",
+          borderRadius: "5px",
+          p: 1,
+          border: "1px solid #ec407a",
+        }}
       >
         <Grid item>
           <Typography sx={{ fontFamily: "Noto Sans, sans-serif" }}>
             Bots
           </Typography>
         </Grid>
-        <Grid item sx={{p:1}}>
-          {/* <Tooltip
-            placement="right"
-            TransitionComponent={Zoom}
-            title={
-              <Typography
-                sx={{
-                  fontSize: "10px",
-                  fontFamily: "Bungee Hairline, cursive !important",
-                  fontWeight: "800 !important",
-                }}
-              >
-                Add up to 10 bots!
-              </Typography>
+        <Grid item sx={{ p: 1 }}>
+          <CustomButton
+            onClick={() =>
+              handleAddBot(players, lobbyId, setLobby, playAddBotSound)
             }
-          > */}
-            {/* <div> */}
-              <CustomButton
-                onClick={() =>
-                  handleAddBot(players, lobbyId, setLobby, playAddBotSound)
-                }
-                message={"Add"}
-                sx={{ borderRadius: "100px", width:"20%", height:"20%"}}
-                // icon={
-                //   <img
-                //     style={{ width: "40px", height: "40px" }}
-                //     src={
-                //       "https://cdn1.iconfinder.com/data/icons/robots-avatars-set/354/Robot_bot___robot_robo_bot_artificial_intelligence-512.png"
-                //     }
-                //     alt={"bot"}
-                //   />
-                // }
-              />
-            {/* </div>
-          </Tooltip>{" "} */}
+            message={"Add"}
+            sx={{ borderRadius: "100px", width: "20%", height: "20%" }}
+          />
+          <CustomButton
+            onClick={() => handleRemoveBot()}
+            message={"Remove"}
+            sx={{ borderRadius: "100px", width: "20%", height: "20%" }}
+          />
         </Grid>
       </Grid>
     </>

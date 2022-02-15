@@ -130,6 +130,7 @@ export default function PregameModal({
 
         {action === "create" && (
           <HostLobby
+          lobby={lobby}
           volume={volume}
           setVolume={(props) => setVolume(props)}
             setIsGuideOpen={(props) => setIsGuideOpen(props)}

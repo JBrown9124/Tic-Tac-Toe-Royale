@@ -2,7 +2,7 @@ import { Lobby } from "../../../Models/Lobby";
 import { RefObject } from "react";
 import { RgbaColor } from "react-colorful";
 
-const updatePlayerLeavingLobby = (
+const updatePlayerLeavingLobby = async(
   lobbyRef: RefObject<Lobby>,
   actionRef: RefObject<string>,
   data: any,
@@ -19,10 +19,19 @@ const updatePlayerLeavingLobby = (
   const lobbyCopy = lobbyRef.current;
   if (lobbyCopy) {
     if (actionRef.current !== "begin" && actionRef.current !== "in game") {
-      let newPlayerList = lobbyCopy.players.filter((player) => {
-        return player.playerId !== data.removedPlayer.playerId;
-      });
+      // let newPlayerList = lobbyCopy.players.filter((player) => {
+      //   return player.playerId !== data.removedPlayer.playerId;
+      // });
 
+      const scanAndRemove = new Promise((resolve, reject) => {
+        for (var i =  lobbyCopy.players.length; i--; ) {
+          if ( lobbyCopy.players[i].playerId === data.removedPlayer.playerId) {
+          
+            resolve(lobbyCopy.players.splice(i, 1));
+          }
+        }
+      });
+      await scanAndRemove
       if (data.newHost) {
         lobbyCopy.players.forEach((player) => {
           if (player.playerId === data.newHost.playerId) {
@@ -36,7 +45,7 @@ const updatePlayerLeavingLobby = (
         }
       }
 
-      lobbyCopy.players = newPlayerList;
+     
 
       setLobby({ ...lobbyCopy });
     } else if (

@@ -3,7 +3,7 @@ import { Player } from "../../Models/Player";
 // import sortPlayerPieces from "./sortPlayerPieces";
 interface UpdateAfterPlayerLeavesArgs {
   playerPieces: Player[];
-  displayPlayerPieces:Player[];
+  displayPlayerPieces: Player[];
   setPlayerPieces: (plyerPieces: Player[]) => void;
   setGameStatus: (gameStatus: GameStatus) => void;
   gameStatus: GameStatus;
@@ -14,8 +14,9 @@ const updateAfterPlayerLeaves = async ({
   playerPieces,
   setGameStatus,
   playerWhoLeftSessionId,
-  displayPlayerPieces
-  }: UpdateAfterPlayerLeavesArgs) => {
+  displayPlayerPieces,
+  gameStatus,
+}: UpdateAfterPlayerLeavesArgs) => {
   const removePlayerFromPieces = async () => {
     for (var i = playerPieces.length; i--; ) {
       if (playerPieces[i].sessionId === playerWhoLeftSessionId) {
@@ -31,16 +32,21 @@ const updateAfterPlayerLeaves = async ({
   await removePlayerFromPieces();
   setGameStatus({
     win: {
-      whoWon: playerPieces.length === 1 ? playerPieces[0]?.playerId : null,
-      type: null,
-      winningMoves: null,
+      whoWon: gameStatus.win.whoWon
+        ? gameStatus.win.whoWon
+        : playerPieces.length === 1
+        ? playerPieces[0]?.playerId
+        : null,
+      type: gameStatus.win.type,
+      winningMoves: gameStatus.win.winningMoves,
     },
     whoTurn: playerPieces[playerPieces.length - 1]?.playerId,
     newMove: { playerId: "", rowIdx: 0, columnIdx: 0 },
     newPowerUpUse: {
       powerUp: {
         value: 0,
-        name: "", cursorUrl:"",
+        name: "",
+        cursorUrl: "",
         description: "",
         imgUrl: "",
         quantity: 0,

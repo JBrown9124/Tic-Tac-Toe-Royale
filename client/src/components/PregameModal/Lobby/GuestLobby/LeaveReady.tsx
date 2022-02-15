@@ -1,4 +1,4 @@
-import PlayerList from "../PlayerList";
+import PlayerList from "../../PlayerList/PlayerList";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { useState, useEffect, useContext } from "react";

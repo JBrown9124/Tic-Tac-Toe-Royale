@@ -88,7 +88,9 @@ class Lobby(APIView):
 
         lobby_id = int(body.get("lobbyId"))
         player = body.get("player")
+        player_id = player.get("playerId")
         session_id = player.get("sessionId")
+        
         
         lobby_copy = cache.get(lobby_id)
         try:
@@ -98,20 +100,26 @@ class Lobby(APIView):
         
         lobby_players_copy = lobby_copy["players"]
         make_new_host = False
-        for index, player in enumerate(lobby_players_copy):
-            if player["sessionId"] == session_id:
-                if player["isHost"]:
-
-                    make_new_host = True
-
-                lobby_players_copy.remove(player)
+        
+        if player_id[:3] == "BOT":
+            for index, player in enumerate(lobby_players_copy):
+                if player["playerId"] == player_id:
+                    lobby_players_copy.remove(player)
+        else:
+            for index, player in enumerate(lobby_players_copy):
+                if player["sessionId"] == session_id and player["playerId"][:3] != "BOT":
+                    if player["isHost"]:
+                    
+                        make_new_host = True    
+                    lobby_players_copy.remove(player)
                
         new_host = None
         if make_new_host and len(lobby_players_copy) > 0:
-            lobby_players_copy[0]["isHost"] = True
-            for player in lobby_players_copy:
+           
+            for index,player in enumerate(lobby_players_copy):
                 if player["playerId"][:3] != "BOT":
                     new_host = player
+                    lobby_players_copy[index]["isHost"] = True
                     new_host["piece"] = None
                     break
 

@@ -21,6 +21,7 @@ interface SettingsProps {
   players: Player[];
   lobbyId: number;
   setLobby: (lobby: Lobby) => void;
+  lobby: Lobby;
 }
 export default function Settings({
   setPiece,
@@ -34,6 +35,7 @@ export default function Settings({
   players,
   lobbyId,
   setLobby,
+  lobby
 }: SettingsProps) {
   return (
     <Grid
@@ -74,6 +76,7 @@ export default function Settings({
           </Grid>
           <Grid item md={6} lg={6} sm={12} xs={12}>
             <BotOptions
+            lobby={lobby}
               lobbyId={lobbyId}
               setLobby={(props) => setLobby(props)}
               players={players}

@@ -113,7 +113,7 @@ export default function StatusBoard({
           //   : boardSize === 3
           //   ? 359.5
           //   : 760,
-          boxShadow: 10,
+          boxShadow: {xs:0,sm:0,md:0,lg:10},
         }}
         direction={{ xs: "row", sm: "row", md: "row", lg: "column" }}
         textAlign="center"

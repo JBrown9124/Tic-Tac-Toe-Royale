@@ -36,7 +36,7 @@ const updatePlayerDisconnected = (
       if (response) {
         const { data } = response;
         const { newHost, lobby } = data;
-
+        console.log(lobby,"LOBBY")
         if (actionRef.current === "begin" || actionRef.current === "in game") {
           setPlayerWhoLeftSessionId(playerSessionId);
           if (newHost && newHost.playerId === playerIdRef.current) {
@@ -55,7 +55,7 @@ const updatePlayerDisconnected = (
           newHost.playerId === playerIdRef.current
         ) {
           setAction("create");
-          setLobby(lobby);
+          setLobby({...lobby});
           setIsHost(true);
         }
       }

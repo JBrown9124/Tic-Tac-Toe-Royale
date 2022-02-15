@@ -6,7 +6,7 @@ import { Lobby } from "../../Models/Lobby";
 interface BodyProps {
   player: Player;
   lobbyId: number;
-  hostSid: number;
+  hostSid: number|null;
 }
 const saveLeaveLobby = async (body: BodyProps) => {
   const { data } = await axios.delete(`${url}/api/lobby`, {

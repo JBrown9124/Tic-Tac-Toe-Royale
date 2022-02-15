@@ -32,6 +32,7 @@ interface PlayerListProps {
   lobbyId: number;
   setIsGuideOpen: (isGuideOpen: boolean) => void;
   volume: number;
+  lobby: Lobby;
   setVolume: (volume: number) => void;
 }
 export default function HostLobby({
@@ -54,6 +55,7 @@ export default function HostLobby({
   setIsGuideOpen,
   volume,
   setVolume,
+  lobby
 }: PlayerListProps) {
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -110,6 +112,7 @@ export default function HostLobby({
           >
             <Grid item >
               <Settings
+              lobby={lobby}
                 setLobby={setLobby}
                 players={players}
                 lobbyId={lobbyId}
