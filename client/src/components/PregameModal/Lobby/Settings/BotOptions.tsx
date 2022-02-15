@@ -40,7 +40,7 @@ export default function BotOptions({
         hostSid: null,
       };
       await leaveLobby(reqBody);
-      
+
       const scanAndRemove = new Promise((resolve, reject) => {
         for (var i = lobby.players.length; i--; ) {
           if (lobby.players[i].playerId === botBeingRemoved.playerId) {
@@ -69,24 +69,28 @@ export default function BotOptions({
           border: "1px solid #ec407a",
         }}
       >
-        <Grid item>
+        <Grid item sx={{p:1}}>
           <Typography sx={{ fontFamily: "Noto Sans, sans-serif" }}>
             Bots
           </Typography>
         </Grid>
-        <Grid item sx={{ p: 1 }}>
-          <CustomButton
-            onClick={() =>
-              handleAddBot(players, lobbyId, setLobby, playAddBotSound)
-            }
-            message={"Add"}
-            sx={{ borderRadius: "100px", width: "20%", height: "20%" }}
-          />
-          <CustomButton
-            onClick={() => handleRemoveBot()}
-            message={"Remove"}
-            sx={{ borderRadius: "100px", width: "20%", height: "20%" }}
-          />
+        <Grid item sx={{}} container direction="row" justifyContent="center">
+          <Grid item xs={6}>
+            <CustomButton
+              onClick={() =>
+                handleAddBot(players, lobbyId, setLobby, playAddBotSound)
+              }
+              message={"Add"}
+              sx={{ borderRadius: "100px", width: "20%", height: "70%", }}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <CustomButton
+              onClick={() => handleRemoveBot()}
+              message={"Remove"}
+              sx={{ borderRadius: "100px", width: "20%", height: "70%" }}
+            />
+          </Grid>
         </Grid>
       </Grid>
     </>

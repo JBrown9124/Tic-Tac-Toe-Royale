@@ -31,7 +31,7 @@ export default function LobbyPlayer({ player, playerPiece, playerId }: PlayerPro
           p: 1,
           border: "1px solid #ec407a",
           borderRadius: "5px",
-          boxShadow: 20,
+          boxShadow: {xs:5, sm:5, md:20, lg:20},
         }}
       >
         <Grid item xs={4} sm={4} md={4} lg={4}>
