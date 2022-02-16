@@ -25,7 +25,8 @@ import uuid
 # Create your views here.
 class Board(APIView):
     def put(self, request: Request):
-        """takes new move coordinates,lobbyId, and gameStatus. updates lobby board, and returns new move coordinates and update game status(whos move it is, who won)"""
+        """takes new move coordinates,lobbyId, and gameStatus. updates lobby board, and returns 
+        new move coordinates and update game status(whos move it is, who won)"""
         body = request.data
         game_status = body.get("gameStatus")
         new_move = game_status.get("newMove")

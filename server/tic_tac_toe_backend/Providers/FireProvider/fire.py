@@ -127,6 +127,7 @@ class Fire:
                         player_id_who_cast=self.current_location.player_id_who_cast,
                     )
                 )
+
         if self.current_location.column_idx + 1 <= self.board_size - 1:
             if (
                 type(
@@ -159,6 +160,7 @@ class Fire:
                         player_id_who_cast=self.current_location.player_id_who_cast,
                     )
                 )
+        
         if (
             self.current_location.column_idx + 1 <= self.board_size - 1
             and self.current_location.row_idx + 1 <= self.board_size - 1
@@ -195,6 +197,7 @@ class Fire:
                         player_id_who_cast=self.current_location.player_id_who_cast,
                     )
                 )
+        
         if self.current_location.row_idx + 1 <= self.board_size - 1:
             if (
                 type(
@@ -227,6 +230,7 @@ class Fire:
                         player_id_who_cast=self.current_location.player_id_who_cast,
                     )
                 )
+        
         if (
             self.current_location.column_idx - 1 >= 0
             and self.current_location.row_idx + 1 <= self.board_size - 1

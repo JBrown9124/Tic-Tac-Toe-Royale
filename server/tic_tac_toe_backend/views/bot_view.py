@@ -17,7 +17,6 @@ from django.core.cache import cache
 from ..Providers.BotProvider.bot import Bot
 
 
-# Create your views here.
 class BotAction(APIView):
     def post(self, request: Request):
         """takes bots playerId and creates a move for it"""

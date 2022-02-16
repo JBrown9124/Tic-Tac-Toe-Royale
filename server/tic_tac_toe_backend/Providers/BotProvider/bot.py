@@ -184,7 +184,7 @@ class Bot(object):
                 highest_chance = best_top_move.chance
             return best_move
 
-        # named after bottom are of move diagonol direction
+        # named after bottom are of move diagonal direction
         def checkDiagonalLeft():
             left = [row_idx, column_idx]
             right = [row_idx, column_idx]
@@ -246,7 +246,7 @@ class Bot(object):
                 highest_chance = best_left_move.chance
             return best_move
 
-        # named after bottom are of move diagonol direction
+        # named after bottom are of move diagonal direction
         def checkDiagonalRight():
             left = [row_idx, column_idx]
             right = [row_idx, column_idx]
