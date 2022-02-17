@@ -27,137 +27,34 @@ class FireTile:
         row_idx = self.current_location.row_idx
         column_idx = self.current_location.column_idx
 
-        diagonal_top_left_spread = SafeSpread(
-            current_location=self.current_location,
-            board_size=self.board_size,
-            board=self.board,
-            column_idx_change=-1,
-            row_idx_change=-1,
-        )
-        if diagonal_top_left_spread.is_safe():
-            spreadable_tiles.append(
-                FireMove(
-                    row_idx - 1,
-                    column_idx - 1,
-                    player_id=self.fire_id,
-                    player_id_who_cast=player_id_who_cast,
-                )
+        row_col_idx_changes = [
+            (-1, -1),
+            (-1, 1),
+            (1, 1),
+            (1, -1),
+            (1, 0),
+            (-1, 0),
+            (0, 1),
+            (0, -1),
+        ]
+        for row_idx_change, col_idx_change in row_col_idx_changes:
+            spread = SafeSpread(
+                current_location=self.current_location,
+                board_size=self.board_size,
+                board=self.board,
+                row_idx_change=row_idx_change,
+                column_idx_change=col_idx_change,
             )
+            if spread.is_safe():
+                spreadable_tiles.append(
+                    FireMove(
+                        row_idx + row_idx_change,
+                        column_idx + col_idx_change,
+                        player_id=self.fire_id,
+                        player_id_who_cast=player_id_who_cast,
+                    )
+                )
 
-        diagonal_top_right_spread = SafeSpread(
-            current_location=self.current_location,
-            board_size=self.board_size,
-            board=self.board,
-            row_idx_change=-1,
-            column_idx_change=1,
-        )
-        if diagonal_top_right_spread.is_safe():
-            spreadable_tiles.append(
-                FireMove(
-                    row_idx - 1,
-                    column_idx + 1,
-                    player_id=self.fire_id,
-                    player_id_who_cast=player_id_who_cast,
-                )
-            )
-
-        diagonal_bottom_right_spread = SafeSpread(
-            current_location=self.current_location,
-            board_size=self.board_size,
-            board=self.board,
-            row_idx_change=1,
-            column_idx_change=1,
-        )
-        if diagonal_bottom_right_spread.is_safe():
-            spreadable_tiles.append(
-                FireMove(
-                    row_idx + 1,
-                    column_idx + 1,
-                    player_id=self.fire_id,
-                    player_id_who_cast=player_id_who_cast,
-                )
-            )
-        
-        diagonal_bottom_left_spread = SafeSpread(
-            current_location=self.current_location,
-            board_size=self.board_size,
-            board=self.board,
-            row_idx_change=1,
-            column_idx_change=-1,
-        )
-        if diagonal_bottom_left_spread.is_safe():
-            spreadable_tiles.append(
-                FireMove(
-                    row_idx + 1,
-                    column_idx - 1,
-                    player_id=self.fire_id,
-                    player_id_who_cast=player_id_who_cast,
-                )
-            )
-
-        vertical_bottom_spread = SafeSpread(
-            current_location=self.current_location,
-            board_size=self.board_size,
-            board=self.board,
-            row_idx_change=1,
-        )
-        if vertical_bottom_spread.is_safe():
-            spreadable_tiles.append(
-                FireMove(
-                    row_idx + 1,
-                    column_idx,
-                    player_id=self.fire_id,
-                    player_id_who_cast=player_id_who_cast,
-                )
-            )
-        
-        vertical_top_spread = SafeSpread(
-            current_location=self.current_location,
-            board_size=self.board_size,
-            board=self.board,
-            row_idx_change=-1,
-        )
-        if vertical_top_spread.is_safe():
-            spreadable_tiles.append(
-                FireMove(
-                    row_idx - 1,
-                    column_idx,
-                    player_id=self.fire_id,
-                    player_id_who_cast=player_id_who_cast,
-                )
-            )
-        
-        horizontal_right_spread = SafeSpread(
-            current_location=self.current_location,
-            board_size=self.board_size,
-            board=self.board,
-            column_idx_change=1,
-        )
-        if horizontal_right_spread.is_safe():
-            spreadable_tiles.append(
-                FireMove(
-                    row_idx,
-                    column_idx - 1,
-                    player_id=self.fire_id,
-                    player_id_who_cast=player_id_who_cast,
-                )
-            )
-        
-        horizontal_left_spread = SafeSpread(
-            current_location=self.current_location,
-            board_size=self.board_size,
-            board=self.board,
-            column_idx_change=-1,
-        )
-        if horizontal_left_spread.is_safe():
-            spreadable_tiles.append(
-                FireMove(
-                    row_idx,
-                    column_idx - 1,
-                    player_id=self.fire_id,
-                    player_id_who_cast=player_id_who_cast,
-                )
-            )
         return spreadable_tiles
 
     def spread(self):
@@ -168,9 +65,6 @@ class FireTile:
             if len(spreadable_tiles) > 0
             else self.current_location.to_dict()
         )
-
-
- 
 
 
 # if __name__ == "__main__":
