@@ -14,7 +14,7 @@ from ..Models.player import Player
 from ..Models.win import Win
 from ..ResponseModels.response_board import BoardResponseModel
 from ..Models.new_move import Move
-from ..Providers.FireProvider.fire import Fire
+from ..Providers.FireProvider.fire_tile import FireTile
 from ..Providers.FireProvider.FireModels.fire_move import FireMove
 from django.core.cache import cache
 from ..Providers.PowerUpProvider.add_fire import add_fire

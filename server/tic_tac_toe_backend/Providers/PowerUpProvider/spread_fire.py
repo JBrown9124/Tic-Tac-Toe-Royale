@@ -1,4 +1,4 @@
-from ..FireProvider.fire import Fire
+from ..FireProvider.fire_tile import FireTile
 from ..FireProvider.FireModels.fire_move import FireMove
 from tic_tac_toe_backend.Models.new_move import Move
 
@@ -10,7 +10,7 @@ def spread_fire(
 ):
     for i, tile in enumerate(lobby_game_status_copy["fireTiles"]):
         if last_turn == tile["playerIdWhoCast"]:
-            new_fire_position = Fire(
+            new_fire_position = FireTile(
                 board_size=lobby_board_copy["size"],
                 moves=lobby_board_copy["moves"],
                 current_location=FireMove(
