@@ -2,12 +2,15 @@ from .FireModels.fire_move import FireMove
 from .FireModels.board import Board
 import uuid
 from random import choice
+from .spread import Spread
 
 
 class Fire:
     def __init__(self, board_size, current_location: FireMove, moves):
         self.board_size = board_size
         self.current_location = current_location
+        self.row_idx = current_location.row_idx
+        self.column_idx = current_location.column_idx
         self.moves = moves
         self.fire_id = (
             "FIRE" + str(uuid.uuid4())
@@ -21,284 +24,95 @@ class Fire:
     ):
         spreadable_tiles = []
 
-        if (
-            self.current_location.row_idx - 1 >= 0
-            and self.current_location.column_idx - 1 >= 0
-        ):
-            if (
-                type(
-                    self.board[self.current_location.row_idx - 1][
-                        self.current_location.column_idx - 1
-                    ]
-                )
-                == str
-            ):
-                if (
-                    self.board[self.current_location.row_idx - 1][
-                        self.current_location.column_idx - 1
-                    ][:4]
-                    != "FIRE"
-                ):
+        player_id_who_cast = self.current_location.player_id_who_cast
 
-                    spreadable_tiles.append(
-                        FireMove(
-                            self.current_location.row_idx - 1,
-                            self.current_location.column_idx - 1,
-                            player_id=self.fire_id,
-                            player_id_who_cast=self.current_location.player_id_who_cast,
-                        )
-                    )
+        spread = Spread(column_idx_change=-1, row_idx_change=-1)
+        if spread.is_safe():
+            spreadable_tiles.append(
+                FireMove(
+                    self.row_idx - 1,
+                    self.column_idx - 1,
+                    player_id=self.fire_id,
+                    player_id_who_cast=player_id_who_cast,
+                )
+            )
 
-            else:
-                spreadable_tiles.append(
-                    FireMove(
-                        self.current_location.row_idx - 1,
-                        self.current_location.column_idx - 1,
-                        player_id=self.fire_id,
-                        player_id_who_cast=self.current_location.player_id_who_cast,
-                    )
+        spread = Spread(row_idx_change=-1)
+        if spread.is_safe():
+            spreadable_tiles.append(
+                FireMove(
+                    self.row_idx - 1,
+                    self.column_idx,
+                    player_id=self.fire_id,
+                    player_id_who_cast=player_id_who_cast,
                 )
-        if self.current_location.row_idx - 1 >= 0:
-            if (
-                type(
-                    self.board[self.current_location.row_idx - 1][
-                        self.current_location.column_idx
-                    ]
-                )
-                == str
-            ):
-                if (
-                    self.board[self.current_location.row_idx - 1][
-                        self.current_location.column_idx
-                    ][:4]
-                    != "FIRE"
-                ):
-                    spreadable_tiles.append(
-                        FireMove(
-                            self.current_location.row_idx - 1,
-                            self.current_location.column_idx,
-                            player_id=self.fire_id,
-                            player_id_who_cast=self.current_location.player_id_who_cast,
-                        )
-                    )
+            )
 
-            else:
-                spreadable_tiles.append(
-                    FireMove(
-                        self.current_location.row_idx - 1,
-                        self.current_location.column_idx,
-                        player_id=self.fire_id,
-                        player_id_who_cast=self.current_location.player_id_who_cast,
-                    )
+        spread = Spread(row_idx_change=-1, column_idx_change=1)
+        if spread.is_safe():
+            spreadable_tiles.append(
+                FireMove(
+                    self.row_idx - 1,
+                    self.column_idx + 1,
+                    player_id=self.fire_id,
+                    player_id_who_cast=player_id_who_cast,
                 )
-        if (
-            self.current_location.column_idx + 1 <= self.board_size - 1
-            and self.current_location.row_idx - 1 >= 0
-        ):
-            if (
-                type(
-                    self.board[self.current_location.row_idx - 1][
-                        self.current_location.column_idx + 1
-                    ]
-                )
-                == str
-            ):
-                if (
-                    self.board[self.current_location.row_idx - 1][
-                        self.current_location.column_idx + 1
-                    ][:4]
-                    != "FIRE"
-                ):
+            )
 
-                    spreadable_tiles.append(
-                        FireMove(
-                            self.current_location.row_idx - 1,
-                            self.current_location.column_idx + 1,
-                            player_id=self.fire_id,
-                            player_id_who_cast=self.current_location.player_id_who_cast,
-                        )
-                    )
-            else:
-                spreadable_tiles.append(
-                    FireMove(
-                        self.current_location.row_idx - 1,
-                        self.current_location.column_idx + 1,
-                        player_id=self.fire_id,
-                        player_id_who_cast=self.current_location.player_id_who_cast,
-                    )
+        spread = Spread(column_idx_change=1)
+        if spread.is_safe():
+            spreadable_tiles.append(
+                FireMove(
+                    self.row_idx,
+                    self.column_idx + 1,
+                    player_id=self.fire_id,
+                    player_id_who_cast=player_id_who_cast,
                 )
+            )
 
-        if self.current_location.column_idx + 1 <= self.board_size - 1:
-            if (
-                type(
-                    self.board[self.current_location.row_idx][
-                        self.current_location.column_idx + 1
-                    ]
+        spread = Spread(column_idx_change=1, row_idx_change=1)
+        if spread.is_safe():
+            spreadable_tiles.append(
+                FireMove(
+                    self.row_idx + 1,
+                    self.column_idx + 1,
+                    player_id=self.fire_id,
+                    player_id_who_cast=player_id_who_cast,
                 )
-                == str
-            ):
-                if (
-                    self.board[self.current_location.row_idx][
-                        self.current_location.column_idx + 1
-                    ][:4]
-                    != "FIRE"
-                ):
-                    spreadable_tiles.append(
-                        FireMove(
-                            self.current_location.row_idx,
-                            self.current_location.column_idx + 1,
-                            player_id=self.fire_id,
-                            player_id_who_cast=self.current_location.player_id_who_cast,
-                        )
-                    )
-            else:
-                spreadable_tiles.append(
-                    FireMove(
-                        self.current_location.row_idx,
-                        self.current_location.column_idx + 1,
-                        player_id=self.fire_id,
-                        player_id_who_cast=self.current_location.player_id_who_cast,
-                    )
-                )
-        
-        if (
-            self.current_location.column_idx + 1 <= self.board_size - 1
-            and self.current_location.row_idx + 1 <= self.board_size - 1
-        ):
-            if (
-                type(
-                    self.board[self.current_location.row_idx + 1][
-                        self.current_location.column_idx + 1
-                    ]
-                )
-                == str
-            ):
-                if (
-                    self.board[self.current_location.row_idx + 1][
-                        self.current_location.column_idx + 1
-                    ][:4]
-                    != "FIRE"
-                ):
+            )
 
-                    spreadable_tiles.append(
-                        FireMove(
-                            self.current_location.row_idx + 1,
-                            self.current_location.column_idx + 1,
-                            player_id=self.fire_id,
-                            player_id_who_cast=self.current_location.player_id_who_cast,
-                        )
-                    )
-            else:
-                spreadable_tiles.append(
-                    FireMove(
-                        self.current_location.row_idx + 1,
-                        self.current_location.column_idx + 1,
-                        player_id=self.fire_id,
-                        player_id_who_cast=self.current_location.player_id_who_cast,
-                    )
+        spread = Spread(row_idx_change=1)
+        if spread.is_safe():
+            spreadable_tiles.append(
+                FireMove(
+                    self.row_idx + 1,
+                    self.column_idx,
+                    player_id=self.fire_id,
+                    player_id_who_cast=player_id_who_cast,
                 )
-        
-        if self.current_location.row_idx + 1 <= self.board_size - 1:
-            if (
-                type(
-                    self.board[self.current_location.row_idx + 1][
-                        self.current_location.column_idx
-                    ]
-                )
-                == str
-            ):
-                if (
-                    self.board[self.current_location.row_idx + 1][
-                        self.current_location.column_idx
-                    ][:4]
-                    != "FIRE"
-                ):
-                    spreadable_tiles.append(
-                        FireMove(
-                            self.current_location.row_idx + 1,
-                            self.current_location.column_idx,
-                            player_id=self.fire_id,
-                            player_id_who_cast=self.current_location.player_id_who_cast,
-                        )
-                    )
-            else:
-                spreadable_tiles.append(
-                    FireMove(
-                        self.current_location.row_idx + 1,
-                        self.current_location.column_idx,
-                        player_id=self.fire_id,
-                        player_id_who_cast=self.current_location.player_id_who_cast,
-                    )
-                )
-        
-        if (
-            self.current_location.column_idx - 1 >= 0
-            and self.current_location.row_idx + 1 <= self.board_size - 1
-        ):
-            if (
-                type(
-                    self.board[self.current_location.row_idx + 1][
-                        self.current_location.column_idx - 1
-                    ]
-                )
-                == str
-            ):
-                if (
-                    self.board[self.current_location.row_idx + 1][
-                        self.current_location.column_idx - 1
-                    ][:4]
-                    != "FIRE"
-                ):
-                    spreadable_tiles.append(
-                        FireMove(
-                            self.current_location.row_idx + 1,
-                            self.current_location.column_idx - 1,
-                            player_id=self.fire_id,
-                            player_id_who_cast=self.current_location.player_id_who_cast,
-                        )
-                    )
-            else:
-                spreadable_tiles.append(
-                    FireMove(
-                        self.current_location.row_idx + 1,
-                        self.current_location.column_idx - 1,
-                        player_id=self.fire_id,
-                        player_id_who_cast=self.current_location.player_id_who_cast,
-                    )
-                )
+            )
 
-        if self.current_location.column_idx - 1 >= 0:
-            if (
-                type(
-                    self.board[self.current_location.row_idx][
-                        self.current_location.column_idx - 1
-                    ]
+        spread = Spread(row_idx_change=1, column_idx_change=-1)
+        if spread.is_safe():
+            spreadable_tiles.append(
+                FireMove(
+                    self.row_idx + 1,
+                    self.column_idx - 1,
+                    player_id=self.fire_id,
+                    player_id_who_cast=player_id_who_cast,
                 )
-                == str
-            ):
-                if (
-                    self.board[self.current_location.row_idx][
-                        self.current_location.column_idx - 1
-                    ][:4]
-                    != "FIRE"
-                ):
-                    spreadable_tiles.append(
-                        FireMove(
-                            self.current_location.row_idx,
-                            self.current_location.column_idx - 1,
-                            player_id=self.fire_id,
-                            player_id_who_cast=self.current_location.player_id_who_cast,
-                        )
-                    )
-            else:
-                spreadable_tiles.append(
-                    FireMove(
-                        self.current_location.row_idx,
-                        self.current_location.column_idx - 1,
-                        player_id=self.fire_id,
-                        player_id_who_cast=self.current_location.player_id_who_cast,
-                    )
+            )
+
+        spread = Spread(column_idx_change=-1)
+        if spread.is_safe():
+            spreadable_tiles.append(
+                FireMove(
+                    self.row_idx,
+                    self.column_idx - 1,
+                    player_id=self.fire_id,
+                    player_id_who_cast=player_id_who_cast,
                 )
+            )
         return spreadable_tiles
 
     def spread(self):

@@ -5,8 +5,8 @@ import { Lobby } from "../../../Models/Lobby";
 import botMove from "../../../creators/APICreators/botMove";
 import determineWinner from "../../../creators/BoardCreators/determineWinner/determineWinner";
 import { PowerUps } from "../../../Models/PowerUp";
-import {VolumeContext} from "../../../storage/VolumeContext"
-import {useContext} from "react"
+import { VolumeContext } from "../../../storage/VolumeContext";
+import { useContext } from "react";
 import useSound from "use-sound";
 interface useBotMoveUpdaterProps {
   playerWhoLeftSessionId: string;
@@ -16,28 +16,28 @@ interface useBotMoveUpdaterProps {
   board: (string | number)[][];
   gameStatus: GameStatus;
   setGameStatus: (gameStatus: GameStatus) => void;
-  
+
   isHost: boolean;
   inventory: PowerUps;
-  
 }
 export default function useBotMoveUpdater({
-    playerWhoLeftSessionId,
-    botCanMove,
-    playerPieces,
-    lobby,
-    board,
-    gameStatus,
-    setGameStatus,
-    
-    isHost,
-    inventory
+  playerWhoLeftSessionId,
+  botCanMove,
+  playerPieces,
+  lobby,
+  board,
+  gameStatus,
+  setGameStatus,
+
+  isHost,
+  inventory,
 }: useBotMoveUpdaterProps) {
-  const volume:number = useContext(VolumeContext)
+  const volume: number = useContext(VolumeContext);
   const [startOtherPlayerMoveSound] = useSound(
-    process.env.PUBLIC_URL + "static/assets/sounds/otherPlayerMoveSound.mp3", {volume:volume}
+    process.env.PUBLIC_URL + "static/assets/sounds/otherPlayerMoveSound.mp3",
+    { volume: volume }
   );
-  
+
   useEffect(() => {
     if (!gameStatus.win.whoWon && isHost && botCanMove) {
       const findIfBot = async () => {

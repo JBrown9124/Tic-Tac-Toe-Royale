@@ -2,7 +2,7 @@ import { Lobby } from "../../../Models/Lobby";
 import { RefObject } from "react";
 import { RgbaColor } from "react-colorful";
 
-const updatePlayerLeavingLobby = async(
+const updatePlayerLeavingLobby = async (
   lobbyRef: RefObject<Lobby>,
   actionRef: RefObject<string>,
   data: any,
@@ -10,11 +10,10 @@ const updatePlayerLeavingLobby = async(
   setAction: (action: string) => void,
   setIsHost: (isHost: boolean) => void,
   setLobby: (lobby: Lobby) => void,
-  setPlayerWhoLeftSessionId: (playerId:string)=>void,
-  setHostColor: (color:RgbaColor)=>void,
+  setPlayerWhoLeftSessionId: (playerId: string) => void,
+  setHostColor: (color: RgbaColor) => void,
   setHostWinBy: (winBy: number) => void,
   setHostSize: (size: number) => void
-
 ) => {
   const lobbyCopy = lobbyRef.current;
   if (lobbyCopy) {
@@ -24,14 +23,13 @@ const updatePlayerLeavingLobby = async(
       // });
 
       const scanAndRemove = new Promise((resolve, reject) => {
-        for (var i =  lobbyCopy.players.length; i--; ) {
-          if ( lobbyCopy.players[i].playerId === data.removedPlayer.playerId) {
-          
+        for (var i = lobbyCopy.players.length; i--; ) {
+          if (lobbyCopy.players[i].playerId === data.removedPlayer.playerId) {
             resolve(lobbyCopy.players.splice(i, 1));
           }
         }
       });
-      await scanAndRemove
+      await scanAndRemove;
       if (data.newHost) {
         lobbyCopy.players.forEach((player) => {
           if (player.playerId === data.newHost.playerId) {
@@ -44,8 +42,6 @@ const updatePlayerLeavingLobby = async(
           setIsHost(true);
         }
       }
-
-     
 
       setLobby({ ...lobbyCopy });
     } else if (

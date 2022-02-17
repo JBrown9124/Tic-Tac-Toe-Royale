@@ -193,29 +193,7 @@ export default function Game({
             playerId={playerId}
             sizeOfBoardPiece={sizeOfBoardPiece}
           />
-          {/* 
-        {isUsingPowerUp && (
-
-          <SelectedPower
-            onFinish={() =>
-              onFinish(
-                selectedPowerUp,
-                gameStatus,
-                selectedPowerUpTiles,
-                lobby,
-                inventory,
-                setSelectedPowerUpTiles,
-                setSelectedPowerUp,
-                setIsUsingPowerUp,
-                setGameStatus,
-                board,
-                playerId
-              )
-            }
-            selectedPowerUpTiles={selectedPowerUpTiles}
-            selectedPowerUp={selectedPowerUp}
-          />
-          )} */}
+        
         </StatusBoardAnimator>
       </Grid>
       <Grid item sx={{}}>
