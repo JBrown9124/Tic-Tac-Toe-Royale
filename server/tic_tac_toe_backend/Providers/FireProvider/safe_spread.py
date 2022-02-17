@@ -19,11 +19,12 @@ class SafeSpread:
 
     def is_fire(self):
 
-        return type(self.board[self.row_idx][self.column_idx]) == str and self.board[
-            self.row_idx
-        ][self.column_idx][:4] == "FIRE"
+        return (
+            type(self.board[self.row_idx][self.column_idx]) == str
+            and self.board[self.row_idx][self.column_idx][:4] == "FIRE"
+        )
 
-    def is_board_constraint_safe(self):
+    def is_within_board_constraints(self):
         col_greater_than = self.column_idx >= 0
         row_greater_than = self.row_idx >= 0
 
@@ -55,4 +56,4 @@ class SafeSpread:
             return col_greater_than
 
     def is_safe(self):
-        return self.is_board_constraint_safe() and not self.is_fire()
+        return self.is_within_board_constraints() and not self.is_fire()
