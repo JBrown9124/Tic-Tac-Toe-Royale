@@ -28,7 +28,6 @@ class BotAction(APIView):
 
         lobby_copy = cache.get(lobby_id)
 
-        lobby_players_copy = lobby_copy["players"]
         lobby_board_copy = lobby_copy["board"]
 
         if playerId[:3] == "BOT":

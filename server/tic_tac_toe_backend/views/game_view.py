@@ -1,15 +1,8 @@
-from django.contrib.auth.middleware import get_user
-from django.db.models import Max, Q
-from django.db.models.query import Prefetch
-from django.http import HttpResponse, JsonResponse
-from random import randrange
+from django.http import JsonResponse
 from random import shuffle
 from rest_framework.views import APIView
 from rest_framework.request import Request
-from django.utils import timezone
-from ..Models.lobby import LobbyModel
 from ..ResponseModels.response_lobby import LobbyResponseModel
-from ..Models.player import Player
 from ..Models.board import BoardModel
 from ..Models.game_status import GameStatus
 from ..Models.win import Win
@@ -60,7 +53,7 @@ class Game(APIView):
         ).to_dict()
 
         lobby_players_copy = lobby_copy["players"]
-        # Dont shuffle moves exist in the previous board state. This signifies that user hits playing again button
+        # dont shuffle if moves exist in the previous board state. This signifies that user hits playing again button
         if len(lobby_copy["board"]["moves"]) == 0:
 
             shuffle(lobby_players_copy)

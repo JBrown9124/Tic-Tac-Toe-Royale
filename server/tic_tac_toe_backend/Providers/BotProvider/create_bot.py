@@ -3,12 +3,12 @@ from .bot_pieces import bot_pieces
 from tic_tac_toe_backend.Models.player import Player
 
 
-def create_bot(lobby):
+def create_bot(players):
     lobby_bot_pieces = set()
     bot_names = set()
-    lobby_players = lobby["players"]
     
-    for player in lobby_players:
+    
+    for player in players:
         player_id = player["playerId"]
         if player_id[:3] == "BOT":
             lobby_bot_pieces.add(player["piece"])

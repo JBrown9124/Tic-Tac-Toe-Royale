@@ -1,4 +1,6 @@
 from .move import Move
+
+
 class Board(object):
     def __init__(self, size, moves):
         self.size = size

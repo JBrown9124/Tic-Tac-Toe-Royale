@@ -8,6 +8,7 @@ def spread_fire(
     last_turn,
     lobby_board_copy,
 ):
+    #if player has a existing casted fire tile update the fires new position
     for i, tile in enumerate(lobby_game_status_copy["fireTiles"]):
         if last_turn == tile["playerIdWhoCast"]:
             new_fire_position = FireTile(
@@ -30,6 +31,7 @@ def spread_fire(
 
             replaced_move = False
             last_fire_position = tile
+            #make sure fire root is updated and the new fire position overrides a move in our move cache
             for i, move in enumerate(lobby_board_copy["moves"]):
                 if (
                     move["rowIdx"] == new_fire_position["rowIdx"]

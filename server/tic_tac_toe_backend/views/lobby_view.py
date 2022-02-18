@@ -22,33 +22,25 @@ class Lobby(APIView):
         player_name = body.get("playerName")
         host_sid = body.get("hostSid")
 
-        player = Player(
-            name=player_name, is_host=True, session_id=host_sid
-        ).to_dict()
-        
-        lobby_id = randrange(99999)
-        lobby_exists = cache.get(lobby_id)
-        # Lobby exists returns None if lobby does not exist in cache
-        while lobby_exists:
-            lobby_id = randrange(99999)
-            lobby_exists = cache.get(lobby_id)
-        
-        lobby = LobbyModel(lobby_id=lobby_id, host_sid=host_sid)
+        player = Player(name=player_name, is_host=True, session_id=host_sid).to_dict()
 
+        lobby = LobbyModel.create(host_sid)
         lobby.players.append(player)
-        lobby_dict = lobby.to_dict()
-        cache.set(lobby_id, lobby_dict, 3600)
+
+        lobby_id = lobby.lobby_id
+        lobby = lobby.to_dict()
+
+        cache.set(lobby_id, lobby[lobby_id], 3600)
 
         lobby_response = LobbyResponseModel(
-            lobby=lobby_dict[lobby_id], lobby_id=lobby_id
+            lobby=lobby[lobby_id], lobby_id=lobby_id
         ).to_dict()
 
-        print(lobby)
         return JsonResponse({"lobby": lobby_response, "playerId": player["playerId"]})
 
     def put(self, request: Request):
         """takes name of requester and lobbyId. find lobby, update lobby with new player,
-        return new lobby state to client. Also creates bots"""
+        return new lobby state and new player to clients. also creates bots"""
         body = request.data
         player_name = body.get("playerName")
         session_id = body.get("sessionId")
@@ -63,23 +55,24 @@ class Lobby(APIView):
             lobby = lobby[lobby_id]
         except:
             lobby = lobby
-        
-        if player_name == "BOTPASSPASS":
 
-            player = create_bot(lobby)
+        lobby = LobbyModel(
+            lobby_id=lobby_id,
+            host_sid=lobby["hostSid"],
+            players=lobby["players"],
+            board=lobby["board"],
+            game_status=lobby["gameStatus"],
+        )
 
-        else:
-            player = Player(
-                name=player_name,
-              
-                session_id=session_id,
-            ).to_dict()
-        lobby["players"].append(player)
-        
-        cache.set(lobby_id, lobby, 3600)
-        lobby_response = LobbyResponseModel(lobby=lobby, lobby_id=lobby_id).to_dict()
+        new_player = lobby.add_player(player_name, session_id)
 
-        return JsonResponse({"lobby": lobby_response, "player": player})
+        lobby = lobby.to_dict()
+        cache.set(lobby_id, lobby[lobby_id], 3600)
+        lobby_response = LobbyResponseModel(
+            lobby=lobby[lobby_id], lobby_id=lobby_id
+        ).to_dict()
+
+        return JsonResponse({"lobby": lobby_response, "player": new_player})
 
     def delete(self, request: Request):
         """takes name of requester and lobby Id. find lobby, remove player who left
@@ -90,45 +83,28 @@ class Lobby(APIView):
         player = body.get("player")
         player_id = player.get("playerId")
         session_id = player.get("sessionId")
-        
-        
-        lobby_copy = cache.get(lobby_id)
+
+        lobby = cache.get(lobby_id)
         try:
-            lobby_copy = lobby_copy[lobby_id]
+            lobby = lobby[lobby_id]
         except:
-            lobby_copy = lobby_copy
-        
-        lobby_players_copy = lobby_copy["players"]
-        make_new_host = False
-        
-        if player_id[:3] == "BOT":
-            for index, player in enumerate(lobby_players_copy):
-                if player["playerId"] == player_id:
-                    lobby_players_copy.remove(player)
-        else:
-            for index, player in enumerate(lobby_players_copy):
-                if player["sessionId"] == session_id and player["playerId"][:3] != "BOT":
-                    if player["isHost"]:
-                    
-                        make_new_host = True    
-                    lobby_players_copy.remove(player)
-               
-        new_host = None
-        if make_new_host and len(lobby_players_copy) > 0:
-           
-            for index,player in enumerate(lobby_players_copy):
-                if player["playerId"][:3] != "BOT":
-                    new_host = player
-                    lobby_players_copy[index]["isHost"] = True
-                    new_host["piece"] = None
-                    break
+            lobby = lobby
+        lobby = LobbyModel(
+            lobby_id=lobby_id,
+            host_sid=lobby["hostSid"],
+            players=lobby["players"],
+            board=lobby["board"],
+            game_status=lobby["gameStatus"],
+        )
 
-        lobby_copy["players"] = lobby_players_copy
-        game_status_copy = lobby_copy["gameStatus"]
+        new_host = lobby.remove_player(player_id, session_id)
 
-        cache.set(lobby_id, lobby_copy, 3600)
+        lobby = lobby.to_dict()
+
+        cache.set(lobby_id, lobby[lobby_id], 3600)
+
         lobby_response = LobbyResponseModel(
-            lobby=lobby_copy, lobby_id=lobby_id
+            lobby=lobby[lobby_id], lobby_id=lobby_id
         ).to_dict()
 
         return JsonResponse({"lobby": lobby_response, "newHost": new_host})

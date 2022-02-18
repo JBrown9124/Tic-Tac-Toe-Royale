@@ -31,7 +31,6 @@ class Board(APIView):
         game_status = body.get("gameStatus")
         new_move = game_status.get("newMove")
         new_power_up_use = game_status.get("newPowerUpUse")
-        # fire_tiles = game_status.get("fireTiles")
         power_up = body.get("powerUp")
 
         win = game_status.get("win")
@@ -50,7 +49,7 @@ class Board(APIView):
         lobby_game_status_copy = lobby_copy["gameStatus"]
         last_turn = lobby_game_status_copy["whoTurn"]
 
-        # Validate that the person who is sending a move is supposed to move in the turn order rotation.
+        # validate that the person who is sending a move is supposed to move in the turn order rotation.
         if game_status["whoTurn"] != lobby_players_copy[-1]["playerId"]:
             return HttpResponse("Not your turn!", status=404)
 
@@ -110,6 +109,7 @@ class Board(APIView):
         lobby_copy["board"] = lobby_board_copy
         lobby_copy["gameStatus"] = lobby_game_status_copy
         lobby_copy["players"] = list(lobby_players_copy)
+        
         cache.set(lobby_id, lobby_copy, 3600)
 
         return JsonResponse({"gameStatus": lobby_copy["gameStatus"]})

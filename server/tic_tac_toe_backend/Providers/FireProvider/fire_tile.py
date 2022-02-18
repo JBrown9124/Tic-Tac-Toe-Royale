@@ -66,7 +66,3 @@ class FireTile:
             else self.current_location.to_dict()
         )
 
-
-# if __name__ == "__main__":
-#     fire = Fire(15, FireMove(row_idx=4, column_idx=5, player_id="FIREgdfSDFdsfdsfds"))
-#     print(fire.spread())
