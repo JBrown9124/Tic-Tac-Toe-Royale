@@ -49,5 +49,5 @@ export default function useMoveHandler({
 
   useTurnOrderUpdater(playerId, isBoardCreated, gameStatus, playerPieces, displayPlayerPieces);
 
-  usePowerUpMoveUpdater(gameStatus, board);
+  usePowerUpMoveUpdater(gameStatus, board, playerId);
 }

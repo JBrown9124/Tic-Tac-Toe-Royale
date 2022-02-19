@@ -71,11 +71,12 @@ export default function useBotMoveUpdater({
                   setGameStatus,
                   inventory
                 );
+               
               }
             });
           }, 500);
 
-          startOtherPlayerMoveSound();
+         
           return () => {
             clearTimeout(botDelay);
           };

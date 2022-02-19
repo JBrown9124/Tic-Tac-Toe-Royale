@@ -187,25 +187,25 @@ const createPiece = (
         />
       ),
     },
-    {
-      name: "TimAllen",
-      value: (
-        <img
-          key={getRandomInt(1, 9999)}
-          src={
-            "https://i1.sndcdn.com/artworks-x3Sb2byztbxK4Sgr-VA47OA-t500x500.jpg"
-          }
-          alt={"TimAllen"}
-          style={{
-            height: sizeOfPiece.mobile,
-            width: sizeOfPiece.mobile,
-            maxHeight: sizeOfPiece.desktop,
-            maxWidth: sizeOfPiece.desktop,
-            borderRadius:borderRadius
-          }}
-        />
-      ),
-    },
+    // {
+    //   name: "TimAllen",
+    //   value: (
+    //     <img
+    //       key={getRandomInt(1, 9999)}
+    //       src={
+    //         "https://i1.sndcdn.com/artworks-x3Sb2byztbxK4Sgr-VA47OA-t500x500.jpg"
+    //       }
+    //       alt={"TimAllen"}
+    //       style={{
+    //         height: sizeOfPiece.mobile,
+    //         width: sizeOfPiece.mobile,
+    //         maxHeight: sizeOfPiece.desktop,
+    //         maxWidth: sizeOfPiece.desktop,
+    //         borderRadius:borderRadius
+    //       }}
+    //     />
+    //   ),
+    // },
     {
       name: "Gandalf",
       value: (

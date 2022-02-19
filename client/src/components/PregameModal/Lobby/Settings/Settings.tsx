@@ -10,7 +10,7 @@ import { Lobby } from "../../../../Models/Lobby";
 import { primaryFontColor } from "../../../../themes/theme1";
 
 interface SettingsProps {
-  setPiece: (piece: string) => void;
+  
   playerPiece: string;
   setSize: (size: number) => void;
   size: number;
@@ -24,7 +24,7 @@ interface SettingsProps {
   lobby: Lobby;
 }
 export default function Settings({
-  setPiece,
+
   playerPiece,
   setSize,
   size,

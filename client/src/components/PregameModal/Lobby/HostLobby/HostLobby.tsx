@@ -55,7 +55,7 @@ export default function HostLobby({
   setIsGuideOpen,
   volume,
   setVolume,
-  lobby
+  lobby,
 }: PlayerListProps) {
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -110,9 +110,9 @@ export default function HostLobby({
             direction="column"
             spacing={4}
           >
-            <Grid item >
+            <Grid item>
               <Settings
-              lobby={lobby}
+                lobby={lobby}
                 setLobby={setLobby}
                 players={players}
                 lobbyId={lobbyId}
@@ -122,6 +122,17 @@ export default function HostLobby({
                 setColor={(props) => setColor(props)}
                 size={size}
                 setSize={(props) => setSize(props)}
+                playerPiece={playerPiece}
+              />
+            </Grid>
+            <Grid
+              item
+              sx={{
+                p: 0,
+                display: { xs: "none", sm: "none", md: "flex", lg: "flex" },
+              }}
+            >
+              <PieceSelector
                 playerPiece={playerPiece}
                 setPiece={(props) =>
                   sendHostPiece(
@@ -133,12 +144,6 @@ export default function HostLobby({
                     hostSid
                   )
                 }
-              />
-            </Grid>
-            <Grid item sx={{ p: 0, display:{xs:"none", sm:"none", md:"flex", lg:"flex"} }}>
-              <PieceSelector
-                playerPiece={playerPiece}
-                setPiece={(props) => setPiece(props)}
               />
             </Grid>
           </Grid>
@@ -175,32 +180,38 @@ export default function HostLobby({
               playerName={playerName}
               playerPiece={playerPiece}
             />
-          
           </Grid>
         </Grid>
-        <Grid container direction="column" sx={{ p: 0, display:{xs:"flex", sm:"flex", md:"none", lg:"none"} }}>
-        <Grid item >
-              <PieceSelector
-                playerPiece={playerPiece}
-                setPiece={(props) => setPiece(props)}
-              />
-            </Grid>
-            <Grid item>
-              <BottomPanel
-                handleLeave={() => handleLeave()}
-                handleStart={() => handleStart()}
-                winBy={winBy}
-                size={size}
-                playerPiece={playerPiece}
-                players={players}
-                setPiece={(props) => setPiece(props)}
-                isError={isError}
-                errorMessage={errorMessage}
-                setErrorMessage={(props) => setErrorMessage(props)}
-                setIsError={(props) => setIsError(props)}
-              />
-            </Grid>
-            </Grid>
+        <Grid
+          container
+          direction="column"
+          sx={{
+            p: 0,
+            display: { xs: "flex", sm: "flex", md: "none", lg: "none" },
+          }}
+        >
+          <Grid item>
+            <PieceSelector
+              playerPiece={playerPiece}
+              setPiece={(props) => setPiece(props)}
+            />
+          </Grid>
+          <Grid item>
+            <BottomPanel
+              handleLeave={() => handleLeave()}
+              handleStart={() => handleStart()}
+              winBy={winBy}
+              size={size}
+              playerPiece={playerPiece}
+              players={players}
+              setPiece={(props) => setPiece(props)}
+              isError={isError}
+              errorMessage={errorMessage}
+              setErrorMessage={(props) => setErrorMessage(props)}
+              setIsError={(props) => setIsError(props)}
+            />
+          </Grid>
+        </Grid>
       </Grid>
     </>
   );

@@ -56,7 +56,8 @@ class Game(APIView):
             host_piece,
             player_id,
         )
-
+        
+        lobby = game.lobby
         cache.set(lobby_id, lobby, 3600)
 
         lobby_response = LobbyResponseModel(lobby=lobby, lobby_id=lobby_id).to_dict()
@@ -81,6 +82,7 @@ class Game(APIView):
         game = GameModel(lobby)
         game.update_player_ready_status(player_piece, player_id)
         
+        lobby = game.lobby
         cache.set(lobby_id, lobby, 3600)
 
         lobby_response = LobbyResponseModel(lobby=lobby, lobby_id=lobby_id).to_dict()

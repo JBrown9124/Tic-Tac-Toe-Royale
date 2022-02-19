@@ -8,7 +8,8 @@ import bombUpdater from "../../updaters/usePowerUpMoveUpdater/bombUpdater";
 
 export default function usePowerUpMoveUpdater(
   gameStatus: GameStatus,
-  board: (string | number)[][]
+  board: (string | number)[][],
+  playerId: string
 ) {
   const volume:number = useContext(VolumeContext)
   const [startOtherPlayerMoveSound] = useSound(
@@ -36,8 +37,8 @@ export default function usePowerUpMoveUpdater(
   const [count, setCount] = useState(1);
 
   useMemo(() => {
-    if (gameStatus.newMove.playerId === gameStatus.whoTurn) {
-      
+    if (gameStatus.newMove.playerId !== playerId && gameStatus.newMove.playerId.length>0) {
+      startOtherPlayerMoveSound();
     }
 
     // Fire spread updater
@@ -49,7 +50,7 @@ export default function usePowerUpMoveUpdater(
 
     // Move updater
     if (gameStatus.newMove.playerId !== "") {
-      startOtherPlayerMoveSound();
+   
       board[gameStatus.newMove.rowIdx][gameStatus.newMove.columnIdx] =
         gameStatus.newMove.playerId;
     }
