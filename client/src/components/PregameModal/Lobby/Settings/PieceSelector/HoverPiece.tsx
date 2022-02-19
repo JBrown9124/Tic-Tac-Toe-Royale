@@ -16,7 +16,7 @@ export default function HoverPiece({
   isOnHoverPiece,
   hoverDirection,
 }: HoverPieceProps) {
-  const pieces = createPiece("black", {
+  const pieces = createPiece("white", {
     mobile: "15vw",
     desktop: "110px",
   });

@@ -64,7 +64,7 @@ class TurnModel:
         if is_new_fire_placement:
             add_fire(
                 self.new_power_up_use,
-                self.last_turn,
+                self.last_turn_player,
                 self.board,
                 self.game_status,
             )
@@ -74,11 +74,14 @@ class TurnModel:
             self.make_move()
         else:
             self.use_power()
+        
+        self.game_status["newPowerUpUse"] = self.new_power_up_use
+        self.game_status["newMove"] = self.new_move
 
     def handle_fire_spread(self):
         fire_tiles_exist = len(self.game_status["fireTiles"]) > 0
         if fire_tiles_exist:
-            spread_fire(self.game_status, self.last_turn, self.board)
+            spread_fire(self.game_status, self.last_turn_player, self.board)
 
     def handle_tie(self):
         board_size = self.board["size"]

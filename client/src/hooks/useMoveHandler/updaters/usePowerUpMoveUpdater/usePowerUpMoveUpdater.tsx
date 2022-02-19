@@ -37,7 +37,7 @@ export default function usePowerUpMoveUpdater(
 
   useMemo(() => {
     if (gameStatus.newMove.playerId === gameStatus.whoTurn) {
-      startOtherPlayerMoveSound();
+      
     }
 
     // Fire spread updater
@@ -49,12 +49,14 @@ export default function usePowerUpMoveUpdater(
 
     // Move updater
     if (gameStatus.newMove.playerId !== "") {
+      startOtherPlayerMoveSound();
       board[gameStatus.newMove.rowIdx][gameStatus.newMove.columnIdx] =
         gameStatus.newMove.playerId;
     }
 
     if (gameStatus?.newPowerUpUse?.selectedPowerUpTiles?.length !== 0)
       switch (gameStatus?.newPowerUpUse?.powerUp?.name) {
+        
         case "fire":
           fireUpdater(board, gameStatus, playFireSound);
           break;

@@ -34,11 +34,11 @@ export default function TurnStatus({
         </Grid>
         <Grid item>
           {gameStatus.win.whoWon === "tie" ? (
-            <Typography variant="h6" sx={{ fontFamily: "Cinzel, serif" }}>
+            <Typography variant="h6" sx={{ fontFamily: "Cinzel, serif",color:"white" , }}>
               Its a tie!
             </Typography>
           ) : (
-            <Typography variant="h6" sx={{ fontFamily: "Cinzel, serif" }}>
+            <Typography variant="h6" sx={{ color:"white" ,fontFamily: "Cinzel, serif" }}>
               {playerPieces.map((player: Player) => {
                 if (gameStatus.win.whoWon) {
                   if (player.playerId === gameStatus.win.whoWon) {

@@ -99,32 +99,9 @@ export default function PowerOptions({
               </Badge>
             </Grid>
 
-            {/* <Grid item>
-              <Typography
-                sx={{
-                  fontFamily: "Noto Sans, sans-serif",
-                  p: 0,
-                }}
-              >
-                {powerUp.quantity === 1 ? "" : powerUp.quantity}
-              </Typography>
-            </Grid> */}
           </Grid>
         ))}
-        {/* {powerUpsWithQuantity.length === 0 && (
-          <Grid
-            container
-            direction="column"
-            sx={{
-              p: 1,
-            }}
-          >
-            <Typography sx={{ fontFamily: "Cinzel, serif" }}>
-              {" "}
-              Go Here
-            </Typography>
-          </Grid>
-        )} */}
+     
       </Grid>
     </>
   );

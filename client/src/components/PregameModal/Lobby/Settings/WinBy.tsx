@@ -11,26 +11,26 @@ import { primaryFontColor } from "../../../../themes/theme1";
 
 const StyledTextField = styled(TextField)({
   background: "transparent",
-  borderBottomColor: "black",
+  borderBottomColor: "#04f005",
   "& .MuiInput-underline:before": {
-    borderBottomColor: "black",
+    borderBottomColor: "#04f005",
   },
 
   "& label.Mui-focused": {
-    color: "black",
+    color: "#04f005",
   },
   "& .MuiInput-underline:after": {
-    borderBottomColor: "black",
-    backgroundColor: "white",
+    borderBottomColor: "#04f005",
+    backgroundColor: "#04f005",
   },
   "& .MuiOutlinedInput-root": {
     "& fieldset": {
-      borderColor: "#e8f5e9",
+      borderColor: "#04f005",
     },
 
     "&:hover fieldset": {},
     "&.Mui-focused fieldset": {
-      borderColor: "#ffecb3",
+      borderColor: "#04f005",
 
       fontFamily: "Noto Sans, sans-serif",
     },
@@ -61,16 +61,16 @@ export default function WinBy({ winBy, setWinBy, size }: WinByProps) {
         alignItems="center"
         justifyContent="center"
         sx={{
-          background: "#81c784",
-          borderRadius: "5px",
+          // background: '#dcc3e2',
+          // borderRadius: "5px",
           p: 2,
-          border: "1px solid #ec407a",
+         
         }}
       >
         <Typography
           sx={{
             fontFamily: "Noto Sans, sans-serif",
-            color: primaryFontColor,
+            color: "white",
           }}
         >
           Win by
@@ -92,14 +92,14 @@ export default function WinBy({ winBy, setWinBy, size }: WinByProps) {
             error={winBy > size}
             value={winBy}
             inputProps={{
-              style: { fontFamily: "Noto Sans, sans-serif" },
+              style: { fontFamily: "Noto Sans, sans-serif", color:"white"},
               step: 1,
               min: 2,
               max: size,
               type: "number",
               "aria-labelledby": "winBy",
             }}
-            sx={{ marginLeft: 1 }}
+            sx={{ marginLeft: 1, borderBottomColor: "white"}}
             variant="standard"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               handleInputChange(parseInt(e.target.value))

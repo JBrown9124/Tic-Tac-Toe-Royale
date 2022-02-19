@@ -37,7 +37,7 @@ const CopyLobbyId = ({ lobbyId }: CopyLobbyIdProps) => {
       </Grid>
       <Grid item>
         <Typography
-          sx={{ fontFamily: "Noto Sans, sans-serif",  color:"#ec407a"}}
+          sx={{ fontFamily: "Noto Sans, sans-serif",  color:'#04f005'}}
         >
           Lobby ID: {lobbyId}
         </Typography>

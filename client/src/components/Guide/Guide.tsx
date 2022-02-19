@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import ClearIcon from "@mui/icons-material/Clear";
-import VolumeSlider from "../VolumeSlider"
+import VolumeSlider from "../VolumeSlider";
 import Action from "./Action";
 import { powerUps, powerUpsList } from "../../storage/powerUps";
 import PulsatingAnimator from "../../animators/PulsatingAnimator";
@@ -27,10 +27,15 @@ const style = {
 interface GuideProps {
   isOpen: boolean;
   onClose: () => void;
-  volume:number,
-  setVolume: (volume: number) => void
+  volume: number;
+  setVolume: (volume: number) => void;
 }
-export default function Guide({ isOpen, onClose, volume, setVolume }: GuideProps) {
+export default function Guide({
+  isOpen,
+  onClose,
+  volume,
+  setVolume,
+}: GuideProps) {
   return (
     <>
       <Modal
@@ -53,7 +58,7 @@ export default function Guide({ isOpen, onClose, volume, setVolume }: GuideProps
             left: "50%",
             transform: "translate(-50%, -50%)",
 
-            bgcolor: "#1b5e20",
+            bgcolor: "#181a45",
             border: "2px solid #000",
             boxShadow: 24,
             maxHeight: 700,
@@ -66,18 +71,28 @@ export default function Guide({ isOpen, onClose, volume, setVolume }: GuideProps
           <Grid sx={{ textAlign: "center", marginBottom: 3 }}>
             <CustomButton message={"Close Guide"} onClick={() => onClose()} />
           </Grid>
-          <Grid sx={{justifyContent: "center", textAlign: "center",  marginBottom: 5  }} container>
-            <VolumeSlider volume={volume} setVolume={(props)=>setVolume(props)}/>
+          <Grid
+            sx={{
+              justifyContent: "center",
+              textAlign: "center",
+              marginBottom: 5,
+            }}
+            container
+          >
+            <VolumeSlider
+              volume={volume}
+              setVolume={(props) => setVolume(props)}
+            />
           </Grid>
           {powerUpsList.map((powerUp, idx) => (
             <Action
-            key={idx}
+              key={idx}
               name={powerUp.name}
               img={
                 <img
                   src={powerUp.imgUrl}
                   alt={powerUp.name}
-                  style={{ width: "40px", height: "40px" }}
+                  style={{ width: "40px", height: "40px", }}
                 />
               }
               description={powerUp.description}
@@ -88,7 +103,7 @@ export default function Guide({ isOpen, onClose, volume, setVolume }: GuideProps
             name={"Use Power"}
             img={
               <PulsatingAnimator>
-                <CustomButton sx={{ background: "red" }} message={`Use Fire`} />
+                <CustomButton message={`Use Fire`} />
               </PulsatingAnimator>
             }
             description={
@@ -98,7 +113,7 @@ export default function Guide({ isOpen, onClose, volume, setVolume }: GuideProps
           />
           <Action
             name={"Move"}
-            img={<CircleOutlinedIcon sx={{ width: "40px", height: "40px" }} />}
+            img={<CircleOutlinedIcon sx={{ width: "40px", height: "40px", color:"white" }} />}
             description={"Select any open tile on the board."}
             value={"M"}
           />

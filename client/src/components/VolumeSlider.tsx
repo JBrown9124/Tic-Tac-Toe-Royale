@@ -24,23 +24,23 @@ export default function VolumeSlider({ volume, setVolume }: VolumeSliderProps) {
     <Box
       sx={{
         width: 200,
-        background: "#81c784",
-        borderRadius: "5px",
-        border: "1px solid #ec407a", p:1
+        // background: "#81c784",
+        // borderRadius: "5px",
+        // border: "1px solid #ec407a", p:1
       }}
     >
       <Stack spacing={2} direction="row" sx={{  }} alignItems="center">
-        <VolumeDown />
+        <VolumeDown sx={{color:'#04f005'}}/>
         <Slider
-          sx={{ color: "#ec407a" }}
+          sx={{ color: '#04f005'}}
           aria-label="Volume"
           value={volumeValue}
           max={1}
-          step={.1}
+          step={.01}
           min={0}
           onChange={handleVolumeChange}
         />
-        <VolumeUp />
+        <VolumeUp sx={{color:'#04f005'}} />
       </Stack>
     </Box>
   );

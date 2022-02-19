@@ -10,7 +10,7 @@ export default function SelectedPiece({
   selectedPiece,
   isPieceSelected,
 }: SelectedPieceProps) {
-  const pieces = createPiece("black", {
+  const pieces = createPiece("white", {
     mobile: "15vw",
     desktop: "55px",
   });

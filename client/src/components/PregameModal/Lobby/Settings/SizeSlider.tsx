@@ -4,55 +4,36 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Slider from "@mui/material/Slider";
 
-import Input from "@mui/material/Input";
+import TextField from "@mui/material/TextField";
 import { primaryFontColor } from "../../../../themes/theme1";
 import { useSound } from "use-sound";
 import { VolumeContext } from "../../../../storage/VolumeContext";
-const CustomInput = styled(Input)({
+const CustomInput = styled(TextField)({
+  background: "transparent",
+  borderBottomColor: "#04f005",
   "& .MuiInput-underline:before": {
-    borderBottomColor: primaryFontColor,
-    borderRadius: "100px",
+    borderBottomColor: "#04f005",
   },
 
-  // "& :focus": {
-  //   backgroundColor: "white",
-  // },
-  // "&$focused": {
-  //   backgroundColor: "white",
-  // },
   "& label.Mui-focused": {
-    // backgroundColor: "white",
-
-    // "& :focus": {
-    //   backgroundColor: "white",
-    // },
-    // "&$focused": {
-    //   backgroundColor: "white",
-    // },
-    color: primaryFontColor,
+    color: "#04f005",
   },
   "& .MuiInput-underline:after": {
-    borderBottomColor: primaryFontColor,
-    backgroundColor: "white",
+    borderBottomColor: "#04f005",
+    backgroundColor: "#04f005",
   },
   "& .MuiOutlinedInput-root": {
     "& fieldset": {
-      borderColor: primaryFontColor,
-      borderRadius: "100px",
+      borderColor: "#04f005",
     },
-    "&:hover fieldset": {
-      borderColor: primaryFontColor,
-    },
+
+    "&:hover fieldset": {},
     "&.Mui-focused fieldset": {
-      borderColor: primaryFontColor,
+      borderColor: "#04f005",
 
       fontFamily: "Noto Sans, sans-serif",
     },
   },
-  // "& .MuiInput-underline:before": {
-  //   borderBottomColor: " rgba(191, 189, 206, 0.986)",
-  // },
-  //   },
 });
 interface SizeSliderProps {
   setSize: (size: number) => void;
@@ -93,15 +74,15 @@ export default function SizeSlider({ setSize, size }: SizeSliderProps) {
       direction="column"
       spacing={0}
       sx={{
-        background: "#81c784",
-        borderRadius: "5px",
-        border: "1px solid #ec407a",
+        // background: '#dcc3e2',
+        // borderRadius: "5px",
+
         p: 2,
       }}
     >
       <Grid item>
         <Typography
-          sx={{ fontFamily: "Noto Sans, sans-serif", color: primaryFontColor }}
+          sx={{ fontFamily: "Noto Sans, sans-serif", color: "white" }}
         >
           Board Size
         </Typography>
@@ -112,7 +93,7 @@ export default function SizeSlider({ setSize, size }: SizeSliderProps) {
             max={15}
             step={1}
             min={3}
-            sx={{ color: "#ec407a" }}
+            sx={{ color: "#04f005" }}
             value={sizeValue}
             onChange={(
               e: Event,
@@ -132,6 +113,7 @@ export default function SizeSlider({ setSize, size }: SizeSliderProps) {
               handleInputChange(parseInt(e.target.value));
             }}
             onBlur={handleBlur}
+            variant="standard"
             inputProps={{
               step: 1,
               min: 3,
@@ -141,7 +123,7 @@ export default function SizeSlider({ setSize, size }: SizeSliderProps) {
               style: {
                 fontFamily: "Noto Sans, sans-serif",
 
-                color: primaryFontColor,
+                color: "white",
               },
             }}
           />

@@ -2,10 +2,10 @@ import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 const StyledButton = styled(Button)(({ theme }) => ({
-  backgroundColor: "#ec407a",
+  backgroundColor: '#04f005',
   
   "&:hover": {
-    backgroundColor: "#ff77a9",
+    backgroundColor: '#d9fdcc',
     boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
   },
   fontFamily: "Cinzel, serif",

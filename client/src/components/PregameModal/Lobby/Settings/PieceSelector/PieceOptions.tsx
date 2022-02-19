@@ -22,7 +22,7 @@ export default function PieceOptions({
   const [playSound] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3", {volume:volume}
   );
-  const pieces = createPiece("black",{mobile:'8vw',desktop:"40px"});
+  const pieces = createPiece("white",{mobile:'8vw',desktop:"40px"});
   const handleSelectPiece = (pieceName: string) => {
     setPiece(pieceName);
     playSound();
@@ -33,7 +33,7 @@ export default function PieceOptions({
       <Grid
         container
         direction="column"
-        sx={{ borderRadius: "5px", background: "#81c784", border:"1px solid #ec407a", }}
+        // sx={{ borderRadius: "5px",   background: '#dcc3e2',  }}
       >
         <Grid
           item

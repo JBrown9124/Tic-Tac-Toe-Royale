@@ -63,14 +63,14 @@ export default function BotOptions({
         container
         direction="column"
         sx={{
-          background: "#81c784",
-          borderRadius: "5px",
+          // background: '#dcc3e2',
+          // borderRadius: "5px",
           p: 1,
-          border: "1px solid #ec407a",
+      
         }}
       >
         <Grid item sx={{p:1}}>
-          <Typography sx={{ fontFamily: "Noto Sans, sans-serif" }}>
+          <Typography sx={{ fontFamily: "Noto Sans, sans-serif", color:"white" }}>
             Bots
           </Typography>
         </Grid>

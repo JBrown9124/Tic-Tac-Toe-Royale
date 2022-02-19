@@ -30,7 +30,7 @@ export default function SelectedPower({
           <Grid item sx={{ p: 1 }}>
             <PulsatingAnimator>
             <CustomButton
-              sx={{ background: selectedPowerUp.selectColor }}
+              // sx={{ background: selectedPowerUp.selectColor }}
               onClick={() => {
                 onFinish();
               }}

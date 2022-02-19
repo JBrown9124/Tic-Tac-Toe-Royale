@@ -22,15 +22,14 @@ export default function Action({name, description, value,img}:ActionProps) {
       justifyContent="center"
       textAlign="center"
       sx={{
-        background: "#81c784",
-        borderRadius: "5px",
+     
         p: 2,
-        border: "1px solid #ec407a",
+        
         marginBottom: 5,
       }}
     >
       <Grid item sx={{ p: 1 }}>
-        <Typography sx={{ fontFamily: "Cinzel, serif" }} variant="h5">
+        <Typography sx={{ fontFamily: "Cinzel, serif", color:"white" }} variant="h5">
           {name}
         </Typography>
       </Grid>
@@ -38,7 +37,7 @@ export default function Action({name, description, value,img}:ActionProps) {
        {img}
       </Grid>
       <Grid item sx={{ p: 1 }}>
-        <Typography sx={{ fontFamily: "Noto Sans, sans-serif" }}>
+        <Typography sx={{ fontFamily: "Noto Sans, sans-serif", color:"white" }}>
           {description}
         </Typography>
       </Grid>
@@ -53,13 +52,14 @@ export default function Action({name, description, value,img}:ActionProps) {
         <Grid
           item
           sx={{
-            border: "3px solid black",
+            border: "3px solid white",
             borderRadius: "5px",
             pl: 2,
             pr: 2,
             pt: 1,
             pb: 1,
             boxShadow: 5,
+            color:"white"
           }}
         >
           <Typography sx={{ fontFamily: "Noto Sans, sans-serif" }}>

@@ -3,22 +3,22 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 const StyledTextField = styled(TextField)({
   borderRadius: "100px",
-  background: "#4c8c4a",
-  color: "black",
+  background: '#122e8d',
+  color: '#dce2c3',
   "& .MuiInput-underline:before": {
     border: "none",
     borderBottomColor: "none",
     borderRadius: "100px",
-    color: "black",
+    color: '#dce2c3',
   },
 
   "& :focus": {
-    color: "black",
+    color: '#dce2c3',
     borderRadius: "100px",
   },
   "&$focused": {
     borderRadius: "100px",
-    color: "black",
+    color: '#dce2c3',
   },
   "& label.Mui-focused": {
     // backgroundColor: "white",
@@ -26,20 +26,20 @@ const StyledTextField = styled(TextField)({
 
     "& :focus": {
       borderRadius: "100px",
-      color: "black",
+      color: '#dce2c3',
     },
     "&$focused": {
       borderRadius: "100px",
-      color: "black",
+      color: '#384511',
     },
-    color: "#424242",
+    color: "#dce2c3",
   },
 
   "& .MuiInput-underline:after": {
     border: "none",
-    color: "black",
+    color: '#dce2c3',
 
-    borderBottomColor: "black",
+    borderBottomColor: '#dce2c3',
     backgroundColor: "white",
     borderRadius: "100px",
   },
@@ -47,19 +47,19 @@ const StyledTextField = styled(TextField)({
    
  
     "& fieldset": {
-      color: "black",
+      color: '#dce2c3',
       border: "none",
       borderColor: "none",
       borderRadius: "100px",
     },
     "&:hover fieldset": {
-      color: "black",
+      color: '#dce2c3',
       border: "none",
       borderColor: "none",
       borderRadius: "100px",
     },
     "&.Mui-focused fieldset": {
-      color: "black",
+      color: '#dce2c3',
       border: "none",
       borderColor: "none",
       borderRadius: "100px",
@@ -69,7 +69,7 @@ const StyledTextField = styled(TextField)({
 
     "& .MuiInput-underline:before": {
       
-      color: "black",
+      color: '#dce2c3',
       borderRadius: "100px",
     },
   },
@@ -123,7 +123,7 @@ export default function CustomTextField({
         style: { fontFamily: "Noto Sans, sans-serif", color: "white" },
       }} // font size of input text
       InputLabelProps={{
-        style: { fontFamily: "Noto Sans, sans-serif" },
+        style: { fontFamily: "Noto Sans, sans-serif", },
       }} // font size of input label
       //   sx={{
       //     width: "10vw",

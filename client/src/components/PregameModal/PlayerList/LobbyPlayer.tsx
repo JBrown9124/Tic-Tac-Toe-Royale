@@ -15,8 +15,12 @@ interface PlayerProps {
   playerPiece: string;
   playerId: string;
 }
-export default function LobbyPlayer({ player, playerPiece, playerId }: PlayerProps) {
-  const pieces = createPiece("black");
+export default function LobbyPlayer({
+  player,
+  playerPiece,
+  playerId,
+}: PlayerProps) {
+  const pieces = createPiece("white");
   return (
     <>
       <Grid
@@ -27,11 +31,11 @@ export default function LobbyPlayer({ player, playerPiece, playerId }: PlayerPro
         alignItems="center"
         textAlign="center"
         sx={{
-          background: "#81c784",
+          background: "#69038d",
           p: 1,
-          border: "1px solid #ec407a",
+          border: "1px solid #04f005",
           borderRadius: "5px",
-          boxShadow: {xs:5, sm:5, md:20, lg:20},
+          boxShadow: { xs: 5, sm: 5, md: 20, lg: 20 },
         }}
       >
         <Grid item xs={4} sm={4} md={4} lg={4}>
@@ -62,7 +66,15 @@ export default function LobbyPlayer({ player, playerPiece, playerId }: PlayerPro
           )}
         </Grid>
         <Grid item xs={4} sm={1} md={4} lg={4}>
-          {player.name}
+          <Typography
+            sx={{
+              fontFamily: "Noto Sans, sans-serif",
+              fontSize: ".9rem",
+              color: "white",
+            }}
+          >
+            {player.name}
+          </Typography>
         </Grid>
         <Grid item xs={4} sm={7} md={4} lg={4}>
           {" "}

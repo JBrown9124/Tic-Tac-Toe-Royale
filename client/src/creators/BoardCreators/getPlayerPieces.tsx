@@ -23,10 +23,7 @@ const getPlayerPieces = async (
     );
 
     const sizeOfDisplayPiece = { desktop: "60px", mobile: "8vw" };
-    const defaultDisplayPieces = createPiece(
-      boardColor.r * 0.299 + boardColor.g * 0.587 + boardColor.b * 0.114 > 186
-        ? "black"
-        : "white",
+    const defaultDisplayPieces = createPiece("white",
       sizeOfDisplayPiece
     );
 

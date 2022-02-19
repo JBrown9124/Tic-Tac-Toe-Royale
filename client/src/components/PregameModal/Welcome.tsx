@@ -34,7 +34,7 @@ export default function Welcome({
               sx={{
                 fontFamily: "Major Mono Display, monospace",
                 p: 2,
-                color: "#bc477b",
+                color: '#04f005',
                 fontSize: "5rem",
               }}
             >

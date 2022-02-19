@@ -23,17 +23,17 @@ export default function ColorSelecter({ color, setColor }: ColorSelectorProps) {
         spacing={0}
         textAlign="center"
         sx={{
-          background: "#81c784",
-          borderRadius: "5px",
+          // background: '#dcc3e2',
+          // borderRadius: "5px",
           p: 2,
-          border: "1px solid #ec407a",
+         
         }}
       >
         <Grid item sx={{ marginBottom: 1 }}>
           <Typography
             sx={{
               fontFamily: "Noto Sans, sans-serif",
-              color: primaryFontColor,
+              color:"white"
             }}
           >
             Board Color

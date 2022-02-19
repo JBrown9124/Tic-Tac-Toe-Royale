@@ -1,6 +1,7 @@
 import fire from "../img/fire.png";
 import bomb from "../img/bomb.jpg";
 import mcolbomb from "../img/mcol-bomb.svg";
+import bow from "../img/bow.png";
 import { PowerUps } from "../Models/PowerUp";
 export const powerUps: PowerUps = {
   "1": {
@@ -47,7 +48,7 @@ export const powerUps: PowerUps = {
     cursorUrl:"http://www.rw-designer.com/cursor-view/77464.png",
     description:
       "Select a tile you own. Then select a tile in any direction next to your currently selected tile. Any tiles in the arrows 2 tile range will be destroyed!",
-    imgUrl: "https://cdn.newworldfans.com/db_images/db/items_hires/arrowt4.png",
+    imgUrl: bow ,
 
     value: 3,
     rules: {
@@ -159,7 +160,7 @@ export const powerUpsList=[ {
   cursorUrl:"http://www.rw-designer.com/cursor-view/77464.png",
   description:
     "Select a tile you own. Then select a tile in any direction next to your currently selected tile. Any tiles in the arrows 2 tile range will be destroyed!",
-  imgUrl: "https://cdn.newworldfans.com/db_images/db/items_hires/arrowt4.png",
+  imgUrl: bow ,
 
   value: 3,
   rules: {
