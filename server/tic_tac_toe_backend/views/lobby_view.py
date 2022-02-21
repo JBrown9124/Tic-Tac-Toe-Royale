@@ -108,3 +108,8 @@ class Lobby(APIView):
         ).to_dict()
 
         return JsonResponse({"lobby": lobby_response, "newHost": new_host})
+    
+    def get(self, request: Request):
+        '''get all lobbies for user to see when they are on lobby browser page'''
+        all_lobbies = cache.get("*")
+    
