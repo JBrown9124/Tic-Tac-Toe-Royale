@@ -1,6 +1,6 @@
 from random import randrange
 from .bot_pieces import bot_pieces
-from tic_tac_toe_backend.Models.player import Player
+from tic_tac_toe_backend.cache_models.player import Player
 
 
 def create_bot(players):

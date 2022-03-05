@@ -1,14 +1,17 @@
-class Move:
-    def __init__(self, row_idx=0, column_idx=0, player_id="", is_fire_root=False):
-        self.row_idx = row_idx
-        self.column_idx = column_idx
-        self.player_id = player_id
-        self.is_fire_root = is_fire_root
+from django.db import models
+from django.db.models import Q
 
-    def to_dict(self):
-        return {
-            "rowIdx": self.row_idx,
-            "columnIdx": self.column_idx,
-            "playerId": self.player_id,
-            "isFireRoot": self.is_fire_root,
-        }
+from . import utils
+from .game_status import GameStatus
+
+
+class NewMove(utils.CustomModel):
+
+   game_status_id = models.ForeignKey(GameStatus, on_delete=models.CASCADE)
+   player_id = models.CharField(max_length=60)
+   row_idx = models.IntegerField(null=False)
+   column_idx = models.IntegerField(null=False)
+   
+  
+   
+        

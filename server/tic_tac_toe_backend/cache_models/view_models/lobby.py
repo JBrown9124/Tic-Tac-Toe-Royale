@@ -3,7 +3,7 @@ from random import randrange
 from tic_tac_toe_backend.Providers.BotProvider.create_bot import create_bot
 from random import randrange
 from django.core.cache import cache
-from tic_tac_toe_backend.Models.player import Player
+from tic_tac_toe_backend.cache_models.player import Player
 from ..board import BoardModel
 from ..game_status import GameStatus
 

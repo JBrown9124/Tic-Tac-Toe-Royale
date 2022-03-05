@@ -4,12 +4,12 @@ from tic_tac_toe_backend.Providers.PowerUpProvider.spread_fire import spread_fir
 from tic_tac_toe_backend.Providers.PowerUpProvider.add_fire import add_fire
 from tic_tac_toe_backend.Providers.PowerUpProvider.destroy_move import destroy_move
 
-from tic_tac_toe_backend.Models.win import Win
+from tic_tac_toe_backend.cache_models.win import Win
 
 
 class TurnModel:
     def __init__(self, lobby, new_power_up_use, new_move, win):
-        
+
         self.game_status = lobby["gameStatus"]
         self.players = lobby["players"]
         self.board = lobby["board"]
@@ -74,7 +74,7 @@ class TurnModel:
             self.make_move()
         else:
             self.use_power()
-        
+
         self.game_status["newPowerUpUse"] = self.new_power_up_use
         self.game_status["newMove"] = self.new_move
 

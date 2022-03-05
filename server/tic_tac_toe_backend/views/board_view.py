@@ -3,8 +3,8 @@ from collections import deque
 from rest_framework.views import APIView
 from rest_framework.request import Request
 
-from tic_tac_toe_backend.Models.view_models.turn import TurnModel
-from ..Models.win import Win
+from tic_tac_toe_backend.cache_models.view_models.turn import TurnModel
+from ..cache_models.win import Win
 from django.core.cache import cache
 from ..Providers.PowerUpProvider.add_fire import add_fire
 from ..Providers.PowerUpProvider.destroy_move import destroy_move

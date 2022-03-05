@@ -7,9 +7,9 @@ from random import randrange
 from rest_framework.views import APIView
 from rest_framework.request import Request
 from django.utils import timezone
-from ..Models.view_models.lobby import LobbyModel
+from ..cache_models.view_models.lobby import LobbyModel
 from ..ResponseModels.response_lobby import LobbyResponseModel
-from ..Models.player import Player
+from ..cache_models.player import Player
 from django.core.cache import cache
 from ..Providers.BotProvider.bot_pieces import bot_pieces
 from ..Providers.BotProvider.create_bot import create_bot
