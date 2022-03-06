@@ -7,26 +7,33 @@ from random import randrange
 from rest_framework.views import APIView
 from rest_framework.request import Request
 from django.utils import timezone
+from tic_tac_toe_backend.models.player import Player
+from tic_tac_toe_backend.models.players import Players
+from tic_tac_toe_backend.models.board import Board
+from tic_tac_toe_backend.models.lobby import Lobby
+
+from tic_tac_toe_backend.models.providers.create_lobby import create_lobby
 from ..cache_models.view_models.lobby import LobbyModel
 from ..ResponseModels.response_lobby import LobbyResponseModel
-from ..cache_models.player import Player
+from ..cache_models.player import PlayerModel
 from django.core.cache import cache
 from ..Providers.BotProvider.bot_pieces import bot_pieces
 from ..Providers.BotProvider.create_bot import create_bot
 
 # Create your views here.
-class Lobby(APIView):
+class LobbyView(APIView):
     def post(self, request: Request):
         """creates looby. takes name of requester and sid of requester. creates lobby. returns lobby and playerId for requester"""
         body = request.data
         player_name = body.get("playerName")
         host_sid = body.get("hostSid")
 
-        player = Player(name=player_name, is_host=True, session_id=host_sid).to_dict()
+        player = PlayerModel(name=player_name, is_host=True, session_id=host_sid).to_dict()
 
         lobby = LobbyModel.create(host_sid)
         lobby.players.append(player)
-
+        create_lobby(lobby.lobby_id,player_name)
+        
         lobby_id = lobby.lobby_id
         lobby = lobby.to_dict()
 
@@ -111,5 +118,15 @@ class Lobby(APIView):
     
     def get(self, request: Request):
         '''get all lobbies for user to see when they are on lobby browser page'''
-        all_lobbies = cache.get("*")
+        lobbys = Lobby.objects.all()
+        for lobby in lobbys:
+            
+           
+            players = Players.objects.get(lobby=lobby)
+            players = Player.objects.filter(players=players)
+            for player in players:
+                print(player.to_dict())
+        
+
+        
     

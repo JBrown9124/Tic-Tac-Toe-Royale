@@ -7,6 +7,6 @@ from .player import Player
 
 class Inventory(utils.CustomModel):
 
-   player_id = models.ForeignKey(Player, on_delete=models.CASCADE)
+   player = models.ForeignKey(Player, on_delete=models.CASCADE)
    
         

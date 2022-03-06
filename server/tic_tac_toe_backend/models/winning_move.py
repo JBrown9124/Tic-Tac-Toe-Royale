@@ -7,7 +7,7 @@ from .win import Win
 
 class WinningMove(utils.CustomModel):
 
-   win_id = models.ForeignKey(Win, on_delete=models.CASCADE)
+   win = models.ForeignKey(Win, on_delete=models.CASCADE)
    move_id = models.IntegerField(null=True)
    
   

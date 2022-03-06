@@ -2,7 +2,7 @@ import uuid
 from typing import List
 
 
-class Player:
+class PlayerModel:
     def __init__(
         self,
         name,

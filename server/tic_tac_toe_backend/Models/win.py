@@ -7,7 +7,7 @@ from .game_status import GameStatus
 
 class Win(utils.CustomModel):
 
-   game_status_id = models.ForeignKey(GameStatus, on_delete=models.CASCADE)
+   game_status = models.ForeignKey(GameStatus, on_delete=models.CASCADE)
    type = models.CharField(max_length=60)
    who_won = models.CharField(max_length=60)
   

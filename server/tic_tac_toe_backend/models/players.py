@@ -7,6 +7,6 @@ from .lobby import Lobby
 
 class Players(utils.CustomModel):
 
-   lobby_id = models.ForeignKey(Lobby, on_delete=models.CASCADE)
+   lobby = models.ForeignKey(Lobby, on_delete=models.CASCADE)
 
         

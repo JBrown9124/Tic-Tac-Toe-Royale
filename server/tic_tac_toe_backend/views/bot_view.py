@@ -6,13 +6,7 @@ from random import randrange
 
 from rest_framework.views import APIView
 from rest_framework.request import Request
-from django.utils import timezone
-from ..cache_models.view_models.lobby import LobbyModel
-from ..ResponseModels.response_lobby import LobbyResponseModel
-from ..cache_models.board import BoardModel
-from ..cache_models.player import Player
-from ..cache_models.win import Win
-from ..ResponseModels.response_board import BoardResponseModel
+
 from django.core.cache import cache
 from ..Providers.BotProvider.bot import Bot
 
