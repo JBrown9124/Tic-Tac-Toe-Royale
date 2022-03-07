@@ -1,20 +1,15 @@
-from typing import Union
+from django.db import models
+from django.db.models import Q
+
+from . import utils
+from .game_status import GameStatus
 
 
-class Win(object):
-    def __init__(
-        self,
-        type: str = None,
-        who_won: Union[int, str] = None,
-        winning_moves: list = None,
-    ):
-        self.type = type
-        self.who_won = who_won
-        self.winning_moves = winning_moves
+class Win(utils.CustomModel):
 
-    def to_dict(self):
-        return {
-            "type": self.type,
-            "whoWon": self.who_won,
-            "winningMoves": self.winning_moves,
-        }
+   game_status = models.ForeignKey(GameStatus, on_delete=models.CASCADE)
+   type = models.CharField(max_length=60)
+   who_won = models.CharField(max_length=60)
+  
+   
+        

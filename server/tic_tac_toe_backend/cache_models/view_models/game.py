@@ -1,7 +1,7 @@
 from random import shuffle
-from tic_tac_toe_backend.Models.game_status import GameStatus
-from tic_tac_toe_backend.Models.win import Win
-from tic_tac_toe_backend.Models.board import BoardModel
+from tic_tac_toe_backend.cache_models.game_status import GameStatus
+from tic_tac_toe_backend.cache_models.win import Win
+from tic_tac_toe_backend.cache_models.board import BoardModel
 
 
 class GameModel:

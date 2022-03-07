@@ -1,6 +1,6 @@
 from random import randrange
 from .bot_pieces import bot_pieces
-from tic_tac_toe_backend.Models.player import Player
+from tic_tac_toe_backend.cache_models.player import PlayerModel
 
 
 def create_bot(players):
@@ -23,7 +23,7 @@ def create_bot(players):
     bot_name = "BOT" + str(randrange(1, 999))
     while bot_name in bot_names:
         bot_name = "BOT" + str(randrange(1, 999))
-    player = Player(
+    player = PlayerModel(
         name=bot_name,
         is_loaded=True,
         piece=bot_piece,

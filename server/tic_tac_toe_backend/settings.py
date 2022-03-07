@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 from dotenv import dotenv_values
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -26,7 +27,7 @@ if not env_vars.get("SECRET_KEY"):
 SECRET_KEY = env_vars.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = not env_vars.get("ENV") == "production"
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -101,6 +102,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "tic_tac_toe_backend.wsgi.application"
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 
 # Database
@@ -151,6 +153,11 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+STATIC_URL = '/static/'
+
+
+
+
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
@@ -160,6 +167,6 @@ REST_FRAMEWORK = {
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = "/static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
 

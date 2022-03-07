@@ -5,10 +5,8 @@ from . import utils
 from .lobby import Lobby
 
 
-class Board(utils.CustomModel):
+class Players(utils.CustomModel):
 
    lobby = models.ForeignKey(Lobby, on_delete=models.CASCADE)
-   win_by = models.IntegerField(null=True)
-   size = models.IntegerField(null=True)
-   
+
         

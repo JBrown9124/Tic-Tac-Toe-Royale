@@ -3,11 +3,11 @@ from random import shuffle
 from rest_framework.views import APIView
 from rest_framework.request import Request
 
-from tic_tac_toe_backend.Models.view_models.game import GameModel
+from tic_tac_toe_backend.cache_models.view_models.game import GameModel
 from ..ResponseModels.response_lobby import LobbyResponseModel
-from ..Models.board import BoardModel
-from ..Models.game_status import GameStatus
-from ..Models.win import Win
+from ..cache_models.board import BoardModel
+from ..cache_models.game_status import GameStatus
+from ..cache_models.win import Win
 from django.core.cache import cache
 
 # Create your views here.

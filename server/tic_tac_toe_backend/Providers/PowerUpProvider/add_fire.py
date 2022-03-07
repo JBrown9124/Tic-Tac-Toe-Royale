@@ -1,5 +1,5 @@
 from ..FireProvider.FireModels.fire_move import FireMove
-from tic_tac_toe_backend.Models.new_move import Move
+from tic_tac_toe_backend.cache_models.new_move import Move
 def add_fire(new_power_up_use, last_turn, lobby_board_copy, lobby_game_status_copy):           
 
         affected_tile = new_power_up_use["selectedPowerUpTiles"][0]

@@ -1,6 +1,6 @@
 from ..FireProvider.fire_tile import FireTile
 from ..FireProvider.FireModels.fire_move import FireMove
-from tic_tac_toe_backend.Models.new_move import Move
+from tic_tac_toe_backend.cache_models.new_move import Move
 
 
 def spread_fire(
