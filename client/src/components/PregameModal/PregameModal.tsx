@@ -1,6 +1,5 @@
 import Grid from "@mui/material/Grid";
-import Modal from "@mui/material/Modal";
-import { useState, useContext } from "react";
+import { useState} from "react";
 import Welcome from "./Welcome";
 import HostLobby from "./Lobby/HostLobby/HostLobby";
 import Join from "./Join";
@@ -8,9 +7,7 @@ import GuestLobby from "./Lobby/GuestLobby/GuestLobby";
 import { RgbaColor } from "react-colorful";
 import { Lobby } from "../../Models/Lobby";
 import useSound from "use-sound";
-
-import {VolumeContext} from "../../storage/VolumeContext"
-import { backgroundColor } from "../../themes/theme1";
+import LobbyBrowser from "./LobbyBrowser"
 interface PregameModalProps {
   setPiece: (piece: string) => void;
   playerPiece: string;
@@ -60,20 +57,18 @@ export default function PregameModal({
   setIsGuideOpen,
   volume,setVolume
 }: PregameModalProps) {
-  const [open, setOpen] = useState(true);
-  // const volume = useContext(VolumeContext)
+  
+ 
   const [playForward] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/snareForwardButton.mp3",{volume:volume}
   );
   const [playBackward] = useSound(
     process.env.PUBLIC_URL + "static/assets/sounds/floorDrumBackButton.mp3",{volume:volume}
   );
-  // const [playJoinOrStart] = useSound(
-  //   process.env.PUBLIC_URL + "static/assets/sounds/joinOrStartSound.mp3"
-  // );
+
 
   const handleCreateGameSelect = () => {
-    // playJoinOrStart();
+    
 
     setAction("create");
   };
@@ -108,11 +103,12 @@ export default function PregameModal({
           />
         )}
         {action === "join" && (
-          <Join
-            handleJoinBack={() => handleJoinBackSelect()}
-            handleJoinSubmit={(lobbyId) => handleFindSubmit(lobbyId)}
-            isLobbyFound={isLobbyFound}
-          />
+          // <Join
+          //   handleJoinBack={() => handleJoinBackSelect()}
+          //   handleJoinSubmit={(lobbyId) => handleFindSubmit(lobbyId)}
+          //   isLobbyFound={isLobbyFound}
+          // />
+          <LobbyBrowser/>
         )}
         {action === "guest" && isLobbyFound && (
           <GuestLobby

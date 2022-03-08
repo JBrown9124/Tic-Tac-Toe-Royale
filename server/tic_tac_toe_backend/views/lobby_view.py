@@ -7,12 +7,12 @@ from random import randrange
 from rest_framework.views import APIView
 from rest_framework.request import Request
 from django.utils import timezone
+from tic_tac_toe_backend.models.providers.player_provider import PlayerProvider
+from tic_tac_toe_backend.models.providers.lobby_provider import LobbyProvider
 from tic_tac_toe_backend.models.player import Player
 from tic_tac_toe_backend.models.players import Players
 from tic_tac_toe_backend.models.board import Board
 from tic_tac_toe_backend.models.lobby import Lobby
-
-from tic_tac_toe_backend.models.providers.create_lobby import create_lobby
 from ..cache_models.view_models.lobby import LobbyModel
 from ..ResponseModels.response_lobby import LobbyResponseModel
 from ..cache_models.player import PlayerModel
@@ -34,7 +34,7 @@ class LobbyView(APIView):
 
         lobby = LobbyModel.create(host_sid)
         lobby.players.append(player)
-        create_lobby(lobby.lobby_id, player_name)
+        LobbyProvider.create(lobby.lobby_id, player_name)
 
         lobby_id = lobby.lobby_id
         lobby = lobby.to_dict()
@@ -107,6 +107,9 @@ class LobbyView(APIView):
         )
 
         new_host = lobby.remove_player(player_id, session_id)
+        
+        if len(lobby.players) == 0:
+            LobbyProvider.delete(lobby_id)
 
         lobby = lobby.to_dict()
 
@@ -120,20 +123,28 @@ class LobbyView(APIView):
 
     def get(self, request: Request):
         """get all lobbies for user to see when they are on lobby browser page"""
-        lobbies = Lobby.objects.all()
-        lobbies_response = []
-        for lobby in lobbies:
-
-            lobby_response = LobbyModel(lobby_id=lobby.id, host_sid=0, board={},game_status={},players=[])
-
-            players = Players.objects.get(lobby=lobby)
-            players = Player.objects.filter(players=players)
-            for player in players:
-                lobby_response.players.append(player.to_dict())
-            
-            lobby_response = lobby_response.to_dict()
-            lobby_response = LobbyResponseModel(lobby_id=lobby.id, lobby=lobby_response[lobby.id]).to_dict()
-            
-            lobbies_response.append(lobby_response)
+        lobbies = LobbyProvider.get_all()
         
+        lobbies_response = []
+        
+        for lobby in lobbies:
+            lobby_id = lobby.id
+            
+            lobby_response = LobbyModel(
+                lobby_id=lobby_id,
+                host_sid=0,
+                board={},
+                game_status={},
+                players=PlayerProvider.get_players(lobby),
+                joinable=lobby.joinable,
+            )
+
+            lobby_response = lobby_response.to_dict()
+            
+            lobby_response = LobbyResponseModel(
+                lobby_id=lobby_id, lobby=lobby_response[lobby_id]
+            ).to_dict()
+
+            lobbies_response.append(lobby_response)
+
         return JsonResponse({"lobbies": lobbies_response})

@@ -1,8 +1,9 @@
 import uuid
 from typing import List
+from .utils import Utils
 
 
-class PlayerModel:
+class PlayerModel(Utils):
     def __init__(
         self,
         name,
@@ -21,17 +22,17 @@ class PlayerModel:
         self.is_ready = is_ready
         self.session_id = session_id
 
-    def to_dict(self):
-        return {
-            "name": self.name,
-            "piece": self.piece,
-            "isHost": self.is_host,
-            "playerId": self.player_id,
-            "inventory": self.inventory,
-            "isReady": self.is_ready,
-            "isLoaded": self.is_loaded,
-            "sessionId": self.session_id,
-        }
+    # def to_dict(self):
+    #     return {
+    #         "name": self.name,
+    #         "piece": self.piece,
+    #         "isHost": self.is_host,
+    #         "playerId": self.player_id,
+    #         "inventory": self.inventory,
+    #         "isReady": self.is_ready,
+    #         "isLoaded": self.is_loaded,
+    #         "sessionId": self.session_id,
+    #     }
 
     def __repr__(self):
 

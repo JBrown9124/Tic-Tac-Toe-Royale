@@ -1,18 +1,19 @@
-class Direction:
+from .utils import Utils
+class Direction(Utils):
     def __init__(self, is_vertical=False, is_horizontal=False, is_diagonal=False):
         self.is_vertical = is_vertical
         self.is_horizontal = is_horizontal
         self.is_diagonal = is_diagonal
 
-    def to_dict(self):
-        return {
-            "isVertical": self.is_vertical,
-            "isHorizontal": self.is_horizontal,
-            "isDiagonal": self.is_diagonal,
-        }
+    # def to_dict(self):
+    #     return {
+    #         "isVertical": self.is_vertical,
+    #         "isHorizontal": self.is_horizontal,
+    #         "isDiagonal": self.is_diagonal,
+    #     }
 
 
-class Rules:
+class Rules(Utils):
     def __init__(
         self,
         affects_caster=False,
@@ -29,18 +30,18 @@ class Rules:
         self.must_be_empty_tile = must_be_empty_tile
         self.area_shape = area_shape
 
-    def to_dict(self):
-        return {
-            "affectsCaster": self.affects_caster,
-            "direction": self.direction,
-            "castAnywhere": self.cast_anywhere,
-            "tilesAffected": self.tiles_affected,
-            "mustBeEmptyTile": self.must_be_empty_tile,
-            "areaShape": self.area_shape,
-        }
+    # def to_dict(self):
+    #     return {
+    #         "affectsCaster": self.affects_caster,
+    #         "direction": self.direction,
+    #         "castAnywhere": self.cast_anywhere,
+    #         "tilesAffected": self.tiles_affected,
+    #         "mustBeEmptyTile": self.must_be_empty_tile,
+    #         "areaShape": self.area_shape,
+    #     }
 
 
-class PowerUp:
+class PowerUp(Utils):
     def __init__(
         self,
         value=0,
@@ -57,12 +58,12 @@ class PowerUp:
         self.rules = rules
         self.select_color = select_color
 
-    def to_dict(self):
-        return {
-            "value": self.value,
-            "name": self.name,
-            "description": self.description,
-            "imgUrl": self.img_url,
-            "rules": self.rules,
-            "selectColor": self.select_color,
-        }
+    # def to_dict(self):
+    #     return {
+    #         "value": self.value,
+    #         "name": self.name,
+    #         "description": self.description,
+    #         "imgUrl": self.img_url,
+    #         "rules": self.rules,
+    #         "selectColor": self.select_color,
+    #     }

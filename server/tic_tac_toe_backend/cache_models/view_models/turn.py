@@ -87,6 +87,7 @@ class TurnModel:
         board_size = self.board["size"]
         tile_amount = board_size * board_size
         amount_of_moves_made = len(self.board["moves"])
+        
         no_open_tiles = amount_of_moves_made == tile_amount
         winner = self.win.get("whoWon")
         if no_open_tiles and not winner:

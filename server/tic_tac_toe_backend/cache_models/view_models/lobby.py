@@ -6,6 +6,7 @@ from django.core.cache import cache
 from tic_tac_toe_backend.cache_models.player import PlayerModel
 from ..board import BoardModel
 from ..game_status import GameStatus
+from typing import Union
 
 
 class LobbyModel(object):
@@ -16,21 +17,23 @@ class LobbyModel(object):
         board,
         game_status,
         players,
+        joinable=True,
     ):
         self.lobby_id = lobby_id
         self.board = board
         self.players = players
         self.game_status = game_status
         self.host_sid = host_sid
+        self.joinable = joinable
 
     @classmethod
-    def create(cls, host_sid):
+    def create(cls, host_sid: str):
         lobby_id = cls.create_id()
         return cls(
             host_sid, lobby_id, BoardModel().to_dict(), GameStatus().to_dict(), []
         )
 
-    def create_id():
+    def create_id() -> int:
         lobby_id = randrange(99999)
         lobby_exists = cache.get(lobby_id)
         while lobby_exists:
@@ -38,7 +41,7 @@ class LobbyModel(object):
             lobby_exists = cache.get(lobby_id)
         return lobby_id
 
-    def add_player(self, player_name, session_id):
+    def add_player(self, player_name: str, session_id: int):
         if player_name == "BOTPASSPASS":
             player = create_bot(self.players)
         else:
@@ -49,7 +52,7 @@ class LobbyModel(object):
         self.players.append(player)
         return player
 
-    def remove_player(self, player_id, session_id):
+    def remove_player(self, player_id: str, session_id: int) -> Union[None, str]:
         make_new_host = False
         if player_id[:3] == "BOT":
             for index, player in enumerate(self.players):
@@ -82,6 +85,7 @@ class LobbyModel(object):
                 "players": self.players,
                 "gameStatus": self.game_status,
                 "hostSid": self.host_sid,
+                "joinable": self.joinable,
             }
         }
 

@@ -10,6 +10,7 @@ class LobbyResponseModel(object):
         return {
             "board": self.lobby["board"],
             "players": self.lobby["players"],
+            "joinable": self.lobby["joinable"],
             "lobbyId": self.lobby_id,
             "hostSid": self.lobby["hostSid"],
             "gameStatus": self.lobby["gameStatus"],
