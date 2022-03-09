@@ -3,6 +3,9 @@ async_mode = None
 import os
 
 import socketio
+from tic_tac_toe_backend.models.providers.player_provider import PlayerProvider
+
+from tic_tac_toe_backend.models.providers.lobby_provider import LobbyProvider
 
 
 basedir = os.path.dirname(os.path.realpath(__file__))
@@ -25,6 +28,10 @@ def disconnect(sid):
     rooms = sio.rooms(sid)
     hostSid = None
     for room in rooms:
+        lobby = LobbyProvider.get(room)
+        players = PlayerProvider.get_players(lobby)
+        if len(players) == 1:
+            lobby
         hostSid = room
         sio.leave_room(sid, room)
 

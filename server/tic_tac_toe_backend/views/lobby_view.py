@@ -109,7 +109,8 @@ class LobbyView(APIView):
         new_host = lobby.remove_player(player_id, session_id)
         
         if len(lobby.players) == 0:
-            LobbyProvider.delete(lobby_id)
+            db_lobby = LobbyProvider.get(lobby_id)
+            db_lobby.delete()
 
         lobby = lobby.to_dict()
 

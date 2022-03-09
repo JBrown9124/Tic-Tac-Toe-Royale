@@ -12,6 +12,8 @@ from tic_tac_toe_backend.models.win import Win
 
 
 class LobbyProvider:
+    def __init__(self):
+        lobby = None
     @staticmethod
     def create(id, creator_name):
         lobby = Lobby(id=id)
@@ -39,16 +41,19 @@ class LobbyProvider:
         win = Win(game_status=game_status)
         win.save()
 
-    @staticmethod
-    def delete(id: int):
-        lobby = LobbyProvider.get(id)
-        lobby.delete()
-
+    
+    def delete(self) -> None:
+        
+        self.lobby.delete()
+        self.lobby = None
+        
+    def get(self, id, lobby:Lobby) -> None:
+        self.lobby = Lobby.objects.get(id=id)
+    
     @staticmethod
     def get_all():
         return Lobby.objects.all()
     
-    @staticmethod
-    def get(id) -> Lobby:
-        lobby = Lobby.objects.get(id=id)
-        return lobby
+    
+    
+        
